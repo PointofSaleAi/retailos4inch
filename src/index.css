@@ -2,41 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Retail POS Design System for 4-inch Adyen AMS1 Device (198x330px) */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    /* Background & Surface */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 15%;
+    --surface: 0 0% 100%;
+    
+    /* Card & Containers */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --card-foreground: 0 0% 15%;
+    
+    /* Primary Brand Colors */
+    --primary: 0 0% 15%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 0 0% 25%;
+    
+    /* Secondary & Muted */
+    --secondary: 0 0% 85%;
+    --secondary-foreground: 0 0% 40%;
+    --secondary-hover: 0 0% 80%;
+    
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 50%;
+    
+    /* Interactive Elements */
+    --accent: 210 40% 96%;
+    --accent-foreground: 0 0% 15%;
+    
+    /* Input & Form */
+    --input: 0 0% 94%;
+    --input-border: 0 0% 88%;
+    --input-focus: 0 0% 15%;
+    
+    /* Utility */
+    --border: 0 0% 88%;
+    --ring: 0 0% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Retail Specific */
+    --price: 120 40% 25%;
+    --success: 120 60% 35%;
+    --warning: 45 90% 50%;
+    
+    /* Spacing & Layout */
+    --radius: 0.75rem;
+    --radius-small: 0.5rem;
+    --radius-large: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -55,9 +70,57 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  }
+  
+  /* Device-specific styling for 4-inch display */
+  .retail-device {
+    width: 198px;
+    height: 330px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: 0 0 20px hsl(0 0% 0% / 0.15);
+    background: hsl(var(--background));
+  }
+  
+  /* Typography Scale for Small Screen */
+  .text-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  
+  .text-subtitle {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .text-product-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  
+  .text-price {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: hsl(var(--price));
+  }
+  
+  /* Custom Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
