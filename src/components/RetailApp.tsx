@@ -45,8 +45,8 @@ export const RetailApp = () => {
 
   return (
     <RetailDevice>
-      <div className="h-full flex flex-col">
-        <div className="flex-1">
+      <div className="h-full flex flex-col overflow-hidden">
+        <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
         {isLoggedIn && (

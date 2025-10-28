@@ -81,12 +81,12 @@ export const NewOrderScreen = () => {
       [productId]: quantity
     }));
   };
-  return <div className="h-full flex flex-col bg-background animate-fade-in">
+  return <div className="h-full flex flex-col bg-background animate-fade-in overflow-hidden">
       <TopNavigation />
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
-        <div className="px-[6px] pt-2 space-y-2 py-0">
+        <div className="px-[6px] pt-2 space-y-2 flex-shrink-0">
           {/* Main Categories with View Toggle and Dropdowns */}
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {/* View Toggle Icons */}
