@@ -28,8 +28,8 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-foreground text-sm font-normal">
+          <div className="space-y-1">
+            <Label htmlFor="email" className="text-foreground text-[8px] font-normal">
               Email Address
             </Label>
             <Input
@@ -38,31 +38,31 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
               placeholder="Enter You Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pr-4"
+              className="h-[28px] w-[186px] pr-3 text-xs"
               required
             />
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-foreground text-sm font-normal">
+          <div className="space-y-1">
+            <Label htmlFor="password" className="text-foreground text-[8px] font-normal">
               Password
             </Label>
-            <div className="relative">
+            <div className="relative w-[186px]">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pr-12"
+                className="h-[28px] w-full pr-10 text-xs"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
               </button>
             </div>
           </div>
