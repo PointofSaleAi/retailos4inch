@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Search, Calendar, Menu, FileText, Grid3x3, Tag, Camera } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering";
-type FilterType = "All" | "Ordering" | "Refunded" | "Paid";
+type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled";
 interface Transaction {
   id: string;
   icon: "document" | "grid" | "tag" | "camera";
@@ -79,7 +79,7 @@ export const TransactionsScreen = () => {
   });
   return <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5 border-b border-border">
+      <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
         <h1 className="text-base font-semibold text-foreground">Transactions</h1>
         <div className="flex items-center gap-2">
           <button className="p-1">
@@ -95,8 +95,8 @@ export const TransactionsScreen = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex-shrink-0 flex gap-1.5 border-b border-border overflow-x-auto px-[6px] py-[6px]">
-        {(["All", "Ordering", "Refunded", "Paid"] as FilterType[]).map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${activeFilter === filter ? "bg-foreground text-background" : "bg-muted text-muted-foreground"}`}>
+      <div className="flex-shrink-0 flex gap-1.5 overflow-x-auto px-[6px] py-[6px]">
+        {(["All", "Ordering", "Refunded", "Paid", "Payment Progress", "Completed", "Cancelled"] as FilterType[]).map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${activeFilter === filter ? "bg-foreground text-background" : "text-muted-foreground"}`} style={activeFilter !== filter ? { backgroundColor: '#F1F2F5' } : undefined}>
             {filter}
           </button>)}
       </div>
