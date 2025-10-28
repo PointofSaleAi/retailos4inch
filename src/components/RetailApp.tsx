@@ -2,6 +2,7 @@ import { useState } from "react";
 import { RetailDevice } from "./RetailDevice";
 import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
+import { TransactionsScreen } from "./TransactionsScreen";
 import { BottomNavigation } from "./BottomNavigation";
 
 export const RetailApp = () => {
@@ -21,11 +22,7 @@ export const RetailApp = () => {
       case "order":
         return <NewOrderScreen />;
       case "transactions":
-        return (
-          <div className="flex-1 flex items-center justify-center p-4">
-            <p className="text-muted-foreground text-center">Transactions screen coming soon</p>
-          </div>
-        );
+        return <TransactionsScreen />;
       case "customer":
         return (
           <div className="flex-1 flex items-center justify-center p-4">
