@@ -49,7 +49,7 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       </div>
       
       <div className="p-1 flex flex-col flex-1 justify-between">
-        <h3 className="text-[8px] font-semibold leading-tight line-clamp-2">
+        <h3 className="text-[12px] font-semibold leading-tight line-clamp-2">
           {product.name}
         </h3>
         <span className="text-[10px] font-bold text-price">

@@ -108,7 +108,7 @@ export const NewOrderScreen = () => {
       
       <div className="flex-1 flex flex-col">
         {/* Category Filters */}
-        <div className="px-[6px] py-2 space-y-2">
+        <div className="px-[6px] pt-2 space-y-2">
           {/* Main Categories with View Toggle and Dropdowns */}
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {/* View Toggle Icons */}
@@ -119,7 +119,7 @@ export const NewOrderScreen = () => {
                 className={`h-6 w-6 rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                 onClick={() => setViewMode("grid")}
               >
-                <img src={iconGridWhite} alt="Grid view" className="w-4 h-4" />
+                <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
@@ -127,7 +127,7 @@ export const NewOrderScreen = () => {
                 className={`h-6 w-6 rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`}
                 onClick={() => setViewMode("list")}
               >
-                <img src={iconListWhite} alt="List view" className="w-4 h-4" />
+                <img src={viewMode === "list" ? iconListWhite : iconList} alt="List view" className="w-4 h-4" />
               </Button>
             </div>
             

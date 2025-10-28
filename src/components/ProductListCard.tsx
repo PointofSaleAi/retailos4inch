@@ -28,7 +28,7 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   return (
     <div className="bg-surface rounded-lg overflow-hidden border border-border w-full h-[35px] flex items-center px-3 gap-3">
       <div className="flex-1 flex items-center justify-between min-w-0">
-        <h3 className="text-[11px] font-medium leading-tight line-clamp-1">
+        <h3 className="text-[12px] font-medium leading-tight line-clamp-1">
           {product.name}
         </h3>
         <span className="text-[12px] font-bold text-price mx-3">
