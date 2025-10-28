@@ -2,7 +2,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TopNavigation } from "./TopNavigation";
 import { ProductCard } from "./ProductCard";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Grid3x3, List } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Import product images
 import product1 from "@/assets/product-1.jpg";
@@ -37,10 +43,15 @@ const mockProducts = [
   },
 ];
 
-const categories = ["Men", "Women"];
-const subCategories = ["Top Wear", "Bottom Wear", "Others"];
+const productTypes = ["Products", "Services"];
+const menuCategories = ["Apparel", "Beauty Products", "Electric"];
+const categories = ["Men", "Women", "Kids", "Gen Z"];
+const subCategories = ["Top Wear", "Bottom Wear", "Official Merch", "Best Sellers"];
 
 export const NewOrderScreen = () => {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [selectedProductType, setSelectedProductType] = useState("Products");
+  const [selectedMenuCategory, setSelectedMenuCategory] = useState("Apparel");
   const [selectedCategory, setSelectedCategory] = useState("Men");
   const [selectedSubCategory, setSelectedSubCategory] = useState("Top Wear");
   const [cart, setCart] = useState<Record<number, number>>({});
@@ -59,17 +70,79 @@ export const NewOrderScreen = () => {
       <div className="flex-1 flex flex-col">
         {/* Category Filters */}
         <div className="px-[6px] py-2 space-y-2 border-b border-border">
-          {/* Main Categories */}
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="retail-compact"
-              className="flex items-center gap-1"
-            >
-              Apparel
-              <ChevronDown size={12} />
-            </Button>
+          {/* Main Categories with View Toggle and Dropdowns */}
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+            {/* View Toggle Icons */}
+            <div className="flex items-center gap-1 border border-border rounded-full p-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-6 w-6 rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
+                onClick={() => setViewMode("grid")}
+              >
+                <Grid3x3 size={14} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-6 w-6 rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`}
+                onClick={() => setViewMode("list")}
+              >
+                <List size={14} />
+              </Button>
+            </div>
             
+            {/* Product Type Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="retail-compact"
+                  className="flex items-center gap-1"
+                >
+                  {selectedProductType}
+                  <ChevronDown size={12} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-surface">
+                {productTypes.map((type) => (
+                  <DropdownMenuItem
+                    key={type}
+                    onClick={() => setSelectedProductType(type)}
+                    className="text-[10px]"
+                  >
+                    {type}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            {/* Menu Category Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="retail-compact"
+                  className="flex items-center gap-1"
+                >
+                  {selectedMenuCategory}
+                  <ChevronDown size={12} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-surface">
+                {menuCategories.map((category) => (
+                  <DropdownMenuItem
+                    key={category}
+                    onClick={() => setSelectedMenuCategory(category)}
+                    className="text-[10px]"
+                  >
+                    {category}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            {/* Slidable Categories */}
             {categories.map((category) => (
               <Button
                 key={category}
@@ -83,7 +156,7 @@ export const NewOrderScreen = () => {
           </div>
           
           {/* Sub Categories */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {subCategories.map((subCategory) => (
               <Button
                 key={subCategory}
