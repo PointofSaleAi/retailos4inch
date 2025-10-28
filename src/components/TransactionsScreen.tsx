@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Search, Calendar, Menu, FileText, Grid3x3, Tag, Camera } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering";
 type FilterType = "All" | "Ordering" | "Refunded" | "Paid";
-
 interface Transaction {
   id: string;
   icon: "document" | "grid" | "tag" | "camera";
@@ -15,84 +13,71 @@ interface Transaction {
   amount: number;
   status: TransactionStatus;
 }
-
-const mockTransactions: Transaction[] = [
-  {
-    id: "1",
-    icon: "document",
-    product: "Polished Prestig",
-    quantity: 1,
-    date: "27 Aug",
-    time: "3:55 PM",
-    amount: 21.00,
-    status: "Paid"
-  },
-  {
-    id: "2",
-    icon: "grid",
-    product: "Polo Ralph Lau",
-    quantity: 2,
-    date: "27 Aug",
-    time: "2:47 PM",
-    amount: 20.00,
-    status: "Refunded"
-  },
-  {
-    id: "3",
-    icon: "tag",
-    product: "The Farrah Skin",
-    quantity: 3,
-    date: "27 Aug",
-    time: "2:30 PM",
-    amount: 56.00,
-    status: "Paid"
-  },
-  {
-    id: "4",
-    icon: "camera",
-    product: "Polished Prestig",
-    quantity: 1,
-    date: "27 Aug",
-    time: "2:47 PM",
-    amount: 55.25,
-    status: "Failed"
-  },
-  {
-    id: "5",
-    icon: "tag",
-    product: "The Farrah Skin",
-    quantity: 3,
-    date: "27 Aug",
-    time: "2:30 PM",
-    amount: 56.00,
-    status: "Failed"
-  }
-];
-
+const mockTransactions: Transaction[] = [{
+  id: "1",
+  icon: "document",
+  product: "Polished Prestig",
+  quantity: 1,
+  date: "27 Aug",
+  time: "3:55 PM",
+  amount: 21.00,
+  status: "Paid"
+}, {
+  id: "2",
+  icon: "grid",
+  product: "Polo Ralph Lau",
+  quantity: 2,
+  date: "27 Aug",
+  time: "2:47 PM",
+  amount: 20.00,
+  status: "Refunded"
+}, {
+  id: "3",
+  icon: "tag",
+  product: "The Farrah Skin",
+  quantity: 3,
+  date: "27 Aug",
+  time: "2:30 PM",
+  amount: 56.00,
+  status: "Paid"
+}, {
+  id: "4",
+  icon: "camera",
+  product: "Polished Prestig",
+  quantity: 1,
+  date: "27 Aug",
+  time: "2:47 PM",
+  amount: 55.25,
+  status: "Failed"
+}, {
+  id: "5",
+  icon: "tag",
+  product: "The Farrah Skin",
+  quantity: 3,
+  date: "27 Aug",
+  time: "2:30 PM",
+  amount: 56.00,
+  status: "Failed"
+}];
 const iconMap = {
   document: FileText,
   grid: Grid3x3,
   tag: Tag,
   camera: Camera
 };
-
 const statusColors = {
   Paid: "text-success",
   Refunded: "text-destructive",
   Failed: "text-destructive",
   Ordering: "text-warning"
 };
-
 export const TransactionsScreen = () => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("All");
-
   const filteredTransactions = mockTransactions.filter(transaction => {
     if (activeFilter === "All") return true;
     return transaction.status === activeFilter;
   });
-
-  return (
-    <div className="h-full flex flex-col bg-background">
+  return <div className="h-full flex flex-col bg-background">
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5 border-b border-border">
         <h1 className="text-base font-semibold text-foreground">Transactions</h1>
@@ -110,32 +95,18 @@ export const TransactionsScreen = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex-shrink-0 flex gap-1.5 px-3 py-2 border-b border-border overflow-x-auto">
-        {(["All", "Ordering", "Refunded", "Paid"] as FilterType[]).map((filter) => (
-          <button
-            key={filter}
-            onClick={() => setActiveFilter(filter)}
-            className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${
-              activeFilter === filter
-                ? "bg-foreground text-background"
-                : "bg-muted text-muted-foreground"
-            }`}
-          >
+      <div className="flex-shrink-0 flex gap-1.5 border-b border-border overflow-x-auto px-[6px] py-[6px]">
+        {(["All", "Ordering", "Refunded", "Paid"] as FilterType[]).map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${activeFilter === filter ? "bg-foreground text-background" : "bg-muted text-muted-foreground"}`}>
             {filter}
-          </button>
-        ))}
+          </button>)}
       </div>
 
       {/* Transaction List */}
       <ScrollArea className="flex-1">
         <div className="px-3 py-2 space-y-2">
-          {filteredTransactions.map((transaction) => {
-            const IconComponent = iconMap[transaction.icon];
-            return (
-              <div
-                key={transaction.id}
-                className="flex items-center gap-2.5 p-2.5 bg-surface rounded-lg border border-border"
-              >
+          {filteredTransactions.map(transaction => {
+          const IconComponent = iconMap[transaction.icon];
+          return <div key={transaction.id} className="flex items-center gap-2.5 p-2.5 bg-surface rounded-lg border border-border">
                 <div className="flex-shrink-0 w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
                   <IconComponent className="w-4 h-4 text-foreground" />
                 </div>
@@ -157,11 +128,9 @@ export const TransactionsScreen = () => {
                     </p>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              </div>;
+        })}
         </div>
       </ScrollArea>
-    </div>
-  );
+    </div>;
 };
