@@ -88,7 +88,7 @@ export const TransactionsScreen = () => {
           <button className="p-1">
             <Calendar className="w-4 h-4 text-foreground" />
           </button>
-          <button className="p-1">
+          <button className="p-1 px-[6px] py-[6px]">
             <Menu className="w-4 h-4 text-foreground" />
           </button>
         </div>
