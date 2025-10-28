@@ -49,40 +49,14 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
             ${product.price.toFixed(2)}
           </span>
           
-          <div className="flex items-center gap-1">
-            {quantity === 0 ? (
-              <Button
-                variant="ghost"
-                size="retail-compact"
-                onClick={() => handleQuantityChange(1)}
-                className="h-6 w-6 p-0 rounded-full border border-border"
-              >
-                +
-              </Button>
-            ) : (
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="ghost"
-                  size="retail-compact"
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  className="h-6 w-6 p-0 rounded-full border border-border"
-                >
-                  -
-                </Button>
-                <span className="text-xs font-medium w-6 text-center">
-                  {quantity}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="retail-compact"
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                  className="h-6 w-6 p-0 rounded-full border border-border"
-                >
-                  +
-                </Button>
-              </div>
-            )}
-          </div>
+          <Button
+            variant="default"
+            size="icon"
+            onClick={() => handleQuantityChange(quantity + 1)}
+            className="h-8 w-8 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-lg"
+          >
+            +
+          </Button>
         </div>
       </div>
     </div>

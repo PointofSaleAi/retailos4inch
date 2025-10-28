@@ -20,22 +20,22 @@ export const RetailApp = () => {
     switch (activeTab) {
       case "order":
         return <NewOrderScreen />;
-      case "tickets":
-        return (
-          <div className="flex-1 flex items-center justify-center p-4">
-            <p className="text-muted-foreground text-center">Tickets screen coming soon</p>
-          </div>
-        );
       case "transactions":
         return (
           <div className="flex-1 flex items-center justify-center p-4">
             <p className="text-muted-foreground text-center">Transactions screen coming soon</p>
           </div>
         );
-      case "more":
+      case "customer":
         return (
           <div className="flex-1 flex items-center justify-center p-4">
-            <p className="text-muted-foreground text-center">More options coming soon</p>
+            <p className="text-muted-foreground text-center">Customer screen coming soon</p>
+          </div>
+        );
+      case "settings":
+        return (
+          <div className="flex-1 flex items-center justify-center p-4">
+            <p className="text-muted-foreground text-center">Settings screen coming soon</p>
           </div>
         );
       default:

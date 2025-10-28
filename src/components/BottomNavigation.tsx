@@ -1,4 +1,4 @@
-import { ShoppingCart, Receipt, CreditCard, Menu } from "lucide-react";
+import { ShoppingCart, Receipt, User, Settings } from "lucide-react";
 
 interface BottomNavigationProps {
   activeTab: string;
@@ -39,21 +39,21 @@ export const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationPro
         />
         <NavItem
           icon={Receipt}
-          label="Tickets"
-          isActive={activeTab === "tickets"}
-          onClick={() => onTabChange("tickets")}
-        />
-        <NavItem
-          icon={CreditCard}
           label="Transactions"
           isActive={activeTab === "transactions"}
           onClick={() => onTabChange("transactions")}
         />
         <NavItem
-          icon={Menu}
-          label="More"
-          isActive={activeTab === "more"}
-          onClick={() => onTabChange("more")}
+          icon={User}
+          label="Customer"
+          isActive={activeTab === "customer"}
+          onClick={() => onTabChange("customer")}
+        />
+        <NavItem
+          icon={Settings}
+          label="Settings"
+          isActive={activeTab === "settings"}
+          onClick={() => onTabChange("settings")}
         />
       </div>
     </nav>
