@@ -2,7 +2,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TopNavigation } from "./TopNavigation";
 import { ProductCard } from "./ProductCard";
-import { ChevronDown, Grid3x3, List } from "lucide-react";
+import { ProductListCard } from "./ProductListCard";
+import { ChevronDown } from "lucide-react";
+import iconGrid from "@/assets/icon-grid.png";
+import iconList from "@/assets/icon-list.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -114,7 +117,7 @@ export const NewOrderScreen = () => {
                 className={`h-6 w-6 rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                 onClick={() => setViewMode("grid")}
               >
-                <Grid3x3 size={14} />
+                <img src={iconGrid} alt="Grid view" className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
@@ -122,7 +125,7 @@ export const NewOrderScreen = () => {
                 className={`h-6 w-6 rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`}
                 onClick={() => setViewMode("list")}
               >
-                <List size={14} />
+                <img src={iconList} alt="List view" className="w-4 h-4" />
               </Button>
             </div>
             
@@ -204,17 +207,29 @@ export const NewOrderScreen = () => {
           </div>
         </div>
         
-        {/* Product Grid */}
+        {/* Product Grid/List */}
         <div className="flex-1 p-[6px] overflow-y-auto scrollbar-hide">
-          <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-            {mockProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
+          {viewMode === "grid" ? (
+            <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
+              {mockProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 pb-2">
+              {mockProducts.map((product) => (
+                <ProductListCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
