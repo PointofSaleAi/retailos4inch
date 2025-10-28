@@ -26,8 +26,8 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   };
 
   return (
-    <div className="bg-surface rounded-lg overflow-hidden border border-border">
-      <div className="aspect-square bg-muted relative">
+    <div className="bg-surface rounded-lg overflow-hidden border border-border w-[186px]">
+      <div className="aspect-square bg-muted relative w-full">
         <img
           src={product.image}
           alt={product.name}
@@ -40,12 +40,12 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         )}
       </div>
       
-      <div className="p-3">
-        <h3 className="text-product-title font-semibold mb-1 line-clamp-2">
+      <div className="p-[6px]">
+        <h3 className="text-retail-xs font-semibold mb-1 line-clamp-2">
           {product.name}
         </h3>
         <div className="flex items-center justify-between">
-          <span className="text-price font-bold">
+          <span className="text-retail-xs font-bold text-price">
             ${product.price.toFixed(2)}
           </span>
           

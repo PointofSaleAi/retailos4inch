@@ -7,7 +7,7 @@ import iconMore from "@/assets/icon-more.png";
 
 export const TopNavigation = () => {
   return (
-    <nav className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface">
+    <nav className="flex items-center justify-between px-[6px] py-2 border-b border-border bg-surface">
       <Button variant="ghost" size="icon" className="h-8 w-8">
         <img src={iconMenu} alt="Menu" className="w-5 h-5" />
       </Button>

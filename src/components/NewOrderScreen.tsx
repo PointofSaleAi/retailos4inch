@@ -58,7 +58,7 @@ export const NewOrderScreen = () => {
       
       <div className="flex-1 flex flex-col">
         {/* Category Filters */}
-        <div className="px-4 py-3 space-y-3 border-b border-border">
+        <div className="px-[6px] py-2 space-y-2 border-b border-border">
           {/* Main Categories */}
           <div className="flex items-center gap-2">
             <Button
@@ -98,8 +98,8 @@ export const NewOrderScreen = () => {
         </div>
         
         {/* Product Grid */}
-        <div className="flex-1 p-4 overflow-y-auto">
-          <div className="grid grid-cols-2 gap-3">
+        <div className="flex-1 p-[6px] overflow-y-auto">
+          <div className="flex flex-wrap justify-center gap-2">
             {mockProducts.map((product) => (
               <ProductCard
                 key={product.id}

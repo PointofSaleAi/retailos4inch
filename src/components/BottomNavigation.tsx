@@ -18,19 +18,19 @@ const NavItem = ({
 }) => (
   <button
     onClick={onClick}
-    className={`flex flex-col items-center justify-center py-2 px-1 transition-colors ${
+    className={`flex flex-col items-center justify-center py-1 px-1 transition-colors ${
       isActive ? 'text-foreground' : 'text-muted-foreground'
     }`}
   >
     <Icon size={16} className="mb-1" />
-    <span className="text-xs font-medium">{label}</span>
+    <span className="text-[10px] font-medium">{label}</span>
   </button>
 );
 
 export const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => {
   return (
-    <nav className="border-t border-border bg-surface px-2 py-1">
-      <div className="grid grid-cols-4 gap-1">
+    <nav className="border-t border-border bg-surface px-[6px] py-2">
+      <div className="grid grid-cols-4 gap-2">
         <NavItem
           icon={ShoppingCart}
           label="New Order"

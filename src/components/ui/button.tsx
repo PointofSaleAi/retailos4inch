@@ -18,8 +18,8 @@ const buttonVariants = cva(
         // Retail-specific variants
         retail: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full font-bold tracking-wide",
         "retail-secondary": "bg-secondary text-secondary-foreground hover:bg-secondary-hover rounded-full font-medium",
-        category: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full text-xs font-medium px-4 py-1",
-        "category-inactive": "bg-secondary text-secondary-foreground hover:bg-secondary-hover rounded-full text-xs font-medium px-4 py-1",
+        category: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full text-[10px] font-medium px-3 py-1",
+        "category-inactive": "bg-secondary text-secondary-foreground hover:bg-secondary-hover rounded-full text-[10px] font-medium px-3 py-1",
       },
       size: {
         default: "h-10 px-6 py-2",
