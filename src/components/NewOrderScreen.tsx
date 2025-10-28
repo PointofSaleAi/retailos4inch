@@ -41,6 +41,42 @@ const mockProducts = [
     price: 12.00,
     image: product4,
   },
+  {
+    id: 5,
+    name: "RELAXED FIT FLOWING SHIRT",
+    price: 13.00,
+    image: product1,
+  },
+  {
+    id: 6,
+    name: "WASHED DENIM OVERALLS",
+    price: 10.00,
+    image: product2,
+  },
+  {
+    id: 7,
+    name: "CLASSIC CARDIGAN SWEATER",
+    price: 15.00,
+    image: product3,
+  },
+  {
+    id: 8,
+    name: "PREMIUM POLO SHIRT",
+    price: 12.00,
+    image: product4,
+  },
+  {
+    id: 9,
+    name: "RELAXED FIT FLOWING SHIRT",
+    price: 13.00,
+    image: product1,
+  },
+  {
+    id: 10,
+    name: "WASHED DENIM OVERALLS",
+    price: 10.00,
+    image: product2,
+  },
 ];
 
 const productTypes = ["Products", "Services"];
@@ -171,8 +207,8 @@ export const NewOrderScreen = () => {
         </div>
         
         {/* Product Grid */}
-        <div className="flex-1 p-[6px] overflow-y-auto">
-          <div className="grid grid-cols-2 gap-2 justify-items-center">
+        <div className="flex-1 p-[6px] overflow-y-auto scrollbar-hide">
+          <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
             {mockProducts.map((product) => (
               <ProductCard
                 key={product.id}
