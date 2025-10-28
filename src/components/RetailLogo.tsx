@@ -14,7 +14,7 @@ export const RetailLogo = ({ className = "" }: RetailLogoProps) => {
           <div className="absolute -bottom-0.5 -left-0.5 w-1 h-1 bg-foreground rounded-full"></div>
           <div className="absolute -bottom-0.5 -right-0.5 w-1 h-1 bg-foreground rounded-full"></div>
         </span>
-        s
+        os
       </div>
     </div>
   );
