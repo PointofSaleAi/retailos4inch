@@ -1,4 +1,7 @@
-import { ShoppingCart, Receipt, User, Settings } from "lucide-react";
+import iconNewOrder from "@/assets/icon-new-order.png";
+import iconTransactions from "@/assets/icon-transactions.png";
+import iconCustomer from "@/assets/icon-customer.png";
+import iconSettings from "@/assets/icon-settings.png";
 
 interface BottomNavigationProps {
   activeTab: string;
@@ -6,12 +9,12 @@ interface BottomNavigationProps {
 }
 
 const NavItem = ({ 
-  icon: Icon, 
+  icon, 
   label, 
   isActive, 
   onClick 
 }: { 
-  icon: any; 
+  icon: string; 
   label: string; 
   isActive: boolean; 
   onClick: () => void; 
@@ -22,8 +25,8 @@ const NavItem = ({
       isActive ? 'text-foreground' : 'text-muted-foreground'
     }`}
   >
-    <Icon size={16} className="mb-1" />
-    <span className="text-[10px] font-medium">{label}</span>
+    <img src={icon} alt={label} className="w-4 h-4 mb-1" />
+    <span className="text-[7px] font-medium">{label}</span>
   </button>
 );
 
@@ -32,25 +35,25 @@ export const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationPro
     <nav className="border-t border-border bg-surface px-[6px] py-2">
       <div className="grid grid-cols-4 gap-2">
         <NavItem
-          icon={ShoppingCart}
+          icon={iconNewOrder}
           label="New Order"
           isActive={activeTab === "order"}
           onClick={() => onTabChange("order")}
         />
         <NavItem
-          icon={Receipt}
+          icon={iconTransactions}
           label="Transactions"
           isActive={activeTab === "transactions"}
           onClick={() => onTabChange("transactions")}
         />
         <NavItem
-          icon={User}
+          icon={iconCustomer}
           label="Customer"
           isActive={activeTab === "customer"}
           onClick={() => onTabChange("customer")}
         />
         <NavItem
-          icon={Settings}
+          icon={iconSettings}
           label="Settings"
           isActive={activeTab === "settings"}
           onClick={() => onTabChange("settings")}
