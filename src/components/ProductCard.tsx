@@ -26,38 +26,35 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   };
 
   return (
-    <div className="bg-surface rounded-lg overflow-hidden border border-border w-[186px]">
-      <div className="aspect-square bg-muted relative w-full">
+    <div className="bg-surface rounded-lg overflow-hidden border border-border w-[90px] h-[102px] flex flex-col">
+      <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
         />
+        <Button
+          variant="default"
+          size="icon"
+          onClick={() => handleQuantityChange(quantity + 1)}
+          className="absolute top-1 right-1 h-5 w-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-sm flex items-center justify-center p-0"
+        >
+          +
+        </Button>
         {quantity > 0 && (
-          <div className="absolute top-2 right-2 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+          <div className="absolute top-1 left-1 bg-primary text-primary-foreground rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold">
             {quantity}
           </div>
         )}
       </div>
       
-      <div className="p-[6px]">
-        <h3 className="text-retail-xs font-semibold mb-1 line-clamp-2">
+      <div className="p-1 flex flex-col flex-1 justify-between">
+        <h3 className="text-[8px] font-semibold leading-tight line-clamp-2">
           {product.name}
         </h3>
-        <div className="flex items-center justify-between">
-          <span className="text-retail-xs font-bold text-price">
-            ${product.price.toFixed(2)}
-          </span>
-          
-          <Button
-            variant="default"
-            size="icon"
-            onClick={() => handleQuantityChange(quantity + 1)}
-            className="h-8 w-8 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-lg"
-          >
-            +
-          </Button>
-        </div>
+        <span className="text-[10px] font-bold text-price">
+          ${product.price.toFixed(2)}
+        </span>
       </div>
     </div>
   );

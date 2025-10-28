@@ -172,7 +172,7 @@ export const NewOrderScreen = () => {
         
         {/* Product Grid */}
         <div className="flex-1 p-[6px] overflow-y-auto">
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="grid grid-cols-2 gap-2 justify-items-center">
             {mockProducts.map((product) => (
               <ProductCard
                 key={product.id}
