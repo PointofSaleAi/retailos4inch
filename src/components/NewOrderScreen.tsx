@@ -11,69 +11,67 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 // Import product images
-import product1 from "@/assets/product-1.jpg";
-import product2 from "@/assets/product-2.jpg";
-import product3 from "@/assets/product-3.jpg";
-import product4 from "@/assets/product-4.jpg";
+import product1 from "@/assets/product-5.png";
+import product2 from "@/assets/product-6.png";
 
 const mockProducts = [
   {
     id: 1,
-    name: "RELAXED FIT FLOWING SHIRT",
+    name: "Relaxed Fit Flowing Shirt",
     price: 13.00,
     image: product1,
   },
   {
     id: 2,
-    name: "WASHED DENIM OVERALLS",
+    name: "Washed Denim Overalls",
     price: 10.00,
     image: product2,
   },
   {
     id: 3,
-    name: "CLASSIC CARDIGAN SWEATER",
+    name: "Classic Cardigan Sweater",
     price: 15.00,
-    image: product3,
+    image: product1,
   },
   {
     id: 4,
-    name: "PREMIUM POLO SHIRT",
+    name: "Premium Polo Shirt",
     price: 12.00,
-    image: product4,
+    image: product2,
   },
   {
     id: 5,
-    name: "RELAXED FIT FLOWING SHIRT",
+    name: "Relaxed Fit Flowing Shirt",
     price: 13.00,
     image: product1,
   },
   {
     id: 6,
-    name: "WASHED DENIM OVERALLS",
+    name: "Washed Denim Overalls",
     price: 10.00,
     image: product2,
   },
   {
     id: 7,
-    name: "CLASSIC CARDIGAN SWEATER",
+    name: "Classic Cardigan Sweater",
     price: 15.00,
-    image: product3,
+    image: product1,
   },
   {
     id: 8,
-    name: "PREMIUM POLO SHIRT",
+    name: "Premium Polo Shirt",
     price: 12.00,
-    image: product4,
+    image: product2,
   },
   {
     id: 9,
-    name: "RELAXED FIT FLOWING SHIRT",
+    name: "Relaxed Fit Flowing Shirt",
     price: 13.00,
     image: product1,
   },
   {
     id: 10,
-    name: "WASHED DENIM OVERALLS",
+    name: "Washed Denim Overalls",
     price: 10.00,
     image: product2,
   },
