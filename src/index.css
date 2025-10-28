@@ -47,6 +47,7 @@
     --price: 120 40% 25%;
     --success: 120 60% 35%;
     --warning: 45 90% 50%;
+    --category-inactive: 225 14% 96%;
     
     /* Spacing & Layout */
     --radius: 0.75rem;

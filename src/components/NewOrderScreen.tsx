@@ -69,7 +69,7 @@ export const NewOrderScreen = () => {
       
       <div className="flex-1 flex flex-col">
         {/* Category Filters */}
-        <div className="px-[6px] py-2 space-y-2 border-b border-border">
+        <div className="px-[6px] py-2 space-y-2">
           {/* Main Categories with View Toggle and Dropdowns */}
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {/* View Toggle Icons */}
