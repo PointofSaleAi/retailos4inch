@@ -20,14 +20,13 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
   };
 
   return (
-    <div className="h-full flex flex-col justify-center px-6 py-8 bg-background animate-fade-in">
+    <div className="h-full flex flex-col justify-center items-center p-6 bg-background animate-fade-in">
       <div className="flex flex-col items-center mb-8">
-        <RetailLogo className="mb-2" />
-        <p className="text-subtitle">Point of Purchase</p>
+        <RetailLogo />
       </div>
       
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-2 w-[186px]">
+        <div className="space-y-2">
           <div className="space-y-1">
             <Label htmlFor="email" className="text-foreground text-[8px] font-normal">
               Email Address
@@ -38,7 +37,7 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
               placeholder="Enter You Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-[28px] w-[186px] pr-3 text-xs"
+              className="h-[28px] w-full pr-3 text-xs"
               required
             />
           </div>
@@ -47,7 +46,7 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
             <Label htmlFor="password" className="text-foreground text-[8px] font-normal">
               Password
             </Label>
-            <div className="relative w-[186px]">
+            <div className="relative w-full">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -68,7 +67,7 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
           </div>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-2 mt-2">
           <Button
             type="submit"
             variant="retail"
@@ -100,7 +99,7 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
       </form>
       
       <div className="mt-auto pt-8 text-center">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[10px] text-muted-foreground">
           Version 5.0.1.501 FL 3.27.4<br />
           BD 30.7.25 Staging
         </p>
