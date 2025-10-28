@@ -72,7 +72,7 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
             type="submit"
             variant="retail"
             size="retail-full"
-            className="mt-2"
+            className="mt-2 h-[28px]"
           >
             SIGN IN
           </Button>
@@ -80,13 +80,13 @@ export const LoginScreen = ({ onLogin }: LoginScreenProps) => {
           <div className="text-center">
             <button
               type="button"
-              className="text-sm text-foreground font-medium hover:underline"
+              className="text-[10px] text-foreground font-medium hover:underline"
             >
               Forgot Password?
             </button>
           </div>
           
-          <div className="text-center text-sm">
+          <div className="text-center text-[10px]">
             <span className="text-muted-foreground">Haven't registered yet? </span>
             <button
               type="button"
