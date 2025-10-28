@@ -21,18 +21,18 @@ const NavItem = ({
 }) => (
   <button
     onClick={onClick}
-    className={`flex flex-col items-center justify-center py-1 px-1 transition-colors ${
+    className={`flex flex-col items-center justify-center py-0.5 px-1 transition-colors ${
       isActive ? 'text-foreground' : 'text-muted-foreground'
     }`}
   >
-    <img src={icon} alt={label} className="w-4 h-4 mb-1" />
-    <span className="text-[7px] font-medium">{label}</span>
+    <img src={icon} alt={label} className="w-4 h-4 mb-0.5" />
+    <span className="text-[6px] font-medium">{label}</span>
   </button>
 );
 
 export const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => {
   return (
-    <nav className="border-t border-border bg-surface px-[6px] py-2">
+    <nav className="border-t border-border bg-surface px-[6px] py-1">
       <div className="grid grid-cols-4 gap-2">
         <NavItem
           icon={iconNewOrder}
