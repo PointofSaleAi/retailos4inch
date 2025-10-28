@@ -1,25 +1,29 @@
-import { Menu, Heart, Search, Maximize2, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import iconMenu from "@/assets/icon-menu.png";
+import iconHeart from "@/assets/icon-heart.png";
+import iconSearch from "@/assets/icon-search.png";
+import iconMaximize from "@/assets/icon-maximize.png";
+import iconMore from "@/assets/icon-more.png";
 
 export const TopNavigation = () => {
   return (
     <nav className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface">
       <Button variant="ghost" size="icon" className="h-8 w-8">
-        <Menu size={20} />
+        <img src={iconMenu} alt="Menu" className="w-5 h-5" />
       </Button>
       
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Heart size={20} />
+          <img src={iconHeart} alt="Favorites" className="w-5 h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Search size={20} />
+          <img src={iconSearch} alt="Search" className="w-5 h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Maximize2 size={20} />
+          <img src={iconMaximize} alt="Maximize" className="w-5 h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
-          <MoreHorizontal size={20} />
+          <img src={iconMore} alt="More" className="w-5 h-5" />
         </Button>
       </div>
     </nav>
