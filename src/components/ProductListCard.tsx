@@ -26,25 +26,12 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   };
 
   return (
-    <div className="bg-surface rounded-lg overflow-hidden border border-border w-full h-[60px] flex items-center px-2 gap-2">
-      <div className="relative w-[50px] h-[50px] bg-muted flex-shrink-0 rounded">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover"
-        />
-        {quantity > 0 && (
-          <div className="absolute top-1 left-1 bg-primary text-primary-foreground rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold">
-            {quantity}
-          </div>
-        )}
-      </div>
-      
-      <div className="flex-1 flex flex-col justify-center min-w-0">
-        <h3 className="text-[10px] font-semibold leading-tight line-clamp-1">
+    <div className="bg-surface rounded-lg overflow-hidden border border-border w-full h-[35px] flex items-center px-3 gap-3">
+      <div className="flex-1 flex items-center justify-between min-w-0">
+        <h3 className="text-[11px] font-medium leading-tight line-clamp-1">
           {product.name}
         </h3>
-        <span className="text-[12px] font-bold text-price">
+        <span className="text-[12px] font-bold text-price mx-3">
           ${product.price.toFixed(2)}
         </span>
       </div>

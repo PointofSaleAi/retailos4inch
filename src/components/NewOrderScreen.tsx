@@ -6,6 +6,8 @@ import { ProductListCard } from "./ProductListCard";
 import { ChevronDown } from "lucide-react";
 import iconGrid from "@/assets/icon-grid.png";
 import iconList from "@/assets/icon-list.png";
+import iconGridWhite from "@/assets/icon-grid-white.png";
+import iconListWhite from "@/assets/icon-list-white.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -117,7 +119,7 @@ export const NewOrderScreen = () => {
                 className={`h-6 w-6 rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                 onClick={() => setViewMode("grid")}
               >
-                <img src={iconGrid} alt="Grid view" className="w-4 h-4" />
+                <img src={iconGridWhite} alt="Grid view" className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
@@ -125,7 +127,7 @@ export const NewOrderScreen = () => {
                 className={`h-6 w-6 rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`}
                 onClick={() => setViewMode("list")}
               >
-                <img src={iconList} alt="List view" className="w-4 h-4" />
+                <img src={iconListWhite} alt="List view" className="w-4 h-4" />
               </Button>
             </div>
             
