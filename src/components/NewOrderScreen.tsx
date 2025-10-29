@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { TopNavigation } from "./TopNavigation";
 import { ProductCard } from "./ProductCard";
@@ -8,6 +8,7 @@ import iconGrid from "@/assets/icon-grid.png";
 import iconList from "@/assets/icon-list.png";
 import iconGridWhite from "@/assets/icon-grid-white.png";
 import iconListWhite from "@/assets/icon-list-white.png";
+import iconFilterMenu from "@/assets/icon-filter-menu.png";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 // Import product images
@@ -75,6 +76,26 @@ export const NewOrderScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("Men");
   const [selectedSubCategory, setSelectedSubCategory] = useState("Top Wear");
   const [cart, setCart] = useState<Record<number, number>>({});
+  const [showFilters, setShowFilters] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollContainerRef.current) {
+        const scrollLeft = scrollContainerRef.current.scrollLeft;
+        if (scrollLeft > 10) {
+          setShowFilters(false);
+        }
+      }
+    };
+
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   const handleAddToCart = (productId: number, quantity: number) => {
     setCart(prev => ({
       ...prev,
@@ -88,46 +109,61 @@ export const NewOrderScreen = () => {
         {/* Category Filters */}
         <div className="px-[6px] pt-2 space-y-2 flex-shrink-0">
           {/* Main Categories with View Toggle and Dropdowns */}
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-            {/* View Toggle Icons */}
-            <div className="flex items-center gap-1 border border-border rounded-full p-1">
-              <Button variant="ghost" size="icon" className={`h-6 w-6 rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("grid")}>
-                <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-4 h-4" />
+          <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+            {!showFilters && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-8 w-8 flex-shrink-0"
+                onClick={() => setShowFilters(true)}
+              >
+                <img src={iconFilterMenu} alt="Menu" className="w-5 h-5" />
               </Button>
-              <Button variant="ghost" size="icon" className={`h-6 w-6 rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("list")}>
-                <img src={viewMode === "list" ? iconListWhite : iconList} alt="List view" className="w-4 h-4" />
-              </Button>
-            </div>
+            )}
             
-            {/* Product Type Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="retail-compact" className="flex items-center gap-1">
-                  {selectedProductType}
-                  <ChevronDown size={12} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-surface">
-                {productTypes.map(type => <DropdownMenuItem key={type} onClick={() => setSelectedProductType(type)} className="text-[10px]">
-                    {type}
-                  </DropdownMenuItem>)}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            {/* Menu Category Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="retail-compact" className="flex items-center gap-1">
-                  {selectedMenuCategory}
-                  <ChevronDown size={12} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-surface">
-                {menuCategories.map(category => <DropdownMenuItem key={category} onClick={() => setSelectedMenuCategory(category)} className="text-[10px]">
-                    {category}
-                  </DropdownMenuItem>)}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {showFilters && (
+              <>
+                {/* View Toggle Icons */}
+                <div className="flex items-center gap-1 border border-border rounded-full p-1 flex-shrink-0">
+                  <Button variant="ghost" size="icon" className={`h-6 w-6 rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("grid")}>
+                    <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className={`h-6 w-6 rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("list")}>
+                    <img src={viewMode === "list" ? iconListWhite : iconList} alt="List view" className="w-4 h-4" />
+                  </Button>
+                </div>
+                
+                {/* Product Type Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="retail-compact" className="flex items-center gap-1 flex-shrink-0">
+                      {selectedProductType}
+                      <ChevronDown size={12} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-surface">
+                    {productTypes.map(type => <DropdownMenuItem key={type} onClick={() => setSelectedProductType(type)} className="text-[10px]">
+                        {type}
+                      </DropdownMenuItem>)}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
+                {/* Menu Category Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="retail-compact" className="flex items-center gap-1 flex-shrink-0">
+                      {selectedMenuCategory}
+                      <ChevronDown size={12} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-surface">
+                    {menuCategories.map(category => <DropdownMenuItem key={category} onClick={() => setSelectedMenuCategory(category)} className="text-[10px]">
+                        {category}
+                      </DropdownMenuItem>)}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            )}
             
             {/* Slidable Categories */}
             {categories.map(category => <Button key={category} variant={selectedCategory === category ? "category" : "category-inactive"} size="retail-compact" onClick={() => setSelectedCategory(category)}>
@@ -136,11 +172,13 @@ export const NewOrderScreen = () => {
           </div>
           
           {/* Sub Categories */}
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-            {subCategories.map(subCategory => <Button key={subCategory} variant={selectedSubCategory === subCategory ? "category" : "category-inactive"} size="retail-compact" onClick={() => setSelectedSubCategory(subCategory)}>
-                {subCategory}
-              </Button>)}
-          </div>
+          {showFilters && (
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+              {subCategories.map(subCategory => <Button key={subCategory} variant={selectedSubCategory === subCategory ? "category" : "category-inactive"} size="retail-compact" onClick={() => setSelectedSubCategory(subCategory)}>
+                  {subCategory}
+                </Button>)}
+            </div>
+          )}
         </div>
         
         {/* Product Grid/List */}
