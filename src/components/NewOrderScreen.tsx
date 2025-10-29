@@ -172,13 +172,11 @@ export const NewOrderScreen = () => {
           </div>
           
           {/* Sub Categories */}
-          {showFilters && (
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-              {subCategories.map(subCategory => <Button key={subCategory} variant={selectedSubCategory === subCategory ? "category" : "category-inactive"} size="retail-compact" onClick={() => setSelectedSubCategory(subCategory)}>
-                  {subCategory}
-                </Button>)}
-            </div>
-          )}
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+            {subCategories.map(subCategory => <Button key={subCategory} variant={selectedSubCategory === subCategory ? "category" : "category-inactive"} size="retail-compact" onClick={() => setSelectedSubCategory(subCategory)}>
+                {subCategory}
+              </Button>)}
+          </div>
         </div>
         
         {/* Product Grid/List */}
