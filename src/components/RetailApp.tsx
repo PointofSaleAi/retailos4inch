@@ -4,6 +4,7 @@ import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
 import { CustomerScreen } from "./CustomerScreen";
+import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
 
 export const RetailApp = () => {
@@ -27,11 +28,7 @@ export const RetailApp = () => {
       case "customer":
         return <CustomerScreen />;
       case "settings":
-        return (
-          <div className="flex-1 flex items-center justify-center p-4">
-            <p className="text-muted-foreground text-center">Settings screen coming soon</p>
-          </div>
-        );
+        return <SettingsScreen />;
       default:
         return <NewOrderScreen />;
     }
