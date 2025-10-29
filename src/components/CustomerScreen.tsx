@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Mic, ArrowUpDown } from "lucide-react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import iconArchive from "@/assets/icon-archive.png";
 import iconPlus from "@/assets/icon-plus.png";
+import iconSearch from "@/assets/icon-search.png";
+import iconMic from "@/assets/icon-mic.png";
+import iconFilter from "@/assets/icon-filter.png";
 
 interface Customer {
   id: string;
@@ -82,30 +84,32 @@ export const CustomerScreen = () => {
 
       {/* Search Bar */}
       <div className="flex-shrink-0 px-3 pb-2">
-        <div className="relative">
-          <Input
-            type="text"
-            placeholder="Search customer name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-20 h-11 bg-surface border-border"
-          />
-          <div className="absolute left-3 top-1/2 -translate-y-1/2">
-            <div className="w-5 h-5 text-muted-foreground flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="1.5"/>
-                <path d="M13.5 13.5L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Input
+              type="text"
+              placeholder="Search customer name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 pr-3 border-0"
+              style={{ 
+                backgroundColor: '#F1F2F5', 
+                height: '26px', 
+                width: '163px',
+                fontSize: '11px'
+              }}
+            />
+            <div className="absolute left-2 top-1/2 -translate-y-1/2">
+              <img src={iconSearch} alt="" className="w-3.5 h-3.5" />
             </div>
           </div>
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            <button className="w-5 h-5 flex items-center justify-center">
-              <Mic className="w-4 h-4 text-muted-foreground" />
-            </button>
-            <button className="w-5 h-5 flex items-center justify-center">
-              <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-            </button>
-          </div>
+          
+          <button className="w-6 h-6 flex items-center justify-center">
+            <img src={iconMic} alt="" className="w-3.5 h-3.5" />
+          </button>
+          <button className="w-6 h-6 flex items-center justify-center">
+            <img src={iconFilter} alt="" className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 
