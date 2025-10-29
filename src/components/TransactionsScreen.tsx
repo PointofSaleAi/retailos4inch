@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Search, Calendar, Menu, FileText, Grid3x3, Tag, Camera } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering";
 type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled";
 interface Transaction {
@@ -102,7 +101,7 @@ export const TransactionsScreen = () => {
       </div>
 
       {/* Transaction List */}
-      <ScrollArea className="flex-1 scrollbar-hide">
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="px-3 py-2 space-y-2 flex flex-col items-center">
           {filteredTransactions.map(transaction => {
           const IconComponent = iconMap[transaction.icon];
@@ -129,8 +128,8 @@ export const TransactionsScreen = () => {
                   </div>
                 </div>
               </div>;
-        })}
+         })}
         </div>
-      </ScrollArea>
+      </div>
     </div>;
 };
