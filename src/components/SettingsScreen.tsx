@@ -108,7 +108,7 @@ export const SettingsScreen = () => {
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div style={{ width: '186px', margin: '0 auto' }}>
           {/* User Profile Card */}
-          <div className="bg-white rounded-lg p-3 mb-3" style={{ width: '186px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <div className="bg-white p-3 mb-3" style={{ width: '186px', borderRadius: '10px' }}>
             <div className="flex items-center gap-2">
               <Avatar style={{ width: '30px', height: '30px' }} className="flex-shrink-0">
                 <AvatarImage src={customer1} alt="Johnson Francisco" />
@@ -138,11 +138,12 @@ export const SettingsScreen = () => {
                     style={{ height: '28px' }}
                   >
                     <div 
-                      className="rounded-md flex items-center justify-center flex-shrink-0"
+                      className="flex items-center justify-center flex-shrink-0"
                       style={{ 
                         backgroundColor: item.iconBg,
                         width: '16px',
-                        height: '16px'
+                        height: '16px',
+                        borderRadius: '3px'
                       }}
                     >
                       <img src={item.icon} alt="" style={{ width: '16px', height: '16px' }} />
