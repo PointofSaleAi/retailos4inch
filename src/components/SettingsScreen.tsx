@@ -55,17 +55,16 @@ const menuItems: MenuItem[] = [
     iconBg: "#A855F7"
   },
   {
-    id: "customer-support",
-    label: "Customer Support",
-    icon: iconCustomerSupport,
-    iconBg: "#EF4444",
-    spacingAfter: true
-  },
-  {
     id: "switch-user",
     label: "Switch User",
     icon: iconSwitchUser,
     iconBg: "#8E8E93"
+  },
+  {
+    id: "customer-support",
+    label: "Customer Support",
+    icon: iconCustomerSupport,
+    iconBg: "#EF4444"
   }
 ];
 
@@ -141,12 +140,12 @@ export const SettingsScreen = () => {
                       className="flex items-center justify-center flex-shrink-0"
                       style={{ 
                         backgroundColor: item.iconBg,
-                        width: '16px',
-                        height: '16px',
-                        borderRadius: '3px'
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: item.id === 'general' ? '10px' : '3px'
                       }}
                     >
-                      <img src={item.icon} alt="" style={{ width: '16px', height: '16px' }} />
+                      <img src={item.icon} alt="" style={{ width: '20px', height: '20px' }} />
                     </div>
                     
                     <span className="flex-1 text-left font-medium text-foreground" style={{ fontSize: '10px' }}>
