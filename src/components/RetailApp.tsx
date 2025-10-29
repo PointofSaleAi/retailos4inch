@@ -3,6 +3,7 @@ import { RetailDevice } from "./RetailDevice";
 import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
+import { CustomerScreen } from "./CustomerScreen";
 import { BottomNavigation } from "./BottomNavigation";
 
 export const RetailApp = () => {
@@ -24,11 +25,7 @@ export const RetailApp = () => {
       case "transactions":
         return <TransactionsScreen />;
       case "customer":
-        return (
-          <div className="flex-1 flex items-center justify-center p-4">
-            <p className="text-muted-foreground text-center">Customer screen coming soon</p>
-          </div>
-        );
+        return <CustomerScreen />;
       case "settings":
         return (
           <div className="flex-1 flex items-center justify-center p-4">
