@@ -95,10 +95,10 @@ export const CustomerScreen = () => {
           <div className="relative">
             <Input
               type="text"
-              placeholder="Search customer name"
+              placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 border-0"
+              className="pl-8 pr-8 border-0"
               style={{ 
                 backgroundColor: '#F1F2F5', 
                 height: '26px', 
@@ -109,11 +109,11 @@ export const CustomerScreen = () => {
             <div className="absolute left-2 top-1/2 -translate-y-1/2">
               <img src={iconSearch} alt="" className="w-3.5 h-3.5" />
             </div>
+            <button className="absolute right-2 top-1/2 -translate-y-1/2">
+              <img src={iconMic} alt="" className="w-3.5 h-3.5" />
+            </button>
           </div>
           
-          <button className="w-6 h-6 flex items-center justify-center ml-1">
-            <img src={iconMic} alt="" className="w-3.5 h-3.5" />
-          </button>
           <button className="w-6 h-6 flex items-center justify-center ml-1">
             <img src={iconFilter} alt="" className="w-3.5 h-3.5" />
           </button>
