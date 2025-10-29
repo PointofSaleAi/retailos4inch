@@ -6,6 +6,10 @@ import iconPlus from "@/assets/icon-plus.png";
 import iconSearch from "@/assets/icon-search.png";
 import iconMic from "@/assets/icon-mic.png";
 import iconFilter from "@/assets/icon-filter.png";
+import customer1 from "@/assets/customer-1.png";
+import customer2 from "@/assets/customer-2.png";
+import customer3 from "@/assets/customer-3.png";
+import customer4 from "@/assets/customer-4.png";
 
 interface Customer {
   id: string;
@@ -19,35 +23,37 @@ const mockCustomers: Customer[] = [
     id: "1",
     name: "Alex Venom",
     phone: "+1 (122) 456-7890",
-    avatar: "/placeholder.svg"
+    avatar: customer1
   },
   {
     id: "2",
     name: "Arjun Gerhold",
-    phone: "+1 (122) 456-5456"
+    phone: "+1 (122) 456-5456",
+    avatar: customer2
   },
   {
     id: "3",
     name: "Cleora Hills",
     phone: "+1 (122) 456-8495",
-    avatar: "/placeholder.svg"
+    avatar: customer3
   },
   {
     id: "4",
     name: "Eden Kautzer",
     phone: "+1 (122) 456-9865",
-    avatar: "/placeholder.svg"
+    avatar: customer4
   },
   {
     id: "5",
     name: "Morticia Adams",
-    phone: "+1 (122) 456-1562"
+    phone: "+1 (122) 456-1562",
+    avatar: customer1
   },
   {
     id: "6",
     name: "Simon Bocky",
     phone: "+1 (122) 456-7587",
-    avatar: "/placeholder.svg"
+    avatar: customer2
   }
 ];
 
@@ -115,31 +121,31 @@ export const CustomerScreen = () => {
 
       {/* Customer List */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <div className="px-3 py-2 space-y-2">
+        <div className="space-y-1" style={{ width: '186px', padding: '6px', margin: '0 auto' }}>
           {filteredCustomers.map((customer) => (
             <div
               key={customer.id}
-              className="flex items-center gap-3 py-2"
+              className="flex items-center gap-2"
             >
-              <Avatar className="w-12 h-12 flex-shrink-0">
+              <Avatar className="w-7 h-7 flex-shrink-0">
                 <AvatarImage src={customer.avatar} alt={customer.name} />
-                <AvatarFallback className="bg-muted text-foreground font-medium text-sm">
+                <AvatarFallback className="bg-muted text-foreground font-medium text-xs">
                   {getInitials(customer.name)}
                 </AvatarFallback>
               </Avatar>
               
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-semibold text-foreground truncate">
+                <h3 className="text-xs font-semibold text-foreground truncate">
                   {customer.name}
                 </h3>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-[10px] text-muted-foreground">
                   {customer.phone}
                 </p>
               </div>
 
               <button
-                className="flex-shrink-0 px-5 py-2 rounded-lg text-xs font-medium text-foreground transition-colors"
-                style={{ backgroundColor: '#F1F2F5' }}
+                className="flex-shrink-0 rounded text-[10px] font-medium text-foreground transition-colors"
+                style={{ backgroundColor: '#F1F2F5', width: '40px', height: '18px' }}
               >
                 View
               </button>
