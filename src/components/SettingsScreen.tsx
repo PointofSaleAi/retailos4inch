@@ -2,61 +2,70 @@ import { useState } from "react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
-import { ChevronRight, Settings, Smartphone, CreditCard, Wifi, Monitor, Headphones } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import iconSearch from "@/assets/icon-search.png";
 import iconMic from "@/assets/icon-mic-new.png";
 import customer1 from "@/assets/customer-1.png";
+import iconGeneral from "@/assets/icon-general.png";
+import iconControlCenter from "@/assets/icon-control-center.png";
+import iconPayments from "@/assets/icon-payments.png";
+import iconNetwork from "@/assets/icon-network.png";
+import iconHardware from "@/assets/icon-hardware.png";
+import iconCustomerSupport from "@/assets/icon-customer-support.png";
+import iconSwitchUser from "@/assets/icon-switch-user.png";
 
 interface MenuItem {
   id: string;
   label: string;
-  icon: React.ElementType;
-  iconColor: string;
+  icon: string;
   iconBg: string;
+  spacingAfter?: boolean;
 }
 
 const menuItems: MenuItem[] = [
   {
     id: "general",
     label: "General",
-    icon: Settings,
-    iconColor: "#FFFFFF",
+    icon: iconGeneral,
     iconBg: "#2C2C2E"
   },
   {
     id: "control-center",
     label: "Control Center",
-    icon: Smartphone,
-    iconColor: "#FFFFFF",
+    icon: iconControlCenter,
     iconBg: "#A855F7"
   },
   {
     id: "payments",
     label: "Payments",
-    icon: CreditCard,
-    iconColor: "#FFFFFF",
-    iconBg: "#8B5CF6"
+    icon: iconPayments,
+    iconBg: "#8B5CF6",
+    spacingAfter: true
   },
   {
     id: "network",
     label: "Network",
-    icon: Wifi,
-    iconColor: "#FFFFFF",
+    icon: iconNetwork,
     iconBg: "#3B82F6"
   },
   {
     id: "hardware",
     label: "Hardware",
-    icon: Monitor,
-    iconColor: "#FFFFFF",
+    icon: iconHardware,
     iconBg: "#A855F7"
   },
   {
     id: "customer-support",
     label: "Customer Support",
-    icon: Headphones,
-    iconColor: "#FFFFFF",
-    iconBg: "#EF4444"
+    icon: iconCustomerSupport,
+    iconBg: "#EF4444",
+    spacingAfter: true
+  },
+  {
+    id: "switch-user",
+    label: "Switch User",
+    icon: iconSwitchUser,
+    iconBg: "#8E8E93"
   }
 ];
 
@@ -122,7 +131,6 @@ export const SettingsScreen = () => {
           {/* Menu Items */}
           <div className="bg-white overflow-hidden" style={{ width: '186px', borderRadius: '0 0 8px 8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
             {menuItems.map((item, index) => {
-              const Icon = item.icon;
               return (
                 <div key={item.id}>
                   <button
@@ -130,10 +138,14 @@ export const SettingsScreen = () => {
                     style={{ height: '28px' }}
                   >
                     <div 
-                      className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: item.iconBg }}
+                      className="rounded-md flex items-center justify-center flex-shrink-0"
+                      style={{ 
+                        backgroundColor: item.iconBg,
+                        width: '16px',
+                        height: '16px'
+                      }}
                     >
-                      <Icon size={14} color={item.iconColor} strokeWidth={2.5} />
+                      <img src={item.icon} alt="" style={{ width: '16px', height: '16px' }} />
                     </div>
                     
                     <span className="flex-1 text-left font-medium text-foreground" style={{ fontSize: '10px' }}>
@@ -145,6 +157,7 @@ export const SettingsScreen = () => {
                   {index < menuItems.length - 1 && (
                     <Separator className="mx-3" />
                   )}
+                  {item.spacingAfter && <div style={{ height: '8px' }} />}
                 </div>
               );
             })}
