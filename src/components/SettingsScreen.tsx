@@ -63,14 +63,14 @@ export const SettingsScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className="h-full flex flex-col" style={{ backgroundColor: '#F3F2F8', padding: '6px' }}>
       {/* Header */}
-      <div className="flex-shrink-0 px-3 py-2.5">
+      <div className="flex-shrink-0 py-2.5" style={{ width: '186px', margin: '0 auto' }}>
         <h1 className="text-base font-semibold text-foreground">Settings</h1>
       </div>
 
       {/* Search Bar */}
-      <div className="flex-shrink-0 px-3 pb-3">
+      <div className="flex-shrink-0 pb-3" style={{ width: '186px', margin: '0 auto' }}>
         <div className="relative">
           <Input
             type="text"
@@ -108,7 +108,7 @@ export const SettingsScreen = () => {
               </Avatar>
               
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-semibold text-foreground">
+                <h3 className="font-semibold text-foreground" style={{ fontSize: '12px' }}>
                   Johnson Francisco
                 </h3>
                 <p className="text-[10px] text-muted-foreground">
