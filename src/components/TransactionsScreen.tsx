@@ -102,8 +102,8 @@ export const TransactionsScreen = () => {
       </div>
 
       {/* Transaction List */}
-      <ScrollArea className="flex-1">
-        <div className="px-3 py-2 space-y-2">
+      <ScrollArea className="flex-1 scrollbar-hide">
+        <div className="px-3 py-2 space-y-2 flex flex-col items-center">
           {filteredTransactions.map(transaction => {
           const IconComponent = iconMap[transaction.icon];
           return <div key={transaction.id} className="flex items-center gap-2 p-2 bg-surface rounded-lg border border-border" style={{ width: '186px' }}>
