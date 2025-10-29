@@ -39,8 +39,7 @@ const menuItems: MenuItem[] = [
     id: "payments",
     label: "Payments",
     icon: iconPayments,
-    iconBg: "#8B5CF6",
-    spacingAfter: true
+    iconBg: "#8B5CF6"
   },
   {
     id: "network",
@@ -55,16 +54,16 @@ const menuItems: MenuItem[] = [
     iconBg: "#A855F7"
   },
   {
-    id: "switch-user",
-    label: "Switch User",
-    icon: iconSwitchUser,
-    iconBg: "#8E8E93"
-  },
-  {
     id: "customer-support",
     label: "Customer Support",
     icon: iconCustomerSupport,
     iconBg: "#EF4444"
+  },
+  {
+    id: "switch-user",
+    label: "Switch User",
+    icon: iconSwitchUser,
+    iconBg: "#8E8E93"
   }
 ];
 
@@ -142,7 +141,7 @@ export const SettingsScreen = () => {
                         backgroundColor: item.iconBg,
                         width: '20px',
                         height: '20px',
-                        borderRadius: item.id === 'general' ? '10px' : '3px'
+                        borderRadius: '3px'
                       }}
                     >
                       <img src={item.icon} alt="" style={{ width: '20px', height: '20px' }} />
