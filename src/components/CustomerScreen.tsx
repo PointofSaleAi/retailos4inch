@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Archive, Plus, Mic, ArrowUpDown } from "lucide-react";
+import { Mic, ArrowUpDown } from "lucide-react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import iconArchive from "@/assets/icon-archive.png";
+import iconPlus from "@/assets/icon-plus.png";
 
 interface Customer {
   id: string;
@@ -66,20 +68,20 @@ export const CustomerScreen = () => {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-4 pt-4 pb-3">
-        <h1 className="text-lg font-semibold text-foreground">Customers</h1>
-        <div className="flex items-center gap-3">
-          <button className="w-8 h-8 flex items-center justify-center">
-            <Archive className="w-5 h-5 text-foreground" />
+      <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
+        <h1 className="text-base font-semibold text-foreground">Customers</h1>
+        <div className="flex items-center gap-2">
+          <button className="p-1">
+            <img src={iconArchive} alt="" className="w-4 h-4" />
           </button>
-          <button className="w-8 h-8 flex items-center justify-center">
-            <Plus className="w-5 h-5 text-foreground" />
+          <button className="p-1">
+            <img src={iconPlus} alt="" className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Search Bar */}
-      <div className="flex-shrink-0 px-4 pb-3">
+      <div className="flex-shrink-0 px-3 pb-2">
         <div className="relative">
           <Input
             type="text"
@@ -109,7 +111,7 @@ export const CustomerScreen = () => {
 
       {/* Customer List */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <div className="px-4 space-y-2">
+        <div className="px-3 py-2 space-y-2">
           {filteredCustomers.map((customer) => (
             <div
               key={customer.id}
