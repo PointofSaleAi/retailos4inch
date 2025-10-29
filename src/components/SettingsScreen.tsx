@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Separator } from "./ui/separator";
 import { ChevronRight, Settings, Smartphone, CreditCard, Wifi, Monitor, Headphones } from "lucide-react";
 import iconSearch from "@/assets/icon-search.png";
 import iconMic from "@/assets/icon-mic-new.png";
@@ -119,28 +120,32 @@ export const SettingsScreen = () => {
           </div>
 
           {/* Menu Items */}
-          <div className="space-y-2">
-            {menuItems.map((item) => {
+          <div className="bg-white overflow-hidden" style={{ width: '186px', borderRadius: '0 0 8px 8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+            {menuItems.map((item, index) => {
               const Icon = item.icon;
               return (
-                <button
-                  key={item.id}
-                  className="bg-white rounded-lg p-3 flex items-center gap-2 transition-all hover:shadow-sm"
-                  style={{ width: '186px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
-                >
-                  <div 
-                    className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: item.iconBg }}
+                <div key={item.id}>
+                  <button
+                    className="w-full flex items-center gap-2 px-3 transition-all hover:bg-gray-50"
+                    style={{ height: '28px' }}
                   >
-                    <Icon size={14} color={item.iconColor} strokeWidth={2.5} />
-                  </div>
-                  
-                  <span className="flex-1 text-left text-xs font-medium text-foreground">
-                    {item.label}
-                  </span>
-                  
-                  <ChevronRight size={14} className="text-muted-foreground flex-shrink-0" />
-                </button>
+                    <div 
+                      className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: item.iconBg }}
+                    >
+                      <Icon size={14} color={item.iconColor} strokeWidth={2.5} />
+                    </div>
+                    
+                    <span className="flex-1 text-left font-medium text-foreground" style={{ fontSize: '10px' }}>
+                      {item.label}
+                    </span>
+                    
+                    <ChevronRight size={14} className="text-muted-foreground flex-shrink-0" />
+                  </button>
+                  {index < menuItems.length - 1 && (
+                    <Separator className="mx-3" />
+                  )}
+                </div>
               );
             })}
           </div>
