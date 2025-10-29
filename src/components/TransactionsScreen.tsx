@@ -106,24 +106,24 @@ export const TransactionsScreen = () => {
         <div className="px-3 py-2 space-y-2">
           {filteredTransactions.map(transaction => {
           const IconComponent = iconMap[transaction.icon];
-          return <div key={transaction.id} className="flex items-center gap-2.5 p-2.5 bg-surface rounded-lg border border-border">
+          return <div key={transaction.id} className="flex items-center gap-2.5 p-2.5 bg-surface rounded-lg border border-border w-full">
                 <div className="flex-shrink-0 w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
                   <IconComponent className="w-4 h-4 text-foreground" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 mb-0.5">
-                    <p className="text-[11px] font-medium text-foreground truncate">
+                <div className="flex-1 min-w-0 overflow-hidden">
+                  <div className="flex items-center justify-between gap-2 mb-0.5">
+                    <p className="text-[11px] font-medium text-foreground truncate flex-1">
                       {transaction.product}...+{transaction.quantity}
                     </p>
-                    <p className="text-[11px] font-semibold text-foreground whitespace-nowrap">
+                    <p className="text-[11px] font-semibold text-foreground whitespace-nowrap flex-shrink-0">
                       ${transaction.amount.toFixed(2)}
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-[9px] text-muted-foreground">
+                    <p className="text-[9px] text-muted-foreground whitespace-nowrap">
                       {transaction.date} | {transaction.time}
                     </p>
-                    <p className={`text-[9px] font-semibold ${statusColors[transaction.status]}`}>
+                    <p className={`text-[9px] font-semibold whitespace-nowrap ${statusColors[transaction.status]}`}>
                       {transaction.status}
                     </p>
                   </div>
