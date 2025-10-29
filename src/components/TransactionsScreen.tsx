@@ -106,9 +106,9 @@ export const TransactionsScreen = () => {
         <div className="px-3 py-2 space-y-2">
           {filteredTransactions.map(transaction => {
           const IconComponent = iconMap[transaction.icon];
-          return <div key={transaction.id} className="flex items-center gap-2.5 p-2.5 bg-surface rounded-lg border border-border w-full">
-                <div className="flex-shrink-0 w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
-                  <IconComponent className="w-4 h-4 text-foreground" />
+          return <div key={transaction.id} className="flex items-center gap-2 p-2 bg-surface rounded-lg border border-border" style={{ width: '186px' }}>
+                <div className="flex-shrink-0 w-7 h-7 bg-muted rounded-lg flex items-center justify-center">
+                  <IconComponent className="w-3 h-3 text-foreground" />
                 </div>
                 <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-center justify-between gap-2 mb-0.5">
