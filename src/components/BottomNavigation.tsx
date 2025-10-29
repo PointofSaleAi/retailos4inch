@@ -26,7 +26,7 @@ const NavItem = ({
     }`}
   >
     <img src={icon} alt={label} className="w-4 h-4 mb-0.5" />
-    <span className="text-[9px] font-medium">{label}</span>
+    <span className="text-[6px] font-medium">{label}</span>
   </button>
 );
 
