@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { Search, Calendar, Menu, FileText, Grid3x3, Tag, Camera } from "lucide-react";
+import { Search, Calendar, Menu } from "lucide-react";
+import iconDocument from "@/assets/icon-document.png";
+import iconGrid from "@/assets/icon-grid-tx.png";
+import iconTag from "@/assets/icon-tag-tx.png";
+import iconCamera from "@/assets/icon-camera-tx.png";
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering";
 type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled";
 interface Transaction {
@@ -59,10 +63,10 @@ const mockTransactions: Transaction[] = [{
   status: "Failed"
 }];
 const iconMap = {
-  document: FileText,
-  grid: Grid3x3,
-  tag: Tag,
-  camera: Camera
+  document: iconDocument,
+  grid: iconGrid,
+  tag: iconTag,
+  camera: iconCamera
 };
 const statusColors = {
   Paid: "text-success",
@@ -94,7 +98,7 @@ export const TransactionsScreen = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex-shrink-0 flex gap-1.5 overflow-x-auto px-[6px] py-[6px]">
+      <div className="flex-shrink-0 flex gap-1.5 overflow-x-auto scrollbar-hide px-[6px] py-[6px]">
         {(["All", "Ordering", "Refunded", "Paid", "Payment Progress", "Completed", "Cancelled"] as FilterType[]).map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${activeFilter === filter ? "bg-foreground text-background" : "text-muted-foreground"}`} style={activeFilter !== filter ? { backgroundColor: '#F1F2F5' } : undefined}>
             {filter}
           </button>)}
@@ -104,10 +108,10 @@ export const TransactionsScreen = () => {
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="px-3 py-2 space-y-2 flex flex-col items-center">
           {filteredTransactions.map(transaction => {
-          const IconComponent = iconMap[transaction.icon];
+          const iconSrc = iconMap[transaction.icon];
           return <div key={transaction.id} className="flex items-center gap-2 p-2 bg-surface rounded-lg border border-border" style={{ width: '186px' }}>
-                <div className="flex-shrink-0 w-7 h-7 bg-muted rounded-lg flex items-center justify-center">
-                  <IconComponent className="w-3 h-3 text-foreground" />
+                <div className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#F1F2F5' }}>
+                  <img src={iconSrc} alt="" className="w-3 h-3" />
                 </div>
                 <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-center justify-between gap-2 mb-0.5">
