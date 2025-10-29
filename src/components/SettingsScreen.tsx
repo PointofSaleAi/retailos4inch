@@ -3,7 +3,7 @@ import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { ChevronRight, Settings, Smartphone, CreditCard, Wifi, Monitor, Headphones } from "lucide-react";
 import iconSearch from "@/assets/icon-search.png";
-import iconMic from "@/assets/icon-mic.png";
+import iconMic from "@/assets/icon-mic-new.png";
 import customer1 from "@/assets/customer-1.png";
 
 interface MenuItem {
@@ -100,7 +100,7 @@ export const SettingsScreen = () => {
           {/* User Profile Card */}
           <div className="bg-white rounded-lg p-3 mb-3" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
             <div className="flex items-center gap-2">
-              <Avatar className="w-12 h-12 flex-shrink-0">
+              <Avatar style={{ width: '30px', height: '30px' }} className="flex-shrink-0">
                 <AvatarImage src={customer1} alt="Johnson Francisco" />
                 <AvatarFallback className="bg-muted text-foreground font-medium text-sm">
                   JF
