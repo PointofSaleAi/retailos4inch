@@ -79,7 +79,7 @@ export const SettingsScreen = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-8 pr-8 border-0"
             style={{ 
-              backgroundColor: '#F1F2F5', 
+              backgroundColor: '#EFEFF0', 
               height: '26px', 
               width: '100%',
               fontSize: '11px'
@@ -96,9 +96,9 @@ export const SettingsScreen = () => {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <div style={{ width: '186px', padding: '6px', margin: '0 auto' }}>
+        <div style={{ width: '186px', margin: '0 auto' }}>
           {/* User Profile Card */}
-          <div className="bg-white rounded-lg p-3 mb-3" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+          <div className="bg-white rounded-lg p-3 mb-3" style={{ width: '186px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
             <div className="flex items-center gap-2">
               <Avatar style={{ width: '30px', height: '30px' }} className="flex-shrink-0">
                 <AvatarImage src={customer1} alt="Johnson Francisco" />
@@ -125,8 +125,8 @@ export const SettingsScreen = () => {
               return (
                 <button
                   key={item.id}
-                  className="w-full bg-white rounded-lg p-3 flex items-center gap-2 transition-all hover:shadow-sm"
-                  style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
+                  className="bg-white rounded-lg p-3 flex items-center gap-2 transition-all hover:shadow-sm"
+                  style={{ width: '186px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
                 >
                   <div 
                     className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
