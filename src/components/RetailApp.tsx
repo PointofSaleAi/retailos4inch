@@ -6,10 +6,12 @@ import { TransactionsScreen } from "./TransactionsScreen";
 import { CustomerScreen } from "./CustomerScreen";
 import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
+import { CustomPaymentScreen } from "./CustomPaymentScreen";
 
 export const RetailApp = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState("order");
+  const [showCustomScreen, setShowCustomScreen] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -20,9 +22,13 @@ export const RetailApp = () => {
       return <LoginScreen onLogin={handleLogin} />;
     }
 
+    if (showCustomScreen) {
+      return <CustomPaymentScreen onClose={() => setShowCustomScreen(false)} />;
+    }
+
     switch (activeTab) {
       case "order":
-        return <NewOrderScreen />;
+        return <NewOrderScreen onCustomClick={() => setShowCustomScreen(true)} />;
       case "transactions":
         return <TransactionsScreen />;
       case "customer":
@@ -30,7 +36,7 @@ export const RetailApp = () => {
       case "settings":
         return <SettingsScreen />;
       default:
-        return <NewOrderScreen />;
+        return <NewOrderScreen onCustomClick={() => setShowCustomScreen(true)} />;
     }
   };
 

@@ -69,7 +69,12 @@ const productTypes = ["Products", "Services"];
 const menuCategories = ["Apparel", "Beauty Products", "Electric"];
 const categories = ["Men", "Women", "Kids", "Gen Z"];
 const subCategories = ["Top Wear", "Bottom Wear", "Official Merch", "Best Sellers"];
-export const NewOrderScreen = () => {
+
+interface NewOrderScreenProps {
+  onCustomClick?: () => void;
+}
+
+export const NewOrderScreen = ({ onCustomClick }: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedProductType, setSelectedProductType] = useState("Products");
   const [selectedMenuCategory, setSelectedMenuCategory] = useState("Apparel");
@@ -103,7 +108,7 @@ export const NewOrderScreen = () => {
     }));
   };
   return <div className="h-full flex flex-col bg-background animate-fade-in overflow-hidden">
-      <TopNavigation />
+      <TopNavigation onCustomClick={onCustomClick} />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}

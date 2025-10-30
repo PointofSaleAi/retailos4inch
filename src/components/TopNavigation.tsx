@@ -4,12 +4,22 @@ import iconHeart from "@/assets/icon-heart.png";
 import iconSearch from "@/assets/icon-search.png";
 import iconMaximize from "@/assets/icon-maximize.png";
 import iconMore from "@/assets/icon-more.png";
+import iconDocument from "@/assets/icon-document.png";
 
-export const TopNavigation = () => {
+interface TopNavigationProps {
+  onCustomClick?: () => void;
+}
+
+export const TopNavigation = ({ onCustomClick }: TopNavigationProps) => {
   return (
     <nav className="flex items-center justify-between px-[6px] py-2 bg-surface">
-      <Button variant="ghost" size="icon" className="h-8 w-8">
-        <img src={iconMenu} alt="Menu" className="w-5 h-5" />
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="h-8 w-8"
+        onClick={onCustomClick}
+      >
+        <img src={onCustomClick ? iconDocument : iconMenu} alt="Custom" className="w-5 h-5" />
       </Button>
       
       <div className="flex items-center gap-2">
