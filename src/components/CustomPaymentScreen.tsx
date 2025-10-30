@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import iconCustom from "@/assets/icon-custom.png";
-import iconNote from "@/assets/icon-note.png";
+import iconDocument from "@/assets/icon-document.png";
 import iconHeart from "@/assets/icon-heart.png";
 import iconSearch from "@/assets/icon-search.png";
 import iconMaximize from "@/assets/icon-maximize.png";
@@ -45,11 +44,11 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
   const totalAmount = (parseFloat(amount) * quantity).toFixed(2);
 
   return (
-    <div className="h-full flex flex-col bg-background w-[186px] p-1.5">
+    <div className="h-full flex flex-col bg-background">
       {/* Top Navigation */}
       <nav className="flex items-center justify-between px-[6px] py-2 bg-surface">
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onClose}>
-          <img src={iconCustom} alt="Custom" className="w-5 h-5" />
+          <img src={iconDocument} alt="Custom" className="w-5 h-5" />
         </Button>
         
         <div className="flex items-center gap-2">
@@ -86,7 +85,7 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
         <div className="flex items-center gap-2">
           <div className="flex-1 relative">
             <img 
-              src={iconNote} 
+              src={iconDocument} 
               alt="Note" 
               className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40"
             />
