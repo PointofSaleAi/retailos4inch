@@ -46,7 +46,7 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
   const totalAmount = (parseFloat(amount) * quantity).toFixed(2);
 
   return (
-    <div className="h-full flex flex-col bg-background max-w-[186px] mx-auto">
+    <div className="h-full flex flex-col bg-background">
       {/* Top Navigation */}
       <nav className="flex items-center justify-between px-[6px] py-2 bg-surface">
         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onClose}>
@@ -100,17 +100,17 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
 
         {/* Add Note Input with Quantity Controls */}
         <div className="flex items-center gap-2">
-          <div className="w-[115px] relative">
+          <div className="flex-1 relative">
             <img 
               src={iconNote} 
               alt="Note" 
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 opacity-40"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40"
             />
             <Input
               placeholder="Add a note"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="pl-7 bg-surface border-border/50 h-[28px] text-[10px] rounded-lg w-full"
+              className="pl-10 bg-surface border-border/50 h-11 text-sm rounded-xl"
             />
           </div>
           
@@ -118,21 +118,21 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
           <Button
             variant="outline"
             size="icon"
-            className="h-5 w-5 rounded-full border-border/50 flex-shrink-0 p-0"
+            className="h-11 w-11 rounded-full border-border/50 flex-shrink-0"
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
           >
-            <Minus className="w-2.5 h-2.5" />
+            <Minus className="w-3.5 h-3.5" />
           </Button>
           
-          <span className="text-[10px] font-medium w-3 text-center">{quantity}</span>
+          <span className="text-sm font-medium w-5 text-center">{quantity}</span>
           
           <Button
             variant="outline"
             size="icon"
-            className="h-5 w-5 rounded-full border-border/50 flex-shrink-0 p-0"
+            className="h-11 w-11 rounded-full border-border/50 flex-shrink-0"
             onClick={() => setQuantity(quantity + 1)}
           >
-            <Plus className="w-2.5 h-2.5" />
+            <Plus className="w-3.5 h-3.5" />
           </Button>
         </div>
 
