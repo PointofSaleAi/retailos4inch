@@ -4,7 +4,7 @@ import iconHeart from "@/assets/icon-heart.png";
 import iconSearch from "@/assets/icon-search.png";
 import iconMaximize from "@/assets/icon-maximize.png";
 import iconMore from "@/assets/icon-more.png";
-import iconDocument from "@/assets/icon-document.png";
+import iconCustom from "@/assets/icon-custom.png";
 
 interface TopNavigationProps {
   onCustomClick?: () => void;
@@ -19,7 +19,7 @@ export const TopNavigation = ({ onCustomClick }: TopNavigationProps) => {
         className="h-8 w-8"
         onClick={onCustomClick}
       >
-        <img src={onCustomClick ? iconDocument : iconMenu} alt="Custom" className="w-5 h-5" />
+        <img src={onCustomClick ? iconCustom : iconMenu} alt="Custom" className="w-5 h-5" />
       </Button>
       
       <div className="flex items-center gap-2">
