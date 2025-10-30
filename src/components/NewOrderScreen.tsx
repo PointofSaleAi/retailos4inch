@@ -99,7 +99,14 @@ export const NewOrderScreen = ({
   const [selectedCategory, setSelectedCategory] = useState("Men");
   const [selectedSubCategory, setSelectedSubCategory] = useState("Top Wear");
   const [showFilters, setShowFilters] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const filteredProducts = searchQuery
+    ? products.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : products;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -118,7 +125,11 @@ export const NewOrderScreen = ({
     }
   }, []);
   return <div className="h-full flex flex-col bg-background animate-fade-in overflow-hidden">
-      <TopNavigation onCustomClick={onCustomClick} onFavoritesClick={onFavoritesClick} />
+      <TopNavigation 
+        onCustomClick={onCustomClick} 
+        onFavoritesClick={onFavoritesClick}
+        onSearchChange={setSearchQuery}
+      />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
@@ -197,9 +208,9 @@ export const NewOrderScreen = ({
         {/* Product Grid/List */}
         <div className="flex-1 p-[6px] overflow-y-auto scrollbar-hide">
           {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-              {products.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
+              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
             </div> : <div className="flex flex-col gap-2 pb-2">
-              {products.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
+              {filteredProducts.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
             </div>}
         </div>
       </div>
