@@ -105,20 +105,6 @@ export const CustomPaymentScreen = ({
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">
         <div className="w-[186px] space-y-1.5 px-0 py-0">
-          {/* Cart Items */}
-          {cartItems.map((item) => (
-            <div key={item.id} className="bg-surface rounded-xl p-3 shadow-sm">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] text-[#666666]">{item.name}</span>
-                <span className="text-sm font-semibold text-foreground">${item.price.toFixed(2)}</span>
-              </div>
-              {item.note && (
-                <div className="text-[9px] text-[#999999] mb-1">{item.note}</div>
-              )}
-              <div className="text-[9px] text-[#666666]">Qty: {item.quantity}</div>
-            </div>
-          ))}
-
           {/* Product Name Card */}
           <div className="bg-surface rounded-xl p-3 flex items-center justify-between shadow-sm">
           {isEditingProductName ? <Input value={productName} onChange={e => setProductName(e.target.value)} onBlur={() => setIsEditingProductName(false)} autoFocus className="h-auto p-0 border-0 bg-transparent text-[10px] text-[#666666] focus-visible:ring-0 focus-visible:ring-offset-0" /> : <span className="text-[10px] text-[#666666] cursor-pointer" onClick={() => setIsEditingProductName(true)}>
