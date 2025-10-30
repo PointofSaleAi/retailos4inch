@@ -6,6 +6,7 @@ import iconHeart from "@/assets/icon-heart.png";
 import iconSearch from "@/assets/icon-search.png";
 import iconMaximize from "@/assets/icon-maximize.png";
 import iconMore from "@/assets/icon-more.png";
+import iconNote from "@/assets/icon-note.png";
 import { X, Minus, Plus, Delete } from "lucide-react";
 
 interface CustomPaymentScreenProps {
@@ -68,15 +69,15 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
       </nav>
 
       {/* Header with Product Count and Total */}
-      <div className="bg-foreground text-background px-4 py-3 flex items-center justify-between">
-        <span className="text-sm font-medium">{productCount} Product</span>
-        <span className="text-sm font-medium">${totalAmount}</span>
+      <div className="bg-foreground text-background px-3 py-2.5 flex items-center justify-between">
+        <span className="text-xs font-semibold">{productCount} Product</span>
+        <span className="text-xs font-semibold">${totalAmount}</span>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-3 space-y-3 overflow-y-auto">
+      <div className="flex-1 p-2.5 space-y-2.5 overflow-y-auto">
         {/* Product Name Card */}
-        <div className="bg-surface rounded-2xl p-4 flex items-center justify-between shadow-sm">
+        <div className="bg-surface rounded-xl p-3 flex items-center justify-between shadow-sm">
           <span className="text-sm text-foreground">{productName}</span>
           <span className="text-sm font-semibold text-foreground">${amount}</span>
         </div>
@@ -85,15 +86,15 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
         <div className="flex items-center gap-2">
           <div className="flex-1 relative">
             <img 
-              src={iconDocument} 
+              src={iconNote} 
               alt="Note" 
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 opacity-40"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40"
             />
             <Input
               placeholder="Add a note"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="pl-10 bg-surface border-border/50 h-12 text-sm"
+              className="pl-10 bg-surface border-border/50 h-11 text-sm rounded-xl"
             />
           </div>
           
@@ -101,51 +102,51 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
           <Button
             variant="outline"
             size="icon"
-            className="h-12 w-12 rounded-full border-border/50 flex-shrink-0"
+            className="h-11 w-11 rounded-full border-border/50 flex-shrink-0"
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="w-3.5 h-3.5" />
           </Button>
           
-          <span className="text-sm font-medium w-6 text-center">{quantity}</span>
+          <span className="text-sm font-medium w-5 text-center">{quantity}</span>
           
           <Button
             variant="outline"
             size="icon"
-            className="h-12 w-12 rounded-full border-border/50 flex-shrink-0"
+            className="h-11 w-11 rounded-full border-border/50 flex-shrink-0"
             onClick={() => setQuantity(quantity + 1)}
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
           </Button>
         </div>
 
         {/* Numeric Keypad */}
-        <div className="grid grid-cols-4 gap-2 pt-2">
+        <div className="grid grid-cols-4 gap-2 pt-1">
           {/* Row 1 */}
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("7")}
           >
             7
           </Button>
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("8")}
           >
             8
           </Button>
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("9")}
           >
             9
           </Button>
           <Button
             variant="outline"
-            className="h-16 row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center"
+            className="h-[116px] row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center rounded-xl"
             onClick={handleBackspace}
           >
             <Delete className="w-5 h-5 rotate-180" />
@@ -154,21 +155,21 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
           {/* Row 2 */}
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("4")}
           >
             4
           </Button>
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("5")}
           >
             5
           </Button>
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("6")}
           >
             6
@@ -177,28 +178,28 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
           {/* Row 3 */}
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("1")}
           >
             1
           </Button>
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("2")}
           >
             2
           </Button>
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("3")}
           >
             3
           </Button>
           <Button
             variant="outline"
-            className="h-16 row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center"
+            className="h-[116px] row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center rounded-xl"
           >
             <Plus className="w-6 h-6" />
           </Button>
@@ -206,14 +207,14 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
           {/* Row 4 */}
           <Button
             variant="outline"
-            className="h-16 col-span-2 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 col-span-2 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("00")}
           >
             00
           </Button>
           <Button
             variant="outline"
-            className="h-16 text-lg font-medium bg-surface hover:bg-surface/80 border-border/50"
+            className="h-14 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl"
             onClick={() => handleNumberClick("0")}
           >
             0
