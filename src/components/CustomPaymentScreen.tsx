@@ -18,6 +18,7 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
   const [amount, setAmount] = useState("0.00");
   const [productName, setProductName] = useState("Product Name");
   const [note, setNote] = useState("");
+  const [isEditingProductName, setIsEditingProductName] = useState(false);
 
   const handleNumberClick = (num: string) => {
     if (amount === "0.00") {
@@ -69,16 +70,31 @@ export const CustomPaymentScreen = ({ onClose }: CustomPaymentScreenProps) => {
       </nav>
 
       {/* Header with Product Count and Total */}
-      <div className="bg-foreground text-background px-3 py-2.5 flex items-center justify-between">
-        <span className="text-xs font-semibold">{productCount} Product</span>
-        <span className="text-xs font-semibold">${totalAmount}</span>
+      <div className="bg-foreground text-background px-3 h-[24px] flex items-center justify-between">
+        <span className="text-[10px] font-semibold">{productCount} Product</span>
+        <span className="text-[10px] font-semibold">${totalAmount}</span>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 p-2.5 space-y-2.5 overflow-y-auto">
         {/* Product Name Card */}
         <div className="bg-surface rounded-xl p-3 flex items-center justify-between shadow-sm">
-          <span className="text-sm text-foreground">{productName}</span>
+          {isEditingProductName ? (
+            <Input
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              onBlur={() => setIsEditingProductName(false)}
+              autoFocus
+              className="h-auto p-0 border-0 bg-transparent text-[10px] text-[#666666] focus-visible:ring-0 focus-visible:ring-offset-0"
+            />
+          ) : (
+            <span 
+              className="text-[10px] text-[#666666] cursor-pointer"
+              onClick={() => setIsEditingProductName(true)}
+            >
+              {productName}
+            </span>
+          )}
           <span className="text-sm font-semibold text-foreground">${amount}</span>
         </div>
 
