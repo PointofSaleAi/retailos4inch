@@ -3,7 +3,7 @@ import { RetailDevice } from "./RetailDevice";
 import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
-import { CustomerScreen } from "./CustomerScreen";
+import { CustomerPaymentScreen } from "./CustomerPaymentScreen";
 import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
 
@@ -26,7 +26,7 @@ export const RetailApp = () => {
       case "transactions":
         return <TransactionsScreen />;
       case "customer":
-        return <CustomerScreen />;
+        return <CustomerPaymentScreen />;
       case "settings":
         return <SettingsScreen />;
       default:
