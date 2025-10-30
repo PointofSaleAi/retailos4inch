@@ -70,17 +70,34 @@ const menuCategories = ["Apparel", "Beauty Products", "Electric"];
 const categories = ["Men", "Women", "Kids", "Gen Z"];
 const subCategories = ["Top Wear", "Bottom Wear", "Official Merch", "Best Sellers"];
 
-interface NewOrderScreenProps {
-  onCustomClick?: () => void;
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  isFavorite?: boolean;
 }
 
-export const NewOrderScreen = ({ onCustomClick }: NewOrderScreenProps) => {
+interface NewOrderScreenProps {
+  onCustomClick?: () => void;
+  onFavoritesClick?: () => void;
+  products: Product[];
+  onToggleFavorite: (productId: number) => void;
+  onAddToCart: (productId: number, quantity: number) => void;
+}
+
+export const NewOrderScreen = ({ 
+  onCustomClick, 
+  onFavoritesClick,
+  products,
+  onToggleFavorite,
+  onAddToCart 
+}: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedProductType, setSelectedProductType] = useState("Products");
   const [selectedMenuCategory, setSelectedMenuCategory] = useState("Apparel");
   const [selectedCategory, setSelectedCategory] = useState("Men");
   const [selectedSubCategory, setSelectedSubCategory] = useState("Top Wear");
-  const [cart, setCart] = useState<Record<number, number>>({});
   const [showFilters, setShowFilters] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -100,15 +117,8 @@ export const NewOrderScreen = ({ onCustomClick }: NewOrderScreenProps) => {
       return () => container.removeEventListener('scroll', handleScroll);
     }
   }, []);
-
-  const handleAddToCart = (productId: number, quantity: number) => {
-    setCart(prev => ({
-      ...prev,
-      [productId]: quantity
-    }));
-  };
   return <div className="h-full flex flex-col bg-background animate-fade-in overflow-hidden">
-      <TopNavigation onCustomClick={onCustomClick} />
+      <TopNavigation onCustomClick={onCustomClick} onFavoritesClick={onFavoritesClick} />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
@@ -187,9 +197,9 @@ export const NewOrderScreen = ({ onCustomClick }: NewOrderScreenProps) => {
         {/* Product Grid/List */}
         <div className="flex-1 p-[6px] overflow-y-auto scrollbar-hide">
           {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-              {mockProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />)}
+              {products.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
             </div> : <div className="flex flex-col gap-2 pb-2">
-              {mockProducts.map(product => <ProductListCard key={product.id} product={product} onAddToCart={handleAddToCart} />)}
+              {products.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
             </div>}
         </div>
       </div>

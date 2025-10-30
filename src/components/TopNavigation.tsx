@@ -8,9 +8,10 @@ import iconCustom from "@/assets/icon-custom.png";
 
 interface TopNavigationProps {
   onCustomClick?: () => void;
+  onFavoritesClick?: () => void;
 }
 
-export const TopNavigation = ({ onCustomClick }: TopNavigationProps) => {
+export const TopNavigation = ({ onCustomClick, onFavoritesClick }: TopNavigationProps) => {
   return (
     <nav className="flex items-center justify-between px-[6px] py-2 bg-surface">
       <Button 
@@ -23,7 +24,12 @@ export const TopNavigation = ({ onCustomClick }: TopNavigationProps) => {
       </Button>
       
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8"
+          onClick={onFavoritesClick}
+        >
           <img src={iconHeart} alt="Favorites" className="w-5 h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
