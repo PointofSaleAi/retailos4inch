@@ -46,7 +46,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && (
+        {isLoggedIn && !showCustomScreen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
