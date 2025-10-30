@@ -8,9 +8,19 @@ import iconMaximize from "@/assets/icon-maximize.png";
 import iconMore from "@/assets/icon-more.png";
 import iconNote from "@/assets/icon-note.png";
 import { X, Minus, Plus, Delete } from "lucide-react";
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  note: string;
+}
+
 interface CustomPaymentScreenProps {
   onClose: () => void;
 }
+
 export const CustomPaymentScreen = ({
   onClose
 }: CustomPaymentScreenProps) => {
@@ -19,6 +29,7 @@ export const CustomPaymentScreen = ({
   const [productName, setProductName] = useState("Product Name");
   const [note, setNote] = useState("");
   const [isEditingProductName, setIsEditingProductName] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const handleNumberClick = (num: string) => {
     if (amount === "0.00") {
       setAmount(`0.${num}`);
@@ -39,8 +50,29 @@ export const CustomPaymentScreen = ({
       setAmount("0.00");
     }
   };
-  const productCount = quantity;
-  const totalAmount = (parseFloat(amount) * quantity).toFixed(2);
+
+  const handleAddToCart = () => {
+    const price = parseFloat(amount);
+    if (price > 0) {
+      const newItem: CartItem = {
+        id: Date.now().toString(),
+        name: productName,
+        price: price,
+        quantity: quantity,
+        note: note
+      };
+      setCartItems([newItem, ...cartItems]);
+      
+      // Reset form
+      setAmount("0.00");
+      setProductName("Product Name");
+      setNote("");
+      setQuantity(1);
+    }
+  };
+
+  const productCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
   return <div className="h-full flex flex-col bg-background">
       {/* Top Navigation */}
       <nav className="flex items-center justify-between px-[6px] py-2 bg-surface">
@@ -73,6 +105,20 @@ export const CustomPaymentScreen = ({
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">
         <div className="w-[186px] space-y-1.5 px-0 py-0">
+          {/* Cart Items */}
+          {cartItems.map((item) => (
+            <div key={item.id} className="bg-surface rounded-xl p-3 shadow-sm">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] text-[#666666]">{item.name}</span>
+                <span className="text-sm font-semibold text-foreground">${item.price.toFixed(2)}</span>
+              </div>
+              {item.note && (
+                <div className="text-[9px] text-[#999999] mb-1">{item.note}</div>
+              )}
+              <div className="text-[9px] text-[#666666]">Qty: {item.quantity}</div>
+            </div>
+          ))}
+
           {/* Product Name Card */}
           <div className="bg-surface rounded-xl p-3 flex items-center justify-between shadow-sm">
           {isEditingProductName ? <Input value={productName} onChange={e => setProductName(e.target.value)} onBlur={() => setIsEditingProductName(false)} autoFocus className="h-auto p-0 border-0 bg-transparent text-[10px] text-[#666666] focus-visible:ring-0 focus-visible:ring-offset-0" /> : <span className="text-[10px] text-[#666666] cursor-pointer" onClick={() => setIsEditingProductName(true)}>
@@ -137,7 +183,7 @@ export const CustomPaymentScreen = ({
           <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("3")}>
             3
           </Button>
-          <Button variant="outline" className="h-[82px] w-[37px] row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center rounded-xl">
+          <Button variant="outline" className="h-[82px] w-[37px] row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center rounded-xl" onClick={handleAddToCart}>
             <Plus className="w-6 h-6" />
           </Button>
 
