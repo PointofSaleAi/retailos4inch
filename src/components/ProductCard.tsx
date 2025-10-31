@@ -28,12 +28,12 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
 
   if (hideImage) {
     return (
-      <div className="bg-surface rounded-lg overflow-hidden border border-border w-[90px] h-[78px] flex flex-col p-2">
-        <h3 className="text-[12px] font-semibold leading-tight line-clamp-3 flex-1 mb-2">
+      <div className="bg-surface rounded-lg overflow-hidden border border-border w-[90px] h-[65px] flex flex-col p-1.5 relative">
+        <h3 className="text-[10px] font-medium leading-tight line-clamp-2 mb-0.5" style={{ color: '#414141' }}>
           {product.name}
         </h3>
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-bold text-price">
+        <div className="flex items-center justify-between mt-auto">
+          <span className="text-[12px] font-bold text-price">
             ${product.price.toFixed(2)}
           </span>
           <Button
