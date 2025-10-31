@@ -8,6 +8,7 @@ import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
 import { CustomPaymentScreen } from "./CustomPaymentScreen";
 import { FavoritesScreen } from "./FavoritesScreen";
+import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import product1 from "@/assets/product-1.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
@@ -37,6 +38,7 @@ export const RetailApp = () => {
   const [activeTab, setActiveTab] = useState("order");
   const [showCustomScreen, setShowCustomScreen] = useState(false);
   const [showFavoritesScreen, setShowFavoritesScreen] = useState(false);
+  const [showScannerScreen, setShowScannerScreen] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
 
   const handleLogin = () => {
@@ -53,11 +55,26 @@ export const RetailApp = () => {
     console.log(`Added product ${productId} with quantity ${quantity} to cart`);
   };
 
+  const handleBarcodeScanned = (barcode: string) => {
+    console.log(`Scanned barcode: ${barcode}`);
+    // Here you would typically look up the product and add it to cart
+    setShowScannerScreen(false);
+  };
+
   const favoriteProducts = products.filter(p => p.isFavorite);
 
   const renderScreen = () => {
     if (!isLoggedIn) {
       return <LoginScreen onLogin={handleLogin} />;
+    }
+
+    if (showScannerScreen) {
+      return (
+        <BarcodeScannerScreen
+          onClose={() => setShowScannerScreen(false)}
+          onBarcodeScanned={handleBarcodeScanned}
+        />
+      );
     }
 
     if (showFavoritesScreen) {
@@ -80,6 +97,7 @@ export const RetailApp = () => {
           <NewOrderScreen
             onCustomClick={() => setShowCustomScreen(true)}
             onFavoritesClick={() => setShowFavoritesScreen(true)}
+            onScannerClick={() => setShowScannerScreen(true)}
             products={products}
             onToggleFavorite={handleToggleFavorite}
             onAddToCart={handleAddToCart}
@@ -96,6 +114,7 @@ export const RetailApp = () => {
           <NewOrderScreen
             onCustomClick={() => setShowCustomScreen(true)}
             onFavoritesClick={() => setShowFavoritesScreen(true)}
+            onScannerClick={() => setShowScannerScreen(true)}
             products={products}
             onToggleFavorite={handleToggleFavorite}
             onAddToCart={handleAddToCart}
@@ -110,7 +129,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showScannerScreen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
