@@ -13,11 +13,11 @@ interface Product {
 
 interface FavoritesScreenProps {
   onBack: () => void;
-  favoriteProducts: Product[];
+  products: Product[];
   onAddToCart: (productId: number, quantity: number) => void;
 }
 
-export const FavoritesScreen = ({ onBack, favoriteProducts, onAddToCart }: FavoritesScreenProps) => {
+export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
@@ -44,21 +44,15 @@ export const FavoritesScreen = ({ onBack, favoriteProducts, onAddToCart }: Favor
 
       {/* Products Grid */}
       <div className="flex-1 overflow-y-auto px-3 pb-4">
-        {favoriteProducts.length > 0 ? (
-          <div className="grid grid-cols-2 gap-2">
-            {favoriteProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={onAddToCart}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center h-32">
-            <p className="text-sm text-muted-foreground">No favorite items yet</p>
-          </div>
-        )}
+        <div className="grid grid-cols-2 gap-2">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={onAddToCart}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

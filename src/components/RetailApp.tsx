@@ -64,7 +64,7 @@ export const RetailApp = () => {
       return (
         <FavoritesScreen
           onBack={() => setShowFavoritesScreen(false)}
-          favoriteProducts={favoriteProducts}
+          products={products}
           onAddToCart={handleAddToCart}
         />
       );
