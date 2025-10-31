@@ -39,25 +39,25 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
   if (showSearch) {
     return (
       <nav className="flex items-center gap-2 px-[6px] py-2 bg-surface">
-        <div className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg" style={{ backgroundColor: '#F1F2F5' }}>
-          <img src={iconSearchNew} alt="Search" className="w-5 h-5" />
+        <div className="flex items-center gap-2 px-2 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '26px', width: '156px' }}>
+          <img src={iconSearchNew} alt="Search" className="w-[14px] h-[14px]" />
           <Input
             type="text"
             placeholder="Search Products..."
             value={searchQuery}
             onChange={handleSearchInput}
-            className="flex-1 border-0 bg-transparent h-auto p-0 text-sm focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground"
+            className="flex-1 border-0 bg-transparent h-auto p-0 text-[11px] focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground"
             autoFocus
           />
-          <img src={iconMicVoice} alt="Voice" className="w-5 h-5 cursor-pointer" />
+          <img src={iconMicVoice} alt="Voice" className="w-[14px] h-[14px] cursor-pointer" />
         </div>
         <Button 
           variant="ghost" 
           size="icon" 
-          className="h-8 w-8"
+          className="h-[26px] w-[26px] p-0"
           onClick={handleCloseSearch}
         >
-          <img src={iconClose} alt="Close" className="w-5 h-5" />
+          <img src={iconClose} alt="Close" className="w-[26px] h-[26px]" />
         </Button>
       </nav>
     );
