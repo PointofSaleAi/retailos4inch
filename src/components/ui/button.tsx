@@ -18,8 +18,8 @@ const buttonVariants = cva(
         // Retail-specific variants
         retail: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full font-bold tracking-wide",
         "retail-secondary": "bg-secondary text-secondary-foreground hover:bg-secondary-hover rounded-full font-medium",
-        category: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full text-[10px] font-medium px-3 py-1",
-        "category-inactive": "bg-[#F1F2F5] text-foreground hover:bg-[#E5E6EA] rounded-full text-[10px] font-medium px-3 py-1",
+        category: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full text-[8px] font-medium px-3 py-1 h-[20px]",
+        "category-inactive": "bg-[#F1F2F5] text-foreground hover:bg-[#E5E6EA] rounded-full text-[8px] font-medium px-3 py-1 h-[20px]",
       },
       size: {
         default: "h-10 px-6 py-2",
@@ -28,7 +28,7 @@ const buttonVariants = cva(
         icon: "h-8 w-8 p-0",
         // Retail-specific sizes
         "retail-full": "h-11 w-full px-6 py-3",
-        "retail-compact": "h-8 px-3 py-1 text-xs",
+        "retail-compact": "h-[20px] px-3 py-1 text-[8px]",
       },
     },
     defaultVariants: {

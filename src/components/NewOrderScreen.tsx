@@ -133,7 +133,7 @@ export const NewOrderScreen = ({
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
-        <div className="px-[6px] pt-2 space-y-2 flex-shrink-0">
+        <div className="px-[6px] pt-1 space-y-1 flex-shrink-0">
           {/* Main Categories with View Toggle and Dropdowns */}
           <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {!showFilters && (
@@ -150,12 +150,12 @@ export const NewOrderScreen = ({
             {showFilters && (
               <>
                 {/* View Toggle Icons */}
-                <div className="flex items-center gap-1 border border-border rounded-full p-1 flex-shrink-0">
-                  <Button variant="ghost" size="icon" className={`h-6 w-6 rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("grid")}>
-                    <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-4 h-4" />
+                <div className="flex items-center gap-1 border border-border rounded-full p-0.5 flex-shrink-0">
+                  <Button variant="ghost" size="icon" className={`h-[20px] w-[20px] rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("grid")}>
+                    <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-3 h-3" />
                   </Button>
-                  <Button variant="ghost" size="icon" className={`h-6 w-6 rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("list")}>
-                    <img src={viewMode === "list" ? iconListWhite : iconList} alt="List view" className="w-4 h-4" />
+                  <Button variant="ghost" size="icon" className={`h-[20px] w-[20px] rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("list")}>
+                    <img src={viewMode === "list" ? iconListWhite : iconList} alt="List view" className="w-3 h-3" />
                   </Button>
                 </div>
                 
