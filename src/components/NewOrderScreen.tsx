@@ -208,7 +208,7 @@ export const NewOrderScreen = ({
         {/* Product Grid/List */}
         <div className="flex-1 p-[6px] overflow-y-auto scrollbar-hide">
           {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
+              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} />)}
             </div> : <div className="flex flex-col gap-2 pb-2">
               {filteredProducts.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
             </div>}
