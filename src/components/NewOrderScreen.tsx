@@ -133,7 +133,7 @@ export const NewOrderScreen = ({
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
-        <div className="px-[6px] pt-2 space-y-2 flex-shrink-0">
+        <div className="px-[6px] pt-1 space-y-1 flex-shrink-0">
           {/* Main Categories with View Toggle and Dropdowns */}
           <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {!showFilters && (
