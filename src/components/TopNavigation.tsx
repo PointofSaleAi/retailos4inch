@@ -58,7 +58,7 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
           className="h-[26px] w-[26px] p-0"
           onClick={handleCloseSearch}
         >
-          <img src={iconClose14} alt="Close" className="w-[26px] h-[26px] min-w-[26px] min-h-[26px]" />
+          <img src={iconClose14} alt="Close" className="w-[10px] h-[10px] min-w-[10px] min-h-[10px]" />
         </Button>
       </nav>
     );
