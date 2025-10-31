@@ -8,41 +8,47 @@ interface BarcodeScannerScreenProps {
 export const BarcodeScannerScreen = ({ onClose }: BarcodeScannerScreenProps) => {
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 animate-fade-in">
-      <div className="relative w-full h-full flex flex-col items-center justify-start pt-12 px-4">
+      <div 
+        className="relative bg-black/90 rounded-lg flex flex-col items-center justify-start overflow-hidden"
+        style={{ 
+          width: '198px', 
+          height: '330px'
+        }}
+      >
         {/* Close Button */}
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-4 right-4 h-10 w-10"
+          className="absolute top-2 right-2 h-6 w-6 z-10"
           onClick={onClose}
         >
-          <img src={iconClose} alt="Close" className="w-6 h-6" />
+          <img src={iconClose} alt="Close" className="w-4 h-4" />
         </Button>
 
         {/* Title */}
-        <h2 className="text-white text-xl font-semibold mb-2" style={{ fontFamily: 'Montserrat' }}>
+        <h2 className="text-white text-sm font-semibold mt-8 mb-1" style={{ fontFamily: 'Montserrat' }}>
           Scan Bar Code
         </h2>
 
         {/* Subtitle */}
-        <p className="text-white/80 text-sm mb-8" style={{ fontFamily: 'Montserrat' }}>
+        <p className="text-white/80 text-[10px] mb-6 px-4 text-center" style={{ fontFamily: 'Montserrat' }}>
           Point your camera at a bar code
         </p>
 
         {/* Scanner Frame */}
         <div 
-          className="relative bg-white/10 rounded-lg flex items-center justify-center"
+          className="relative bg-white/10 rounded-lg flex items-center justify-center mx-4"
           style={{ 
-            width: '340px', 
-            height: '160px',
+            width: '170px', 
+            height: '100px',
             border: '2px dashed rgba(255, 255, 255, 0.5)'
           }}
         >
           {/* Barcode Placeholder */}
           <div className="flex flex-col items-center">
             <svg 
-              width="280" 
-              height="80" 
+              width="140" 
+              height="50" 
               viewBox="0 0 280 80" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +90,7 @@ export const BarcodeScannerScreen = ({ onClose }: BarcodeScannerScreenProps) => 
               <rect x="264" y="0" width="6" height="80" fill="black"/>
               <rect x="274" y="0" width="6" height="80" fill="black"/>
             </svg>
-            <p className="text-white/60 text-sm mt-2" style={{ fontFamily: 'Montserrat' }}>
+            <p className="text-white/60 text-[9px] mt-2" style={{ fontFamily: 'Montserrat' }}>
               (0) 021 45478255
             </p>
           </div>
