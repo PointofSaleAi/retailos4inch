@@ -28,7 +28,7 @@ const buttonVariants = cva(
         icon: "h-8 w-8 p-0",
         // Retail-specific sizes
         "retail-full": "h-11 w-full px-6 py-3",
-        "retail-compact": "h-8 px-3 py-1 text-xs",
+        "retail-compact": "h-[22px] px-3 py-1 text-[9px]",
       },
     },
     defaultVariants: {
