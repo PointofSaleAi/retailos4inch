@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import iconMenu from "@/assets/icon-menu-new.png";
-import iconHeart from "@/assets/icon-heart-new.png";
-import iconSearch20 from "@/assets/icon-search-new.png";
-import iconMaximize from "@/assets/icon-maximize-new.png";
-import iconMore from "@/assets/icon-more-new.png";
+import iconMenu from "@/assets/icon-menu.png";
+import iconHeart from "@/assets/icon-heart.png";
+import iconSearch20 from "@/assets/icon-search-20.png";
+import iconMaximize from "@/assets/icon-maximize.png";
+import iconMore from "@/assets/icon-more.png";
 import iconCustom from "@/assets/icon-custom.png";
 import iconSearch14 from "@/assets/icon-search-14.png";
 import iconMic14 from "@/assets/icon-mic-14.png";
