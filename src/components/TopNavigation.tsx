@@ -72,7 +72,7 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
         className="h-8 w-8"
         onClick={onCustomClick}
       >
-        <img src={onCustomClick ? iconCustom : iconMenu} alt="Custom" className="w-5 h-5" />
+        <img src={onCustomClick ? iconCustom : iconMenu} alt="Custom" className="w-5 h-5 min-w-5 min-h-5" />
       </Button>
       
       <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
           className="h-8 w-8"
           onClick={onFavoritesClick}
         >
-          <img src={iconHeart} alt="Favorites" className="w-5 h-5" />
+          <img src={iconHeart} alt="Favorites" className="w-5 h-5 min-w-5 min-h-5" />
         </Button>
         <Button 
           variant="ghost" 
@@ -90,13 +90,13 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
           className="h-8 w-8"
           onClick={handleSearchClick}
         >
-          <img src={iconSearchNew} alt="Search" className="w-5 h-5" />
+          <img src={iconSearchNew} alt="Search" className="w-5 h-5 min-w-5 min-h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
-          <img src={iconMaximize} alt="Maximize" className="w-5 h-5" />
+          <img src={iconMaximize} alt="Maximize" className="w-5 h-5 min-w-5 min-h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
-          <img src={iconMore} alt="More" className="w-5 h-5" />
+          <img src={iconMore} alt="More" className="w-5 h-5 min-w-5 min-h-5" />
         </Button>
       </div>
     </nav>
