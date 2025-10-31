@@ -87,10 +87,15 @@ export default {
             height: "0",
           },
         },
+        "scan": {
+          "0%, 100%": { top: "10%" },
+          "50%": { top: "80%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "scan": "scan 2s ease-in-out infinite",
       },
     },
   },

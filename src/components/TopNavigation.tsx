@@ -10,14 +10,16 @@ import iconCustom from "@/assets/icon-custom.png";
 import iconSearch14 from "@/assets/icon-search-14.png";
 import iconMic14 from "@/assets/icon-mic-14.png";
 import iconClose14 from "@/assets/icon-close-14.png";
+import iconCameraTx from "@/assets/icon-camera-tx.png";
 
 interface TopNavigationProps {
   onCustomClick?: () => void;
   onFavoritesClick?: () => void;
   onSearchChange?: (query: string) => void;
+  onScannerClick?: () => void;
 }
 
-export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange }: TopNavigationProps) => {
+export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange, onScannerClick }: TopNavigationProps) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -88,9 +90,17 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
           variant="ghost" 
           size="icon" 
           className="h-8 w-8"
+          onClick={onScannerClick}
+        >
+          <img src={iconCameraTx} alt="Scanner" className="w-5 h-5 min-w-5 min-h-5" />
+        </Button>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8"
           onClick={handleSearchClick}
         >
-          <img src={iconSearch20} alt="Search" className="w-5 h-5 min-w-5 min-h-5" />
+          <img src={iconSearch20} alt="Search" className="w-[18px] h-[18px] min-w-[18px] min-h-[18px]" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
           <img src={iconMaximize} alt="Maximize" className="w-5 h-5 min-w-5 min-h-5" />
