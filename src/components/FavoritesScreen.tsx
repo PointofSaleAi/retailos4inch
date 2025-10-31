@@ -21,22 +21,22 @@ export const FavoritesScreen = ({ onBack, favoriteProducts, onAddToCart }: Favor
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-3 bg-surface border-b border-border">
+      <div className="flex items-center justify-between px-3 h-6 bg-surface border-b border-border">
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8"
+          className="h-5 w-5 p-0"
           onClick={onBack}
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-4 h-4" />
         </Button>
-        <h1 className="text-base font-semibold">Favorites</h1>
-        <div className="w-8" />
+        <h1 className="text-sm font-semibold absolute left-1/2 -translate-x-1/2">Favorites</h1>
+        <div className="w-5" />
       </div>
 
       {/* Grid Icon and Instructions */}
       <div className="flex flex-col items-center justify-center py-4 px-4">
-        <img src={iconGrid} alt="Grid" className="w-12 h-12 mb-2 opacity-40" />
+        <img src={iconGrid} alt="Grid" className="w-5 h-5 mb-2 opacity-40" />
         <p className="text-[11px] text-center text-muted-foreground">
           Press and hold anywhere on<br />the grid to add items
         </p>
