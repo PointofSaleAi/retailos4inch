@@ -7,8 +7,9 @@ import iconSearchNew from "@/assets/icon-search-new.png";
 import iconMaximize from "@/assets/icon-maximize.png";
 import iconMore from "@/assets/icon-more.png";
 import iconCustom from "@/assets/icon-custom.png";
-import iconMicVoice from "@/assets/icon-mic-voice.png";
-import iconClose from "@/assets/icon-close.png";
+import iconSearch14 from "@/assets/icon-search-14.png";
+import iconMic14 from "@/assets/icon-mic-14.png";
+import iconClose14 from "@/assets/icon-close-14.png";
 
 interface TopNavigationProps {
   onCustomClick?: () => void;
@@ -40,7 +41,7 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
     return (
       <nav className="flex items-center gap-2 px-[6px] py-2 bg-surface">
         <div className="flex items-center gap-2 px-2 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '26px', width: '156px' }}>
-          <img src={iconSearchNew} alt="Search" className="w-[14px] h-[14px]" />
+          <img src={iconSearch14} alt="Search" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px]" />
           <Input
             type="text"
             placeholder="Search Products..."
@@ -49,7 +50,7 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
             className="flex-1 border-0 bg-transparent h-auto p-0 text-[11px] focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground"
             autoFocus
           />
-          <img src={iconMicVoice} alt="Voice" className="w-[14px] h-[14px] cursor-pointer" />
+          <img src={iconMic14} alt="Voice" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px] cursor-pointer" />
         </div>
         <Button 
           variant="ghost" 
@@ -57,7 +58,7 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
           className="h-[26px] w-[26px] p-0"
           onClick={handleCloseSearch}
         >
-          <img src={iconClose} alt="Close" className="w-[26px] h-[26px]" />
+          <img src={iconClose14} alt="Close" className="w-[26px] h-[26px] min-w-[26px] min-h-[26px]" />
         </Button>
       </nav>
     );
