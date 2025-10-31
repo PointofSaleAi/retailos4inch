@@ -20,6 +20,8 @@ const buttonVariants = cva(
         "retail-secondary": "bg-secondary text-secondary-foreground hover:bg-secondary-hover rounded-full font-medium",
         category: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full text-[10px] font-medium px-3 py-1",
         "category-inactive": "bg-[#F1F2F5] text-foreground hover:bg-[#E5E6EA] rounded-full text-[10px] font-medium px-3 py-1",
+        subcategory: "bg-primary text-primary-foreground hover:bg-primary-hover rounded-full text-[9px] font-medium px-3 h-[22px]",
+        "subcategory-inactive": "bg-[#F1F2F5] text-foreground hover:bg-[#E5E6EA] rounded-full text-[9px] font-medium px-3 h-[22px]",
       },
       size: {
         default: "h-10 px-6 py-2",
