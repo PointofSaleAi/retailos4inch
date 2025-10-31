@@ -151,11 +151,11 @@ export const NewOrderScreen = ({
               <>
                 {/* View Toggle Icons */}
                 <div className="flex items-center gap-1 border border-border rounded-full p-0.5 flex-shrink-0">
-                  <Button variant="ghost" size="icon" className={`h-[20px] w-[20px] rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("grid")}>
-                    <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-3 h-3" />
+                  <Button variant="ghost" size="icon" className={`h-[22px] w-[22px] rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("grid")}>
+                    <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-3.5 h-3.5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className={`h-[20px] w-[20px] rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("list")}>
-                    <img src={viewMode === "list" ? iconListWhite : iconList} alt="List view" className="w-3 h-3" />
+                  <Button variant="ghost" size="icon" className={`h-[22px] w-[22px] rounded-full ${viewMode === "list" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("list")}>
+                    <img src={viewMode === "list" ? iconListWhite : iconList} alt="List view" className="w-3.5 h-3.5" />
                   </Button>
                 </div>
                 
