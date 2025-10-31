@@ -39,7 +39,7 @@ export const FavoritesScreen = ({
 
       {/* Products Grid */}
       <div className="flex-1 overflow-y-auto px-2 pb-3">
-        <div className="grid grid-cols-2 gap-1.5">
+        <div className="grid grid-cols-2 gap-2">
           {products.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
         </div>
       </div>
