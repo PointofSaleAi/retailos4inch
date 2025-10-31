@@ -28,8 +28,8 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
 
   if (hideImage) {
     return (
-      <div className="bg-surface rounded-lg overflow-hidden border border-border w-[90px] h-[78px] flex flex-col p-2">
-        <h3 className="text-[12px] font-semibold leading-tight line-clamp-3 flex-1 mb-2">
+      <div className="bg-surface rounded-lg overflow-hidden border border-border w-[90px] h-[53px] flex flex-col p-2">
+        <h3 className="text-[12px] font-semibold leading-tight line-clamp-2 flex-1 mb-1">
           {product.name}
         </h3>
         <div className="flex items-center justify-between">
