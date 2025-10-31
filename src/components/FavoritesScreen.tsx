@@ -19,9 +19,9 @@ interface FavoritesScreenProps {
 
 export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className="h-full flex flex-col bg-background w-[186px] mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 h-6 bg-surface border-b border-border">
+      <div className="flex items-center justify-between px-2 h-6 bg-surface border-b border-border">
         <Button
           variant="ghost"
           size="icon"
@@ -35,15 +35,15 @@ export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScre
       </div>
 
       {/* Grid Icon and Instructions */}
-      <div className="flex flex-col items-center justify-center py-4 px-4">
-        <img src={iconGrid} alt="Grid" className="w-5 h-5 mb-2 opacity-40" />
-        <p className="text-[11px] text-center text-muted-foreground">
+      <div className="flex flex-col items-center justify-center py-3 px-3">
+        <img src={iconGrid} alt="Grid" className="w-5 h-5 mb-1.5 opacity-40" />
+        <p className="text-[11px] text-center text-muted-foreground leading-tight">
           Press and hold anywhere on<br />the grid to add items
         </p>
       </div>
 
       {/* Products Grid */}
-      <div className="flex-1 overflow-y-auto px-3 pb-4">
+      <div className="flex-1 overflow-y-auto px-2 pb-3">
         <div className="grid grid-cols-2 gap-2">
           {products.map((product) => (
             <ProductCard
