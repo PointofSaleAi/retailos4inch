@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import iconClose from "@/assets/icon-close.png";
+import { X } from "lucide-react";
 
 interface BarcodeScannerScreenProps {
   onClose: () => void;
@@ -7,7 +7,7 @@ interface BarcodeScannerScreenProps {
 
 export const BarcodeScannerScreen = ({ onClose }: BarcodeScannerScreenProps) => {
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 animate-fade-in">
+    <div className="fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
       <div 
         className="relative bg-black/90 rounded-lg flex flex-col items-center justify-start overflow-hidden"
         style={{ 
@@ -19,10 +19,10 @@ export const BarcodeScannerScreen = ({ onClose }: BarcodeScannerScreenProps) => 
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-2 right-2 h-6 w-6 z-10"
+          className="absolute top-2 right-2 h-6 w-6 z-10 hover:bg-white/10"
           onClick={onClose}
         >
-          <img src={iconClose} alt="Close" className="w-4 h-4" />
+          <X className="w-4 h-4 text-white" />
         </Button>
 
         {/* Title */}

@@ -91,7 +91,7 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange,
           className="h-8 w-8"
           onClick={handleSearchClick}
         >
-          <img src={iconSearch20} alt="Search" className="w-5 h-5 min-w-5 min-h-5" />
+          <img src={iconSearch20} alt="Search" className="w-[15px] h-[15px] min-w-[15px] min-h-[15px]" />
         </Button>
         <Button 
           variant="ghost" 
