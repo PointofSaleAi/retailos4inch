@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import iconClose from "@/assets/icon-close.png";
 
 interface BarcodeScannerScreenProps {
   onClose: () => void;
@@ -7,87 +8,100 @@ interface BarcodeScannerScreenProps {
 }
 
 export const BarcodeScannerScreen = ({ onClose, onBarcodeScanned }: BarcodeScannerScreenProps) => {
-  // Simulate barcode scanning after 2 seconds for demo purposes
-  const handleSimulateScann = () => {
-    setTimeout(() => {
-      const mockBarcode = "(0) 021 4548255";
+  const [isScanning, setIsScanning] = useState(true);
+
+  useEffect(() => {
+    // Simulate barcode scan after 3 seconds
+    const timer = setTimeout(() => {
+      const mockBarcode = "(0) 021 45478255";
       onBarcodeScanned?.(mockBarcode);
-      onClose();
-    }, 2000);
-  };
+      setIsScanning(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [onBarcodeScanned]);
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex flex-col bg-black/80 animate-fade-in"
-      onClick={handleSimulateScann}
-    >
+    <div className="h-full flex flex-col bg-[#2C2C2C] relative animate-fade-in">
       {/* Close Button */}
-      <div className="flex justify-end p-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose();
-          }}
-          className="h-10 w-10 text-white hover:bg-white/20"
-        >
-          <X size={24} strokeWidth={2} />
-        </Button>
-      </div>
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        className="absolute top-4 right-4 h-8 w-8 z-10 hover:bg-white/10"
+        onClick={onClose}
+      >
+        <img src={iconClose} alt="Close" className="w-5 h-5 invert" />
+      </Button>
 
-      {/* Scanner Content */}
-      <div className="flex-1 flex flex-col items-center justify-start pt-8 px-6">
-        <h1 className="text-white text-2xl font-bold mb-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center justify-start pt-16 px-6">
+        <h1 className="text-white text-lg font-bold mb-2" style={{ fontFamily: 'Montserrat' }}>
           Scan Bar Code
         </h1>
-        <p className="text-white/80 text-sm mb-8" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+        <p className="text-white/70 text-[11px] mb-8" style={{ fontFamily: 'Montserrat' }}>
           Point your camera at a bar code
         </p>
 
         {/* Scanner Frame */}
-        <div 
-          className="relative bg-white/10 rounded-lg p-4"
-          style={{ width: '320px', height: '160px' }}
-        >
-          {/* Dashed Border */}
-          <div 
-            className="absolute inset-2 border-2 border-dashed border-white/50 rounded-lg"
-          />
-          
-          {/* Barcode Placeholder */}
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <div className="mb-2">
-                <svg width="280" height="80" viewBox="0 0 280 80" fill="none">
-                  {/* Barcode lines */}
-                  {[...Array(40)].map((_, i) => {
-                    const width = Math.random() > 0.5 ? 4 : 2;
-                    const height = 60;
-                    return (
-                      <rect
-                        key={i}
-                        x={i * 7}
-                        y={10}
-                        width={width}
-                        height={height}
-                        fill="black"
-                      />
-                    );
-                  })}
-                </svg>
-              </div>
-              <div className="text-white/60 text-xs" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                (0) 021 4548255
-              </div>
+        <div className="relative w-[156px] h-[100px] border-2 border-dashed border-white/40 rounded-lg flex items-center justify-center bg-white/5">
+          {isScanning && (
+            <div className="absolute inset-0 overflow-hidden rounded-lg">
+              <div className="scanner-line" />
             </div>
+          )}
+          
+          {/* Barcode */}
+          <div className="flex flex-col items-center">
+            <svg 
+              width="140" 
+              height="60" 
+              viewBox="0 0 140 60" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+              className="mb-1"
+            >
+              {/* Barcode bars */}
+              <rect x="2" width="2" height="60" fill="black"/>
+              <rect x="6" width="1" height="60" fill="black"/>
+              <rect x="9" width="3" height="60" fill="black"/>
+              <rect x="14" width="1" height="60" fill="black"/>
+              <rect x="17" width="2" height="60" fill="black"/>
+              <rect x="21" width="1" height="60" fill="black"/>
+              <rect x="24" width="3" height="60" fill="black"/>
+              <rect x="29" width="2" height="60" fill="black"/>
+              <rect x="33" width="1" height="60" fill="black"/>
+              <rect x="36" width="2" height="60" fill="black"/>
+              <rect x="40" width="3" height="60" fill="black"/>
+              <rect x="45" width="1" height="60" fill="black"/>
+              <rect x="48" width="2" height="60" fill="black"/>
+              <rect x="52" width="1" height="60" fill="black"/>
+              <rect x="55" width="3" height="60" fill="black"/>
+              <rect x="60" width="2" height="60" fill="black"/>
+              <rect x="64" width="1" height="60" fill="black"/>
+              <rect x="67" width="2" height="60" fill="black"/>
+              <rect x="71" width="3" height="60" fill="black"/>
+              <rect x="76" width="1" height="60" fill="black"/>
+              <rect x="79" width="2" height="60" fill="black"/>
+              <rect x="83" width="1" height="60" fill="black"/>
+              <rect x="86" width="3" height="60" fill="black"/>
+              <rect x="91" width="2" height="60" fill="black"/>
+              <rect x="95" width="1" height="60" fill="black"/>
+              <rect x="98" width="2" height="60" fill="black"/>
+              <rect x="102" width="3" height="60" fill="black"/>
+              <rect x="107" width="1" height="60" fill="black"/>
+              <rect x="110" width="2" height="60" fill="black"/>
+              <rect x="114" width="1" height="60" fill="black"/>
+              <rect x="117" width="3" height="60" fill="black"/>
+              <rect x="122" width="2" height="60" fill="black"/>
+              <rect x="126" width="1" height="60" fill="black"/>
+              <rect x="129" width="2" height="60" fill="black"/>
+              <rect x="133" width="1" height="60" fill="black"/>
+              <rect x="136" width="2" height="60" fill="black"/>
+            </svg>
+            <span className="text-[10px] text-black/60" style={{ fontFamily: 'Montserrat' }}>
+              (0) 021 45478255
+            </span>
           </div>
-
-          {/* Scanning Line Animation */}
-          <div 
-            className="absolute left-2 right-2 h-0.5 bg-red-500 animate-scan"
-            style={{ top: '20%' }}
-          />
         </div>
       </div>
     </div>
