@@ -199,7 +199,7 @@ export const NewOrderScreen = ({
           
           {/* Sub Categories */}
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-            {subCategories.map(subCategory => <Button key={subCategory} variant={selectedSubCategory === subCategory ? "subcategory" : "subcategory-inactive"} onClick={() => setSelectedSubCategory(subCategory)}>
+            {subCategories.map(subCategory => <Button key={subCategory} variant={selectedSubCategory === subCategory ? "category" : "category-inactive"} size="retail-compact" onClick={() => setSelectedSubCategory(subCategory)}>
                 {subCategory}
               </Button>)}
           </div>
