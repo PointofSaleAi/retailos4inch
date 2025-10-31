@@ -81,6 +81,7 @@ interface Product {
 interface NewOrderScreenProps {
   onCustomClick?: () => void;
   onFavoritesClick?: () => void;
+  onScanClick?: () => void;
   products: Product[];
   onToggleFavorite: (productId: number) => void;
   onAddToCart: (productId: number, quantity: number) => void;
@@ -89,6 +90,7 @@ interface NewOrderScreenProps {
 export const NewOrderScreen = ({ 
   onCustomClick, 
   onFavoritesClick,
+  onScanClick,
   products,
   onToggleFavorite,
   onAddToCart 
@@ -128,6 +130,7 @@ export const NewOrderScreen = ({
       <TopNavigation 
         onCustomClick={onCustomClick} 
         onFavoritesClick={onFavoritesClick}
+        onScanClick={onScanClick}
         onSearchChange={setSearchQuery}
       />
       

@@ -8,6 +8,7 @@ import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
 import { CustomPaymentScreen } from "./CustomPaymentScreen";
 import { FavoritesScreen } from "./FavoritesScreen";
+import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import product1 from "@/assets/product-1.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
@@ -37,6 +38,7 @@ export const RetailApp = () => {
   const [activeTab, setActiveTab] = useState("order");
   const [showCustomScreen, setShowCustomScreen] = useState(false);
   const [showFavoritesScreen, setShowFavoritesScreen] = useState(false);
+  const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
 
   const handleLogin = () => {
@@ -60,6 +62,10 @@ export const RetailApp = () => {
       return <LoginScreen onLogin={handleLogin} />;
     }
 
+    if (showBarcodeScanner) {
+      return <BarcodeScannerScreen onClose={() => setShowBarcodeScanner(false)} />;
+    }
+
     if (showFavoritesScreen) {
       return (
         <FavoritesScreen
@@ -80,6 +86,7 @@ export const RetailApp = () => {
           <NewOrderScreen
             onCustomClick={() => setShowCustomScreen(true)}
             onFavoritesClick={() => setShowFavoritesScreen(true)}
+            onScanClick={() => setShowBarcodeScanner(true)}
             products={products}
             onToggleFavorite={handleToggleFavorite}
             onAddToCart={handleAddToCart}
@@ -96,6 +103,7 @@ export const RetailApp = () => {
           <NewOrderScreen
             onCustomClick={() => setShowCustomScreen(true)}
             onFavoritesClick={() => setShowFavoritesScreen(true)}
+            onScanClick={() => setShowBarcodeScanner(true)}
             products={products}
             onToggleFavorite={handleToggleFavorite}
             onAddToCart={handleAddToCart}
@@ -110,7 +118,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}

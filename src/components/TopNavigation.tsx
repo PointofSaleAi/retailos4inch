@@ -15,9 +15,10 @@ interface TopNavigationProps {
   onCustomClick?: () => void;
   onFavoritesClick?: () => void;
   onSearchChange?: (query: string) => void;
+  onScanClick?: () => void;
 }
 
-export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange }: TopNavigationProps) => {
+export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange, onScanClick }: TopNavigationProps) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -92,8 +93,13 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange 
         >
           <img src={iconSearch20} alt="Search" className="w-5 h-5 min-w-5 min-h-5" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <img src={iconMaximize} alt="Maximize" className="w-5 h-5 min-w-5 min-h-5" />
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="h-8 w-8"
+          onClick={onScanClick}
+        >
+          <img src={iconMaximize} alt="Scan" className="w-5 h-5 min-w-5 min-h-5" />
         </Button>
         <Button variant="ghost" size="icon" className="h-8 w-8">
           <img src={iconMore} alt="More" className="w-5 h-5 min-w-5 min-h-5" />
