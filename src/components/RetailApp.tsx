@@ -57,8 +57,7 @@ export const RetailApp = () => {
 
   const handleBarcodeScanned = (barcode: string) => {
     console.log(`Scanned barcode: ${barcode}`);
-    // Here you would typically look up the product and add it to cart
-    setShowScannerScreen(false);
+    // In production, this would look up the product by barcode and add to cart
   };
 
   const favoriteProducts = products.filter(p => p.isFavorite);
@@ -72,7 +71,7 @@ export const RetailApp = () => {
       return (
         <BarcodeScannerScreen
           onClose={() => setShowScannerScreen(false)}
-          onBarcodeScanned={handleBarcodeScanned}
+          onScan={handleBarcodeScanned}
         />
       );
     }
