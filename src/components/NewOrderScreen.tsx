@@ -133,7 +133,7 @@ export const NewOrderScreen = ({
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
-        <div className="px-[6px] pt-2 space-y-1 flex-shrink-0">
+        <div className="px-[6px] pt-2 space-y-2 flex-shrink-0">
           {/* Main Categories with View Toggle and Dropdowns */}
           <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {!showFilters && (
@@ -208,7 +208,7 @@ export const NewOrderScreen = ({
         {/* Product Grid/List */}
         <div className="flex-1 p-[6px] overflow-y-auto scrollbar-hide">
           {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} />)}
+              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
             </div> : <div className="flex flex-col gap-2 pb-2">
               {filteredProducts.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
             </div>}
