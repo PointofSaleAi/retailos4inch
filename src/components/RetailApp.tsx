@@ -175,7 +175,8 @@ export const RetailApp = () => {
           name: item.name,
           price: item.price,
           quantity: item.quantity,
-          image: '' // Custom payment items don't have images
+          image: '', // Custom payment items don't have images
+          note: item.note
         }));
       } else {
         // Convert regular cart items to OrderSummary format
