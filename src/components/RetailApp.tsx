@@ -24,6 +24,12 @@ interface Product {
   isFavorite?: boolean;
 }
 
+interface CartItem {
+  productId: number;
+  quantity: number;
+  price: number;
+}
+
 const mockProducts: Product[] = [
   { id: 1, name: "Classic Cotton T-Shirt", price: 24.99, image: product1, isFavorite: false },
   { id: 2, name: "Slim Fit Denim Jeans", price: 49.99, image: product2, isFavorite: false },
@@ -40,6 +46,7 @@ export const RetailApp = () => {
   const [showFavoritesScreen, setShowFavoritesScreen] = useState(false);
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -52,8 +59,31 @@ export const RetailApp = () => {
   };
 
   const handleAddToCart = (productId: number, quantity: number) => {
-    console.log(`Added product ${productId} with quantity ${quantity} to cart`);
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(item => item.productId === productId);
+      
+      if (existingItem) {
+        // Update existing item
+        return prevItems.map(item =>
+          item.productId === productId
+            ? { ...item, quantity }
+            : item
+        ).filter(item => item.quantity > 0);
+      } else {
+        // Add new item
+        if (quantity > 0) {
+          return [...prevItems, { productId, quantity, price: product.price }];
+        }
+        return prevItems;
+      }
+    });
   };
+
+  const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const favoriteProducts = products.filter(p => p.isFavorite);
 
@@ -90,6 +120,8 @@ export const RetailApp = () => {
             products={products}
             onToggleFavorite={handleToggleFavorite}
             onAddToCart={handleAddToCart}
+            cartItemCount={cartItemCount}
+            cartTotal={cartTotal}
           />
         );
       case "transactions":
@@ -107,6 +139,8 @@ export const RetailApp = () => {
             products={products}
             onToggleFavorite={handleToggleFavorite}
             onAddToCart={handleAddToCart}
+            cartItemCount={cartItemCount}
+            cartTotal={cartTotal}
           />
         );
     }

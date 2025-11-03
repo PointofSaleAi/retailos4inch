@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { TopNavigation } from "./TopNavigation";
 import { ProductCard } from "./ProductCard";
 import { ProductListCard } from "./ProductListCard";
+import { CartStrip } from "./CartStrip";
 import { ChevronDown } from "lucide-react";
 import iconGrid from "@/assets/icon-grid.png";
 import iconList from "@/assets/icon-list.png";
@@ -85,6 +86,8 @@ interface NewOrderScreenProps {
   products: Product[];
   onToggleFavorite: (productId: number) => void;
   onAddToCart: (productId: number, quantity: number) => void;
+  cartItemCount: number;
+  cartTotal: number;
 }
 
 export const NewOrderScreen = ({ 
@@ -93,7 +96,9 @@ export const NewOrderScreen = ({
   onScanClick,
   products,
   onToggleFavorite,
-  onAddToCart 
+  onAddToCart,
+  cartItemCount,
+  cartTotal
 }: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedProductType, setSelectedProductType] = useState("Products");
@@ -133,6 +138,8 @@ export const NewOrderScreen = ({
         onScanClick={onScanClick}
         onSearchChange={setSearchQuery}
       />
+      
+      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
