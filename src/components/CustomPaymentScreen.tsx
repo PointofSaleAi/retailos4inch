@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CartStrip } from "./CartStrip";
 import iconCustom from "@/assets/icon-custom.png";
 import iconHeart from "@/assets/icon-heart.png";
 import iconSearch from "@/assets/icon-search.png";
@@ -12,11 +13,17 @@ import { X, Minus, Plus, Delete } from "lucide-react";
 interface CustomPaymentScreenProps {
   onClose: () => void;
   onAddCustomToCart: (item: { name: string; price: number; quantity: number; note: string }) => void;
+  cartItemCount: number;
+  cartTotal: number;
+  onCartClick: () => void;
 }
 
 export const CustomPaymentScreen = ({
   onClose,
-  onAddCustomToCart
+  onAddCustomToCart,
+  cartItemCount,
+  cartTotal,
+  onCartClick
 }: CustomPaymentScreenProps) => {
   const [quantity, setQuantity] = useState(1);
   const [amount, setAmount] = useState("0.00");
@@ -54,12 +61,11 @@ export const CustomPaymentScreen = ({
         note: note
       });
       
-      // Reset form and close
+      // Reset form but don't close - stay on screen to add more
       setAmount("0.00");
       setProductName("Product Name");
       setNote("");
       setQuantity(1);
-      onClose();
     }
   };
   return <div className="h-full flex flex-col bg-background">
@@ -84,6 +90,13 @@ export const CustomPaymentScreen = ({
           </Button>
         </div>
       </nav>
+
+      {/* Cart Strip */}
+      <CartStrip 
+        itemCount={cartItemCount} 
+        totalAmount={cartTotal} 
+        onClick={onCartClick}
+      />
 
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">

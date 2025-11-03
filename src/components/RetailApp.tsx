@@ -205,6 +205,9 @@ export const RetailApp = () => {
           cartItems={cartItemsWithDetails}
           onClose={() => {
             setShowOrderSummary(false);
+            if (showCustomScreen) {
+              setShowCustomScreen(true);
+            }
           }}
           onUpdateQuantity={(id, quantity) => {
             handleUpdateCartQuantity(id, quantity);
@@ -234,6 +237,12 @@ export const RetailApp = () => {
         <CustomPaymentScreen 
           onClose={() => setShowCustomScreen(false)} 
           onAddCustomToCart={handleAddCustomToCart}
+          cartItemCount={cartItemCount}
+          cartTotal={cartTotal}
+          onCartClick={() => {
+            setShowCustomScreen(false);
+            setShowOrderSummary(true);
+          }}
         />
       );
     }
