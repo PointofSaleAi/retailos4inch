@@ -40,7 +40,7 @@ export const OrderSummaryScreen = ({
     fontFamily: 'Montserrat, sans-serif'
   }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-3 h-[36px]">
+      <div className="flex items-center justify-between h-[36px] px-0">
         <button onClick={onClose} className="p-1 px-0 py-0">
           <ChevronLeft size={20} className="text-gray-700" />
         </button>
