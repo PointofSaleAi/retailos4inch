@@ -40,11 +40,11 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
 
   return (
     <div 
-      className="w-full h-full bg-white flex flex-col"
+      className="w-[186px] h-full bg-white flex flex-col mx-auto"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-3 border-b border-gray-200">
+      <div className="flex items-center justify-between px-3 h-[36px]">
         <button onClick={onClose} className="p-1">
           <ChevronLeft size={20} className="text-gray-700" />
         </button>
@@ -148,7 +148,7 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
       </div>
 
       {/* Billing Summary */}
-      <div className="border-t border-gray-200 px-3 py-3 space-y-2">
+      <div className="border-t border-gray-200 px-3 py-3 space-y-1">
         <div className="flex justify-between items-center">
           <span className="text-[11px] text-gray-700">Sub Total</span>
           <span className="text-[11px] font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
@@ -169,13 +169,13 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
 
       {/* Action Buttons */}
       <div className="flex items-center gap-2 px-3 pb-3 pt-2">
-        <button className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg bg-white">
-          <img src={iconNewOrder} alt="New Order" className="w-6 h-6" />
+        <button className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
+          <img src={iconNewOrder} alt="New Order" className="w-[18px] h-[18px]" />
         </button>
-        <button className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg bg-white">
-          <img src={iconSave} alt="Save" className="w-6 h-6" />
+        <button className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
+          <img src={iconSave} alt="Save" className="w-[18px] h-[18px]" />
         </button>
-        <button className="flex-1 h-12 bg-[#1A1A1A] text-white rounded-full font-bold text-[13px] flex items-center justify-center tracking-wide">
+        <button className="flex-1 h-[28px] bg-[#1A1A1A] text-white rounded-full font-bold text-[11px] flex items-center justify-center tracking-wide">
           CHARGE
         </button>
       </div>
