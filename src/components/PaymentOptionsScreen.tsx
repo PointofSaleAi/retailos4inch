@@ -89,7 +89,7 @@ export const PaymentOptionsScreen = ({
       </div>
 
       {/* Amount Display */}
-      <div className="px-3 pb-3">
+      <div className="pb-3 px-0">
         <div className="bg-gray-50 rounded-lg h-[30px] flex items-center justify-center border border-gray-200">
           <input type="text" value={`$${amount}`} readOnly className="w-full text-center text-[14px] font-semibold text-red-500 bg-transparent border-none outline-none" />
         </div>
