@@ -54,7 +54,7 @@ export const OrderSummaryScreen = ({
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {/* Customer Section */}
-        <div className="bg-gray-50 mx-3 mt-3 rounded-lg p-3 flex items-center gap-3">
+        <div className="bg-gray-50 mt-3 rounded-lg p-3 flex items-center gap-3 px-0 py-0 mx-0 my-[6px]">
           <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
             <User size={20} className="text-gray-600" />
           </div>
