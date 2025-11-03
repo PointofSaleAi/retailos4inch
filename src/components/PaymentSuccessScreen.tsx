@@ -46,6 +46,16 @@ export const PaymentSuccessScreen = ({
   const handleNoReceipt = () => {
     onClose();
   };
+
+  const handleSendText = () => {
+    console.log('Sending text to:', selectedCountryCode.code + phoneNumber);
+    // Add send logic here
+  };
+
+  const handleSendEmail = () => {
+    console.log('Sending email to:', email);
+    // Add send logic here
+  };
   return <div className="w-[186px] min-h-[186px] bg-white flex flex-col mx-auto" style={{
     fontFamily: 'Montserrat, sans-serif'
   }}>
@@ -133,10 +143,26 @@ export const PaymentSuccessScreen = ({
               ))}
             </div>
           )}
+          {phoneNumber && (
+            <button
+              onClick={handleSendText}
+              className="w-full h-[28px] bg-gray-900 text-white rounded-full font-semibold text-[11px] tracking-wide hover:bg-gray-800 transition-colors mt-[6px]"
+            >
+              SEND
+            </button>
+          )}
         </div>}
 
       {showEmailInput && <div className="mt-[6px] px-0">
           <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter email address" className="w-full h-[28px] px-[10px] border border-gray-200 rounded-lg text-[10px] focus:outline-none focus:border-gray-400" />
+          {email && (
+            <button
+              onClick={handleSendEmail}
+              className="w-full h-[28px] bg-gray-900 text-white rounded-full font-semibold text-[11px] tracking-wide hover:bg-gray-800 transition-colors mt-[6px]"
+            >
+              SEND
+            </button>
+          )}
         </div>}
 
       {/* NO RECEIPT Button */}
