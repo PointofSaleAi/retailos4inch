@@ -80,7 +80,7 @@ export const PaymentOptionsScreen = ({
                 filter: isSelected ? 'brightness(0) invert(1)' : 'none'
               }} />
                 </div>
-                <span className={`text-[10px] font-medium mt-2 ${isSelected ? 'text-gray-900' : 'text-gray-600'}`}>
+                <span className={`text-[8px] font-medium mt-[2px] ${isSelected ? 'text-gray-900' : 'text-gray-600'}`}>
                   {method.label}
                 </span>
               </button>;
@@ -90,8 +90,8 @@ export const PaymentOptionsScreen = ({
 
       {/* Amount Display */}
       <div className="px-3 pb-3">
-        <div className="bg-gray-50 rounded-lg py-3 px-4 text-center">
-          <input type="text" value={`$${amount}`} readOnly className="w-full text-center text-[24px] font-bold text-red-500 bg-transparent border-none outline-none" />
+        <div className="bg-gray-50 rounded-lg h-[30px] flex items-center justify-center">
+          <input type="text" value={`$${amount}`} readOnly className="w-full text-center text-[14px] font-semibold text-red-500 bg-transparent border-none outline-none" />
         </div>
       </div>
 
