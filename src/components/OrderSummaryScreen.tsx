@@ -56,8 +56,8 @@ export const OrderSummaryScreen = ({
       <div className="flex-1 overflow-y-auto">
         {/* Customer Section */}
         <div className="bg-gray-50 mt-3 rounded-lg p-3 flex items-center gap-3 px-0 py-0 mx-0 my-[6px]">
-          <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
-            <img src={iconCustomer} alt="Customer" className="w-5 h-5" />
+          <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+            <img src={iconCustomer} alt="Customer" className="w-6 h-6" />
           </div>
           <div className="flex-1 min-w-0">
             {isEditingName ? <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} onBlur={() => setIsEditingName(false)} className="text-[10px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingName(true)} className="text-[10px] font-semibold text-gray-900 cursor-pointer">
@@ -76,26 +76,26 @@ export const OrderSummaryScreen = ({
         {/* Cart Items */}
         <div className="px-3 mt-3 space-y-3">
           {cartItems.map(item => <div key={item.id} className="flex items-center gap-3 pb-3 border-b border-gray-100">
-              <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-md flex-shrink-0" />
+              <img src={item.image} alt={item.name} className="w-[35px] h-[35px] object-cover rounded-md flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <h3 className="text-[11px] font-semibold text-gray-900 leading-tight">
+                <h3 className="text-[10px] font-semibold text-gray-900 leading-tight">
                   {item.name}
                 </h3>
-                <p className="text-[9px] text-gray-600 mt-0.5">XS | Olive Green</p>
+                <p className="text-[8px] text-gray-600 mt-0.5">XS | Olive Green</p>
               </div>
               <div className="flex flex-col items-end gap-1 flex-shrink-0">
                 <div className="text-[13px] font-bold text-gray-900">
                   ${(item.price * item.quantity).toFixed(2)}
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <button onClick={() => handleQuantityChange(item.id, -1)} className="w-5 h-5 flex items-center justify-center border border-gray-300 rounded">
-                    <Minus size={10} className="text-gray-700" />
+                  <button onClick={() => handleQuantityChange(item.id, -1)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
+                    <Minus size={8} className="text-gray-700" />
                   </button>
                   <span className="text-[10px] font-medium text-gray-900 w-5 text-center">
                     {item.quantity}
                   </span>
-                  <button onClick={() => handleQuantityChange(item.id, 1)} className="w-5 h-5 flex items-center justify-center border border-gray-300 rounded">
-                    <Plus size={10} className="text-gray-700" />
+                  <button onClick={() => handleQuantityChange(item.id, 1)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
+                    <Plus size={8} className="text-gray-700" />
                   </button>
                 </div>
               </div>
