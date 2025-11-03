@@ -157,7 +157,7 @@ export const PaymentOptionsScreen = ({
       {/* Number Pad */}
       <div className="flex-1 pb-2 px-0">
         <div className="grid grid-cols-3 gap-2">
-          {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-[32px] rounded-lg font-semibold text-[16px] transition-colors ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
+          {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-[32px] rounded-lg font-semibold text-[16px] transition-colors border border-[#E8E8E8] ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
               {num}
             </button>)}
         </div>
@@ -165,7 +165,7 @@ export const PaymentOptionsScreen = ({
 
       {/* Charge Button */}
       <div className="pb-3 mt-auto px-0">
-        <button onClick={handleCharge} className="w-full h-12 bg-gray-900 text-white rounded-full font-bold text-[12px] tracking-wide">
+        <button onClick={handleCharge} className="w-full h-[28px] bg-gray-900 text-white rounded-full font-semibold text-[12px] tracking-wide">
           CHARGE ${amount}
         </button>
       </div>
