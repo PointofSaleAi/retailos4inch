@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Minus, Plus, ChevronLeft, MoreVertical, User } from 'lucide-react';
+import { Minus, Plus, ChevronLeft, MoreVertical } from 'lucide-react';
 import iconNewOrder from '@/assets/icon-new-order-order-summary.png';
 import iconSave from '@/assets/icon-save-order-summary.png';
+import iconCustomer from '@/assets/icon-customer.png';
 interface CartItem {
   id: number;
   name: string;
@@ -43,7 +44,7 @@ export const OrderSummaryScreen = ({
         <button onClick={onClose} className="p-1">
           <ChevronLeft size={20} className="text-gray-700" />
         </button>
-        <h1 className="text-[14px] font-semibold text-gray-900">
+        <h1 className="text-[12px] font-semibold text-gray-900">
           Current Sale ({cartItems.length})
         </h1>
         <button className="p-1">
@@ -56,10 +57,10 @@ export const OrderSummaryScreen = ({
         {/* Customer Section */}
         <div className="bg-gray-50 mt-3 rounded-lg p-3 flex items-center gap-3 px-0 py-0 mx-0 my-[6px]">
           <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
-            <User size={20} className="text-gray-600" />
+            <img src={iconCustomer} alt="Customer" className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
-            {isEditingName ? <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} onBlur={() => setIsEditingName(false)} className="text-[12px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingName(true)} className="text-[12px] font-semibold text-gray-900 cursor-pointer">
+            {isEditingName ? <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} onBlur={() => setIsEditingName(false)} className="text-[10px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingName(true)} className="text-[10px] font-semibold text-gray-900 cursor-pointer">
                 {customerName}
               </div>}
             {isEditingPhone ? <input type="tel" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} onBlur={() => setIsEditingPhone(false)} className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingPhone(true)} className="text-[10px] text-gray-600 cursor-pointer">
@@ -82,19 +83,19 @@ export const OrderSummaryScreen = ({
                 </h3>
                 <p className="text-[9px] text-gray-600 mt-0.5">XS | Olive Green</p>
               </div>
-              <div className="flex flex-col items-end gap-2 flex-shrink-0">
+              <div className="flex flex-col items-end gap-1 flex-shrink-0">
                 <div className="text-[13px] font-bold text-gray-900">
                   ${(item.price * item.quantity).toFixed(2)}
                 </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => handleQuantityChange(item.id, -1)} className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded">
-                    <Minus size={12} className="text-gray-700" />
+                <div className="flex items-center gap-1.5">
+                  <button onClick={() => handleQuantityChange(item.id, -1)} className="w-5 h-5 flex items-center justify-center border border-gray-300 rounded">
+                    <Minus size={10} className="text-gray-700" />
                   </button>
-                  <span className="text-[11px] font-medium text-gray-900 w-6 text-center">
+                  <span className="text-[10px] font-medium text-gray-900 w-5 text-center">
                     {item.quantity}
                   </span>
-                  <button onClick={() => handleQuantityChange(item.id, 1)} className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded">
-                    <Plus size={12} className="text-gray-700" />
+                  <button onClick={() => handleQuantityChange(item.id, 1)} className="w-5 h-5 flex items-center justify-center border border-gray-300 rounded">
+                    <Plus size={10} className="text-gray-700" />
                   </button>
                 </div>
               </div>
