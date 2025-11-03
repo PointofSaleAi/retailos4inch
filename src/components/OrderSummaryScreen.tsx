@@ -73,7 +73,7 @@ export const OrderSummaryScreen = ({
         </div>
 
         {/* Cart Items */}
-        <div className="px-3 mt-3 space-y-3">
+        <div className="mt-3 space-y-3 px-0 my-[6px]">
           {cartItems.map(item => <div key={item.id} className="flex items-center gap-3 pb-3 border-b border-gray-100">
               <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-md flex-shrink-0" />
               <div className="flex-1 min-w-0">
