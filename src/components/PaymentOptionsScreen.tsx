@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { X, CreditCard, DollarSign, Gift, ArrowRightLeft } from 'lucide-react';
+import { X } from 'lucide-react';
+import iconCard from '@/assets/icon-payment-card.png';
+import iconCash from '@/assets/icon-payment-cash.png';
+import iconGift from '@/assets/icon-payment-gift.png';
+import iconOther from '@/assets/icon-payment-other.png';
 
 interface PaymentOptionsScreenProps {
   totalDue: number;
@@ -18,10 +22,10 @@ export const PaymentOptionsScreen = ({
   const [amount, setAmount] = useState(totalDue.toFixed(2));
 
   const paymentMethods = [
-    { id: 'Card', label: 'Card', icon: CreditCard },
-    { id: 'Cash', label: 'Cash', icon: DollarSign },
-    { id: 'Gift Card', label: 'Gift Card', icon: Gift },
-    { id: 'Other', label: 'Other', icon: ArrowRightLeft }
+    { id: 'Card', label: 'Card', icon: iconCard },
+    { id: 'Cash', label: 'Cash', icon: iconCash },
+    { id: 'Gift Card', label: 'Gift Card', icon: iconGift },
+    { id: 'Other', label: 'Other', icon: iconOther }
   ];
 
   const handleNumberClick = (num: string) => {
@@ -68,24 +72,32 @@ export const PaymentOptionsScreen = ({
       <div className="px-3 py-4">
         <div className="grid grid-cols-4 gap-2">
           {paymentMethods.map((method) => {
-            const Icon = method.icon;
             const isSelected = selectedMethod === method.id;
             return (
               <button
                 key={method.id}
                 onClick={() => setSelectedMethod(method.id as PaymentMethod)}
-                className={`flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors ${
-                  isSelected 
-                    ? 'bg-gray-900 text-white' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}
+                className="flex flex-col items-center transition-colors"
               >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  isSelected ? 'bg-gray-800' : 'bg-white'
-                }`}>
-                  <Icon size={16} className={isSelected ? 'text-white' : 'text-gray-600'} />
+                <div 
+                  className={`w-[40px] h-[40px] rounded-full flex items-center justify-center border transition-colors ${
+                    isSelected 
+                      ? 'bg-[#1A1A1A] border-[#1A1A1A]' 
+                      : 'bg-white border-[#E8E8E8]'
+                  }`}
+                >
+                  <img 
+                    src={method.icon} 
+                    alt={method.label}
+                    className="w-[20px] h-auto"
+                    style={{ filter: isSelected ? 'brightness(0) invert(1)' : 'none' }}
+                  />
                 </div>
-                <span className="text-[9px] font-medium">{method.label}</span>
+                <span className={`text-[10px] font-medium mt-2 ${
+                  isSelected ? 'text-gray-900' : 'text-gray-600'
+                }`}>
+                  {method.label}
+                </span>
               </button>
             );
           })}
