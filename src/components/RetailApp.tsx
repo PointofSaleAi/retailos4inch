@@ -9,6 +9,7 @@ import { BottomNavigation } from "./BottomNavigation";
 import { CustomPaymentScreen } from "./CustomPaymentScreen";
 import { FavoritesScreen } from "./FavoritesScreen";
 import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
+import { OrderSummaryScreen } from "./OrderSummaryScreen";
 import product1 from "@/assets/product-1.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
@@ -45,6 +46,7 @@ export const RetailApp = () => {
   const [showCustomScreen, setShowCustomScreen] = useState(false);
   const [showFavoritesScreen, setShowFavoritesScreen] = useState(false);
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
+  const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -82,6 +84,16 @@ export const RetailApp = () => {
     });
   };
 
+  const handleUpdateCartQuantity = (productId: number, quantity: number) => {
+    setCartItems(prevItems => {
+      return prevItems.map(item =>
+        item.productId === productId
+          ? { ...item, quantity }
+          : item
+      ).filter(item => item.quantity > 0);
+    });
+  };
+
   const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -94,6 +106,27 @@ export const RetailApp = () => {
 
     if (showBarcodeScanner) {
       return <BarcodeScannerScreen onClose={() => setShowBarcodeScanner(false)} />;
+    }
+
+    if (showOrderSummary) {
+      const cartItemsWithDetails = cartItems.map(item => {
+        const product = products.find(p => p.id === item.productId);
+        return {
+          id: item.productId,
+          name: product?.name || '',
+          price: item.price,
+          quantity: item.quantity,
+          image: product?.image || ''
+        };
+      });
+      
+      return (
+        <OrderSummaryScreen
+          cartItems={cartItemsWithDetails}
+          onClose={() => setShowOrderSummary(false)}
+          onUpdateQuantity={handleUpdateCartQuantity}
+        />
+      );
     }
 
     if (showFavoritesScreen) {
@@ -122,6 +155,7 @@ export const RetailApp = () => {
             onAddToCart={handleAddToCart}
             cartItemCount={cartItemCount}
             cartTotal={cartTotal}
+            onCartClick={() => setShowOrderSummary(true)}
           />
         );
       case "transactions":
@@ -141,6 +175,7 @@ export const RetailApp = () => {
             onAddToCart={handleAddToCart}
             cartItemCount={cartItemCount}
             cartTotal={cartTotal}
+            onCartClick={() => setShowOrderSummary(true)}
           />
         );
     }
@@ -152,7 +187,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}

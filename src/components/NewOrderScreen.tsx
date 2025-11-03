@@ -88,6 +88,7 @@ interface NewOrderScreenProps {
   onAddToCart: (productId: number, quantity: number) => void;
   cartItemCount: number;
   cartTotal: number;
+  onCartClick?: () => void;
 }
 
 export const NewOrderScreen = ({ 
@@ -98,7 +99,8 @@ export const NewOrderScreen = ({
   onToggleFavorite,
   onAddToCart,
   cartItemCount,
-  cartTotal
+  cartTotal,
+  onCartClick
 }: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedProductType, setSelectedProductType] = useState("Products");
@@ -139,7 +141,7 @@ export const NewOrderScreen = ({
         onSearchChange={setSearchQuery}
       />
       
-      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} />
+      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
