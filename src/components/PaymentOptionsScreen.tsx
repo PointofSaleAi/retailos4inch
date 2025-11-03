@@ -59,7 +59,7 @@ export const PaymentOptionsScreen = ({
     fontFamily: 'Montserrat, sans-serif'
   }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-3 border-b border-gray-100">
+      <div className="flex items-center justify-between border-b border-gray-100 px-0 py-[6px]">
         <div className="flex items-baseline gap-1.5">
           <span className="text-[12px] font-semibold text-gray-900">Total Due</span>
           <span className="text-[14px] font-bold text-red-500">${totalDue.toFixed(2)}</span>
