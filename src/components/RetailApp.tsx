@@ -10,6 +10,7 @@ import { CustomPaymentScreen } from "./CustomPaymentScreen";
 import { FavoritesScreen } from "./FavoritesScreen";
 import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import { OrderSummaryScreen } from "./OrderSummaryScreen";
+import { PaymentOptionsScreen } from "./PaymentOptionsScreen";
 import product1 from "@/assets/product-1.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
@@ -64,6 +65,7 @@ export const RetailApp = () => {
   const [showFavoritesScreen, setShowFavoritesScreen] = useState(false);
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
   const [showOrderSummary, setShowOrderSummary] = useState(false);
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -175,6 +177,36 @@ export const RetailApp = () => {
     }
   };
 
+  const handleConfirmPayment = (paymentMethod: string, amount: number) => {
+    if (cartItems.length === 0) return;
+
+    const now = new Date();
+    const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+    const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    
+    const firstItem = cartItems[0];
+    const productName = firstItem.type === 'product' 
+      ? (products.find(p => p.id === firstItem.productId)?.name.substring(0, 15) || 'Order')
+      : (firstItem.name?.substring(0, 15) || 'Custom Order');
+    
+    const newTransaction: Transaction = {
+      id: Date.now().toString(),
+      icon: "document",
+      product: productName,
+      quantity: cartItems.reduce((sum, item) => sum + item.quantity, 0),
+      date,
+      time,
+      amount: amount,
+      status: "Paid",
+      cartItems: [...cartItems]
+    };
+
+    setTransactions(prev => [newTransaction, ...prev]);
+    setCartItems([]);
+    setShowPaymentOptions(false);
+    setActiveTab("order");
+  };
+
   const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -187,6 +219,24 @@ export const RetailApp = () => {
 
     if (showBarcodeScanner) {
       return <BarcodeScannerScreen onClose={() => setShowBarcodeScanner(false)} />;
+    }
+
+    if (showPaymentOptions) {
+      const TAX_RATE = 0.08;
+      const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const tax = subtotal * TAX_RATE;
+      const totalDue = subtotal + tax;
+
+      return (
+        <PaymentOptionsScreen
+          totalDue={totalDue}
+          onClose={() => {
+            setShowPaymentOptions(false);
+            setShowOrderSummary(true);
+          }}
+          onConfirmPayment={handleConfirmPayment}
+        />
+      );
     }
 
     if (showOrderSummary) {
@@ -217,6 +267,10 @@ export const RetailApp = () => {
           }}
           onSaveOrder={() => {
             handleSaveOrder();
+          }}
+          onCharge={() => {
+            setShowOrderSummary(false);
+            setShowPaymentOptions(true);
           }}
         />
       );
@@ -291,7 +345,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}

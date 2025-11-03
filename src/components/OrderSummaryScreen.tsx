@@ -17,13 +17,15 @@ interface OrderSummaryScreenProps {
   onUpdateQuantity: (id: string, quantity: number) => void;
   onNewOrder: () => void;
   onSaveOrder: () => void;
+  onCharge: () => void;
 }
 export const OrderSummaryScreen = ({
   cartItems,
   onClose,
   onUpdateQuantity,
   onNewOrder,
-  onSaveOrder
+  onSaveOrder,
+  onCharge
 }: OrderSummaryScreenProps) => {
   const [customerName, setCustomerName] = useState('Customer Name');
   const [customerPhone, setCustomerPhone] = useState('(xxx) xxx xxxx');
@@ -140,7 +142,7 @@ export const OrderSummaryScreen = ({
         <button onClick={onSaveOrder} className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
           <img src={iconSave} alt="Save" className="w-[18px] h-[18px]" />
         </button>
-        <button className="flex-1 h-[28px] bg-[#1A1A1A] text-white rounded-full font-bold text-[11px] flex items-center justify-center tracking-wide">
+        <button onClick={onCharge} className="flex-1 h-[28px] bg-[#1A1A1A] text-white rounded-full font-bold text-[11px] flex items-center justify-center tracking-wide">
           CHARGE
         </button>
       </div>
