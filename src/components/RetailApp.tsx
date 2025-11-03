@@ -31,6 +31,17 @@ interface CartItem {
   price: number;
 }
 
+interface Transaction {
+  id: string;
+  icon: "document" | "grid" | "tag" | "camera";
+  product: string;
+  quantity: number;
+  date: string;
+  time: string;
+  amount: number;
+  status: "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
+}
+
 const mockProducts: Product[] = [
   { id: 1, name: "Classic Cotton T-Shirt", price: 24.99, image: product1, isFavorite: false },
   { id: 2, name: "Slim Fit Denim Jeans", price: 49.99, image: product2, isFavorite: false },
@@ -49,6 +60,7 @@ export const RetailApp = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -94,6 +106,38 @@ export const RetailApp = () => {
     });
   };
 
+  const handleNewOrder = () => {
+    setShowOrderSummary(false);
+    setActiveTab("order");
+  };
+
+  const handleSaveOrder = () => {
+    if (cartItems.length === 0) return;
+
+    const now = new Date();
+    const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+    const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    
+    const firstProduct = products.find(p => p.id === cartItems[0].productId);
+    const productName = firstProduct?.name.substring(0, 15) || 'Order';
+    
+    const newTransaction: Transaction = {
+      id: Date.now().toString(),
+      icon: "document",
+      product: productName,
+      quantity: cartItems.reduce((sum, item) => sum + item.quantity, 0),
+      date,
+      time,
+      amount: cartTotal,
+      status: "Pending"
+    };
+
+    setTransactions(prev => [newTransaction, ...prev]);
+    setCartItems([]);
+    setShowOrderSummary(false);
+    setActiveTab("order");
+  };
+
   const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -125,6 +169,8 @@ export const RetailApp = () => {
           cartItems={cartItemsWithDetails}
           onClose={() => setShowOrderSummary(false)}
           onUpdateQuantity={handleUpdateCartQuantity}
+          onNewOrder={handleNewOrder}
+          onSaveOrder={handleSaveOrder}
         />
       );
     }
@@ -159,7 +205,7 @@ export const RetailApp = () => {
           />
         );
       case "transactions":
-        return <TransactionsScreen />;
+        return <TransactionsScreen transactions={transactions} />;
       case "customer":
         return <CustomerScreen />;
       case "settings":

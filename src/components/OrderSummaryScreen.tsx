@@ -14,11 +14,15 @@ interface OrderSummaryScreenProps {
   cartItems: CartItem[];
   onClose: () => void;
   onUpdateQuantity: (id: number, quantity: number) => void;
+  onNewOrder: () => void;
+  onSaveOrder: () => void;
 }
 export const OrderSummaryScreen = ({
   cartItems,
   onClose,
-  onUpdateQuantity
+  onUpdateQuantity,
+  onNewOrder,
+  onSaveOrder
 }: OrderSummaryScreenProps) => {
   const [customerName, setCustomerName] = useState('Customer Name');
   const [customerPhone, setCustomerPhone] = useState('(xxx) xxx xxxx');
@@ -125,10 +129,10 @@ export const OrderSummaryScreen = ({
 
       {/* Action Buttons */}
       <div className="flex items-center gap-2 pb-3 pt-2 px-0 py-[6px]">
-        <button className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
+        <button onClick={onNewOrder} className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
           <img src={iconNewOrder} alt="New Order" className="w-[18px] h-[18px]" />
         </button>
-        <button className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
+        <button onClick={onSaveOrder} className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
           <img src={iconSave} alt="Save" className="w-[18px] h-[18px]" />
         </button>
         <button className="flex-1 h-[28px] bg-[#1A1A1A] text-white rounded-full font-bold text-[11px] flex items-center justify-center tracking-wide">

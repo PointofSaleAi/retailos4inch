@@ -4,8 +4,8 @@ import iconDocument from "@/assets/icon-document.png";
 import iconGrid from "@/assets/icon-grid-tx.png";
 import iconTag from "@/assets/icon-tag-tx.png";
 import iconCamera from "@/assets/icon-camera-tx.png";
-type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering";
-type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled";
+type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
+type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled" | "Pending";
 interface Transaction {
   id: string;
   icon: "document" | "grid" | "tag" | "camera";
@@ -15,6 +15,10 @@ interface Transaction {
   time: string;
   amount: number;
   status: TransactionStatus;
+}
+
+interface TransactionsScreenProps {
+  transactions?: Transaction[];
 }
 const mockTransactions: Transaction[] = [{
   id: "1",
@@ -72,11 +76,13 @@ const statusColors = {
   Paid: "text-success",
   Refunded: "text-destructive",
   Failed: "text-destructive",
-  Ordering: "text-warning"
+  Ordering: "text-warning",
+  Pending: "text-warning"
 };
-export const TransactionsScreen = () => {
+export const TransactionsScreen = ({ transactions = [] }: TransactionsScreenProps) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("All");
-  const filteredTransactions = mockTransactions.filter(transaction => {
+  const allTransactions = [...transactions, ...mockTransactions];
+  const filteredTransactions = allTransactions.filter(transaction => {
     if (activeFilter === "All") return true;
     return transaction.status === activeFilter;
   });
@@ -99,7 +105,7 @@ export const TransactionsScreen = () => {
 
       {/* Filters */}
       <div className="flex-shrink-0 flex gap-1.5 overflow-x-auto scrollbar-hide px-[6px] py-[6px]">
-        {(["All", "Ordering", "Refunded", "Paid", "Payment Progress", "Completed", "Cancelled"] as FilterType[]).map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${activeFilter === filter ? "bg-foreground text-background" : "text-muted-foreground"}`} style={activeFilter !== filter ? { backgroundColor: '#F1F2F5' } : undefined}>
+        {(["All", "Pending", "Ordering", "Refunded", "Paid", "Payment Progress", "Completed", "Cancelled"] as FilterType[]).map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${activeFilter === filter ? "bg-foreground text-background" : "text-muted-foreground"}`} style={activeFilter !== filter ? { backgroundColor: '#F1F2F5' } : undefined}>
             {filter}
           </button>)}
       </div>
