@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CartStrip } from "./CartStrip";
 import iconCustom from "@/assets/icon-custom.png";
 import iconHeart from "@/assets/icon-heart.png";
 import iconSearch from "@/assets/icon-search.png";
@@ -19,17 +20,22 @@ interface CartItem {
 
 interface CustomPaymentScreenProps {
   onClose: () => void;
+  onCartClick?: () => void;
+  cartItems: CartItem[];
+  onCartItemsChange: (items: CartItem[]) => void;
 }
 
 export const CustomPaymentScreen = ({
-  onClose
+  onClose,
+  onCartClick,
+  cartItems,
+  onCartItemsChange
 }: CustomPaymentScreenProps) => {
   const [quantity, setQuantity] = useState(1);
   const [amount, setAmount] = useState("0.00");
   const [productName, setProductName] = useState("Product Name");
   const [note, setNote] = useState("");
   const [isEditingProductName, setIsEditingProductName] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const handleNumberClick = (num: string) => {
     if (amount === "0.00") {
       setAmount(`0.${num}`);
@@ -61,7 +67,7 @@ export const CustomPaymentScreen = ({
         quantity: quantity,
         note: note
       };
-      setCartItems([newItem, ...cartItems]);
+      onCartItemsChange([newItem, ...cartItems]);
       
       // Reset form
       setAmount("0.00");
@@ -96,11 +102,12 @@ export const CustomPaymentScreen = ({
         </div>
       </nav>
 
-      {/* Header with Product Count and Total */}
-      <div className="bg-foreground text-background px-3 h-[24px] flex items-center justify-between">
-        <span className="text-[10px] font-semibold">{productCount} Product</span>
-        <span className="text-[10px] font-semibold">${totalAmount}</span>
-      </div>
+      {/* Cart Strip */}
+      <CartStrip 
+        itemCount={productCount} 
+        totalAmount={parseFloat(totalAmount)} 
+        onClick={onCartClick}
+      />
 
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">

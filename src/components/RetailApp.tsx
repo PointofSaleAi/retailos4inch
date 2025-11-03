@@ -61,6 +61,8 @@ export const RetailApp = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [customCartItems, setCustomCartItems] = useState<CartItem[]>([]);
+  const [customPaymentCart, setCustomPaymentCart] = useState<Array<{id: string, name: string, price: number, quantity: number, note: string}>>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const handleLogin = () => {
@@ -163,24 +165,87 @@ export const RetailApp = () => {
     }
 
     if (showOrderSummary) {
-      const cartItemsWithDetails = cartItems.map(item => {
-        const product = products.find(p => p.id === item.productId);
-        return {
-          id: item.productId,
-          name: product?.name || '',
+      const isCustomPayment = customPaymentCart.length > 0 && cartItems.length === 0;
+      
+      let cartItemsWithDetails;
+      if (isCustomPayment) {
+        // Convert custom payment items to OrderSummary format
+        cartItemsWithDetails = customPaymentCart.map(item => ({
+          id: parseInt(item.id),
+          name: item.name,
           price: item.price,
           quantity: item.quantity,
-          image: product?.image || ''
-        };
-      });
+          image: '' // Custom payment items don't have images
+        }));
+      } else {
+        // Convert regular cart items to OrderSummary format
+        cartItemsWithDetails = cartItems.map(item => {
+          const product = products.find(p => p.id === item.productId);
+          return {
+            id: item.productId,
+            name: product?.name || '',
+            price: item.price,
+            quantity: item.quantity,
+            image: product?.image || ''
+          };
+        });
+      }
       
       return (
         <OrderSummaryScreen
           cartItems={cartItemsWithDetails}
-          onClose={() => setShowOrderSummary(false)}
-          onUpdateQuantity={handleUpdateCartQuantity}
-          onNewOrder={handleNewOrder}
-          onSaveOrder={handleSaveOrder}
+          onClose={() => {
+            setShowOrderSummary(false);
+            if (isCustomPayment) {
+              setShowCustomScreen(true);
+            }
+          }}
+          onUpdateQuantity={(id, quantity) => {
+            if (isCustomPayment) {
+              setCustomPaymentCart(prev => 
+                prev.map(item => 
+                  parseInt(item.id) === id ? { ...item, quantity } : item
+                ).filter(item => item.quantity > 0)
+              );
+            } else {
+              handleUpdateCartQuantity(id, quantity);
+            }
+          }}
+          onNewOrder={() => {
+            setCustomPaymentCart([]);
+            handleNewOrder();
+          }}
+          onSaveOrder={() => {
+            if (isCustomPayment) {
+              // Save custom payment order
+              const now = new Date();
+              const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+              const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+              
+              const productName = customPaymentCart[0]?.name.substring(0, 15) || 'Custom Order';
+              const total = customPaymentCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+              
+              const newTransaction: Transaction = {
+                id: Date.now().toString(),
+                icon: "document",
+                product: productName,
+                quantity: customPaymentCart.reduce((sum, item) => sum + item.quantity, 0),
+                date,
+                time,
+                amount: total,
+                status: "Pending",
+                cartItems: []
+              };
+
+              setTransactions(prev => [newTransaction, ...prev]);
+              setCustomPaymentCart([]);
+              setShowOrderSummary(false);
+              setShowCustomScreen(false);
+              setActiveTab("order");
+            } else {
+              handleSaveOrder();
+            }
+          }}
         />
       );
     }
@@ -196,7 +261,17 @@ export const RetailApp = () => {
     }
 
     if (showCustomScreen) {
-      return <CustomPaymentScreen onClose={() => setShowCustomScreen(false)} />;
+      return (
+        <CustomPaymentScreen 
+          onClose={() => setShowCustomScreen(false)} 
+          onCartClick={() => {
+            setShowCustomScreen(false);
+            setShowOrderSummary(true);
+          }}
+          cartItems={customPaymentCart}
+          onCartItemsChange={setCustomPaymentCart}
+        />
+      );
     }
 
     switch (activeTab) {
