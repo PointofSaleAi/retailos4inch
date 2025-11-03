@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Minus, Plus, ChevronLeft, MoreVertical, User, Save, Receipt } from 'lucide-react';
+import { Minus, Plus, ChevronLeft, MoreVertical, User } from 'lucide-react';
+import iconNewOrder from '@/assets/icon-new-order-order-summary.png';
+import iconSave from '@/assets/icon-save-order-summary.png';
 
 interface CartItem {
   id: number;
@@ -167,13 +169,13 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
 
       {/* Action Buttons */}
       <div className="flex items-center gap-2 px-3 pb-3 pt-2">
-        <button className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg">
-          <Receipt size={20} className="text-gray-700" />
+        <button className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg bg-white">
+          <img src={iconNewOrder} alt="New Order" className="w-6 h-6" />
         </button>
-        <button className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg">
-          <Save size={20} className="text-gray-700" />
+        <button className="w-12 h-12 flex items-center justify-center border border-gray-300 rounded-lg bg-white">
+          <img src={iconSave} alt="Save" className="w-6 h-6" />
         </button>
-        <button className="flex-1 h-12 bg-[#1A1A1A] text-white rounded-full font-bold text-[14px] flex items-center justify-center">
+        <button className="flex-1 h-12 bg-[#1A1A1A] text-white rounded-full font-bold text-[13px] flex items-center justify-center tracking-wide">
           CHARGE
         </button>
       </div>
