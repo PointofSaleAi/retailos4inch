@@ -35,17 +35,39 @@ export const PaymentOptionsScreen = ({
     label: 'Other',
     icon: iconOther
   }];
-
-  const otherPaymentMethods = [
-    { id: 'Pay By Link', label: 'Pay By Link', icon: Link },
-    { id: 'QR Code', label: 'QR Code', icon: QrCode },
-    { id: 'Split Payment', label: 'Split Payment', icon: ArrowUpDown },
-    { id: 'Account', label: 'Account', icon: User },
-    { id: 'Loyalty', label: 'Loyalty', icon: Gift },
-    { id: 'Manual CC', label: 'Manual CC', icon: CreditCard },
-    { id: 'Manual Card', label: 'Manual Card', icon: CreditCard },
-    { id: 'External CC', label: 'External CC', icon: Upload }
-  ];
+  const otherPaymentMethods = [{
+    id: 'Pay By Link',
+    label: 'Pay By Link',
+    icon: Link
+  }, {
+    id: 'QR Code',
+    label: 'QR Code',
+    icon: QrCode
+  }, {
+    id: 'Split Payment',
+    label: 'Split Payment',
+    icon: ArrowUpDown
+  }, {
+    id: 'Account',
+    label: 'Account',
+    icon: User
+  }, {
+    id: 'Loyalty',
+    label: 'Loyalty',
+    icon: Gift
+  }, {
+    id: 'Manual CC',
+    label: 'Manual CC',
+    icon: CreditCard
+  }, {
+    id: 'Manual Card',
+    label: 'Manual Card',
+    icon: CreditCard
+  }, {
+    id: 'External CC',
+    label: 'External CC',
+    icon: Upload
+  }];
   const handleNumberClick = (num: string) => {
     if (num === 'C') {
       setAmount('0.00');
@@ -67,7 +89,6 @@ export const PaymentOptionsScreen = ({
   const handleCharge = () => {
     onConfirmPayment(selectedMethod, parseFloat(amount));
   };
-
   const handleMethodSelect = (methodId: PaymentMethod) => {
     setSelectedMethod(methodId);
     if (methodId === 'Other') {
@@ -110,39 +131,31 @@ export const PaymentOptionsScreen = ({
       </div>
 
       {/* Other Payment Options */}
-      {showOtherOptions && (
-        <div className="py-2 px-3">
+      {showOtherOptions && <div className="py-2 px-3">
           <div className="grid grid-cols-3 gap-2">
             {otherPaymentMethods.map(method => {
-              const Icon = method.icon;
-              return (
-                <button 
-                  key={method.id} 
-                  onClick={() => setSelectedMethod(method.id as PaymentMethod)}
-                  className="flex flex-col items-center transition-colors px-2 py-2"
-                >
+          const Icon = method.icon;
+          return <button key={method.id} onClick={() => setSelectedMethod(method.id as PaymentMethod)} className="flex flex-col items-center transition-colors px-2 py-2">
                   <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center border border-[#E8E8E8] bg-white">
                     <Icon size={20} className="text-gray-700" />
                   </div>
                   <span className="text-[8px] font-medium mt-[2px] whitespace-nowrap text-gray-600">
                     {method.label}
                   </span>
-                </button>
-              );
-            })}
+                </button>;
+        })}
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* Amount Display */}
-      <div className="pb-3 px-3">
+      <div className="pb-3 px-0">
         <div className="bg-gray-50 rounded-lg h-[30px] w-[186px] mx-auto flex items-center justify-center border border-gray-200">
           <input type="text" value={`$${amount}`} readOnly className="w-full text-center text-[14px] font-semibold text-red-500 bg-transparent border-none outline-none" />
         </div>
       </div>
 
       {/* Number Pad */}
-      <div className="flex-1 pb-2 px-3">
+      <div className="flex-1 pb-2 px-0">
         <div className="grid grid-cols-3 gap-2">
           {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-[32px] rounded-lg font-semibold text-[16px] transition-colors ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
               {num}
@@ -151,7 +164,7 @@ export const PaymentOptionsScreen = ({
       </div>
 
       {/* Charge Button */}
-      <div className="px-3 pb-3 mt-auto">
+      <div className="pb-3 mt-auto px-0">
         <button onClick={handleCharge} className="w-full h-12 bg-gray-900 text-white rounded-full font-bold text-[12px] tracking-wide">
           CHARGE ${amount}
         </button>
