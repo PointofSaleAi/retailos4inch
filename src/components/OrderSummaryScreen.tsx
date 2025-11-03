@@ -123,7 +123,7 @@ export const OrderSummaryScreen = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-2 px-3 pb-3 pt-2">
+      <div className="flex items-center gap-2 pb-3 pt-2 px-0 py-[6px]">
         <button className="flex items-center justify-center rounded-lg bg-[#F1F2F5] p-1">
           <img src={iconNewOrder} alt="New Order" className="w-[18px] h-[18px]" />
         </button>
