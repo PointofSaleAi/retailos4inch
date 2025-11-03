@@ -61,7 +61,7 @@ export const PaymentOptionsScreen = ({
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-3 border-b border-gray-100">
         <div className="flex items-baseline gap-1.5">
-          <span className="text-[14px] font-semibold text-gray-900">Total Due</span>
+          <span className="text-[12px] font-semibold text-gray-900">Total Due</span>
           <span className="text-[14px] font-bold text-red-500">${totalDue.toFixed(2)}</span>
         </div>
         <button onClick={onClose} className="p-0">
@@ -80,7 +80,7 @@ export const PaymentOptionsScreen = ({
                 filter: isSelected ? 'brightness(0) invert(1)' : 'none'
               }} />
                 </div>
-                <span className={`text-[8px] font-medium mt-[2px] ${isSelected ? 'text-gray-900' : 'text-gray-600'}`}>
+                <span className={`text-[8px] font-medium mt-[2px] whitespace-nowrap ${isSelected ? 'text-gray-900' : 'text-gray-600'}`}>
                   {method.label}
                 </span>
               </button>;
@@ -90,7 +90,7 @@ export const PaymentOptionsScreen = ({
 
       {/* Amount Display */}
       <div className="px-3 pb-3">
-        <div className="bg-gray-50 rounded-lg h-[30px] flex items-center justify-center">
+        <div className="bg-gray-50 rounded-lg h-[30px] flex items-center justify-center border border-gray-200">
           <input type="text" value={`$${amount}`} readOnly className="w-full text-center text-[14px] font-semibold text-red-500 bg-transparent border-none outline-none" />
         </div>
       </div>
@@ -98,7 +98,7 @@ export const PaymentOptionsScreen = ({
       {/* Number Pad */}
       <div className="flex-1 pb-3 px-0">
         <div className="grid grid-cols-3 gap-2">
-          {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-12 rounded-lg font-semibold text-[18px] transition-colors ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
+          {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-[36px] rounded-lg font-semibold text-[16px] transition-colors ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
               {num}
             </button>)}
         </div>
