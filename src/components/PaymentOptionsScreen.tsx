@@ -96,7 +96,7 @@ export const PaymentOptionsScreen = ({
       </div>
 
       {/* Number Pad */}
-      <div className="flex-1 px-3 pb-3">
+      <div className="flex-1 pb-3 px-0">
         <div className="grid grid-cols-3 gap-2">
           {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-12 rounded-lg font-semibold text-[18px] transition-colors ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
               {num}
