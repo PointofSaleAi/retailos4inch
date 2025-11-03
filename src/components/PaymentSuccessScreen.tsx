@@ -1,9 +1,22 @@
-import { X } from 'lucide-react';
+import { X, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import iconSuccessCheck from '@/assets/icon-success-check.png';
 import iconReceiptPrint from '@/assets/icon-receipt-print.png';
 import iconReceiptText from '@/assets/icon-receipt-text.png';
 import iconReceiptEmail from '@/assets/icon-receipt-email.png';
+
+const countryCodes = [
+  { code: '+1', country: 'US', flag: '🇺🇸' },
+  { code: '+44', country: 'GB', flag: '🇬🇧' },
+  { code: '+91', country: 'IN', flag: '🇮🇳' },
+  { code: '+86', country: 'CN', flag: '🇨🇳' },
+  { code: '+81', country: 'JP', flag: '🇯🇵' },
+  { code: '+49', country: 'DE', flag: '🇩🇪' },
+  { code: '+33', country: 'FR', flag: '🇫🇷' },
+  { code: '+61', country: 'AU', flag: '🇦🇺' },
+  { code: '+971', country: 'AE', flag: '🇦🇪' },
+  { code: '+966', country: 'SA', flag: '🇸🇦' },
+];
 interface PaymentSuccessScreenProps {
   amount: number;
   onClose: () => void;
@@ -16,6 +29,8 @@ export const PaymentSuccessScreen = ({
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [selectedCountryCode, setSelectedCountryCode] = useState(countryCodes[0]);
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const handlePrint = () => {
     // Print logic here
     console.log('Print receipt');
@@ -66,23 +81,58 @@ export const PaymentSuccessScreen = ({
       <div className="flex justify-center gap-2 px-0">
         <button onClick={handlePrint} className="flex flex-col items-center justify-center w-[58px] h-[58px] rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors">
           <img src={iconReceiptPrint} alt="Print" className="w-[18px] h-[18px] mb-[4px]" />
-          <span className="text-[10px] font-semibold text-gray-900">Print</span>
+          <span className="text-[8px] font-semibold text-gray-900">Print</span>
         </button>
 
         <button onClick={handleText} className="flex flex-col items-center justify-center w-[58px] h-[58px] rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors">
           <img src={iconReceiptText} alt="Text" className="w-[18px] h-[18px] mb-[4px]" />
-          <span className="text-[10px] font-semibold text-gray-900">Text</span>
+          <span className="text-[8px] font-semibold text-gray-900">Text</span>
         </button>
 
         <button onClick={handleEmail} className="flex flex-col items-center justify-center w-[58px] h-[58px] rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors">
           <img src={iconReceiptEmail} alt="Email" className="w-[18px] h-[18px] mb-[4px]" />
-          <span className="text-[10px] font-semibold text-gray-900">Email</span>
+          <span className="text-[8px] font-semibold text-gray-900">Email</span>
         </button>
       </div>
 
       {/* Conditional Input Fields */}
-      {showTextInput && <div className="mt-[6px] px-0">
-          <input type="tel" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} placeholder="Enter phone number" className="w-full h-[28px] px-[10px] border border-gray-200 rounded-lg text-[10px] focus:outline-none focus:border-gray-400" />
+      {showTextInput && <div className="mt-[6px] px-0 relative">
+          <div className="relative flex items-center w-full h-[28px] border border-gray-200 rounded-lg focus-within:border-gray-400">
+            <button
+              type="button"
+              onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+              className="flex items-center gap-1 px-2 border-r border-gray-200 h-full"
+            >
+              <span className="text-[12px]">{selectedCountryCode.flag}</span>
+              <span className="text-[10px] text-gray-900">{selectedCountryCode.code}</span>
+              <ChevronDown size={10} className="text-gray-600" />
+            </button>
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={e => setPhoneNumber(e.target.value)}
+              placeholder="Enter phone number"
+              className="flex-1 h-full px-[10px] text-[10px] focus:outline-none bg-transparent"
+            />
+          </div>
+          {showCountryDropdown && (
+            <div className="absolute z-10 mt-1 w-full max-h-[120px] overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+              {countryCodes.map((country) => (
+                <button
+                  key={country.code}
+                  onClick={() => {
+                    setSelectedCountryCode(country);
+                    setShowCountryDropdown(false);
+                  }}
+                  className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 text-left"
+                >
+                  <span className="text-[12px]">{country.flag}</span>
+                  <span className="text-[10px] text-gray-900">{country.code}</span>
+                  <span className="text-[9px] text-gray-500">{country.country}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>}
 
       {showEmailInput && <div className="mt-[6px] px-0">
