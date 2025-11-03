@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Minus, Plus, ChevronLeft, MoreVertical, User } from 'lucide-react';
 import iconNewOrder from '@/assets/icon-new-order-order-summary.png';
 import iconSave from '@/assets/icon-save-order-summary.png';
-
 interface CartItem {
   id: number;
   name: string;
@@ -10,26 +9,25 @@ interface CartItem {
   quantity: number;
   image: string;
 }
-
 interface OrderSummaryScreenProps {
   cartItems: CartItem[];
   onClose: () => void;
   onUpdateQuantity: (id: number, quantity: number) => void;
 }
-
-export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: OrderSummaryScreenProps) => {
+export const OrderSummaryScreen = ({
+  cartItems,
+  onClose,
+  onUpdateQuantity
+}: OrderSummaryScreenProps) => {
   const [customerName, setCustomerName] = useState('Customer Name');
   const [customerPhone, setCustomerPhone] = useState('(xxx) xxx xxxx');
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
-
   const TAX_RATE = 0.08;
-  
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discount = 0;
   const tax = subtotal * TAX_RATE;
   const total = subtotal - discount + tax;
-
   const handleQuantityChange = (id: number, delta: number) => {
     const item = cartItems.find(i => i.id === id);
     if (item) {
@@ -37,12 +35,9 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
       onUpdateQuantity(id, newQuantity);
     }
   };
-
-  return (
-    <div 
-      className="w-[186px] h-full bg-white flex flex-col mx-auto"
-      style={{ fontFamily: 'Montserrat, sans-serif' }}
-    >
+  return <div className="w-[186px] h-full bg-white flex flex-col mx-auto" style={{
+    fontFamily: 'Montserrat, sans-serif'
+  }}>
       {/* Header */}
       <div className="flex items-center justify-between px-3 h-[36px]">
         <button onClick={onClose} className="p-1">
@@ -64,40 +59,12 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
             <User size={20} className="text-gray-600" />
           </div>
           <div className="flex-1 min-w-0">
-            {isEditingName ? (
-              <input
-                type="text"
-                value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
-                onBlur={() => setIsEditingName(false)}
-                className="text-[12px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full"
-                autoFocus
-              />
-            ) : (
-              <div 
-                onClick={() => setIsEditingName(true)}
-                className="text-[12px] font-semibold text-gray-900 cursor-pointer"
-              >
+            {isEditingName ? <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} onBlur={() => setIsEditingName(false)} className="text-[12px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingName(true)} className="text-[12px] font-semibold text-gray-900 cursor-pointer">
                 {customerName}
-              </div>
-            )}
-            {isEditingPhone ? (
-              <input
-                type="tel"
-                value={customerPhone}
-                onChange={(e) => setCustomerPhone(e.target.value)}
-                onBlur={() => setIsEditingPhone(false)}
-                className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full"
-                autoFocus
-              />
-            ) : (
-              <div 
-                onClick={() => setIsEditingPhone(true)}
-                className="text-[10px] text-gray-600 cursor-pointer"
-              >
+              </div>}
+            {isEditingPhone ? <input type="tel" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} onBlur={() => setIsEditingPhone(false)} className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingPhone(true)} className="text-[10px] text-gray-600 cursor-pointer">
                 {customerPhone}
-              </div>
-            )}
+              </div>}
           </div>
           <div className="text-right flex-shrink-0">
             <div className="text-[11px] font-semibold text-gray-900">0 Points</div>
@@ -107,13 +74,8 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
 
         {/* Cart Items */}
         <div className="px-3 mt-3 space-y-3">
-          {cartItems.map((item) => (
-            <div key={item.id} className="flex items-center gap-3 pb-3 border-b border-gray-100">
-              <img 
-                src={item.image} 
-                alt={item.name}
-                className="w-12 h-12 object-cover rounded-md flex-shrink-0"
-              />
+          {cartItems.map(item => <div key={item.id} className="flex items-center gap-3 pb-3 border-b border-gray-100">
+              <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-md flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <h3 className="text-[11px] font-semibold text-gray-900 leading-tight">
                   {item.name}
@@ -125,30 +87,23 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
                   ${(item.price * item.quantity).toFixed(2)}
                 </div>
                 <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => handleQuantityChange(item.id, -1)}
-                    className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded"
-                  >
+                  <button onClick={() => handleQuantityChange(item.id, -1)} className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded">
                     <Minus size={12} className="text-gray-700" />
                   </button>
                   <span className="text-[11px] font-medium text-gray-900 w-6 text-center">
                     {item.quantity}
                   </span>
-                  <button 
-                    onClick={() => handleQuantityChange(item.id, 1)}
-                    className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded"
-                  >
+                  <button onClick={() => handleQuantityChange(item.id, 1)} className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded">
                     <Plus size={12} className="text-gray-700" />
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
+            </div>)}
         </div>
       </div>
 
       {/* Billing Summary */}
-      <div className="border-t border-gray-200 px-3 py-3 space-y-1">
+      <div className="border-t border-gray-200 space-y-1 px-0 py-0">
         <div className="flex justify-between items-center">
           <span className="text-[11px] text-gray-700">Sub Total</span>
           <span className="text-[11px] font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
@@ -179,6 +134,5 @@ export const OrderSummaryScreen = ({ cartItems, onClose, onUpdateQuantity }: Ord
           CHARGE
         </button>
       </div>
-    </div>
-  );
+    </div>;
 };
