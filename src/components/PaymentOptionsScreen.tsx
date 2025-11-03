@@ -101,7 +101,7 @@ export const PaymentOptionsScreen = ({
     fontFamily: 'Montserrat, sans-serif'
   }}>
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-gray-100 px-3 py-[6px]">
+      <div className="flex items-center justify-between border-b border-gray-100 py-[6px] px-0">
         <div className="flex-1 flex justify-center items-baseline gap-1.5">
           <span className="text-[12px] font-semibold text-gray-900">Total Due</span>
           <span className="text-[14px] font-bold text-red-500">${totalDue.toFixed(2)}</span>
@@ -116,7 +116,7 @@ export const PaymentOptionsScreen = ({
         <div className="grid grid-cols-4 gap-2">
           {paymentMethods.map(method => {
           const isSelected = selectedMethod === method.id;
-          return <button key={method.id} onClick={() => handleMethodSelect(method.id as PaymentMethod)} className="flex flex-col items-center transition-colors mx-0 px-[8px] py-[8px]">
+          return <button key={method.id} onClick={() => handleMethodSelect(method.id as PaymentMethod)} className="flex flex-col items-center transition-colors mx-0 px-[8px] py-[6px]">
                 <div className={`w-[40px] h-[40px] rounded-full flex items-center justify-center border transition-colors ${isSelected ? 'bg-[#1A1A1A] border-[#1A1A1A]' : 'bg-white border-[#E8E8E8]'}`}>
                   <img src={method.icon} alt={method.label} className="w-[20px] h-auto" style={{
                 filter: isSelected ? 'brightness(0) invert(1)' : 'none'
