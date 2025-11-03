@@ -4,7 +4,7 @@ import iconNewOrder from '@/assets/icon-new-order-order-summary.png';
 import iconSave from '@/assets/icon-save-order-summary.png';
 import iconCustomer from '@/assets/icon-customer.png';
 interface CartItem {
-  id: number;
+  id: string;
   name: string;
   price: number;
   quantity: number;
@@ -14,7 +14,7 @@ interface CartItem {
 interface OrderSummaryScreenProps {
   cartItems: CartItem[];
   onClose: () => void;
-  onUpdateQuantity: (id: number, quantity: number) => void;
+  onUpdateQuantity: (id: string, quantity: number) => void;
   onNewOrder: () => void;
   onSaveOrder: () => void;
 }
@@ -34,7 +34,7 @@ export const OrderSummaryScreen = ({
   const discount = 0;
   const tax = subtotal * TAX_RATE;
   const total = subtotal - discount + tax;
-  const handleQuantityChange = (id: number, delta: number) => {
+  const handleQuantityChange = (id: string, delta: number) => {
     const item = cartItems.find(i => i.id === id);
     if (item) {
       const newQuantity = Math.max(0, item.quantity + delta);

@@ -26,9 +26,14 @@ interface Product {
 }
 
 interface CartItem {
-  productId: number;
+  id: string;
+  type: 'product' | 'custom';
+  productId?: number;
+  name?: string;
   quantity: number;
   price: number;
+  note?: string;
+  image?: string;
 }
 
 interface Transaction {
@@ -61,8 +66,6 @@ export const RetailApp = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [customCartItems, setCustomCartItems] = useState<CartItem[]>([]);
-  const [customPaymentCart, setCustomPaymentCart] = useState<Array<{id: string, name: string, price: number, quantity: number, note: string}>>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const handleLogin = () => {
@@ -80,29 +83,49 @@ export const RetailApp = () => {
     if (!product) return;
 
     setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.productId === productId);
+      const existingItem = prevItems.find(item => item.type === 'product' && item.productId === productId);
       
       if (existingItem) {
         // Update existing item
         return prevItems.map(item =>
-          item.productId === productId
+          item.type === 'product' && item.productId === productId
             ? { ...item, quantity }
             : item
         ).filter(item => item.quantity > 0);
       } else {
         // Add new item
         if (quantity > 0) {
-          return [...prevItems, { productId, quantity, price: product.price }];
+          return [...prevItems, { 
+            id: `product-${productId}`,
+            type: 'product',
+            productId, 
+            quantity, 
+            price: product.price,
+            image: product.image,
+            name: product.name
+          }];
         }
         return prevItems;
       }
     });
   };
 
-  const handleUpdateCartQuantity = (productId: number, quantity: number) => {
+  const handleAddCustomToCart = (customItem: { name: string; price: number; quantity: number; note: string }) => {
+    const newItem: CartItem = {
+      id: `custom-${Date.now()}`,
+      type: 'custom',
+      name: customItem.name,
+      price: customItem.price,
+      quantity: customItem.quantity,
+      note: customItem.note
+    };
+    setCartItems(prevItems => [newItem, ...prevItems]);
+  };
+
+  const handleUpdateCartQuantity = (itemId: string, quantity: number) => {
     setCartItems(prevItems => {
       return prevItems.map(item =>
-        item.productId === productId
+        item.id === itemId
           ? { ...item, quantity }
           : item
       ).filter(item => item.quantity > 0);
@@ -121,8 +144,10 @@ export const RetailApp = () => {
     const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
     
-    const firstProduct = products.find(p => p.id === cartItems[0].productId);
-    const productName = firstProduct?.name.substring(0, 15) || 'Order';
+    const firstItem = cartItems[0];
+    const productName = firstItem.type === 'product' 
+      ? (products.find(p => p.id === firstItem.productId)?.name.substring(0, 15) || 'Order')
+      : (firstItem.name?.substring(0, 15) || 'Custom Order');
     
     const newTransaction: Transaction = {
       id: Date.now().toString(),
@@ -165,87 +190,30 @@ export const RetailApp = () => {
     }
 
     if (showOrderSummary) {
-      const isCustomPayment = customPaymentCart.length > 0 && cartItems.length === 0;
-      
-      let cartItemsWithDetails;
-      if (isCustomPayment) {
-        // Convert custom payment items to OrderSummary format
-        cartItemsWithDetails = customPaymentCart.map(item => ({
-          id: parseInt(item.id),
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          image: '', // Custom payment items don't have images
-          note: item.note
-        }));
-      } else {
-        // Convert regular cart items to OrderSummary format
-        cartItemsWithDetails = cartItems.map(item => {
-          const product = products.find(p => p.id === item.productId);
-          return {
-            id: item.productId,
-            name: product?.name || '',
-            price: item.price,
-            quantity: item.quantity,
-            image: product?.image || ''
-          };
-        });
-      }
+      // Convert unified cart items to OrderSummary format
+      const cartItemsWithDetails = cartItems.map(item => ({
+        id: item.id,
+        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        price: item.price,
+        quantity: item.quantity,
+        image: item.type === 'product' ? (products.find(p => p.id === item.productId)?.image || '') : '',
+        note: item.note
+      }));
       
       return (
         <OrderSummaryScreen
           cartItems={cartItemsWithDetails}
           onClose={() => {
             setShowOrderSummary(false);
-            if (isCustomPayment) {
-              setShowCustomScreen(true);
-            }
           }}
           onUpdateQuantity={(id, quantity) => {
-            if (isCustomPayment) {
-              setCustomPaymentCart(prev => 
-                prev.map(item => 
-                  parseInt(item.id) === id ? { ...item, quantity } : item
-                ).filter(item => item.quantity > 0)
-              );
-            } else {
-              handleUpdateCartQuantity(id, quantity);
-            }
+            handleUpdateCartQuantity(id, quantity);
           }}
           onNewOrder={() => {
-            setCustomPaymentCart([]);
             handleNewOrder();
           }}
           onSaveOrder={() => {
-            if (isCustomPayment) {
-              // Save custom payment order
-              const now = new Date();
-              const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-              const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-              
-              const productName = customPaymentCart[0]?.name.substring(0, 15) || 'Custom Order';
-              const total = customPaymentCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-              
-              const newTransaction: Transaction = {
-                id: Date.now().toString(),
-                icon: "document",
-                product: productName,
-                quantity: customPaymentCart.reduce((sum, item) => sum + item.quantity, 0),
-                date,
-                time,
-                amount: total,
-                status: "Pending",
-                cartItems: []
-              };
-
-              setTransactions(prev => [newTransaction, ...prev]);
-              setCustomPaymentCart([]);
-              setShowOrderSummary(false);
-              setShowCustomScreen(false);
-              setActiveTab("order");
-            } else {
-              handleSaveOrder();
-            }
+            handleSaveOrder();
           }}
         />
       );
@@ -265,12 +233,7 @@ export const RetailApp = () => {
       return (
         <CustomPaymentScreen 
           onClose={() => setShowCustomScreen(false)} 
-          onCartClick={() => {
-            setShowCustomScreen(false);
-            setShowOrderSummary(true);
-          }}
-          cartItems={customPaymentCart}
-          onCartItemsChange={setCustomPaymentCart}
+          onAddCustomToCart={handleAddCustomToCart}
         />
       );
     }

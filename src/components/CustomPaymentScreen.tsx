@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CartStrip } from "./CartStrip";
 import iconCustom from "@/assets/icon-custom.png";
 import iconHeart from "@/assets/icon-heart.png";
 import iconSearch from "@/assets/icon-search.png";
@@ -10,26 +9,14 @@ import iconMore from "@/assets/icon-more.png";
 import iconNote from "@/assets/icon-note.png";
 import { X, Minus, Plus, Delete } from "lucide-react";
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  note: string;
-}
-
 interface CustomPaymentScreenProps {
   onClose: () => void;
-  onCartClick?: () => void;
-  cartItems: CartItem[];
-  onCartItemsChange: (items: CartItem[]) => void;
+  onAddCustomToCart: (item: { name: string; price: number; quantity: number; note: string }) => void;
 }
 
 export const CustomPaymentScreen = ({
   onClose,
-  onCartClick,
-  cartItems,
-  onCartItemsChange
+  onAddCustomToCart
 }: CustomPaymentScreenProps) => {
   const [quantity, setQuantity] = useState(1);
   const [amount, setAmount] = useState("0.00");
@@ -60,25 +47,21 @@ export const CustomPaymentScreen = ({
   const handleAddToCart = () => {
     const price = parseFloat(amount);
     if (price > 0) {
-      const newItem: CartItem = {
-        id: Date.now().toString(),
+      onAddCustomToCart({
         name: productName,
         price: price,
         quantity: quantity,
         note: note
-      };
-      onCartItemsChange([newItem, ...cartItems]);
+      });
       
-      // Reset form
+      // Reset form and close
       setAmount("0.00");
       setProductName("Product Name");
       setNote("");
       setQuantity(1);
+      onClose();
     }
   };
-
-  const productCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
   return <div className="h-full flex flex-col bg-background">
       {/* Top Navigation */}
       <nav className="flex items-center justify-between px-[6px] py-2 bg-surface">
@@ -101,13 +84,6 @@ export const CustomPaymentScreen = ({
           </Button>
         </div>
       </nav>
-
-      {/* Cart Strip */}
-      <CartStrip 
-        itemCount={productCount} 
-        totalAmount={parseFloat(totalAmount)} 
-        onClick={onCartClick}
-      />
 
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">
