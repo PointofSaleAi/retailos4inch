@@ -85,7 +85,7 @@ export const PaymentSuccessScreen = ({
           <input type="tel" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} placeholder="Enter phone number" className="w-full h-[28px] px-[10px] border border-gray-200 rounded-lg text-[10px] focus:outline-none focus:border-gray-400" />
         </div>}
 
-      {showEmailInput && <div className="px-[12px] mt-[6px]">
+      {showEmailInput && <div className="mt-[6px] px-0">
           <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter email address" className="w-full h-[28px] px-[10px] border border-gray-200 rounded-lg text-[10px] focus:outline-none focus:border-gray-400" />
         </div>}
 
