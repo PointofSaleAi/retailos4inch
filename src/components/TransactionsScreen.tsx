@@ -19,6 +19,7 @@ interface Transaction {
 
 interface TransactionsScreenProps {
   transactions?: Transaction[];
+  onTransactionClick?: (transactionId: string) => void;
 }
 const mockTransactions: Transaction[] = [{
   id: "1",
@@ -79,7 +80,7 @@ const statusColors = {
   Ordering: "text-warning",
   Pending: "text-warning"
 };
-export const TransactionsScreen = ({ transactions = [] }: TransactionsScreenProps) => {
+export const TransactionsScreen = ({ transactions = [], onTransactionClick }: TransactionsScreenProps) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("All");
   const allTransactions = [...transactions, ...mockTransactions];
   const filteredTransactions = allTransactions.filter(transaction => {
@@ -115,7 +116,13 @@ export const TransactionsScreen = ({ transactions = [] }: TransactionsScreenProp
         <div className="px-3 py-2 space-y-2 flex flex-col items-center">
           {filteredTransactions.map(transaction => {
           const iconSrc = iconMap[transaction.icon];
-          return <div key={transaction.id} className="flex items-center gap-2 p-2 bg-surface rounded-lg border border-border" style={{ width: '186px' }}>
+          const isPending = transaction.status === "Pending";
+          return <div 
+                key={transaction.id} 
+                className={`flex items-center gap-2 p-2 bg-surface rounded-lg border border-border ${isPending ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`} 
+                style={{ width: '186px' }}
+                onClick={() => isPending && onTransactionClick?.(transaction.id)}
+              >
                 <div className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#F1F2F5' }}>
                   <img src={iconSrc} alt="" className="w-3 h-3" />
                 </div>

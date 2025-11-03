@@ -40,6 +40,7 @@ interface Transaction {
   time: string;
   amount: number;
   status: "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
+  cartItems?: CartItem[];
 }
 
 const mockProducts: Product[] = [
@@ -129,13 +130,22 @@ export const RetailApp = () => {
       date,
       time,
       amount: cartTotal,
-      status: "Pending"
+      status: "Pending",
+      cartItems: [...cartItems]
     };
 
     setTransactions(prev => [newTransaction, ...prev]);
     setCartItems([]);
     setShowOrderSummary(false);
     setActiveTab("order");
+  };
+
+  const handleOpenPendingTransaction = (transactionId: string) => {
+    const transaction = transactions.find(t => t.id === transactionId);
+    if (transaction && transaction.status === "Pending" && transaction.cartItems) {
+      setCartItems(transaction.cartItems);
+      setShowOrderSummary(true);
+    }
   };
 
   const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -205,7 +215,7 @@ export const RetailApp = () => {
           />
         );
       case "transactions":
-        return <TransactionsScreen transactions={transactions} />;
+        return <TransactionsScreen transactions={transactions} onTransactionClick={handleOpenPendingTransaction} />;
       case "customer":
         return <CustomerScreen />;
       case "settings":
