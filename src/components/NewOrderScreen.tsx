@@ -133,17 +133,18 @@ export const NewOrderScreen = ({
       return () => container.removeEventListener('scroll', handleScroll);
     }
   }, []);
-  return <div className="h-full flex flex-col bg-background animate-fade-in overflow-hidden">
-      <TopNavigation 
-        onCustomClick={onCustomClick} 
-        onFavoritesClick={onFavoritesClick}
-        onScanClick={onScanClick}
-        onSearchChange={setSearchQuery}
-      />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
+  return <div className="h-full flex flex-col bg-background animate-fade-in">
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide pb-[60px]">
+        <TopNavigation 
+          onCustomClick={onCustomClick} 
+          onFavoritesClick={onFavoritesClick}
+          onScanClick={onScanClick}
+          onSearchChange={setSearchQuery}
+        />
+        
         {/* Category Filters */}
-        <div className="px-[6px] pt-1 space-y-1 flex-shrink-0">
+        <div className="px-[6px] pt-1 space-y-1">
           {/* Main Categories with View Toggle and Dropdowns */}
           <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {!showFilters && (
@@ -216,7 +217,7 @@ export const NewOrderScreen = ({
         </div>
         
         {/* Product Grid/List */}
-        <div className="flex-1 p-[6px] overflow-y-auto scrollbar-hide">
+        <div className="p-[6px]">
           {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
               {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} />)}
             </div> : <div className="flex flex-col gap-2 pb-2">
@@ -225,6 +226,9 @@ export const NewOrderScreen = ({
         </div>
       </div>
       
-      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
+      {/* Fixed Cart Strip at bottom */}
+      <div className="fixed bottom-[56px] left-0 right-0">
+        <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
+      </div>
     </div>;
 };
