@@ -28,14 +28,14 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
 
   const getNameStyles = () => {
     const nameLength = product.name.length;
-    if (nameLength <= 15) {
-      return "text-[11px] font-bold leading-tight";
-    } else if (nameLength <= 25) {
-      return "text-[10px] font-semibold leading-tight";
-    } else if (nameLength <= 35) {
-      return "text-[9px] font-medium leading-tight";
+    if (nameLength <= 12) {
+      return "text-[11px] font-bold leading-[1.15]";
+    } else if (nameLength <= 20) {
+      return "text-[9.5px] font-semibold leading-[1.15]";
+    } else if (nameLength <= 28) {
+      return "text-[8.5px] font-medium leading-[1.15]";
     } else {
-      return "text-[8px] font-normal leading-tight";
+      return "text-[7.5px] font-normal leading-[1.15]";
     }
   };
 
@@ -45,7 +45,7 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
         quantity > 0 ? 'border border-[#000]' : 'border border-border'
       }`}>
         <div className="flex-1 flex flex-col gap-0.5 min-w-0">
-          <h3 className={`${getNameStyles()} line-clamp-2`}>
+          <h3 className={`${getNameStyles()} break-words h-[24px] overflow-hidden`}>
             {product.name}
           </h3>
           <span className="text-[10px] font-bold text-price">

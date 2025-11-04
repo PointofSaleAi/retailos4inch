@@ -29,11 +29,11 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
 
   const getNameStyles = () => {
     const nameLength = product.name.length;
-    if (nameLength <= 15) {
+    if (nameLength <= 12) {
       return "font-bold";
-    } else if (nameLength <= 25) {
+    } else if (nameLength <= 20) {
       return "font-semibold";
-    } else if (nameLength <= 35) {
+    } else if (nameLength <= 28) {
       return "font-medium";
     } else {
       return "font-normal";
@@ -43,15 +43,15 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
   const getNameFontSize = (isHideImage: boolean) => {
     const nameLength = product.name.length;
     if (isHideImage) {
-      if (nameLength <= 15) return "text-[11px]";
-      else if (nameLength <= 25) return "text-[10px]";
-      else if (nameLength <= 35) return "text-[9px]";
-      else return "text-[8px]";
+      if (nameLength <= 12) return "text-[11px]";
+      else if (nameLength <= 20) return "text-[9.5px]";
+      else if (nameLength <= 28) return "text-[8.5px]";
+      else return "text-[7.5px]";
     } else {
-      if (nameLength <= 15) return "text-[13px]";
-      else if (nameLength <= 25) return "text-[12px]";
-      else if (nameLength <= 35) return "text-[11px]";
-      else return "text-[10px]";
+      if (nameLength <= 12) return "text-[13px]";
+      else if (nameLength <= 20) return "text-[11px]";
+      else if (nameLength <= 28) return "text-[10px]";
+      else return "text-[9px]";
     }
   };
 
@@ -61,7 +61,7 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
         <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[65px] flex flex-col p-1.5 relative cursor-pointer ${
           quantity > 0 ? 'border border-[#000]' : 'border border-border'
         }`}>
-          <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-tight line-clamp-2 mb-0.5`} style={{ color: '#414141' }}>
+          <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words h-[26px] mb-0.5 overflow-hidden`} style={{ color: '#414141' }}>
             {product.name}
           </h3>
           <div className="flex items-center justify-between mt-auto">
@@ -110,7 +110,7 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
         </div>
         
         <div className="p-1 flex flex-col flex-1 justify-between">
-          <h3 className={`${getNameFontSize(false)} ${getNameStyles()} leading-tight line-clamp-2`}>
+          <h3 className={`${getNameFontSize(false)} ${getNameStyles()} leading-[1.15] break-words h-[28px] overflow-hidden`}>
             {product.name}
           </h3>
           <span className="text-[10px] font-bold text-price">
