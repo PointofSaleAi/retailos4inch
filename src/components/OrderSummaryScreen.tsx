@@ -51,12 +51,19 @@ export const OrderSummaryScreen = ({
         <button onClick={onClose} className="p-1 px-0 py-0">
           <ChevronLeft size={20} className="text-gray-700" />
         </button>
-        <h1 className="text-[14px] font-semibold text-gray-900">
-          Current Sale ({cartItems.length})
+        <h1 className="text-[10px] font-semibold text-gray-900">
+          Order Summary
         </h1>
         <button className="p-1">
           <MoreVertical size={20} className="text-gray-700" />
         </button>
+      </div>
+
+      {/* Amount Due */}
+      <div className="text-center py-2">
+        <div className="text-[12px] font-bold text-gray-900">
+          Amount Due <span className="text-[#FF0000]">${total.toFixed(2)}</span>
+        </div>
       </div>
 
       {/* Scrollable Content */}
@@ -128,10 +135,6 @@ export const OrderSummaryScreen = ({
           <span className="text-[11px] text-gray-700">Tax @ 8%</span>
           <span className="text-[11px] font-semibold text-gray-900">${tax.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-          <span className="text-[14px] font-bold text-gray-900">Total Due</span>
-          <span className="text-[14px] font-bold text-gray-900">${total.toFixed(2)}</span>
-        </div>
       </div>
 
       {/* Action Buttons */}
@@ -143,7 +146,7 @@ export const OrderSummaryScreen = ({
           <img src={iconSave} alt="Save" className="w-[18px] h-[18px]" />
         </button>
         <button onClick={onCharge} className="flex-1 h-[28px] bg-[#1A1A1A] text-white rounded-full font-bold text-[11px] flex items-center justify-center tracking-wide">
-          CHARGE
+          CHARGE ${total.toFixed(2)}
         </button>
       </div>
     </div>;
