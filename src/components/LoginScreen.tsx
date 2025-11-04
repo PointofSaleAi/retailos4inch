@@ -36,7 +36,7 @@ export const LoginScreen = ({
               Password
             </Label>
             <div className="relative w-full">
-              <Input id="password" type={showPassword ? "text" : "password"} placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="h-[28px] w-full pr-10 text-xs" required />
+              <Input id="password" type={showPassword ? "text" : "password"} placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required className="h-[28px] w-full pr-10 text-xs py-0" />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
                 {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
               </button>
@@ -44,8 +44,8 @@ export const LoginScreen = ({
           </div>
         </div>
         
-        <div className="space-y-2 mt-[20px]">
-          <Button type="submit" variant="retail" size="retail-full" className="h-[28px]">
+        <div className="space-y-2 mt-[20px] my-[22px]">
+          <Button type="submit" variant="retail" size="retail-full" className="h-[28px] my-px">
             SIGN IN
           </Button>
           
