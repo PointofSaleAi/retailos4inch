@@ -135,7 +135,7 @@ export const NewOrderScreen = ({
   }, []);
   return <div className="h-full flex flex-col bg-background animate-fade-in">
       {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide pb-[60px]">
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
         <TopNavigation 
           onCustomClick={onCustomClick} 
           onFavoritesClick={onFavoritesClick}
@@ -217,7 +217,7 @@ export const NewOrderScreen = ({
         </div>
         
         {/* Product Grid/List */}
-        <div className="p-[6px]">
+        <div className="p-[6px] pb-[60px]">
           {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
               {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} />)}
             </div> : <div className="flex flex-col gap-2 pb-2">
@@ -226,8 +226,8 @@ export const NewOrderScreen = ({
         </div>
       </div>
       
-      {/* Fixed Cart Strip at bottom */}
-      <div className="fixed bottom-[56px] left-0 right-0">
+      {/* Fixed Cart Strip at bottom inside container */}
+      <div className="absolute bottom-0 left-0 right-0">
         <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
       </div>
     </div>;
