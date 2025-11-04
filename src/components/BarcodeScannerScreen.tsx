@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CartStrip } from "./CartStrip";
 import { X, Flashlight, FlashlightOff } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
@@ -8,9 +9,12 @@ import { useToast } from "@/hooks/use-toast";
 interface BarcodeScannerScreenProps {
   onClose: () => void;
   onScanSuccess?: (barcode: string) => void;
+  cartItemCount: number;
+  cartTotal: number;
+  onCartClick?: () => void;
 }
 
-export const BarcodeScannerScreen = ({ onClose, onScanSuccess }: BarcodeScannerScreenProps) => {
+export const BarcodeScannerScreen = ({ onClose, onScanSuccess, cartItemCount, cartTotal, onCartClick }: BarcodeScannerScreenProps) => {
   const [scanning, setScanning] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [torchEnabled, setTorchEnabled] = useState(false);
@@ -158,7 +162,7 @@ export const BarcodeScannerScreen = ({ onClose, onScanSuccess }: BarcodeScannerS
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
+    <div className="fixed inset-0 flex items-center justify-center z-50 animate-fade-in" style={{ backgroundColor: 'rgba(33, 33, 33, 0.7)' }}>
       <div 
         className="relative bg-black/90 rounded-lg flex flex-col items-center justify-start overflow-hidden"
         style={{ 
@@ -262,6 +266,15 @@ export const BarcodeScannerScreen = ({ onClose, onScanSuccess }: BarcodeScannerS
             </div>
           </div>
         )}
+
+        {/* Cart Strip at Bottom */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <CartStrip 
+            itemCount={cartItemCount} 
+            totalAmount={cartTotal} 
+            onClick={onCartClick} 
+          />
+        </div>
       </div>
 
       {/* CSS for scanning animation */}

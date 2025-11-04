@@ -231,7 +231,12 @@ export const RetailApp = () => {
             if (product) {
               handleAddToCart(product.id, 1);
             }
+          }}
+          cartItemCount={cartItemCount}
+          cartTotal={cartTotal}
+          onCartClick={() => {
             setShowBarcodeScanner(false);
+            setShowOrderSummary(true);
           }}
         />
       );
