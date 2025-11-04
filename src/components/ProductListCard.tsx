@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ProductDetailSheet } from "./ProductDetailSheet";
 
 interface Product {
   id: number;
@@ -26,26 +27,31 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   };
 
   return (
-    <div className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-2 py-2 ${
-      quantity > 0 ? 'border border-[#000]' : 'border border-border'
-    }`}>
-      <div className="flex-1 flex flex-col gap-0.5 min-w-0">
-        <h3 className="text-[10px] font-medium leading-tight line-clamp-2">
-          {product.name}
-        </h3>
-        <span className="text-[10px] font-bold text-price">
-          ${product.price.toFixed(2)}
-        </span>
-      </div>
+    <ProductDetailSheet product={product} onAddToCart={onAddToCart}>
+      <div className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-2 py-2 cursor-pointer ${
+        quantity > 0 ? 'border border-[#000]' : 'border border-border'
+      }`}>
+        <div className="flex-1 flex flex-col gap-0.5 min-w-0">
+          <h3 className="text-[10px] font-medium leading-tight line-clamp-2">
+            {product.name}
+          </h3>
+          <span className="text-[10px] font-bold text-price">
+            ${product.price.toFixed(2)}
+          </span>
+        </div>
 
-      <Button
-        variant="default"
-        size="icon"
-        onClick={() => handleQuantityChange(quantity + 1)}
-        className="h-5 w-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-xs flex items-center justify-center p-0 flex-shrink-0"
-      >
-        +
-      </Button>
-    </div>
+        <Button
+          variant="default"
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleQuantityChange(quantity + 1);
+          }}
+          className="h-5 w-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-xs flex items-center justify-center p-0 flex-shrink-0"
+        >
+          +
+        </Button>
+      </div>
+    </ProductDetailSheet>
   );
 };

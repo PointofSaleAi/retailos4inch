@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ProductDetailSheet } from "./ProductDetailSheet";
 
 interface Product {
   id: number;
@@ -28,57 +29,67 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
 
   if (hideImage) {
     return (
-      <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[65px] flex flex-col p-1.5 relative ${
-        quantity > 0 ? 'border border-[#000]' : 'border border-border'
-      }`}>
-        <h3 className="text-[10px] font-medium leading-tight line-clamp-2 mb-0.5" style={{ color: '#414141' }}>
-          {product.name}
-        </h3>
-        <div className="flex items-center justify-between mt-auto">
-          <span className="text-[12px] font-bold text-price">
-            ${product.price.toFixed(2)}
-          </span>
-          <Button
-            variant="default"
-            size="icon"
-            onClick={() => handleQuantityChange(quantity + 1)}
-            className="h-5 w-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-sm flex items-center justify-center p-0"
-          >
-            +
-          </Button>
+      <ProductDetailSheet product={product} onAddToCart={onAddToCart}>
+        <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[65px] flex flex-col p-1.5 relative cursor-pointer ${
+          quantity > 0 ? 'border border-[#000]' : 'border border-border'
+        }`}>
+          <h3 className="text-[10px] font-medium leading-tight line-clamp-2 mb-0.5" style={{ color: '#414141' }}>
+            {product.name}
+          </h3>
+          <div className="flex items-center justify-between mt-auto">
+            <span className="text-[12px] font-bold text-price">
+              ${product.price.toFixed(2)}
+            </span>
+            <Button
+              variant="default"
+              size="icon"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleQuantityChange(quantity + 1);
+              }}
+              className="h-5 w-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-sm flex items-center justify-center p-0"
+            >
+              +
+            </Button>
+          </div>
         </div>
-      </div>
+      </ProductDetailSheet>
     );
   }
 
   return (
-    <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col ${
-      quantity > 0 ? 'border border-[#000]' : 'border border-border'
-    }`}>
-      <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover"
-        />
-        <Button
-          variant="default"
-          size="icon"
-          onClick={() => handleQuantityChange(quantity + 1)}
-          className="absolute top-1 right-1 h-5 w-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-sm flex items-center justify-center p-0"
-        >
-          +
-        </Button>
+    <ProductDetailSheet product={product} onAddToCart={onAddToCart}>
+      <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col cursor-pointer ${
+        quantity > 0 ? 'border border-[#000]' : 'border border-border'
+      }`}>
+        <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+          <Button
+            variant="default"
+            size="icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleQuantityChange(quantity + 1);
+            }}
+            className="absolute top-1 right-1 h-5 w-5 rounded-full bg-foreground text-background hover:bg-foreground/90 font-bold text-sm flex items-center justify-center p-0"
+          >
+            +
+          </Button>
+        </div>
+        
+        <div className="p-1 flex flex-col flex-1 justify-between">
+          <h3 className="text-[12px] font-semibold leading-tight line-clamp-2">
+            {product.name}
+          </h3>
+          <span className="text-[10px] font-bold text-price">
+            ${product.price.toFixed(2)}
+          </span>
+        </div>
       </div>
-      
-      <div className="p-1 flex flex-col flex-1 justify-between">
-        <h3 className="text-[12px] font-semibold leading-tight line-clamp-2">
-          {product.name}
-        </h3>
-        <span className="text-[10px] font-bold text-price">
-          ${product.price.toFixed(2)}
-        </span>
-      </div>
-    </div>
+    </ProductDetailSheet>
   );
 };
