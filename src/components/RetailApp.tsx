@@ -221,25 +221,7 @@ export const RetailApp = () => {
     }
 
     if (showBarcodeScanner) {
-      return (
-        <BarcodeScannerScreen 
-          onClose={() => setShowBarcodeScanner(false)}
-          onScanSuccess={(barcode) => {
-            // For demo: add the first product to cart when any barcode is scanned
-            // In production, you'd match the barcode to a product
-            const product = products[0];
-            if (product) {
-              handleAddToCart(product.id, 1);
-            }
-          }}
-          cartItemCount={cartItemCount}
-          cartTotal={cartTotal}
-          onCartClick={() => {
-            setShowBarcodeScanner(false);
-            setShowOrderSummary(true);
-          }}
-        />
-      );
+      return <BarcodeScannerScreen onClose={() => setShowBarcodeScanner(false)} />;
     }
 
     if (showPaymentSuccess) {
