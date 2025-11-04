@@ -44,8 +44,8 @@ export const LoginScreen = ({
           </div>
         </div>
         
-        <div className="space-y-2 mt-[20px] my-[22px]">
-          <Button type="submit" variant="retail" size="retail-full" className="h-[28px] my-px">
+        <div className="space-y-2 mt-[20px] my-[10px]">
+          <Button type="submit" variant="retail" size="retail-full" className="h-[28px] my-[16px]">
             SIGN IN
           </Button>
           
