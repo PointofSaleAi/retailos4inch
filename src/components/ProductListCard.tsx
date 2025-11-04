@@ -26,7 +26,9 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   };
 
   return (
-    <div className="bg-surface rounded-lg overflow-hidden border border-border w-full h-[35px] flex items-center px-3 gap-3">
+    <div className={`bg-surface rounded-lg overflow-hidden w-full h-[35px] flex items-center px-3 gap-3 ${
+      quantity > 0 ? 'border border-[#000]' : 'border border-border'
+    }`}>
       <div className="flex-1 flex items-center justify-between min-w-0">
         <h3 className="text-[12px] font-medium leading-tight line-clamp-1">
           {product.name}

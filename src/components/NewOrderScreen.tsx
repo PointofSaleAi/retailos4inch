@@ -141,8 +141,6 @@ export const NewOrderScreen = ({
         onSearchChange={setSearchQuery}
       />
       
-      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
-      
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Category Filters */}
         <div className="px-[6px] pt-1 space-y-1 flex-shrink-0">
@@ -226,5 +224,7 @@ export const NewOrderScreen = ({
             </div>}
         </div>
       </div>
+      
+      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
     </div>;
 };

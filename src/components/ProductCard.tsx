@@ -28,7 +28,9 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
 
   if (hideImage) {
     return (
-      <div className="bg-surface rounded-lg overflow-hidden border border-border w-[90px] h-[65px] flex flex-col p-1.5 relative">
+      <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[65px] flex flex-col p-1.5 relative ${
+        quantity > 0 ? 'border border-[#000]' : 'border border-border'
+      }`}>
         <h3 className="text-[10px] font-medium leading-tight line-clamp-2 mb-0.5" style={{ color: '#414141' }}>
           {product.name}
         </h3>
@@ -45,17 +47,14 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
             +
           </Button>
         </div>
-        {quantity > 0 && (
-          <div className="absolute top-1 left-1 bg-primary text-primary-foreground rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold">
-            {quantity}
-          </div>
-        )}
       </div>
     );
   }
 
   return (
-    <div className="bg-surface rounded-lg overflow-hidden border border-border w-[90px] h-[102px] flex flex-col">
+    <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col ${
+      quantity > 0 ? 'border border-[#000]' : 'border border-border'
+    }`}>
       <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
         <img
           src={product.image}
@@ -70,11 +69,6 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
         >
           +
         </Button>
-        {quantity > 0 && (
-          <div className="absolute top-1 left-1 bg-primary text-primary-foreground rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold">
-            {quantity}
-          </div>
-        )}
       </div>
       
       <div className="p-1 flex flex-col flex-1 justify-between">
