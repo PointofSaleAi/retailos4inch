@@ -133,9 +133,9 @@ export const NewOrderScreen = ({
       return () => container.removeEventListener('scroll', handleScroll);
     }
   }, []);
-  return <div className="h-full flex flex-col bg-background animate-fade-in relative">
+  return <div className="h-full flex flex-col bg-background animate-fade-in">
       {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide pb-[24px]">
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
         <TopNavigation 
           onCustomClick={onCustomClick} 
           onFavoritesClick={onFavoritesClick}
@@ -226,9 +226,7 @@ export const NewOrderScreen = ({
         </div>
       </div>
       
-      {/* Fixed Cart Strip at bottom inside container */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
-      </div>
+      {/* Cart Strip - positioned as flex child at bottom */}
+      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
     </div>;
 };
