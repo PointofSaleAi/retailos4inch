@@ -10,6 +10,7 @@ import iconList from "@/assets/icon-list.png";
 import iconGridWhite from "@/assets/icon-grid-white.png";
 import iconListWhite from "@/assets/icon-list-white.png";
 import iconFilterMenu from "@/assets/icon-filter-menu.png";
+import iconCamera from "@/assets/icon-camera-tx.png";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 // Import product images
@@ -102,7 +103,7 @@ export const NewOrderScreen = ({
   cartTotal,
   onCartClick
 }: NewOrderScreenProps) => {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"image" | "grid" | "list">("image");
   const [selectedProductType, setSelectedProductType] = useState("Products");
   const [selectedMenuCategory, setSelectedMenuCategory] = useState("Apparel");
   const [selectedCategory, setSelectedCategory] = useState("Men");
@@ -162,6 +163,9 @@ export const NewOrderScreen = ({
               <>
                 {/* View Toggle Icons */}
                 <div className="flex items-center gap-1 border border-border rounded-full p-0.5 flex-shrink-0">
+                  <Button variant="ghost" size="icon" className={`h-[22px] w-[22px] rounded-full ${viewMode === "image" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("image")}>
+                    <img src={iconCamera} alt="Image view" className="w-3.5 h-3.5" />
+                  </Button>
                   <Button variant="ghost" size="icon" className={`h-[22px] w-[22px] rounded-full ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`} onClick={() => setViewMode("grid")}>
                     <img src={viewMode === "grid" ? iconGridWhite : iconGrid} alt="Grid view" className="w-3.5 h-3.5" />
                   </Button>
@@ -218,11 +222,19 @@ export const NewOrderScreen = ({
         
         {/* Product Grid/List */}
         <div className="p-[6px]">
-          {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
+          {viewMode === "image" ? (
+            <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
+              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={false} />)}
+            </div>
+          ) : viewMode === "grid" ? (
+            <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
               {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} />)}
-            </div> : <div className="flex flex-col gap-2 pb-2">
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 pb-2">
               {filteredProducts.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
-            </div>}
+            </div>
+          )}
         </div>
       </div>
       
