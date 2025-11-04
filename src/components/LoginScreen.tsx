@@ -18,7 +18,7 @@ export const LoginScreen = ({
     onLogin();
   };
   return <div className="h-full flex flex-col justify-center items-center p-6 bg-background animate-fade-in">
-      <div className="flex flex-col items-center mb-8">
+      <div className="flex flex-col items-center mb-4">
         <RetailLogo />
       </div>
       
@@ -45,7 +45,7 @@ export const LoginScreen = ({
         </div>
         
         <div className="space-y-2 mt-2 my-[6px]">
-          <Button type="submit" variant="retail" size="retail-full" className="mt-2 h-[28px] my-0">
+          <Button type="submit" variant="retail" size="retail-full" className="mt-4 h-[28px] my-0">
             SIGN IN
           </Button>
           
