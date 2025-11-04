@@ -133,9 +133,9 @@ export const NewOrderScreen = ({
       return () => container.removeEventListener('scroll', handleScroll);
     }
   }, []);
-  return <div className="h-full flex flex-col bg-background animate-fade-in">
+  return <div className="h-full flex flex-col bg-background animate-fade-in relative">
       {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
+      <div className="flex-1 overflow-y-auto scrollbar-hide pb-[24px]">
         <TopNavigation 
           onCustomClick={onCustomClick} 
           onFavoritesClick={onFavoritesClick}
@@ -217,7 +217,7 @@ export const NewOrderScreen = ({
         </div>
         
         {/* Product Grid/List */}
-        <div className="p-[6px] pb-[60px]">
+        <div className="p-[6px]">
           {viewMode === "grid" ? <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
               {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} />)}
             </div> : <div className="flex flex-col gap-2 pb-2">
