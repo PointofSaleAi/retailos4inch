@@ -91,13 +91,6 @@ export const CustomPaymentScreen = ({
         </div>
       </nav>
 
-      {/* Cart Strip */}
-      <CartStrip 
-        itemCount={cartItemCount} 
-        totalAmount={cartTotal} 
-        onClick={onCartClick}
-      />
-
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">
         <div className="w-[186px] space-y-1.5 px-0 py-0">
@@ -179,5 +172,12 @@ export const CustomPaymentScreen = ({
         </div>
         </div>
       </div>
+      
+      {/* Cart Strip */}
+      <CartStrip 
+        itemCount={cartItemCount} 
+        totalAmount={cartTotal} 
+        onClick={onCartClick}
+      />
     </div>;
 };

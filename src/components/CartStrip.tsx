@@ -1,3 +1,5 @@
+import iconCart from "@/assets/icon-cart.png";
+
 interface CartStripProps {
   itemCount: number;
   totalAmount: number;
@@ -13,9 +15,12 @@ export const CartStrip = ({ itemCount, totalAmount, onClick }: CartStripProps) =
       style={{ fontFamily: 'Montserrat, sans-serif' }}
       onClick={onClick}
     >
-      <span className="text-[10px] font-medium">
-        {itemCount} {itemCount === 1 ? 'Product' : 'Products'}
-      </span>
+      <div className="flex items-center gap-1.5">
+        <img src={iconCart} alt="Cart" className="w-3 h-3" />
+        <span className="text-[10px] font-medium">
+          {itemCount} {itemCount === 1 ? 'Product' : 'Products'}
+        </span>
+      </div>
       <span className="text-[10px] font-semibold">
         ${totalAmount.toFixed(2)}
       </span>
