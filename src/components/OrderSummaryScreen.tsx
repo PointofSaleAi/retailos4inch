@@ -69,7 +69,7 @@ export const OrderSummaryScreen = ({
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {/* Customer Section */}
-        <div className="bg-gray-50 mt-3 rounded-lg p-3 flex items-center gap-3 px-0 py-0 mx-0 my-[6px]">
+        <div className="bg-gray-50 mt-2 rounded-lg p-3 flex items-center gap-3 px-0 py-0 mx-0 my-2">
           <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
             <img src={iconCustomer} alt="Customer" className="w-[14px] h-[14px]" />
           </div>
@@ -124,16 +124,16 @@ export const OrderSummaryScreen = ({
       {/* Billing Summary */}
       <div className="border-t border-gray-200 space-y-1 px-0 py-0">
         <div className="flex justify-between items-center">
-          <span className="text-[11px] text-gray-700">Sub Total</span>
-          <span className="text-[11px] font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
+          <span className="text-[9px] font-medium text-[#212121]">Sub Total</span>
+          <span className="text-[9px] font-medium text-[#212121]">${subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[11px] text-gray-700">Discount</span>
-          <span className="text-[11px] font-semibold text-gray-900">${discount.toFixed(2)}</span>
+          <span className="text-[9px] font-medium text-[#212121]">Discount</span>
+          <span className="text-[9px] font-medium text-[#212121]">${discount.toFixed(2)}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-[11px] text-gray-700">Tax @ 8%</span>
-          <span className="text-[11px] font-semibold text-gray-900">${tax.toFixed(2)}</span>
+          <span className="text-[9px] font-medium text-[#212121]">Tax @ 8%</span>
+          <span className="text-[9px] font-medium text-[#212121]">${tax.toFixed(2)}</span>
         </div>
       </div>
 
