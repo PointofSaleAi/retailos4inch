@@ -52,55 +52,55 @@ export const ProductDetailSheet = ({ product, children, onAddToCart }: ProductDe
       <DrawerTrigger asChild>
         {children}
       </DrawerTrigger>
-      <DrawerContent className="font-['Montserrat']">
-        <div className="mx-auto w-full max-w-md">
+      <DrawerContent className="font-['Montserrat'] max-h-[85%] overflow-y-auto">
+        <div className="w-full">
           {/* Handle Bar */}
-          <div className="mx-auto w-12 h-1 bg-gray-300 rounded-full mb-4 mt-2" />
+          <div className="mx-auto w-12 h-1 bg-gray-300 rounded-full mb-3 mt-2" />
           
           {/* Product Header */}
-          <div className="px-4 pb-4">
-            <div className="flex items-start justify-between mb-3">
-              <h2 className="text-[16px] font-semibold leading-tight pr-4">{product.name}</h2>
-              <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="px-3 pb-3">
+            <div className="flex items-start justify-between mb-2">
+              <h2 className="text-[13px] font-semibold leading-tight pr-2 flex-1">{product.name}</h2>
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8 rounded-full border-border"
+                  className="h-7 w-7 rounded-full border-border"
                   onClick={() => handleQuantityChange(-1)}
                 >
-                  <Minus className="h-4 w-4" />
+                  <Minus className="h-3 w-3" />
                 </Button>
-                <span className="text-[16px] font-medium min-w-[20px] text-center">{quantity}</span>
+                <span className="text-[14px] font-medium min-w-[16px] text-center">{quantity}</span>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8 rounded-full border-border"
+                  className="h-7 w-7 rounded-full border-border"
                   onClick={() => handleQuantityChange(1)}
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3 w-3" />
                 </Button>
               </div>
             </div>
 
             {/* Select size & color / Stock */}
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[12px] text-muted-foreground">Select size & color</span>
-              <span className="text-[12px] font-medium">Stock {stock}</span>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] text-muted-foreground">Select size & color</span>
+              <span className="text-[10px] font-medium">Stock {stock}</span>
             </div>
 
             {/* Size Selection */}
-            <div className="mb-4">
-              <label className="text-[12px] font-medium mb-2 block">
+            <div className="mb-3">
+              <label className="text-[10px] font-medium mb-1.5 block">
                 Size<span className="text-red-500">*</span>
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {sizes.map((size) => (
                   <Button
                     key={size}
                     variant="outline"
-                    className={`h-9 px-5 rounded-full text-[12px] ${
+                    className={`h-7 px-3 rounded-full text-[10px] ${
                       selectedSize === size
-                        ? "border-primary bg-primary/5"
+                        ? "border-foreground bg-foreground/5"
                         : size === "XXL"
                         ? "opacity-40 cursor-not-allowed"
                         : ""
@@ -115,18 +115,18 @@ export const ProductDetailSheet = ({ product, children, onAddToCart }: ProductDe
             </div>
 
             {/* Color Selection */}
-            <div className="mb-6">
-              <label className="text-[12px] font-medium mb-2 block">
+            <div className="mb-4">
+              <label className="text-[10px] font-medium mb-1.5 block">
                 Color<span className="text-red-500">*</span>
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {colors.map((color) => (
                   <button
                     key={color.value}
-                    className={`h-10 w-10 rounded-full border-2 transition-all ${
+                    className={`h-8 w-8 rounded-full border-2 transition-all ${
                       selectedColor === color.value
-                        ? "border-primary scale-110"
-                        : "border-transparent"
+                        ? "border-foreground scale-110"
+                        : "border-gray-300"
                     }`}
                     style={{ backgroundColor: color.value }}
                     onClick={() => setSelectedColor(color.value)}
@@ -137,16 +137,16 @@ export const ProductDetailSheet = ({ product, children, onAddToCart }: ProductDe
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="icon"
-                className="h-12 w-12 rounded-2xl flex-shrink-0"
+                className="h-10 w-10 rounded-xl flex-shrink-0"
               >
-                <img src={iconDiscount} alt="Discount" className="w-6 h-6" />
+                <img src={iconDiscount} alt="Discount" className="w-5 h-5" />
               </Button>
               <Button
-                className="flex-1 h-12 rounded-full text-[14px] font-semibold bg-foreground text-background hover:bg-foreground/90"
+                className="flex-1 h-10 rounded-full text-[12px] font-semibold bg-foreground text-background hover:bg-foreground/90"
                 onClick={handleAddToCart}
               >
                 ADD ${(product.price * quantity).toFixed(2)}
