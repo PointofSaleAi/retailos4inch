@@ -52,13 +52,13 @@ export const ProductDetailSheet = ({ product, children, onAddToCart }: ProductDe
       <DrawerTrigger asChild>
         {children}
       </DrawerTrigger>
-      <DrawerContent className="font-['Montserrat'] max-h-[280px] overflow-hidden flex flex-col">
-        <div className="w-full flex-shrink-0">
+      <DrawerContent className="font-['Montserrat'] max-h-[85%] overflow-y-auto">
+        <div className="w-full">
           {/* Handle Bar */}
-          <div className="mx-auto w-12 h-1 bg-gray-300 rounded-full mb-2 mt-2" />
+          <div className="mx-auto w-12 h-1 bg-gray-300 rounded-full mb-3 mt-2" />
           
-          {/* Scrollable Content */}
-          <div className="overflow-y-auto scrollbar-hide flex-1 px-3 pb-3">
+          {/* Product Header */}
+          <div className="px-3 pb-3">
             <div className="flex items-start justify-between mb-2">
               <h2 className="text-[13px] font-semibold leading-tight pr-2 flex-1">{product.name}</h2>
               <div className="flex items-center gap-2 flex-shrink-0">
