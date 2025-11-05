@@ -48,12 +48,12 @@ interface Transaction {
 }
 
 const mockProducts: Product[] = [
-  { id: 1, name: "Classic Cotton T-Shirt", price: 24.99, image: productNew1, isFavorite: false },
-  { id: 2, name: "Slim Fit Denim Jeans", price: 49.99, image: productNew2, isFavorite: false },
-  { id: 3, name: "Leather Casual Shoes", price: 79.99, image: productNew3, isFavorite: false },
-  { id: 4, name: "Sports Running Shoes", price: 89.99, image: productNew1, isFavorite: false },
-  { id: 5, name: "Winter Jacket Premium", price: 129.99, image: productNew2, isFavorite: false },
-  { id: 6, name: "Casual Sneakers White", price: 54.99, image: productNew3, isFavorite: false },
+  { id: 1, name: "Brown Oversized Shirt", price: 24.99, image: productNew1, isFavorite: false },
+  { id: 2, name: "Black Casual Shirt", price: 49.99, image: productNew2, isFavorite: false },
+  { id: 3, name: "Beige Linen Shirt", price: 79.99, image: productNew3, isFavorite: false },
+  { id: 4, name: "Brown Classic Shirt", price: 89.99, image: productNew1, isFavorite: false },
+  { id: 5, name: "Black Premium Shirt", price: 129.99, image: productNew2, isFavorite: false },
+  { id: 6, name: "Beige Summer Shirt", price: 54.99, image: productNew3, isFavorite: false },
 ];
 
 export const RetailApp = () => {
