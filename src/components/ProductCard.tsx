@@ -59,7 +59,7 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
   if (hideImage) {
     return (
       <ProductDetailSheet product={product} onAddToCart={onAddToCart}>
-        <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[65px] flex flex-col p-1.5 cursor-pointer ${
+        <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[78px] flex flex-col p-1.5 cursor-pointer ${
           quantity > 0 ? 'border border-[#000]' : 'border border-border'
         }`}>
           <button
@@ -73,7 +73,7 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
             <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
           </button>
           
-          <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden mb-auto`} style={{ color: '#414141', height: '26px' }}>
+          <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden mb-auto`} style={{ color: '#414141', height: '32px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
             {product.name}
           </h3>
           
