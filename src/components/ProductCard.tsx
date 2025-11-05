@@ -62,22 +62,22 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
         <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[65px] flex flex-col p-1.5 cursor-pointer ${
           quantity > 0 ? 'border border-[#000]' : 'border border-border'
         }`}>
-          <div className="flex items-start gap-1.5 mb-1">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleQuantityChange(quantity + 1);
-              }}
-              className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
-              style={{ borderRadius: '4px' }}
-            >
-              <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
-            </button>
-            <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words flex-1 overflow-hidden`} style={{ color: '#414141', height: '26px' }}>
-              {product.name}
-            </h3>
-          </div>
-          <div className="flex items-center justify-start mt-auto">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleQuantityChange(quantity + 1);
+            }}
+            className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 mb-1"
+            style={{ borderRadius: '4px' }}
+          >
+            <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+          </button>
+          
+          <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden mb-auto`} style={{ color: '#414141', height: '26px' }}>
+            {product.name}
+          </h3>
+          
+          <div className="flex items-center justify-start">
             <span className="text-[12px] font-bold text-price">
               ${product.price.toFixed(2)}
             </span>
