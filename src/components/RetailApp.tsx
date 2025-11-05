@@ -12,12 +12,9 @@ import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import { OrderSummaryScreen } from "./OrderSummaryScreen";
 import { PaymentOptionsScreen } from "./PaymentOptionsScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
-import product1 from "@/assets/product-1.jpg";
-import product2 from "@/assets/product-2.jpg";
-import product3 from "@/assets/product-3.jpg";
-import product4 from "@/assets/product-4.jpg";
-import product5 from "@/assets/product-5.png";
-import product6 from "@/assets/product-6.png";
+import productNew1 from "@/assets/product-new-1.png";
+import productNew2 from "@/assets/product-new-2.png";
+import productNew3 from "@/assets/product-new-3.png";
 
 interface Product {
   id: number;
@@ -51,12 +48,12 @@ interface Transaction {
 }
 
 const mockProducts: Product[] = [
-  { id: 1, name: "Classic Cotton T-Shirt", price: 24.99, image: product1, isFavorite: false },
-  { id: 2, name: "Slim Fit Denim Jeans", price: 49.99, image: product2, isFavorite: false },
-  { id: 3, name: "Leather Casual Shoes", price: 79.99, image: product3, isFavorite: false },
-  { id: 4, name: "Sports Running Shoes", price: 89.99, image: product4, isFavorite: false },
-  { id: 5, name: "Winter Jacket Premium", price: 129.99, image: product5, isFavorite: false },
-  { id: 6, name: "Casual Sneakers White", price: 54.99, image: product6, isFavorite: false },
+  { id: 1, name: "Classic Cotton T-Shirt", price: 24.99, image: productNew1, isFavorite: false },
+  { id: 2, name: "Slim Fit Denim Jeans", price: 49.99, image: productNew2, isFavorite: false },
+  { id: 3, name: "Leather Casual Shoes", price: 79.99, image: productNew3, isFavorite: false },
+  { id: 4, name: "Sports Running Shoes", price: 89.99, image: productNew1, isFavorite: false },
+  { id: 5, name: "Winter Jacket Premium", price: 129.99, image: productNew2, isFavorite: false },
+  { id: 6, name: "Casual Sneakers White", price: 54.99, image: productNew3, isFavorite: false },
 ];
 
 export const RetailApp = () => {
