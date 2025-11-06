@@ -16,6 +16,7 @@ import { TransactionDetailScreen } from "./TransactionDetailScreen";
 import { RefundScreen } from "./RefundScreen";
 import { RefundReasonScreen } from "./RefundReasonScreen";
 import { CustomRefundReasonScreen } from "./CustomRefundReasonScreen";
+import { RefundedScreen } from "./RefundedScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -73,6 +74,7 @@ export const RetailApp = () => {
   const [showRefundScreen, setShowRefundScreen] = useState(false);
   const [showRefundReasonScreen, setShowRefundReasonScreen] = useState(false);
   const [showCustomRefundReasonScreen, setShowCustomRefundReasonScreen] = useState(false);
+  const [showRefundedScreen, setShowRefundedScreen] = useState(false);
   const [refundAmount, setRefundAmount] = useState(0);
   const [selectedTransactionId, setSelectedTransactionId] = useState<string>("");
   const [paymentAmount, setPaymentAmount] = useState(0);
@@ -232,6 +234,32 @@ export const RetailApp = () => {
       return <LoginScreen onLogin={handleLogin} />;
     }
 
+    if (showRefundedScreen) {
+      return (
+        <RefundedScreen
+          amount={refundAmount}
+          paymentMethod="Card | 0486"
+          onClose={() => {
+            // Update transaction status to Refunded
+            setTransactions(prev =>
+              prev.map(t =>
+                t.id === selectedTransactionId
+                  ? { ...t, status: "Refunded" as const }
+                  : t
+              )
+            );
+            
+            setShowRefundedScreen(false);
+            setShowRefundScreen(false);
+            setShowRefundReasonScreen(false);
+            setShowCustomRefundReasonScreen(false);
+            setShowTransactionDetail(false);
+            setActiveTab("transactions");
+          }}
+        />
+      );
+    }
+
     if (showCustomRefundReasonScreen) {
       return (
         <CustomRefundReasonScreen
@@ -242,10 +270,7 @@ export const RetailApp = () => {
           onNext={(customReason) => {
             console.log("Refund reason:", customReason);
             setShowCustomRefundReasonScreen(false);
-            setShowRefundReasonScreen(false);
-            setShowRefundScreen(false);
-            setShowTransactionDetail(false);
-            setActiveTab("transactions");
+            setShowRefundedScreen(true);
           }}
         />
       );
@@ -263,9 +288,7 @@ export const RetailApp = () => {
           onRefund={(reason) => {
             console.log("Refund reason:", reason);
             setShowRefundReasonScreen(false);
-            setShowRefundScreen(false);
-            setShowTransactionDetail(false);
-            setActiveTab("transactions");
+            setShowRefundedScreen(true);
           }}
           onOtherSelected={() => {
             setShowRefundReasonScreen(false);
@@ -488,7 +511,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
