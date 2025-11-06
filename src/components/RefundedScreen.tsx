@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
 import iconPayment from "@/assets/icon-payment-card.png";
+import iconSuccessRefund from "@/assets/icon-success-refund.png";
 
 interface RefundedScreenProps {
   amount: number;
@@ -35,18 +36,16 @@ export const RefundedScreen = ({
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center">
           {/* Success Icon */}
-          <div className="w-[88px] h-[88px] rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: '#10B981' }}>
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <path d="M10 24L18 32L38 12" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <div className="w-[88px] h-[88px] mb-6">
+            <img src={iconSuccessRefund} alt="" className="w-full h-full" />
           </div>
 
           {/* Amount and Status */}
           <div className="text-center mb-4">
-            <span className="text-[32px] font-bold" style={{ color: '#10B981' }}>
+            <span className="text-[16px] font-bold" style={{ color: '#10B981' }}>
               ${amount.toFixed(2)}
             </span>
-            <span className="text-[32px] font-bold text-muted-foreground ml-2">
+            <span className="text-[16px] font-bold text-muted-foreground ml-2">
               Refunded
             </span>
           </div>
