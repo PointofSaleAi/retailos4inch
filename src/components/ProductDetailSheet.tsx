@@ -52,58 +52,58 @@ export const ProductDetailSheet = ({ product, children, onAddToCart }: ProductDe
       <DrawerTrigger asChild>
         {children}
       </DrawerTrigger>
-      <DrawerContent className="font-['Montserrat'] max-h-[280px] overflow-hidden flex flex-col">
+      <DrawerContent className="font-['Montserrat'] max-h-[280px] overflow-hidden flex flex-col bg-background">
         <div className="w-full flex-shrink-0">
           {/* Handle Bar */}
-          <div className="mx-auto w-12 h-1 bg-gray-300 rounded-full mb-2 mt-2" />
+          <div className="mx-auto w-12 h-1 bg-[#D1D5DB] rounded-full mb-3 mt-3" />
           
           {/* Scrollable Content */}
-          <div className="overflow-y-auto scrollbar-hide flex-1 px-3 pb-3">
-            <div className="flex items-start justify-between mb-2">
-              <h2 className="text-[13px] font-semibold leading-tight pr-2 flex-1">{product.name}</h2>
-              <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="overflow-y-auto scrollbar-hide flex-1 px-4 pb-4">
+            <div className="flex items-start justify-between mb-3">
+              <h2 className="text-[15px] font-semibold leading-tight pr-2 flex-1">{product.name}</h2>
+              <div className="flex items-center gap-2.5 flex-shrink-0">
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-7 w-7 rounded-full border-border"
+                  className="h-8 w-8 rounded-full border-[#E5E7EB] bg-background hover:bg-muted"
                   onClick={() => handleQuantityChange(-1)}
                 >
-                  <Minus className="h-3 w-3" />
+                  <Minus className="h-3.5 w-3.5" />
                 </Button>
-                <span className="text-[14px] font-medium min-w-[16px] text-center">{quantity}</span>
+                <span className="text-[15px] font-medium min-w-[20px] text-center">{quantity}</span>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-7 w-7 rounded-full border-border"
+                  className="h-8 w-8 rounded-full border-[#E5E7EB] bg-background hover:bg-muted"
                   onClick={() => handleQuantityChange(1)}
                 >
-                  <Plus className="h-3 w-3" />
+                  <Plus className="h-3.5 w-3.5" />
                 </Button>
               </div>
             </div>
 
             {/* Select size & color / Stock */}
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] text-muted-foreground">Select size & color</span>
-              <span className="text-[10px] font-medium">Stock {stock}</span>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[11px] text-[#9CA3AF]">Select size & color</span>
+              <span className="text-[11px] font-semibold">Stock {stock}</span>
             </div>
 
             {/* Size Selection */}
             <div className="mb-3">
-              <label className="text-[10px] font-medium mb-1.5 block">
+              <label className="text-[11px] font-semibold mb-2 block">
                 Size<span className="text-red-500">*</span>
               </label>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {sizes.map((size) => (
                   <Button
                     key={size}
                     variant="outline"
-                    className={`h-7 px-3 rounded-full text-[10px] ${
+                    className={`h-8 px-4 rounded-full text-[11px] font-medium border-[#E5E7EB] ${
                       selectedSize === size
-                        ? "border-foreground bg-foreground/5"
+                        ? "border-foreground bg-background"
                         : size === "XXL"
-                        ? "opacity-40 cursor-not-allowed"
-                        : ""
+                        ? "opacity-30 cursor-not-allowed text-[#D1D5DB]"
+                        : "bg-background hover:bg-muted"
                     }`}
                     onClick={() => size !== "XXL" && setSelectedSize(size)}
                     disabled={size === "XXL"}
@@ -116,17 +116,17 @@ export const ProductDetailSheet = ({ product, children, onAddToCart }: ProductDe
 
             {/* Color Selection */}
             <div className="mb-4">
-              <label className="text-[10px] font-medium mb-1.5 block">
+              <label className="text-[11px] font-semibold mb-2 block">
                 Color<span className="text-red-500">*</span>
               </label>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {colors.map((color) => (
                   <button
                     key={color.value}
-                    className={`h-8 w-8 rounded-full border-2 transition-all ${
+                    className={`h-9 w-9 rounded-full border-[3px] transition-all ${
                       selectedColor === color.value
-                        ? "border-foreground scale-110"
-                        : "border-gray-300"
+                        ? "border-foreground"
+                        : "border-[#E5E7EB]"
                     }`}
                     style={{ backgroundColor: color.value }}
                     onClick={() => setSelectedColor(color.value)}
@@ -137,16 +137,16 @@ export const ProductDetailSheet = ({ product, children, onAddToCart }: ProductDe
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Button
                 variant="outline"
                 size="icon"
-                className="h-10 w-10 rounded-xl flex-shrink-0"
+                className="h-12 w-12 rounded-2xl flex-shrink-0 border-[#E5E7EB] bg-background hover:bg-muted"
               >
-                <img src={iconDiscount} alt="Discount" className="w-5 h-5" />
+                <img src={iconDiscount} alt="Discount" className="w-6 h-6" />
               </Button>
               <Button
-                className="flex-1 h-10 rounded-full text-[12px] font-semibold bg-foreground text-background hover:bg-foreground/90"
+                className="flex-1 h-12 rounded-full text-[13px] font-semibold bg-foreground text-background hover:bg-foreground/90"
                 onClick={handleAddToCart}
               >
                 ADD ${(product.price * quantity).toFixed(2)}
