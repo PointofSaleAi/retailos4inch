@@ -35,7 +35,7 @@ export const TransactionDetailScreen = ({
   const totalDue = subTotal - discount + tax;
 
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className="h-[186px] flex flex-col bg-background">
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
         <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ export const TransactionDetailScreen = ({
       <div className="flex-1 overflow-y-auto scrollbar-hide px-3">
         {/* Transaction Info */}
         <div className="py-2 space-y-2">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between p-2 rounded-lg border border-border">
             <span className="text-[12px] font-semibold text-foreground">#{transactionId}</span>
             <div className="flex items-center gap-1.5">
               <img src={iconUser} alt="" className="w-3 h-3" />
@@ -62,18 +62,18 @@ export const TransactionDetailScreen = ({
             </div>
           </div>
 
-          <div className="rounded-lg p-2 flex flex-col gap-1" style={{ backgroundColor: '#F1F2F5' }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img src={iconPayment} alt="" className="w-4 h-4" />
+          <div className="rounded-lg p-2 flex items-center justify-between" style={{ backgroundColor: '#F1F2F5' }}>
+            <div className="flex items-center gap-2">
+              <img src={iconPayment} alt="" className="w-4 h-4" />
+              <div className="flex flex-col">
                 <span className="text-[10px] font-medium text-foreground">Card | 0486</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[12px] font-bold text-foreground">${amount.toFixed(2)}</span>
-                <span className="text-[8px] font-semibold text-success">Paid</span>
+                <span className="text-[8px] text-muted-foreground">27 Aug 25 | 3:55 PM</span>
               </div>
             </div>
-            <div className="text-[8px] text-muted-foreground">27 Aug 25 | 3:55 PM</div>
+            <div className="flex flex-col items-end">
+              <span className="text-[12px] font-bold text-foreground">${amount.toFixed(2)}</span>
+              <span className="text-[8px] font-semibold text-success">Paid</span>
+            </div>
           </div>
         </div>
 
@@ -119,8 +119,8 @@ export const TransactionDetailScreen = ({
       {/* Refund Button */}
       <div className="flex-shrink-0 px-3 py-2.5 border-t border-border">
         <div className="flex items-center gap-2.5">
-          <button className="w-[28px] h-[28px] rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-            <img src={iconPrint} alt="Print" className="w-[28px] h-[28px]" />
+          <button className="w-[22px] h-[22px] rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+            <img src={iconPrint} alt="Print" className="w-[22px] h-[22px]" />
           </button>
           <button
             onClick={onRefund}
