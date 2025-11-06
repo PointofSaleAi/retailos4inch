@@ -61,17 +61,19 @@ export const TransactionDetailScreen = ({
             <div style={{
             backgroundColor: '#F1F2F5'
           }} className="rounded-lg p-2 flex flex-col gap-1 px-[6px] py-[6px]">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img src={iconPayment} alt="" className="w-4 h-4" />
-                  <span className="text-[10px] font-medium text-foreground">Card | 0486</span>
+              <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <img src={iconPayment} alt="" className="w-4 h-4" />
+                    <span className="text-[10px] font-medium text-foreground">Card | 0486</span>
+                  </div>
+                  <span className="text-[8px] text-muted-foreground">27 Aug 25 | 3:55 PM</span>
                 </div>
                 <div className="flex flex-col items-end gap-0.5">
                   <span className="text-[12px] font-bold text-foreground">${amount.toFixed(2)}</span>
                   <span className="text-[8px] font-semibold text-success">Paid</span>
                 </div>
               </div>
-              <div className="text-[8px] text-muted-foreground text-center">27 Aug 25 | 3:55 PM</div>
             </div>
           </div>
 
