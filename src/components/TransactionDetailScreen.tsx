@@ -47,9 +47,9 @@ export const TransactionDetailScreen = ({
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto scrollbar-hide px-0">
-        {/* Transaction Info */}
+          {/* Transaction Info */}
         <div className="py-2 space-y-2">
-          <div className="flex items-center justify-between p-2 rounded-lg border border-border">
+          <div className="h-[28px] flex items-center justify-between px-2 rounded-lg border border-border">
             <span className="text-[12px] font-semibold text-foreground">#{transactionId}</span>
             <div className="flex items-center gap-1.5">
               <img src={iconUser} alt="" className="w-3 h-3" />
@@ -62,9 +62,9 @@ export const TransactionDetailScreen = ({
         }}>
             <div className="flex items-center gap-2">
               <img src={iconPayment} alt="" className="w-4 h-4" />
-              <div className="flex flex-col">
+              <div className="flex flex-col items-center">
                 <span className="text-[10px] font-medium text-foreground">Card | 0486</span>
-                <span className="text-[8px] text-muted-foreground">27 Aug 25 | 3:55 PM</span>
+                <span className="text-[8px] text-muted-foreground text-center">27 Aug 25 | 3:55 PM</span>
               </div>
             </div>
             <div className="flex flex-col items-end">
