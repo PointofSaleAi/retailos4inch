@@ -117,7 +117,7 @@ export const NewCustomerScreen = ({
         width: '186px',
         padding: '0 6px',
         margin: '0 auto'
-      }} className="space-y-2 py-0 px-0">
+      }} className="space-y-2 py-[6px] px-0">
           {/* Avatar */}
           <div className="flex justify-center mb-4">
             <div className="relative">
