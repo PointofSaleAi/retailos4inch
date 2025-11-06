@@ -44,19 +44,19 @@ export const RefundScreen = ({ products, onBack, onNext }: RefundScreenProps) =>
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="flex-shrink-0 flex items-center gap-3 px-3 py-3 border-b border-border">
+      <div className="flex-shrink-0 flex items-center gap-2 px-3 py-2">
         <button onClick={onBack} className="p-0">
-          <ChevronLeft className="w-5 h-5 text-foreground" />
+          <ChevronLeft className="w-4 h-4 text-foreground" />
         </button>
-        <h1 className="text-[18px] font-bold text-foreground">Refund</h1>
+        <h1 className="text-[12px] font-semibold text-foreground">Refund</h1>
       </div>
 
       {/* Tabs */}
-      <div className="flex-shrink-0 px-3 py-3">
-        <div className="flex gap-2">
+      <div className="flex-shrink-0 px-3 py-2">
+        <div className="flex gap-1">
           <button
             onClick={() => setActiveTab("products")}
-            className={`flex-1 h-10 rounded-full text-[13px] font-semibold transition-colors ${
+            className={`flex-1 h-[28px] rounded-full text-[11px] font-semibold transition-colors ${
               activeTab === "products"
                 ? "bg-foreground text-background"
                 : "bg-muted text-muted-foreground"
@@ -66,7 +66,7 @@ export const RefundScreen = ({ products, onBack, onNext }: RefundScreenProps) =>
           </button>
           <button
             onClick={() => setActiveTab("amount")}
-            className={`flex-1 h-10 rounded-full text-[13px] font-semibold transition-colors ${
+            className={`flex-1 h-[28px] rounded-full text-[11px] font-semibold transition-colors ${
               activeTab === "amount"
                 ? "bg-foreground text-background"
                 : "bg-muted text-muted-foreground"
@@ -79,24 +79,24 @@ export const RefundScreen = ({ products, onBack, onNext }: RefundScreenProps) =>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <div className="px-3 space-y-3">
+        <div className="px-3 space-y-2">
           {/* Select All */}
           <button
             onClick={handleSelectAll}
-            className="flex items-center gap-3 w-full"
+            className="flex items-center gap-2 w-full py-1"
           >
             <div
-              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+              className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
                 selectedProducts.size === products.length
                   ? "border-foreground bg-foreground"
                   : "border-border"
               }`}
             >
               {selectedProducts.size === products.length && (
-                <div className="w-2.5 h-2.5 rounded-full bg-background" />
+                <div className="w-2 h-2 rounded-full bg-background" />
               )}
             </div>
-            <span className="text-[13px] font-medium text-foreground">Select All</span>
+            <span className="text-[11px] font-medium text-foreground">Select All</span>
           </button>
 
           {/* Products List */}
@@ -105,28 +105,32 @@ export const RefundScreen = ({ products, onBack, onNext }: RefundScreenProps) =>
               <button
                 key={index}
                 onClick={() => handleToggleProduct(index)}
-                className="w-full bg-surface rounded-lg p-3 border border-border flex items-center gap-3"
+                className={`w-full bg-background rounded-lg p-2.5 border flex items-center gap-2 transition-colors ${
+                  selectedProducts.has(index)
+                    ? "border-[#212121]"
+                    : "border-border"
+                }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                  className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 transition-colors ${
                     selectedProducts.has(index)
                       ? "border-foreground bg-foreground"
                       : "border-border"
                   }`}
                 >
                   {selectedProducts.has(index) && (
-                    <div className="w-2.5 h-2.5 rounded-full bg-background" />
+                    <div className="w-2 h-2 rounded-full bg-background" />
                   )}
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-[13px] font-medium text-foreground mb-1">
+                  <p className="text-[10px] font-medium text-foreground mb-0.5">
                     {product.name}
                   </p>
-                  <p className="text-[11px] text-muted-foreground">
+                  <p className="text-[9px] text-muted-foreground">
                     {product.size} | {product.color}
                   </p>
                 </div>
-                <span className="text-[15px] font-bold text-foreground flex-shrink-0">
+                <span className="text-[13px] font-bold text-foreground flex-shrink-0">
                   ${product.price.toFixed(2)}
                 </span>
               </button>
@@ -136,11 +140,11 @@ export const RefundScreen = ({ products, onBack, onNext }: RefundScreenProps) =>
       </div>
 
       {/* Next Button */}
-      <div className="flex-shrink-0 px-3 py-3 border-t border-border">
+      <div className="flex-shrink-0 px-3 py-2">
         <button
           onClick={handleNext}
           disabled={selectedProducts.size === 0}
-          className="w-full h-12 rounded-full text-[15px] font-semibold transition-colors disabled:opacity-50"
+          className="w-full h-[28px] rounded-full text-[12px] font-semibold transition-colors disabled:opacity-50"
           style={{ backgroundColor: selectedProducts.size > 0 ? '#BFBFBF' : '#E0E0E0', color: '#FFFFFF' }}
         >
           NEXT
