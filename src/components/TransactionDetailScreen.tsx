@@ -3,14 +3,12 @@ import iconReceipt from "@/assets/icon-receipt-tx.png";
 import iconUser from "@/assets/icon-user-tx.png";
 import iconPrint from "@/assets/icon-print-tx.png";
 import iconPayment from "@/assets/icon-payment-card.png";
-
 interface Product {
   name: string;
   size: string;
   color: string;
   price: number;
 }
-
 interface TransactionDetailScreenProps {
   transactionId: string;
   amount: number;
@@ -19,25 +17,22 @@ interface TransactionDetailScreenProps {
   onBack: () => void;
   onRefund: () => void;
 }
-
 export const TransactionDetailScreen = ({
   transactionId,
   amount,
   customer,
   products,
   onBack,
-  onRefund,
+  onRefund
 }: TransactionDetailScreenProps) => {
   const subTotal = products.reduce((sum, product) => sum + product.price, 0);
   const discount = 0;
   const taxRate = 0.08;
   const tax = subTotal * taxRate;
   const totalDue = subTotal - discount + tax;
-
-  return (
-    <div className="w-[186px] h-full flex flex-col bg-background">
+  return <div className="w-[186px] h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
+      <div className="flex-shrink-0 flex items-center justify-between py-2.5 px-0">
         <div className="flex items-center gap-2">
           <button onClick={onBack} className="p-0">
             <ChevronLeft className="w-4 h-4 text-foreground" />
@@ -51,7 +46,7 @@ export const TransactionDetailScreen = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide px-3">
+      <div className="flex-1 overflow-y-auto scrollbar-hide px-0">
         {/* Transaction Info */}
         <div className="py-2 space-y-2">
           <div className="flex items-center justify-between p-2 rounded-lg border border-border">
@@ -62,7 +57,9 @@ export const TransactionDetailScreen = ({
             </div>
           </div>
 
-          <div className="rounded-lg p-2 flex items-center justify-between" style={{ backgroundColor: '#F1F2F5' }}>
+          <div className="rounded-lg p-2 flex items-center justify-between" style={{
+          backgroundColor: '#F1F2F5'
+        }}>
             <div className="flex items-center gap-2">
               <img src={iconPayment} alt="" className="w-4 h-4" />
               <div className="flex flex-col">
@@ -81,8 +78,7 @@ export const TransactionDetailScreen = ({
         <div className="py-1.5">
           <h3 className="text-[11px] font-medium text-muted-foreground mb-1">Products</h3>
           <div className="space-y-1">
-            {products.map((product, index) => (
-              <div key={index} className="flex items-start justify-between">
+            {products.map((product, index) => <div key={index} className="flex items-start justify-between">
                 <div className="flex-1">
                   <p className="text-[10px] font-medium text-foreground mb-0.5">{product.name}</p>
                   <p className="text-[9px] text-muted-foreground">
@@ -90,8 +86,7 @@ export const TransactionDetailScreen = ({
                   </p>
                 </div>
                 <span className="text-[10px] font-medium text-foreground">${product.price.toFixed(2)}</span>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
 
@@ -117,19 +112,15 @@ export const TransactionDetailScreen = ({
       </div>
 
       {/* Refund Button */}
-      <div className="flex-shrink-0 px-3 py-2.5 border-t border-border">
+      <div className="flex-shrink-0 py-2.5 border-t border-border px-0">
         <div className="flex items-center gap-2.5">
           <button className="w-[22px] h-[22px] rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
             <img src={iconPrint} alt="Print" className="w-[22px] h-[22px]" />
           </button>
-          <button
-            onClick={onRefund}
-            className="flex-1 h-[28px] bg-foreground text-background rounded-full text-[12px] font-semibold hover:bg-foreground/90 transition-colors"
-          >
+          <button onClick={onRefund} className="flex-1 h-[28px] bg-foreground text-background rounded-full text-[12px] font-semibold hover:bg-foreground/90 transition-colors">
             REFUND
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
