@@ -65,9 +65,32 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleCurrentLocation = async () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    try {
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+
+      const { latitude, longitude } = position.coords;
+      
+      // Reverse geocode to get address (using a simple format for now)
+      // In production, you'd use a proper geocoding service
+      const address = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+      updateField("address", address);
+    } catch (error) {
+      alert("Unable to retrieve your location");
+    }
+  };
+
   const handleSave = () => {
     if (validateForm()) {
       onSave(formData);
+      onClose();
     }
   };
 
@@ -96,15 +119,15 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
           <div className="flex justify-center mb-4">
             <div className="relative">
               <div 
-                className="w-[50px] h-[50px] rounded-full flex items-center justify-center"
+                className="w-[75px] h-[75px] rounded-full flex items-center justify-center"
                 style={{ backgroundColor: '#F1F2F5' }}
               >
-                <img src={iconUserCustomer} alt="User" className="w-6 h-6" />
+                <img src={iconUserCustomer} alt="User" className="w-8 h-8" />
               </div>
               <button 
-                className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-background border border-border flex items-center justify-center"
+                className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-background border border-border flex items-center justify-center"
               >
-                <img src={iconEditCustomer} alt="Edit" className="w-2.5 h-2.5" />
+                <img src={iconEditCustomer} alt="Edit" className="w-3 h-3" />
               </button>
             </div>
           </div>
@@ -121,7 +144,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                 backgroundColor: '#FFFFFF', 
                 border: '1px solid #E5E5E5',
                 height: '28px',
-                fontSize: '11px' 
+                fontSize: '11px',
+                width: '186px'
               }}
             />
             {errors.firstName && (
@@ -141,7 +165,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                 backgroundColor: '#FFFFFF', 
                 border: '1px solid #E5E5E5',
                 height: '28px',
-                fontSize: '11px' 
+                fontSize: '11px',
+                width: '186px'
               }}
             />
           </div>
@@ -158,7 +183,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                 backgroundColor: '#FFFFFF', 
                 border: '1px solid #E5E5E5',
                 height: '28px',
-                fontSize: '11px' 
+                fontSize: '11px',
+                width: '186px'
               }}
             />
             {errors.email && (
@@ -243,10 +269,15 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                 backgroundColor: '#FFFFFF', 
                 border: '1px solid #E5E5E5',
                 height: '28px',
-                fontSize: '11px' 
+                fontSize: '11px',
+                width: '186px'
               }}
             />
-            <button className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-foreground flex items-center justify-center">
+            <button 
+              onClick={handleCurrentLocation}
+              type="button"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-foreground flex items-center justify-center hover:opacity-80 transition-opacity"
+            >
               <img src={iconLocation} alt="Location" className="w-3 h-3" />
             </button>
           </div>
@@ -263,7 +294,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                 backgroundColor: '#FFFFFF', 
                 border: '1px solid #E5E5E5',
                 height: '28px',
-                fontSize: '11px' 
+                fontSize: '11px',
+                width: '186px'
               }}
             />
           </div>
@@ -280,7 +312,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                 backgroundColor: '#FFFFFF', 
                 border: '1px solid #E5E5E5',
                 height: '28px',
-                fontSize: '11px' 
+                fontSize: '11px',
+                width: '186px'
               }}
             />
           </div>
@@ -295,7 +328,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                     backgroundColor: '#FFFFFF', 
                     border: '1px solid #E5E5E5',
                     height: '28px',
-                    fontSize: '11px' 
+                    fontSize: '11px',
+                    width: '186px'
                   }}
                 >
                   {formData.dateOfBirth ? (
@@ -328,7 +362,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                     backgroundColor: '#FFFFFF', 
                     border: '1px solid #E5E5E5',
                     height: '28px',
-                    fontSize: '11px' 
+                    fontSize: '11px',
+                    width: '186px'
                   }}
                 >
                   {formData.anniversary ? (
