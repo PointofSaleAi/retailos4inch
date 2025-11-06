@@ -62,23 +62,25 @@ export const TransactionDetailScreen = ({
             </div>
           </div>
 
-          <div className="rounded-lg p-2.5 h-[40px] flex items-center justify-between" style={{ backgroundColor: '#F1F2F5' }}>
-            <div className="flex items-center gap-2">
-              <img src={iconPayment} alt="" className="w-4 h-4" />
-              <span className="text-[12px] font-medium text-foreground">Card | 0486</span>
+          <div className="rounded-lg p-2 flex flex-col gap-1" style={{ backgroundColor: '#F1F2F5' }}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img src={iconPayment} alt="" className="w-4 h-4" />
+                <span className="text-[10px] font-medium text-foreground">Card | 0486</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[12px] font-bold text-foreground">${amount.toFixed(2)}</span>
+                <span className="text-[8px] font-semibold text-success">Paid</span>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-[14px] font-bold text-foreground">${amount.toFixed(2)}</span>
-              <span className="text-[10px] font-semibold text-success">Paid</span>
-            </div>
+            <div className="text-[8px] text-muted-foreground">27 Aug 25 | 3:55 PM</div>
           </div>
-          <div className="text-[10px] text-muted-foreground">27 Aug 25 | 3:55 PM</div>
         </div>
 
         {/* Products Section */}
-        <div className="py-2">
-          <h3 className="text-[11px] font-medium text-muted-foreground mb-2">Products</h3>
-          <div className="space-y-2">
+        <div className="py-1.5">
+          <h3 className="text-[11px] font-medium text-muted-foreground mb-1.5">Products</h3>
+          <div className="space-y-1.5">
             {products.map((product, index) => (
               <div key={index} className="flex items-start justify-between">
                 <div className="flex-1">
@@ -94,7 +96,7 @@ export const TransactionDetailScreen = ({
         </div>
 
         {/* Billing Summary */}
-        <div className="py-2 space-y-1.5 border-t border-border">
+        <div className="py-1.5 space-y-1 border-t border-border">
           <div className="flex items-center justify-between">
             <span className="text-[12px] text-foreground">Sub Total</span>
             <span className="text-[12px] font-semibold text-foreground">${subTotal.toFixed(2)}</span>
@@ -107,9 +109,9 @@ export const TransactionDetailScreen = ({
             <span className="text-[12px] text-foreground">Tax @ 8%</span>
             <span className="text-[12px] font-semibold text-foreground">${tax.toFixed(2)}</span>
           </div>
-          <div className="flex items-center justify-between pt-1.5 border-t border-border">
-            <span className="text-[12px] font-bold text-foreground">Total Due</span>
-            <span className="text-[12px] font-bold text-foreground">${totalDue.toFixed(2)}</span>
+          <div className="flex items-center justify-between pt-1 border-t border-border">
+            <span className="text-[12px] font-semibold text-foreground">Total Due</span>
+            <span className="text-[12px] font-semibold text-foreground">${totalDue.toFixed(2)}</span>
           </div>
         </div>
       </div>
