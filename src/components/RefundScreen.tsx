@@ -62,7 +62,7 @@ export const RefundScreen = ({
 
         {/* Tabs */}
         <div className="flex-shrink-0 px-0 py-0">
-          <div className="flex gap-1">
+          <div className="flex gap-1 py-[6px]">
             <button onClick={() => setActiveTab("products")} className={`flex-1 h-[28px] rounded-full text-[11px] font-semibold transition-colors ${activeTab === "products" ? "bg-foreground text-background" : "bg-muted text-muted-foreground"}`}>
               Products
             </button>
