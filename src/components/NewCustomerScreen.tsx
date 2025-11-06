@@ -115,7 +115,7 @@ export const NewCustomerScreen = ({
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="space-y-2" style={{
         width: '186px',
-        padding: '8px 6px',
+        padding: '0 6px',
         margin: '0 auto'
       }}>
           {/* Avatar */}
