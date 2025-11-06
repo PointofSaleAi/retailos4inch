@@ -39,27 +39,28 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   };
 
   return (
-    <div className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-2 py-2 ${
+    <div className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-3 py-2 ${
       quantity > 0 ? 'border border-[#000]' : 'border border-border'
     }`}>
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleQuantityChange(quantity + 1);
-        }}
-        className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
-        style={{ borderRadius: '4px' }}
-      >
-        <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
-      </button>
-      
       <div className="flex-1 flex flex-col gap-0.5 min-w-0">
-        <h3 className={`${getNameStyles()} break-words h-[24px] overflow-hidden`}>
+        <h3 className={`${getNameStyles()} break-words leading-tight line-clamp-2`}>
           {product.name}
         </h3>
-        <span className="text-[10px] font-bold text-price">
+      </div>
+      
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <span className="text-[13px] font-semibold text-foreground">
           ${product.price.toFixed(2)}
         </span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleQuantityChange(quantity + 1);
+          }}
+          className="w-[20px] h-[20px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 rounded"
+        >
+          <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+        </button>
       </div>
     </div>
   );
