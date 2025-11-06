@@ -133,7 +133,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* First Name */}
-          <div className="space-y-1 px-[6px] py-[3px]">
+          <div className="space-y-1 py-0 px-0">
             <Input type="text" placeholder="First Name*" value={formData.firstName} onChange={e => updateField("firstName", e.target.value)} className="rounded-full text-xs" style={{
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E5E5',
@@ -145,7 +145,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Last Name */}
-          <div className="space-y-1 px-[6px] py-[3px]">
+          <div className="space-y-1 px-0 py-0">
             <Input type="text" placeholder="Last Name" value={formData.lastName} onChange={e => updateField("lastName", e.target.value)} className="rounded-full text-xs" style={{
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E5E5',
@@ -156,7 +156,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Email */}
-          <div className="space-y-1 px-[6px] py-[3px]">
+          <div className="space-y-1 px-0 py-0">
             <Input type="email" placeholder="Email Address*" value={formData.email} onChange={e => updateField("email", e.target.value)} className="rounded-full text-xs" style={{
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E5E5',
@@ -169,7 +169,7 @@ export const NewCustomerScreen = ({
 
           {/* Phone Number */}
           <div className="space-y-1">
-            <div className="flex gap-2 px-[6px] py-[3px]">
+            <div className="flex gap-2 py-0 px-0">
               <Popover>
                 <PopoverTrigger asChild>
                   <button className="flex items-center gap-1 px-2 rounded-full" style={{
@@ -244,7 +244,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Address */}
-          <div className="space-y-1 relative px-[6px] py-[3px]">
+          <div className="space-y-1 relative px-0 py-0">
             <Input type="text" placeholder="Search Address" value={formData.address} onChange={e => updateField("address", e.target.value)} className="rounded-full text-xs pr-10" style={{
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E5E5',
@@ -258,7 +258,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Tax */}
-          <div className="space-y-1 px-[6px] py-[3px]">
+          <div className="space-y-1 px-0 py-0">
             <Input type="text" placeholder="Tax" value={formData.tax} onChange={e => updateField("tax", e.target.value)} className="rounded-full text-xs" style={{
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E5E5',
@@ -269,7 +269,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Company Name */}
-          <div className="space-y-1 px-[6px] py-[3px]">
+          <div className="space-y-1 px-0 py-0">
             <Input type="text" placeholder="Company Name" value={formData.companyName} onChange={e => updateField("companyName", e.target.value)} className="rounded-full text-xs" style={{
             backgroundColor: '#FFFFFF',
             border: '1px solid #E5E5E5',
@@ -280,7 +280,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Date of Birth */}
-          <div className="space-y-1 px-[6px] py-[3px]">
+          <div className="space-y-1 px-0 py-0">
             <Popover>
               <PopoverTrigger asChild>
                 <button className="w-full rounded-full text-xs px-4 text-left" style={{
@@ -300,7 +300,7 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Anniversary */}
-          <div className="space-y-1 px-[6px] py-[3px]">
+          <div className="space-y-1 px-0 py-0">
             <Popover>
               <PopoverTrigger asChild>
                 <button className="w-full rounded-full text-xs px-4 text-left" style={{
