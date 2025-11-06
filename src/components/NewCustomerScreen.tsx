@@ -112,12 +112,11 @@ export const NewCustomerScreen = ({
       </div>
 
       {/* Form Content */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
+      <div className="flex-1 overflow-y-auto scrollbar-hide px-[6px]">
         <div style={{
         width: '186px',
-        padding: '0 6px',
         margin: '0 auto'
-      }} className="space-y-2 py-0 px-0">
+      }} className="space-y-2">
           {/* Avatar */}
           <div className="flex justify-center mb-4">
             <div className="relative">
