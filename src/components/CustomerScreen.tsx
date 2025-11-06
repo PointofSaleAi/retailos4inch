@@ -12,6 +12,10 @@ import customer2 from "@/assets/customer-2.png";
 import customer3 from "@/assets/customer-3.png";
 import customer4 from "@/assets/customer-4.png";
 
+interface CustomerScreenProps {
+  onAddCustomer: () => void;
+}
+
 interface Customer {
   id: string;
   name: string;
@@ -58,7 +62,7 @@ const mockCustomers: Customer[] = [
   }
 ];
 
-export const CustomerScreen = () => {
+export const CustomerScreen = ({ onAddCustomer }: CustomerScreenProps) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCustomers = mockCustomers.filter(customer =>
@@ -83,7 +87,7 @@ export const CustomerScreen = () => {
           <button className="p-1">
             <img src={iconArchive} alt="" className="w-4 h-4" />
           </button>
-          <button className="p-1">
+          <button className="p-1" onClick={onAddCustomer}>
             <img src={iconPlus} alt="" className="w-4 h-4" />
           </button>
         </div>

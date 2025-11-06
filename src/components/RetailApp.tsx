@@ -4,6 +4,7 @@ import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
 import { CustomerScreen } from "./CustomerScreen";
+import { NewCustomerScreen, CustomerFormData } from "./NewCustomerScreen";
 import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
 import { CustomPaymentScreen } from "./CustomPaymentScreen";
@@ -75,6 +76,7 @@ export const RetailApp = () => {
   const [showRefundReasonScreen, setShowRefundReasonScreen] = useState(false);
   const [showCustomRefundReasonScreen, setShowCustomRefundReasonScreen] = useState(false);
   const [showRefundedScreen, setShowRefundedScreen] = useState(false);
+  const [showNewCustomer, setShowNewCustomer] = useState(false);
   const [refundAmount, setRefundAmount] = useState(0);
   const [selectedTransactionId, setSelectedTransactionId] = useState<string>("");
   const [paymentAmount, setPaymentAmount] = useState(0);
@@ -84,6 +86,12 @@ export const RetailApp = () => {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+  };
+
+  const handleSaveCustomer = (customerData: CustomerFormData) => {
+    // Here you would typically save to backend
+    console.log('New customer saved:', customerData);
+    setShowNewCustomer(false);
   };
 
   const handleToggleFavorite = (productId: number) => {
@@ -374,6 +382,15 @@ export const RetailApp = () => {
       );
     }
 
+    if (showNewCustomer) {
+      return (
+        <NewCustomerScreen
+          onClose={() => setShowNewCustomer(false)}
+          onSave={handleSaveCustomer}
+        />
+      );
+    }
+
     if (showPaymentSuccess) {
       return (
         <PaymentSuccessScreen
@@ -485,7 +502,7 @@ export const RetailApp = () => {
       case "transactions":
         return <TransactionsScreen transactions={transactions} onTransactionClick={handleOpenPendingTransaction} />;
       case "customer":
-        return <CustomerScreen />;
+        return <CustomerScreen onAddCustomer={() => setShowNewCustomer(true)} />;
       case "settings":
         return <SettingsScreen />;
       default:
@@ -511,7 +528,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
