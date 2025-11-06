@@ -12,6 +12,8 @@ import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import { OrderSummaryScreen } from "./OrderSummaryScreen";
 import { PaymentOptionsScreen } from "./PaymentOptionsScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
+import { TransactionDetailScreen } from "./TransactionDetailScreen";
+import { RefundScreen } from "./RefundScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -65,6 +67,9 @@ export const RetailApp = () => {
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [showTransactionDetail, setShowTransactionDetail] = useState(false);
+  const [showRefundScreen, setShowRefundScreen] = useState(false);
+  const [selectedTransactionId, setSelectedTransactionId] = useState<string>("");
   const [paymentAmount, setPaymentAmount] = useState(0);
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -171,9 +176,14 @@ export const RetailApp = () => {
 
   const handleOpenPendingTransaction = (transactionId: string) => {
     const transaction = transactions.find(t => t.id === transactionId);
-    if (transaction && transaction.status === "Pending" && transaction.cartItems) {
-      setCartItems(transaction.cartItems);
-      setShowOrderSummary(true);
+    if (transaction) {
+      if (transaction.status === "Pending" && transaction.cartItems) {
+        setCartItems(transaction.cartItems);
+        setShowOrderSummary(true);
+      } else if (transaction.status === "Paid") {
+        setSelectedTransactionId(transactionId);
+        setShowTransactionDetail(true);
+      }
     }
   };
 
@@ -215,6 +225,61 @@ export const RetailApp = () => {
   const renderScreen = () => {
     if (!isLoggedIn) {
       return <LoginScreen onLogin={handleLogin} />;
+    }
+
+    if (showRefundScreen) {
+      const transaction = transactions.find(t => t.id === selectedTransactionId);
+      const refundProducts = transaction?.cartItems?.map(item => ({
+        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        size: "XS",
+        color: "Olive Green",
+        price: item.price * item.quantity
+      })) || [];
+
+      return (
+        <RefundScreen
+          products={refundProducts}
+          onBack={() => {
+            setShowRefundScreen(false);
+            setShowTransactionDetail(true);
+          }}
+          onNext={(selectedProducts) => {
+            console.log("Refund selected:", selectedProducts);
+            setShowRefundScreen(false);
+            setShowTransactionDetail(false);
+            setActiveTab("transactions");
+          }}
+        />
+      );
+    }
+
+    if (showTransactionDetail) {
+      const transaction = transactions.find(t => t.id === selectedTransactionId);
+      if (!transaction) return null;
+
+      const detailProducts = transaction.cartItems?.map(item => ({
+        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        size: "XS",
+        color: "Olive Green",
+        price: item.price * item.quantity
+      })) || [];
+
+      return (
+        <TransactionDetailScreen
+          transactionId="256"
+          amount={transaction.amount}
+          customer="Micheal David"
+          products={detailProducts}
+          onBack={() => {
+            setShowTransactionDetail(false);
+            setActiveTab("transactions");
+          }}
+          onRefund={() => {
+            setShowTransactionDetail(false);
+            setShowRefundScreen(true);
+          }}
+        />
+      );
     }
 
     if (showBarcodeScanner) {
@@ -376,7 +441,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
