@@ -9,7 +9,7 @@ interface Product {
 interface RefundScreenProps {
   products: Product[];
   onBack: () => void;
-  onNext: (selectedProducts: Product[]) => void;
+  onNext: (amount: number) => void;
 }
 export const RefundScreen = ({
   products,
@@ -36,8 +36,13 @@ export const RefundScreen = ({
     setSelectedProducts(newSelected);
   };
   const handleNext = () => {
-    const selected = products.filter((_, index) => selectedProducts.has(index));
-    onNext(selected);
+    if (activeTab === "products") {
+      const selected = products.filter((_, index) => selectedProducts.has(index));
+      const totalAmount = selected.reduce((sum, product) => sum + product.price, 0);
+      onNext(totalAmount);
+    } else {
+      onNext(parseFloat(refundAmount));
+    }
   };
   const handleNumberClick = (num: string) => {
     if (refundAmount === "0.00") {
