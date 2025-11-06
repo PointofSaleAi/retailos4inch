@@ -35,7 +35,7 @@ export const TransactionDetailScreen = ({
   const totalDue = subTotal - discount + tax;
 
   return (
-    <div className="h-[186px] flex flex-col bg-background">
+    <div className="w-[186px] h-full flex flex-col bg-background">
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
         <div className="flex items-center gap-2">
