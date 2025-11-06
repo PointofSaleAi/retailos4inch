@@ -79,17 +79,17 @@ export const TransactionDetailScreen = ({
 
         {/* Products Section */}
         <div className="py-1.5">
-          <h3 className="text-[11px] font-medium text-muted-foreground mb-1.5">Products</h3>
-          <div className="space-y-1.5">
+          <h3 className="text-[11px] font-medium text-muted-foreground mb-1">Products</h3>
+          <div className="space-y-1">
             {products.map((product, index) => (
               <div key={index} className="flex items-start justify-between">
                 <div className="flex-1">
-                  <p className="text-[12px] font-medium text-foreground mb-0.5">{product.name}</p>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-[10px] font-medium text-foreground mb-0.5">{product.name}</p>
+                  <p className="text-[9px] text-muted-foreground">
                     {product.size} | {product.color}
                   </p>
                 </div>
-                <span className="text-[12px] font-semibold text-foreground">${product.price.toFixed(2)}</span>
+                <span className="text-[10px] font-medium text-foreground">${product.price.toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -98,20 +98,20 @@ export const TransactionDetailScreen = ({
         {/* Billing Summary */}
         <div className="py-1.5 space-y-1 border-t border-border">
           <div className="flex items-center justify-between">
-            <span className="text-[12px] text-foreground">Sub Total</span>
-            <span className="text-[12px] font-semibold text-foreground">${subTotal.toFixed(2)}</span>
+            <span className="text-[9px] font-medium text-foreground">Sub Total</span>
+            <span className="text-[9px] font-medium text-foreground">${subTotal.toFixed(2)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[12px] text-foreground">Discount</span>
-            <span className="text-[12px] font-semibold text-foreground">${discount.toFixed(2)}</span>
+            <span className="text-[9px] font-medium text-foreground">Discount</span>
+            <span className="text-[9px] font-medium text-foreground">${discount.toFixed(2)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[12px] text-foreground">Tax @ 8%</span>
-            <span className="text-[12px] font-semibold text-foreground">${tax.toFixed(2)}</span>
+            <span className="text-[9px] font-medium text-foreground">Tax @ 8%</span>
+            <span className="text-[9px] font-medium text-foreground">${tax.toFixed(2)}</span>
           </div>
           <div className="flex items-center justify-between pt-1 border-t border-border">
-            <span className="text-[12px] font-semibold text-foreground">Total Due</span>
-            <span className="text-[12px] font-semibold text-foreground">${totalDue.toFixed(2)}</span>
+            <span className="text-[9px] font-medium text-foreground">Total Due</span>
+            <span className="text-[9px] font-medium text-foreground">${totalDue.toFixed(2)}</span>
           </div>
         </div>
       </div>
