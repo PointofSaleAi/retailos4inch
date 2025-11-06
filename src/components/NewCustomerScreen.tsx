@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, User, Pencil, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -7,6 +7,9 @@ import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import iconBackArrow from "@/assets/icon-back-arrow.png";
+import iconUserCustomer from "@/assets/icon-user-customer.png";
+import iconEditCustomer from "@/assets/icon-edit-customer.png";
 
 interface NewCustomerScreenProps {
   onClose: () => void;
@@ -77,7 +80,7 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
         <button onClick={onClose} className="p-1">
-          <ArrowLeft className="w-4 h-4 text-foreground" />
+          <img src={iconBackArrow} alt="Back" className="w-4 h-4" />
         </button>
         <h1 className="font-semibold text-foreground" style={{ fontSize: '12px' }}>New Customer</h1>
         <div className="w-5" />
@@ -93,12 +96,12 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
                 className="w-20 h-20 rounded-full flex items-center justify-center"
                 style={{ backgroundColor: '#F1F2F5' }}
               >
-                <User className="w-10 h-10 text-muted-foreground" />
+                <img src={iconUserCustomer} alt="User" className="w-10 h-10" />
               </div>
               <button 
                 className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-background border border-border flex items-center justify-center"
               >
-                <Pencil className="w-3 h-3 text-foreground" />
+                <img src={iconEditCustomer} alt="Edit" className="w-3 h-3" />
               </button>
             </div>
           </div>
