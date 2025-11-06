@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -7,9 +7,10 @@ import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import iconBackArrow from "@/assets/icon-back-arrow.png";
+import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import iconUserCustomer from "@/assets/icon-user-customer.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
+import iconLocation from "@/assets/icon-location.png";
 
 interface NewCustomerScreenProps {
   onClose: () => void;
@@ -38,6 +39,8 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
     tax: "",
     companyName: "",
   });
+
+  const [countryCode, setCountryCode] = useState("+1");
 
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerFormData, string>>>({});
 
@@ -93,15 +96,15 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
           <div className="flex justify-center mb-4">
             <div className="relative">
               <div 
-                className="w-20 h-20 rounded-full flex items-center justify-center"
+                className="w-[50px] h-[50px] rounded-full flex items-center justify-center"
                 style={{ backgroundColor: '#F1F2F5' }}
               >
-                <img src={iconUserCustomer} alt="User" className="w-10 h-10" />
+                <img src={iconUserCustomer} alt="User" className="w-6 h-6" />
               </div>
               <button 
-                className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-background border border-border flex items-center justify-center"
+                className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-background border border-border flex items-center justify-center"
               >
-                <img src={iconEditCustomer} alt="Edit" className="w-3 h-3" />
+                <img src={iconEditCustomer} alt="Edit" className="w-2.5 h-2.5" />
               </button>
             </div>
           </div>
@@ -166,18 +169,49 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
           {/* Phone Number */}
           <div className="space-y-1">
             <div className="flex gap-2">
-              <div 
-                className="flex items-center gap-1 px-2 rounded-full"
-                style={{ 
-                  backgroundColor: '#FFFFFF', 
-                  border: '1px solid #E5E5E5',
-                  height: '28px', 
-                  width: '60px' 
-                }}
-              >
-                <span className="text-xs">🇺🇸</span>
-                <span className="text-xs text-foreground">+1</span>
-              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className="flex items-center gap-1 px-2 rounded-full"
+                    style={{ 
+                      backgroundColor: '#FFFFFF', 
+                      border: '1px solid #E5E5E5',
+                      height: '28px', 
+                      width: '60px' 
+                    }}
+                  >
+                    <span className="text-xs">🇺🇸</span>
+                    <span className="text-xs text-foreground">{countryCode}</span>
+                    <ChevronDown className="w-3 h-3 text-foreground ml-auto" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-48 p-2" align="start">
+                  <div className="space-y-1">
+                    {[
+                      { flag: "🇺🇸", code: "+1", country: "United States" },
+                      { flag: "🇬🇧", code: "+44", country: "United Kingdom" },
+                      { flag: "🇨🇦", code: "+1", country: "Canada" },
+                      { flag: "🇦🇺", code: "+61", country: "Australia" },
+                      { flag: "🇮🇳", code: "+91", country: "India" },
+                      { flag: "🇩🇪", code: "+49", country: "Germany" },
+                      { flag: "🇫🇷", code: "+33", country: "France" },
+                      { flag: "🇯🇵", code: "+81", country: "Japan" },
+                      { flag: "🇨🇳", code: "+86", country: "China" },
+                      { flag: "🇧🇷", code: "+55", country: "Brazil" },
+                    ].map((country) => (
+                      <button
+                        key={country.code + country.country}
+                        onClick={() => setCountryCode(country.code)}
+                        className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded text-xs"
+                      >
+                        <span>{country.flag}</span>
+                        <span className="text-foreground">{country.code}</span>
+                        <span className="text-muted-foreground ml-auto">{country.country}</span>
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
               <Input
                 type="tel"
                 placeholder="(XXX) XXX- XXXX"
@@ -213,7 +247,7 @@ export const NewCustomerScreen = ({ onClose, onSave }: NewCustomerScreenProps) =
               }}
             />
             <button className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-foreground flex items-center justify-center">
-              <MapPin className="w-3 h-3 text-background" />
+              <img src={iconLocation} alt="Location" className="w-3 h-3" />
             </button>
           </div>
 
