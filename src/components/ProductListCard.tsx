@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ProductDetailSheet } from "./ProductDetailSheet";
 import iconPlusNew from "@/assets/icon-plus-new.png";
 
 interface Product {
@@ -40,30 +39,28 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   };
 
   return (
-    <ProductDetailSheet product={product} onAddToCart={onAddToCart}>
-      <div className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-2 py-2 cursor-pointer ${
-        quantity > 0 ? 'border border-[#000]' : 'border border-border'
-      }`}>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleQuantityChange(quantity + 1);
-          }}
-          className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
-          style={{ borderRadius: '4px' }}
-        >
-          <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
-        </button>
-        
-        <div className="flex-1 flex flex-col gap-0.5 min-w-0">
-          <h3 className={`${getNameStyles()} break-words h-[24px] overflow-hidden`}>
-            {product.name}
-          </h3>
-          <span className="text-[10px] font-bold text-price">
-            ${product.price.toFixed(2)}
-          </span>
-        </div>
+    <div className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-2 py-2 ${
+      quantity > 0 ? 'border border-[#000]' : 'border border-border'
+    }`}>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleQuantityChange(quantity + 1);
+        }}
+        className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
+        style={{ borderRadius: '4px' }}
+      >
+        <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+      </button>
+      
+      <div className="flex-1 flex flex-col gap-0.5 min-w-0">
+        <h3 className={`${getNameStyles()} break-words h-[24px] overflow-hidden`}>
+          {product.name}
+        </h3>
+        <span className="text-[10px] font-bold text-price">
+          ${product.price.toFixed(2)}
+        </span>
       </div>
-    </ProductDetailSheet>
+    </div>
   );
 };

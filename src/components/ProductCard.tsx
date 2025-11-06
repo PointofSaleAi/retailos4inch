@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ProductDetailSheet } from "./ProductDetailSheet";
 import iconPlusNew from "@/assets/icon-plus-new.png";
 
 interface Product {
@@ -58,38 +57,7 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
 
   if (hideImage) {
     return (
-      <ProductDetailSheet product={product} onAddToCart={onAddToCart}>
-        <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[78px] flex flex-col p-1.5 cursor-pointer ${
-          quantity > 0 ? 'border border-[#000]' : 'border border-border'
-        }`}>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleQuantityChange(quantity + 1);
-            }}
-            className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 mb-1"
-            style={{ borderRadius: '4px' }}
-          >
-            <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
-          </button>
-          
-          <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden mb-auto`} style={{ color: '#414141', height: '32px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
-            {product.name}
-          </h3>
-          
-          <div className="flex items-center justify-start">
-            <span className="text-[12px] font-bold text-price">
-              ${product.price.toFixed(2)}
-            </span>
-          </div>
-        </div>
-      </ProductDetailSheet>
-    );
-  }
-
-  return (
-    <ProductDetailSheet product={product} onAddToCart={onAddToCart}>
-      <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col cursor-pointer relative ${
+      <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[78px] flex flex-col p-1.5 ${
         quantity > 0 ? 'border border-[#000]' : 'border border-border'
       }`}>
         <button
@@ -97,29 +65,56 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false }: Product
             e.stopPropagation();
             handleQuantityChange(quantity + 1);
           }}
-          className="absolute top-1 left-1 z-10 flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
+          className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 mb-1"
           style={{ borderRadius: '4px' }}
         >
           <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
         </button>
         
-        <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden mb-auto`} style={{ color: '#414141', height: '32px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+          {product.name}
+        </h3>
         
-        <div className="p-1 flex flex-col flex-1 justify-between">
-          <h3 className={`${getNameFontSize(false)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden`} style={{ height: '28px' }}>
-            {product.name}
-          </h3>
-          <span className="text-[10px] font-bold text-price">
+        <div className="flex items-center justify-start">
+          <span className="text-[12px] font-bold text-price">
             ${product.price.toFixed(2)}
           </span>
         </div>
       </div>
-    </ProductDetailSheet>
+    );
+  }
+
+  return (
+    <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col relative ${
+      quantity > 0 ? 'border border-[#000]' : 'border border-border'
+    }`}>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          handleQuantityChange(quantity + 1);
+        }}
+        className="absolute top-1 left-1 z-10 flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
+        style={{ borderRadius: '4px' }}
+      >
+        <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+      </button>
+      
+      <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      <div className="p-1 flex flex-col flex-1 justify-between">
+        <h3 className={`${getNameFontSize(false)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden`} style={{ height: '28px' }}>
+          {product.name}
+        </h3>
+        <span className="text-[10px] font-bold text-price">
+          ${product.price.toFixed(2)}
+        </span>
+      </div>
+    </div>
   );
 };
