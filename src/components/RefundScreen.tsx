@@ -106,7 +106,7 @@ export const RefundScreen = ({
                     </span>
                   </button>)}
               </div>
-            </div> : <div className="px-3 space-y-3">
+            </div> : <div className="space-y-3 px-0">
               {/* Amount Display */}
               <div className="bg-background rounded-lg border border-border h-[36px] flex items-center justify-center">
                 <span className="text-[20px] font-bold" style={{
