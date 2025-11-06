@@ -7,6 +7,7 @@ interface RefundReasonScreenProps {
   paymentMethod: string;
   onBack: () => void;
   onRefund: (reason: string) => void;
+  onOtherSelected: () => void;
 }
 
 const REFUND_REASONS = [
@@ -23,7 +24,8 @@ export const RefundReasonScreen = ({
   amount,
   paymentMethod,
   onBack,
-  onRefund
+  onRefund,
+  onOtherSelected
 }: RefundReasonScreenProps) => {
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
@@ -72,7 +74,13 @@ export const RefundReasonScreen = ({
             {REFUND_REASONS.map((reason) => (
               <button
                 key={reason}
-                onClick={() => setSelectedReason(reason)}
+                onClick={() => {
+                  if (reason === "Other") {
+                    onOtherSelected();
+                  } else {
+                    setSelectedReason(reason);
+                  }
+                }}
                 className="w-full h-[28px] rounded-lg border border-border bg-background flex items-center justify-between px-3 transition-colors hover:bg-muted"
               >
                 <span className="text-[10px] font-medium text-foreground">
