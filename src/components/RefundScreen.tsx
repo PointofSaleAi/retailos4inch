@@ -88,11 +88,7 @@ export const RefundScreen = ({
               {/* Products List */}
               <div className="space-y-2">
                 {products.map((product, index) => <button key={index} onClick={() => handleToggleProduct(index)} className={`w-full bg-background rounded-lg p-2.5 border flex items-center gap-2 transition-colors ${selectedProducts.has(index) ? "border-[#212121]" : "border-border"}`}>
-                    <div className={`w-3 h-3 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${selectedProducts.has(index) ? "border-foreground bg-foreground" : "border-border"}`}>
-                      {selectedProducts.has(index) && <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
-                          <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>}
-                    </div>
+                    
                     <div className="flex-1 text-left">
                       <p className="text-[10px] font-medium text-foreground mb-0.5">
                         {product.name}
