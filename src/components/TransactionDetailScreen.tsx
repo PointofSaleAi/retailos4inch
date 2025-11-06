@@ -60,7 +60,7 @@ export const TransactionDetailScreen = ({
 
             <div style={{
             backgroundColor: '#F1F2F5'
-          }} className="rounded-lg p-2 flex flex-col gap-1 px-[6px] py-[6px]">
+          }} className="rounded-lg p-2 flex flex-col gap-1 px-[6px] py-[8px]">
               <div className="flex items-start justify-between">
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
@@ -78,10 +78,10 @@ export const TransactionDetailScreen = ({
           </div>
 
           {/* Products Section */}
-          <div className="py-1.5">
+          <div className="py-[8px]">
             <h3 className="text-[11px] font-medium text-muted-foreground mb-1">Products</h3>
             <div className="space-y-1">
-              {products.map((product, index) => <div key={index} className="flex items-start justify-between">
+              {products.map((product, index) => <div key={index} className="flex items-start justify-between py-0">
                   <div className="flex-1">
                     <p className="text-[10px] font-medium text-foreground mb-0.5">{product.name}</p>
                     <p className="text-[9px] text-muted-foreground">
@@ -94,7 +94,7 @@ export const TransactionDetailScreen = ({
           </div>
 
           {/* Billing Summary */}
-          <div className="py-1.5 space-y-1 border-t border-border">
+          <div className="space-y-1 border-t border-border py-[8px]">
             <div className="flex items-center justify-between">
               <span className="text-[9px] font-medium text-foreground">Sub Total</span>
               <span className="text-[9px] font-medium text-foreground">${subTotal.toFixed(2)}</span>
