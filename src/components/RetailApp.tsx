@@ -87,6 +87,7 @@ export const RetailApp = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [activeCustomerInOrder, setActiveCustomerInOrder] = useState<Customer | null>(null);
+  const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -516,6 +517,7 @@ export const RetailApp = () => {
             cartItemCount={cartItemCount}
             cartTotal={cartTotal}
             onCartClick={() => setShowOrderSummary(true)}
+            onProductDetailOpen={setIsProductDetailOpen}
           />
         );
       case "transactions":
@@ -544,6 +546,7 @@ export const RetailApp = () => {
             cartItemCount={cartItemCount}
             cartTotal={cartTotal}
             onCartClick={() => setShowOrderSummary(true)}
+            onProductDetailOpen={setIsProductDetailOpen}
           />
         );
     }
@@ -555,7 +558,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}

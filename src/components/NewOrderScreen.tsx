@@ -92,6 +92,7 @@ interface NewOrderScreenProps {
   cartItemCount: number;
   cartTotal: number;
   onCartClick?: () => void;
+  onProductDetailOpen?: (isOpen: boolean) => void;
 }
 
 export const NewOrderScreen = ({ 
@@ -103,7 +104,8 @@ export const NewOrderScreen = ({
   onAddToCart,
   cartItemCount,
   cartTotal,
-  onCartClick
+  onCartClick,
+  onProductDetailOpen
 }: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"image" | "grid" | "list">("image");
   const [selectedProductType, setSelectedProductType] = useState("Products");
@@ -119,10 +121,12 @@ export const NewOrderScreen = ({
   const handleCardClick = (product: Product) => {
     setSelectedProduct(product);
     setIsSheetOpen(true);
+    onProductDetailOpen?.(true);
   };
 
   const handleCloseSheet = () => {
     setIsSheetOpen(false);
+    onProductDetailOpen?.(false);
   };
 
   const filteredProducts = searchQuery
@@ -252,7 +256,7 @@ export const NewOrderScreen = ({
       </div>
       
       {/* Cart Strip - positioned as flex child at bottom */}
-      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
+      {!isSheetOpen && <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />}
 
       {/* Product Detail Sheet */}
       <ProductDetailSheet
