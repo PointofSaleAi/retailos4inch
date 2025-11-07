@@ -43,8 +43,8 @@ export const ProductDetailSheet = ({
   portalContainer,
 }: ProductDetailSheetProps) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedColor, setSelectedColor] = useState("Black");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
 
   if (!product) return null;
 
@@ -63,8 +63,8 @@ export const ProductDetailSheet = ({
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent container={portalContainer} className="w-full rounded-t-[16px] bottom-0 max-h-[calc(100svh-10px)] overflow-y-auto pb-0 overscroll-contain">
-        <div className="w-full pt-1 pb-0" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+      <DrawerContent container={portalContainer} className="w-full rounded-t-[16px] bottom-0 h-[280px] overflow-hidden pb-0 overscroll-contain">
+        <div className="w-full pt-1 pb-0 h-full flex flex-col" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           {/* Handle bar */}
           <div className="w-[36px] h-[3px] bg-muted-foreground/30 rounded-full mx-auto mb-1" />
           
@@ -95,17 +95,23 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Selected size & color / Stock */}
-          <div className="flex items-center justify-between px-3 mb-1">
+          <div className="flex items-center justify-between px-3 mb-1.5 py-1.5 bg-muted/30 mx-3 rounded-md">
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-semibold text-foreground">{selectedSize}</span>
-              <span className="text-[10px] font-semibold text-foreground">{selectedColor}</span>
+              {selectedSize && selectedColor ? (
+                <>
+                  <span className="text-[10px] font-semibold text-foreground">{selectedSize}</span>
+                  <span className="text-[10px] font-semibold text-foreground">{selectedColor}</span>
+                </>
+              ) : (
+                <span className="text-[10px] text-muted-foreground">Select size & color</span>
+              )}
             </div>
             <span className="text-[10px] font-semibold text-foreground">Stock 12</span>
           </div>
 
           {/* Size Section */}
-          <div className="px-3 mb-2">
-            <div className="flex items-center mb-1">
+          <div className="px-3 mb-2 py-2 bg-muted/30 mx-3 rounded-md">
+            <div className="flex items-center mb-1.5">
               <label className="text-[9px] font-semibold text-foreground">Size</label>
               <span className="text-destructive ml-0.5">*</span>
             </div>
@@ -130,8 +136,8 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Color Section */}
-          <div className="px-3 mb-2">
-            <div className="flex items-center mb-1">
+          <div className="px-3 mb-2 py-2 bg-muted/30 mx-3 rounded-md">
+            <div className="flex items-center mb-1.5">
               <label className="text-[9px] font-semibold text-foreground">Color</label>
               <span className="text-destructive ml-0.5">*</span>
             </div>
@@ -153,14 +159,15 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Add to Cart Button */}
-          <div className="px-3 pt-1 pb-0">
+          <div className="px-3 pt-1 pb-2.5">
             <div className="flex items-center gap-2">
               <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
               </button>
               <button
                 onClick={handleAddToCart}
-                className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors"
+                disabled={!selectedSize || !selectedColor}
+                className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 ADD ${product.price.toFixed(2)}
               </button>
