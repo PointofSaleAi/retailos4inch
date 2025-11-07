@@ -68,27 +68,29 @@ export const ProductDetailSheet = ({
           
           {/* Product Name and Quantity */}
           <div className="px-3 mb-2">
-            <h2 className="text-[14px] font-bold text-foreground mb-2 leading-tight">
-              {product.name}
-            </h2>
-            
-            {/* Quantity Controls */}
-            <div className="flex items-center justify-center gap-3 mb-1">
-              <button
-                onClick={() => handleQuantityChange(-1)}
-                className="w-[28px] h-[28px] rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted"
-              >
-                <span className="text-[16px] font-medium">−</span>
-              </button>
-              <span className="text-[16px] font-semibold text-foreground min-w-[20px] text-center">
-                {quantity}
-              </span>
-              <button
-                onClick={() => handleQuantityChange(1)}
-                className="w-[28px] h-[28px] rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted"
-              >
-                <span className="text-[16px] font-medium">+</span>
-              </button>
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <h2 className="text-[12px] font-bold text-foreground leading-tight flex-1">
+                {product.name}
+              </h2>
+              
+              {/* Quantity Controls */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <button
+                  onClick={() => handleQuantityChange(-1)}
+                  className="w-[24px] h-[24px] rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted"
+                >
+                  <span className="text-[14px] font-medium">−</span>
+                </button>
+                <span className="text-[14px] font-semibold text-foreground min-w-[16px] text-center">
+                  {quantity}
+                </span>
+                <button
+                  onClick={() => handleQuantityChange(1)}
+                  className="w-[24px] h-[24px] rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted"
+                >
+                  <span className="text-[14px] font-medium">+</span>
+                </button>
+              </div>
             </div>
           </div>
 
