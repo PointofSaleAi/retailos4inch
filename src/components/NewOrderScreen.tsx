@@ -113,9 +113,9 @@ export const NewOrderScreen = ({
   const [showFilters, setShowFilters] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const popupContainerRef = useRef<HTMLDivElement>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-
   const handleCardClick = (product: Product) => {
     setSelectedProduct(product);
     setIsSheetOpen(true);
@@ -149,7 +149,7 @@ export const NewOrderScreen = ({
   }, []);
   return <div className="h-full flex flex-col bg-background animate-fade-in">
       {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
+      <div ref={popupContainerRef} className="flex-1 overflow-y-auto scrollbar-hide relative">
         <TopNavigation 
           onCustomClick={onCustomClick} 
           onFavoritesClick={onFavoritesClick}
@@ -260,6 +260,7 @@ export const NewOrderScreen = ({
         isOpen={isSheetOpen}
         onClose={handleCloseSheet}
         onAddToCart={onAddToCart}
+        portalContainer={popupContainerRef.current}
       />
     </div>;
 };

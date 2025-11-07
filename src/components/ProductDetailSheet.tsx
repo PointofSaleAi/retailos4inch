@@ -18,6 +18,7 @@ interface ProductDetailSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onAddToCart: (productId: number, quantity: number) => void;
+  portalContainer?: HTMLElement | null;
 }
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
@@ -39,6 +40,7 @@ export const ProductDetailSheet = ({
   isOpen,
   onClose,
   onAddToCart,
+  portalContainer,
 }: ProductDetailSheetProps) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("M");
@@ -61,7 +63,7 @@ export const ProductDetailSheet = ({
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent className="w-[177px] h-[198px] mx-auto rounded-t-[20px] pb-4">
+      <DrawerContent container={portalContainer} className="w-[177px] h-[198px] mx-auto rounded-t-[20px] pb-4">
         <div className="w-full" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           {/* Handle bar */}
           <div className="w-[40px] h-[4px] bg-[#D9D9D9] rounded-full mx-auto mt-2 mb-3" />
