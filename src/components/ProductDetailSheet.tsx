@@ -63,19 +63,19 @@ export const ProductDetailSheet = ({
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent container={portalContainer} className="w-[177px] h-[198px] mx-auto rounded-t-[20px] pb-4">
-        <div className="w-full" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+      <DrawerContent container={portalContainer} className="w-[177px] mx-auto rounded-t-[20px] bottom-[60px]">
+        <div className="w-full py-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           {/* Handle bar */}
-          <div className="w-[40px] h-[4px] bg-[#D9D9D9] rounded-full mx-auto mt-2 mb-3" />
+          <div className="w-[40px] h-[4px] bg-[#D9D9D9] rounded-full mx-auto mb-2" />
           
           {/* Product Name and Quantity */}
-          <div className="px-3 mb-2">
-            <h2 className="text-[14px] font-bold text-foreground mb-2 leading-tight">
+          <div className="px-3 mb-1.5">
+            <h2 className="text-[14px] font-bold text-foreground mb-1.5 leading-tight">
               {product.name}
             </h2>
             
             {/* Quantity Controls */}
-            <div className="flex items-center justify-center gap-3 mb-1">
+            <div className="flex items-center justify-center gap-3">
               <button
                 onClick={() => handleQuantityChange(-1)}
                 className="w-[28px] h-[28px] rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted"
@@ -95,14 +95,14 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Select size & color / Stock */}
-          <div className="flex items-center justify-between px-3 mb-2">
+          <div className="flex items-center justify-between px-3 mb-1.5">
             <span className="text-[10px] text-muted-foreground">Select size & color</span>
             <span className="text-[10px] font-semibold text-foreground">Stock 12</span>
           </div>
 
           {/* Size Section */}
-          <div className="px-3 mb-3">
-            <div className="flex items-center mb-1.5">
+          <div className="px-3 mb-2">
+            <div className="flex items-center mb-1">
               <label className="text-[10px] font-semibold text-foreground">Size</label>
               <span className="text-[#FF0000] ml-0.5">*</span>
             </div>
@@ -127,8 +127,8 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Color Section */}
-          <div className="px-3 mb-4">
-            <div className="flex items-center mb-1.5">
+          <div className="px-3 mb-2">
+            <div className="flex items-center mb-1">
               <label className="text-[10px] font-semibold text-foreground">Color</label>
               <span className="text-[#FF0000] ml-0.5">*</span>
             </div>
@@ -150,7 +150,7 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Add to Cart Button */}
-          <div className="px-3">
+          <div className="px-3 pt-1">
             <div className="flex items-center gap-2">
               <button className="w-[32px] h-[38px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[18px] h-[18px]" />
