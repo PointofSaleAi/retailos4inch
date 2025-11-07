@@ -82,7 +82,7 @@ export const OrderSummaryScreen = ({
           <ChevronLeft size={20} className="text-gray-700" />
         </button>
         <h1 className="text-[10px] font-semibold text-gray-900">
-          {cartItems.length > 0 ? `Current Sale (${cartItems.reduce((sum, item) => sum + item.quantity, 0)})` : 'Order Summary'}
+          Order Summary
         </h1>
         <button className="p-1">
           <MoreVertical size={20} className="text-gray-700" />
