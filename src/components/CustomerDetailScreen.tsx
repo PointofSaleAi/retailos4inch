@@ -38,14 +38,14 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
 
   // Mock additional data - in a real app, this would come from the customer object
   const customerDetails = {
-    email: editedCustomer.email || `${editedCustomer.name.toLowerCase().replace(/\s+/g, '.')}@email.com`,
-    loyaltyPoints: editedCustomer.loyaltyPoints || 0,
-    customerSince: editedCustomer.customerSince || new Date().toLocaleDateString('en-US'),
-    tax: editedCustomer.tax || '',
-    companyName: editedCustomer.companyName || '',
-    birthday: editedCustomer.birthday || '',
-    anniversary: editedCustomer.anniversary || '',
-    address: editedCustomer.address || '',
+    email: editedCustomer.email || 'alex.venom516@reddit.com',
+    loyaltyPoints: editedCustomer.loyaltyPoints || 582,
+    customerSince: editedCustomer.customerSince || '10/25/2024',
+    tax: editedCustomer.tax || '0085681251',
+    companyName: editedCustomer.companyName || 'Northway LLC',
+    birthday: editedCustomer.birthday || '06/26/1999',
+    anniversary: editedCustomer.anniversary || '09/10/2018',
+    address: editedCustomer.address || '7801 Maple Avenue Dallas, TX 75201',
     notes: editedCustomer.notes || ''
   };
 
@@ -72,8 +72,8 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
-        <div className="px-4 py-2">
+      <div className="flex-1 overflow-y-auto scrollbar-hide flex justify-center">
+        <div className="py-2" style={{ width: '186px' }}>
           {/* Avatar Section */}
           <div className="flex flex-col items-center mb-3">
             <div className="relative mb-2">
