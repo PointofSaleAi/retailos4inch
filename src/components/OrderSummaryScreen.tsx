@@ -27,6 +27,8 @@ interface CartItem {
   quantity: number;
   image: string;
   note?: string;
+  size?: string;
+  color?: string;
 }
 interface OrderSummaryScreenProps {
   cartItems: CartItem[];
@@ -129,7 +131,12 @@ export const OrderSummaryScreen = ({
                 <h3 className="text-[10px] font-semibold text-gray-900 leading-tight">
                   {item.name}
                 </h3>
-                {item.note ? <p className="text-[8px] text-gray-600 mt-0.5">{item.note}</p> : <p className="text-[8px] text-gray-600 mt-0.5">XS | Olive Green</p>}
+                {item.note && <p className="text-[8px] text-gray-600 mt-0.5">{item.note}</p>}
+                {(item.size || item.color) && (
+                  <p className="text-[8px] text-gray-600 mt-0.5">
+                    {item.size && item.color ? `${item.size} | ${item.color}` : item.size || item.color}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                 <div className="text-[12px] font-bold text-gray-900">

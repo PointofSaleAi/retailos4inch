@@ -10,7 +10,7 @@ interface Product {
 
 interface ProductListCardProps {
   product: Product;
-  onAddToCart: (productId: number, quantity: number) => void;
+  onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
 }
 
 export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) => {

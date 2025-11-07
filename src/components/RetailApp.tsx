@@ -40,6 +40,8 @@ interface CartItem {
   price: number;
   note?: string;
   image?: string;
+  size?: string;
+  color?: string;
 }
 
 interface Transaction {
@@ -110,17 +112,25 @@ export const RetailApp = () => {
     ));
   };
 
-  const handleAddToCart = (productId: number, quantity: number) => {
+  const handleAddToCart = (productId: number, quantity: number, size?: string, color?: string) => {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
     setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.type === 'product' && item.productId === productId);
+      const existingItem = prevItems.find(item => 
+        item.type === 'product' && 
+        item.productId === productId &&
+        item.size === size &&
+        item.color === color
+      );
       
       if (existingItem) {
         // Update existing item
         return prevItems.map(item =>
-          item.type === 'product' && item.productId === productId
+          item.type === 'product' && 
+          item.productId === productId &&
+          item.size === size &&
+          item.color === color
             ? { ...item, quantity }
             : item
         ).filter(item => item.quantity > 0);
@@ -128,13 +138,15 @@ export const RetailApp = () => {
         // Add new item
         if (quantity > 0) {
           return [...prevItems, { 
-            id: `product-${productId}`,
+            id: `product-${productId}-${size}-${color}-${Date.now()}`,
             type: 'product',
             productId, 
             quantity, 
             price: product.price,
             image: product.image,
-            name: product.name
+            name: product.name,
+            size,
+            color
           }];
         }
         return prevItems;

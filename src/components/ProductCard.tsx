@@ -11,7 +11,7 @@ interface Product {
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (productId: number, quantity: number) => void;
+  onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
   hideImage?: boolean;
   onCardClick?: (product: Product) => void;
 }

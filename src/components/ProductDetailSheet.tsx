@@ -17,7 +17,7 @@ interface ProductDetailSheetProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (productId: number, quantity: number) => void;
+  onAddToCart: (productId: number, quantity: number, size: string, color: string) => void;
   portalContainer?: HTMLElement | null;
 }
 
@@ -56,7 +56,7 @@ export const ProductDetailSheet = ({
   };
 
   const handleAddToCart = () => {
-    onAddToCart(product.id, quantity);
+    onAddToCart(product.id, quantity, selectedSize, selectedColor);
     onClose();
     setQuantity(1);
   };
@@ -68,14 +68,14 @@ export const ProductDetailSheet = ({
           {/* Handle bar */}
           <div className="w-[36px] h-[3px] bg-muted-foreground/30 rounded-full mx-auto mb-1" />
           
-          {/* Product Name and Quantity */}
-          <div className="px-3 mb-1.5">
-            <h2 className="text-[12px] font-bold text-foreground mb-1 leading-none">
+          {/* Product Name and Quantity - side by side */}
+          <div className="px-3 mb-1.5 flex items-start justify-between gap-2">
+            <h2 className="text-[12px] font-bold text-foreground leading-[14px] flex-1 line-clamp-2">
               {product.name}
             </h2>
             
             {/* Quantity Controls */}
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={() => handleQuantityChange(-1)}
                 className="w-[22px] h-[22px] rounded-full border border-border flex items-center justify-center text-foreground hover:bg-muted"

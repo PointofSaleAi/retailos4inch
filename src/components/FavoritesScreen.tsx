@@ -16,7 +16,7 @@ interface Product {
 interface FavoritesScreenProps {
   onBack: () => void;
   products: Product[];
-  onAddToCart: (productId: number, quantity: number) => void;
+  onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
 }
 
 export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {

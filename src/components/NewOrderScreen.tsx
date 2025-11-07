@@ -88,7 +88,7 @@ interface NewOrderScreenProps {
   onScanClick?: () => void;
   products: Product[];
   onToggleFavorite: (productId: number) => void;
-  onAddToCart: (productId: number, quantity: number) => void;
+  onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
   cartItemCount: number;
   cartTotal: number;
   onCartClick?: () => void;
