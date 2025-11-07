@@ -4,6 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RetailLogo } from "./RetailLogo";
 import { Eye, EyeOff, ChevronDown } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ForgotPasswordScreenProps {
   onBack: () => void;
@@ -13,6 +20,7 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+1");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(300); // 5 minutes in seconds
   const [newPassword, setNewPassword] = useState("");
@@ -116,7 +124,7 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
               />
             </div>
 
-            <div className="text-center text-[10px] text-muted-foreground my-2">
+            <div className="text-center text-[10px] text-muted-foreground my-1">
               or
             </div>
 
@@ -125,13 +133,32 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
                 Mobile Number
               </Label>
               <div className="flex gap-2">
-                <button
-                  type="button"
-                  className="h-[28px] flex items-center gap-1 px-2 rounded-xl border border-input-border bg-surface text-xs"
-                >
-                  <span className="text-[14px]">🇺🇸</span>
-                  <ChevronDown size={12} className="text-muted-foreground" />
-                </button>
+                <Select value={countryCode} onValueChange={setCountryCode}>
+                  <SelectTrigger className="h-[28px] w-[70px] px-2 rounded-xl border border-input-border bg-surface text-xs">
+                    <SelectValue>
+                      <div className="flex items-center gap-1">
+                        <span className="text-[14px]">{countryCode === "+1" ? "🇺🇸" : countryCode === "+44" ? "🇬🇧" : countryCode === "+91" ? "🇮🇳" : "🇺🇸"}</span>
+                      </div>
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent className="bg-surface border-input-border">
+                    <SelectItem value="+1" className="text-xs">
+                      <span className="flex items-center gap-2">
+                        <span className="text-[14px]">🇺🇸</span> +1
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="+44" className="text-xs">
+                      <span className="flex items-center gap-2">
+                        <span className="text-[14px]">🇬🇧</span> +44
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="+91" className="text-xs">
+                      <span className="flex items-center gap-2">
+                        <span className="text-[14px]">🇮🇳</span> +91
+                      </span>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
                 <Input
                   id="phone"
                   type="tel"
