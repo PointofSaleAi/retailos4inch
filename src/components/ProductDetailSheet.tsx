@@ -94,10 +94,13 @@ export const ProductDetailSheet = ({
             </div>
           </div>
 
-          {/* Select size & color / Stock */}
+          {/* Selected size & color / Stock */}
           <div className="flex items-center justify-between px-3 mb-1">
-            <span className="text-[9px] text-muted-foreground">Select size & color</span>
-            <span className="text-[9px] font-semibold text-foreground">Stock 12</span>
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-semibold text-foreground">{selectedSize}</span>
+              <span className="text-[10px] font-semibold text-foreground">{selectedColor}</span>
+            </div>
+            <span className="text-[10px] font-semibold text-foreground">Stock 12</span>
           </div>
 
           {/* Size Section */}
