@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RetailLogo } from "./RetailLogo";
+import { ForgotPasswordScreen } from "./ForgotPasswordScreen";
 import { Eye, EyeOff } from "lucide-react";
 interface LoginScreenProps {
   onLogin: () => void;
@@ -13,10 +14,16 @@ export const LoginScreen = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin();
   };
+
+  if (showForgotPassword) {
+    return <ForgotPasswordScreen onBack={() => setShowForgotPassword(false)} />;
+  }
+
   return <div className="h-full flex flex-col justify-center items-center p-6 bg-background animate-fade-in">
       <div className="flex flex-col items-center mb-4">
         <RetailLogo />
@@ -50,7 +57,11 @@ export const LoginScreen = ({
           </Button>
           
           <div className="text-center">
-            <button type="button" className="text-[10px] text-foreground font-medium hover:underline">
+            <button 
+              type="button" 
+              onClick={() => setShowForgotPassword(true)}
+              className="text-[10px] text-foreground font-medium hover:underline"
+            >
               Forgot Password?
             </button>
           </div>
