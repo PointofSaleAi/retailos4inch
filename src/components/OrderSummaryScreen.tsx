@@ -1,8 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Minus, Plus, ChevronLeft, MoreVertical } from 'lucide-react';
 import iconNewOrder from '@/assets/icon-new-order-order-summary.png';
 import iconSave from '@/assets/icon-save-order-summary.png';
 import iconCustomer from '@/assets/icon-customer.png';
+
+interface Customer {
+  id: string;
+  name: string;
+  phone: string;
+  avatar?: string;
+  email?: string;
+  loyaltyPoints?: number;
+  customerSince?: string;
+  tax?: string;
+  companyName?: string;
+  birthday?: string;
+  anniversary?: string;
+  address?: string;
+  notes?: string;
+}
+
 interface CartItem {
   id: string;
   name: string;
@@ -13,6 +30,7 @@ interface CartItem {
 }
 interface OrderSummaryScreenProps {
   cartItems: CartItem[];
+  selectedCustomer?: Customer | null;
   onClose: () => void;
   onUpdateQuantity: (id: string, quantity: number) => void;
   onNewOrder: () => void;
@@ -21,16 +39,28 @@ interface OrderSummaryScreenProps {
 }
 export const OrderSummaryScreen = ({
   cartItems,
+  selectedCustomer,
   onClose,
   onUpdateQuantity,
   onNewOrder,
   onSaveOrder,
   onCharge
 }: OrderSummaryScreenProps) => {
-  const [customerName, setCustomerName] = useState('Customer Name');
-  const [customerPhone, setCustomerPhone] = useState('(xxx) xxx xxxx');
+  const [customerName, setCustomerName] = useState(selectedCustomer?.name || 'Customer Name');
+  const [customerPhone, setCustomerPhone] = useState(selectedCustomer?.phone || '(xxx) xxx xxxx');
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
+  
+  // Update customer info when selectedCustomer changes
+  useEffect(() => {
+    if (selectedCustomer) {
+      setCustomerName(selectedCustomer.name);
+      setCustomerPhone(selectedCustomer.phone);
+    }
+  }, [selectedCustomer]);
+  
+  const customerPoints = selectedCustomer?.loyaltyPoints || 0;
+  const pointsValue = customerPoints; // 1 point = $1.00
   const TAX_RATE = 0.08;
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discount = 0;
@@ -52,7 +82,7 @@ export const OrderSummaryScreen = ({
           <ChevronLeft size={20} className="text-gray-700" />
         </button>
         <h1 className="text-[10px] font-semibold text-gray-900">
-          Order Summary
+          {cartItems.length > 0 ? `Current Sale (${cartItems.reduce((sum, item) => sum + item.quantity, 0)})` : 'Order Summary'}
         </h1>
         <button className="p-1">
           <MoreVertical size={20} className="text-gray-700" />
@@ -70,8 +100,12 @@ export const OrderSummaryScreen = ({
       <div className="flex-1 overflow-y-auto">
         {/* Customer Section */}
         <div className="bg-gray-50 mt-2 rounded-lg p-3 flex items-center gap-3 px-0 py-0 mx-0 my-2">
-          <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
-            <img src={iconCustomer} alt="Customer" className="w-[14px] h-[14px]" />
+          <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {selectedCustomer?.avatar ? (
+              <img src={selectedCustomer.avatar} alt={customerName} className="w-full h-full object-cover" />
+            ) : (
+              <img src={iconCustomer} alt="Customer" className="w-[14px] h-[14px]" />
+            )}
           </div>
           <div className="flex-1 min-w-0">
             {isEditingName ? <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} onBlur={() => setIsEditingName(false)} className="text-[12px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingName(true)} className="text-[12px] font-semibold text-gray-900 cursor-pointer">
@@ -82,8 +116,8 @@ export const OrderSummaryScreen = ({
               </div>}
           </div>
           <div className="text-right flex-shrink-0">
-            <div className="text-[11px] font-semibold text-gray-900">0 Points</div>
-            <div className="text-[9px] text-gray-600">Value $0.00</div>
+            <div className="text-[11px] font-semibold text-gray-900">{customerPoints} Points</div>
+            <div className="text-[9px] text-gray-600">Value ${pointsValue.toFixed(2)}</div>
           </div>
         </div>
 

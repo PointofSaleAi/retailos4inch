@@ -86,6 +86,7 @@ export const RetailApp = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [activeCustomerInOrder, setActiveCustomerInOrder] = useState<Customer | null>(null);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -453,6 +454,7 @@ export const RetailApp = () => {
       return (
         <OrderSummaryScreen
           cartItems={cartItemsWithDetails}
+          selectedCustomer={activeCustomerInOrder}
           onClose={() => {
             setShowOrderSummary(false);
             if (showCustomScreen) {
@@ -519,7 +521,15 @@ export const RetailApp = () => {
       case "transactions":
         return <TransactionsScreen transactions={transactions} onTransactionClick={handleOpenPendingTransaction} />;
       case "customer":
-        return <CustomerScreen onAddCustomer={() => setShowNewCustomer(true)} customers={customers} onViewCustomer={setSelectedCustomer} />;
+        return <CustomerScreen 
+          onAddCustomer={() => setShowNewCustomer(true)} 
+          customers={customers} 
+          onViewCustomer={setSelectedCustomer}
+          onSelectCustomer={(customer) => {
+            setActiveCustomerInOrder(customer);
+            setShowOrderSummary(true);
+          }}
+        />;
       case "settings":
         return <SettingsScreen />;
       default:

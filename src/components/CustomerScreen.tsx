@@ -16,6 +16,7 @@ interface CustomerScreenProps {
   onAddCustomer: () => void;
   customers?: Customer[];
   onViewCustomer: (customer: Customer) => void;
+  onSelectCustomer: (customer: Customer) => void;
 }
 
 export interface Customer {
@@ -36,44 +37,50 @@ export interface Customer {
 
 const mockCustomers: Customer[] = [
   {
+    id: "0",
+    name: "Micheal David",
+    phone: "+1 (122) 586-7854",
+    avatar: customer1,
+    loyaltyPoints: 120
+  },
+  {
     id: "1",
     name: "Alex Venom",
     phone: "+1 (122) 456-7890",
-    avatar: customer1
+    avatar: customer2,
+    loyaltyPoints: 85
   },
   {
     id: "2",
     name: "Arjun Gerhold",
     phone: "+1 (122) 456-5456",
-    avatar: customer2
+    avatar: customer3,
+    loyaltyPoints: 50
   },
   {
     id: "3",
     name: "Cleora Hills",
     phone: "+1 (122) 456-8495",
-    avatar: customer3
+    avatar: customer4,
+    loyaltyPoints: 200
   },
   {
     id: "4",
     name: "Eden Kautzer",
     phone: "+1 (122) 456-9865",
-    avatar: customer4
+    avatar: customer1,
+    loyaltyPoints: 150
   },
   {
     id: "5",
     name: "Morticia Adams",
     phone: "+1 (122) 456-1562",
-    avatar: customer1
-  },
-  {
-    id: "6",
-    name: "Simon Bocky",
-    phone: "+1 (122) 456-7587",
-    avatar: customer2
+    avatar: customer2,
+    loyaltyPoints: 75
   }
 ];
 
-export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer }: CustomerScreenProps) => {
+export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer, onSelectCustomer }: CustomerScreenProps) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const allCustomers = [...(customers || []), ...mockCustomers];
@@ -141,7 +148,10 @@ export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer }: Cus
         <div className="space-y-1" style={{ width: '186px', padding: '6px', margin: '0 auto' }}>
           {filteredCustomers.map((customer, index) => (
             <div key={customer.id}>
-              <div className="flex items-center gap-2">
+              <div 
+                className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded transition-colors"
+                onClick={() => onSelectCustomer(customer)}
+              >
                 <Avatar className="w-7 h-7 flex-shrink-0">
                   <AvatarImage src={customer.avatar} alt={customer.name} />
                   <AvatarFallback className="bg-muted text-foreground font-medium text-xs">
@@ -159,7 +169,10 @@ export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer }: Cus
                 </div>
 
                 <button
-                  onClick={() => onViewCustomer(customer)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onViewCustomer(customer);
+                  }}
                   className="flex-shrink-0 rounded text-[8px] font-medium text-foreground transition-colors"
                   style={{ backgroundColor: '#F1F2F5', width: '40px', height: '18px' }}
                 >
