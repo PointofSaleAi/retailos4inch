@@ -187,7 +187,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   return (
     <div className="h-full flex flex-col bg-background animate-fade-in">
       {/* Header */}
-      <div className="flex items-center px-3 py-2 border-b border-border">
+      <div className="flex items-center px-3 py-2">
         <button onClick={onBack} className="p-1">
           <ChevronLeft size={20} className="text-foreground" />
         </button>
@@ -197,48 +197,56 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
       </div>
 
       {/* Step Indicators */}
-      <div className="flex items-center justify-center gap-2 py-3 px-4">
-        <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
-          step === 1 ? "bg-[#212121] text-white" : step > 1 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-        }`}>
-          {step > 1 ? "✓" : "1"}
+      <div className="flex items-center justify-center gap-1 py-3 px-4">
+        <div className="flex flex-col items-center gap-0.5">
+          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
+            step === 1 ? "bg-[#212121] text-white" : step > 1 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+          }`}>
+            {step > 1 ? "✓" : "1"}
+          </div>
+          <span className={`text-[8px] font-medium whitespace-nowrap ${step === 1 ? "text-foreground" : "text-muted-foreground"}`}>
+            Create Account
+          </span>
         </div>
-        <span className={`text-[8px] font-medium ${step === 1 ? "text-foreground" : "text-muted-foreground"}`}>
-          Create Account
-        </span>
 
-        <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ml-2 ${
-          step === 2 ? "bg-[#212121] text-white" : step > 2 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-        }`}>
-          {step > 2 ? "✓" : "2"}
+        <div className="flex flex-col items-center gap-0.5 ml-1">
+          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
+            step === 2 ? "bg-[#212121] text-white" : step > 2 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+          }`}>
+            {step > 2 ? "✓" : "2"}
+          </div>
+          <span className={`text-[8px] font-medium ${step === 2 ? "text-foreground" : "text-muted-foreground"}`}>
+            Set PIN
+          </span>
         </div>
-        <span className={`text-[8px] font-medium ${step === 2 ? "text-foreground" : "text-muted-foreground"}`}>
-          Set PIN
-        </span>
 
-        <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ml-2 ${
-          step === 3 ? "bg-[#212121] text-white" : step > 3 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-        }`}>
-          {step > 3 ? "✓" : "3"}
+        <div className="flex flex-col items-center gap-0.5 ml-1">
+          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
+            step === 3 ? "bg-[#212121] text-white" : step > 3 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+          }`}>
+            {step > 3 ? "✓" : "3"}
+          </div>
+          <span className={`text-[8px] font-medium ${step === 3 ? "text-foreground" : "text-muted-foreground"}`}>
+            Confirmation
+          </span>
         </div>
-        <span className={`text-[8px] font-medium ${step === 3 ? "text-foreground" : "text-muted-foreground"}`}>
-          Confirmation
-        </span>
 
-        <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ml-2 ${
-          step === 4 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-        }`}>
-          4
+        <div className="flex flex-col items-center gap-0.5 ml-1">
+          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
+            step === 4 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+          }`}>
+            4
+          </div>
+          <span className={`text-[8px] font-medium ${step === 4 ? "text-foreground" : "text-muted-foreground"}`}>
+            OTP
+          </span>
         </div>
-        <span className={`text-[8px] font-medium ${step === 4 ? "text-foreground" : "text-muted-foreground"}`}>
-          OTP
-        </span>
       </div>
 
       {/* Step Content */}
       <div className="flex-1 overflow-y-auto px-3 py-2">
         {step === 1 && (
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="space-y-1">
               <Label className="text-[8px] font-medium text-foreground">First Name</Label>
               <Input
