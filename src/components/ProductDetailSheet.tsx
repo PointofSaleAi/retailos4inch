@@ -63,8 +63,8 @@ export const ProductDetailSheet = ({
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent container={portalContainer} className="w-[177px] max-h-[calc(100%-70px)] mx-auto rounded-t-[20px] pb-4 bottom-[60px]">
-        <div className="w-full overflow-y-auto max-h-full" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+      <DrawerContent container={portalContainer} className="w-[177px] h-[198px] mx-auto rounded-t-[20px] pb-4">
+        <div className="w-full" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           {/* Handle bar */}
           <div className="w-[40px] h-[4px] bg-[#D9D9D9] rounded-full mx-auto mt-2 mb-3" />
           
