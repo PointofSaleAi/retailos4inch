@@ -11,6 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface ForgotPasswordScreenProps {
   onBack: () => void;
@@ -27,6 +33,7 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   // Timer countdown for OTP
   useEffect(() => {
@@ -87,8 +94,13 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
     e.preventDefault();
     if (newPassword && confirmPassword && newPassword === confirmPassword) {
       // Handle password creation logic
-      onBack(); // Return to login after successful password reset
+      setShowSuccessDialog(true);
     }
+  };
+
+  const handleLoginClick = () => {
+    setShowSuccessDialog(false);
+    onBack(); // Return to login
   };
 
   return (
@@ -302,7 +314,7 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
             <Button
               type="submit"
               disabled={!newPassword || !confirmPassword || newPassword !== confirmPassword}
-              className="h-[28px] w-full rounded-xl text-[10px] font-semibold tracking-wider bg-muted text-muted-foreground hover:bg-muted disabled:opacity-100"
+              className="h-[28px] w-full rounded-xl text-[10px] font-semibold tracking-wider disabled:bg-muted disabled:text-muted-foreground disabled:opacity-100 bg-[#212121] text-white hover:bg-[#212121]/90"
             >
               CREATE PASSWORD
             </Button>
@@ -320,6 +332,26 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
           </div>
         </form>
       )}
+
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="w-[340px] rounded-3xl p-8 bg-white border-none shadow-lg">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <DialogTitle className="text-[20px] font-bold text-[#212121]">
+              Password Created Successfully
+            </DialogTitle>
+            <DialogDescription className="text-[14px] text-[#6B7280] leading-relaxed">
+              Your password has been created please log in to your account
+            </DialogDescription>
+            <Button
+              onClick={handleLoginClick}
+              className="h-[48px] w-full rounded-full text-[14px] font-semibold tracking-wider bg-[#212121] text-white hover:bg-[#212121]/90 mt-4"
+            >
+              LOG IN
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
