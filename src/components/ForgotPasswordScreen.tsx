@@ -335,17 +335,17 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
 
       {/* Success Dialog */}
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent className="w-[340px] rounded-3xl p-8 bg-white border-none shadow-lg">
-          <div className="flex flex-col items-center text-center space-y-4">
-            <DialogTitle className="text-[20px] font-bold text-[#212121]">
+        <DialogContent className="w-[186px] rounded-2xl p-4 bg-white border-none shadow-lg">
+          <div className="flex flex-col items-center text-center space-y-2">
+            <DialogTitle className="text-[10px] font-bold text-[#212121] leading-tight">
               Password Created Successfully
             </DialogTitle>
-            <DialogDescription className="text-[14px] text-[#6B7280] leading-relaxed">
+            <DialogDescription className="text-[8px] text-[#6B7280] leading-relaxed px-1">
               Your password has been created please log in to your account
             </DialogDescription>
             <Button
               onClick={handleLoginClick}
-              className="h-[48px] w-full rounded-full text-[14px] font-semibold tracking-wider bg-[#212121] text-white hover:bg-[#212121]/90 mt-4"
+              className="h-[28px] w-full rounded-xl text-[10px] font-semibold tracking-wider bg-[#212121] text-white hover:bg-[#212121]/90 mt-2"
             >
               LOG IN
             </Button>
