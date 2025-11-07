@@ -99,14 +99,10 @@ export const ProductDetailSheet = ({
           {/* Selected size & color / Stock */}
           <div className="flex items-center justify-between px-3 mb-1 py-[6px] bg-muted/30 mx-3 rounded">
             <div className="flex items-center gap-3">
-              {selectedSize && selectedColor ? (
-                <>
+              {selectedSize && selectedColor ? <>
                   <span className="text-[10px] font-semibold text-foreground">{selectedSize}</span>
                   <span className="text-[10px] font-semibold text-foreground">{selectedColor}</span>
-                </>
-              ) : (
-                <span className="text-[10px] font-semibold text-muted-foreground">Select size & color</span>
-              )}
+                </> : <span className="text-[10px] font-semibold text-muted-foreground">Select size & color</span>}
             </div>
             <span className="text-[10px] font-semibold text-foreground">Stock 12</span>
           </div>
@@ -142,16 +138,12 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Add to Cart Button */}
-          <div className="px-3 pt-1 pb-2.5 py-[6px]">
+          <div className="px-3 pt-1 pb-2.5 py-0">
             <div className="flex items-center gap-2">
               <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
               </button>
-              <button 
-                onClick={handleAddToCart} 
-                disabled={!selectedSize || !selectedColor}
-                className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
+              <button onClick={handleAddToCart} disabled={!selectedSize || !selectedColor} className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 ADD ${product.price.toFixed(2)}
               </button>
             </div>
