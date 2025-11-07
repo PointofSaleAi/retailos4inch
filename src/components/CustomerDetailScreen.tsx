@@ -138,26 +138,12 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
 
           {/* Details Section */}
           <div className="space-y-0">
-            {/* Loyalty Points */}
+            {/* Loyalty Points - Read Only */}
             <div className="flex items-center justify-between py-2">
               <span className="text-xs text-muted-foreground">Loyalty Points</span>
-              {editingField === 'loyaltyPoints' ? (
-                <Input
-                  type="number"
-                  value={customerDetails.loyaltyPoints}
-                  onChange={(e) => handleFieldChange('loyaltyPoints', parseInt(e.target.value) || 0)}
-                  onBlur={handleFieldBlur}
-                  autoFocus
-                  className="h-auto py-0 px-2 text-right w-24 text-xs font-semibold"
-                />
-              ) : (
-                <span 
-                  className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70"
-                  onClick={() => handleFieldClick('loyaltyPoints')}
-                >
-                  {customerDetails.loyaltyPoints}
-                </span>
-              )}
+              <span className="text-xs font-semibold text-foreground">
+                {customerDetails.loyaltyPoints}
+              </span>
             </div>
             <Separator style={{ backgroundColor: '#F1F2F5' }} />
 
