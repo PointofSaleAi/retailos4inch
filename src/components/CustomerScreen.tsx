@@ -14,17 +14,13 @@ import customer4 from "@/assets/customer-4.png";
 
 interface CustomerScreenProps {
   onAddCustomer: () => void;
-  customers?: Customer[];
 }
 
-export interface Customer {
+interface Customer {
   id: string;
   name: string;
   phone: string;
   avatar?: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
 }
 
 const mockCustomers: Customer[] = [
@@ -66,12 +62,10 @@ const mockCustomers: Customer[] = [
   }
 ];
 
-export const CustomerScreen = ({ onAddCustomer, customers }: CustomerScreenProps) => {
+export const CustomerScreen = ({ onAddCustomer }: CustomerScreenProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  
-  const customerList = customers && customers.length > 0 ? customers : mockCustomers;
 
-  const filteredCustomers = customerList.filter(customer =>
+  const filteredCustomers = mockCustomers.filter(customer =>
     customer.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

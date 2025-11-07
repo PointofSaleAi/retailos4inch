@@ -3,7 +3,7 @@ import { RetailDevice } from "./RetailDevice";
 import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
-import { CustomerScreen, Customer } from "./CustomerScreen";
+import { CustomerScreen } from "./CustomerScreen";
 import { NewCustomerScreen, CustomerFormData } from "./NewCustomerScreen";
 import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
@@ -83,24 +83,14 @@ export const RetailApp = () => {
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [customers, setCustomers] = useState<Customer[]>([]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
   const handleSaveCustomer = (customerData: CustomerFormData) => {
-    const newCustomer: Customer = {
-      id: Date.now().toString(),
-      name: `${customerData.firstName} ${customerData.lastName}`.trim() || customerData.firstName,
-      phone: `${customerData.phone}`,
-      email: customerData.email,
-      firstName: customerData.firstName,
-      lastName: customerData.lastName,
-    };
-    
-    setCustomers(prev => [newCustomer, ...prev]);
-    console.log('New customer saved:', newCustomer);
+    // Here you would typically save to backend
+    console.log('New customer saved:', customerData);
     setShowNewCustomer(false);
   };
 
@@ -512,7 +502,7 @@ export const RetailApp = () => {
       case "transactions":
         return <TransactionsScreen transactions={transactions} onTransactionClick={handleOpenPendingTransaction} />;
       case "customer":
-        return <CustomerScreen onAddCustomer={() => setShowNewCustomer(true)} customers={customers} />;
+        return <CustomerScreen onAddCustomer={() => setShowNewCustomer(true)} />;
       case "settings":
         return <SettingsScreen />;
       default:
