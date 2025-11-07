@@ -98,10 +98,10 @@ export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer, onSel
   };
 
   return (
-    <div className="h-full flex flex-col bg-background">
+    <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat, sans-serif' }}>
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
-        <h1 className="text-base font-semibold text-foreground">Customers</h1>
+        <h1 className="text-foreground font-semibold" style={{ fontSize: '12px' }}>Customers</h1>
         <div className="flex items-center gap-2">
           <button className="p-1">
             <img src={iconArchive} alt="" className="w-4 h-4" />

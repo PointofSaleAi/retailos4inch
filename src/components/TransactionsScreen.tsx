@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Search, Calendar, Menu } from "lucide-react";
 import iconDocument from "@/assets/icon-document.png";
 import iconGrid from "@/assets/icon-grid-tx.png";
 import iconTag from "@/assets/icon-tag-tx.png";
 import iconCamera from "@/assets/icon-camera-tx.png";
+import iconSearchTx from "@/assets/icon-search-tx.png";
+import iconCalendarTx from "@/assets/icon-calendar-tx.png";
+import iconMenuTx from "@/assets/icon-menu-tx.png";
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
 type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled" | "Pending";
 interface Transaction {
@@ -87,19 +89,19 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
     if (activeFilter === "All") return true;
     return transaction.status === activeFilter;
   });
-  return <div className="h-full flex flex-col bg-background">
+  return <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat, sans-serif' }}>
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
-        <h1 className="text-base font-semibold text-foreground">Transactions</h1>
+        <h1 className="text-foreground font-semibold" style={{ fontSize: '12px' }}>Transactions</h1>
         <div className="flex items-center gap-2">
           <button className="p-1">
-            <Search className="w-4 h-4 text-foreground" />
+            <img src={iconSearchTx} alt="Search" className="w-4 h-4" />
           </button>
           <button className="p-1">
-            <Calendar className="w-4 h-4 text-foreground" />
+            <img src={iconCalendarTx} alt="Calendar" className="w-4 h-4" />
           </button>
           <button className="p-1 px-[6px] py-[6px]">
-            <Menu className="w-4 h-4 text-foreground" />
+            <img src={iconMenuTx} alt="Menu" className="w-4 h-4" />
           </button>
         </div>
       </div>
