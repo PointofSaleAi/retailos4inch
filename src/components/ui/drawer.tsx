@@ -31,7 +31,7 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-1/2 bottom-0 -translate-x-1/2 z-50 flex h-auto flex-col rounded-t-[20px] bg-background w-[calc(100%-16px)] max-w-[177px]",
+        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[20px] border bg-background",
         className,
       )}
       {...props}
