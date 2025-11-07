@@ -185,66 +185,67 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   }
 
   return (
-    <div className="h-full flex flex-col bg-background animate-fade-in">
-      {/* Header */}
-      <div className="flex items-center px-3 py-2">
-        <button onClick={onBack} className="p-1">
-          <ChevronLeft size={20} className="text-foreground" />
-        </button>
-        <h1 className="flex-1 text-center text-[12px] font-semibold text-foreground pr-6">
-          Create An Account
-        </h1>
-      </div>
-
-      {/* Step Indicators */}
-      <div className="flex items-center justify-center gap-1 py-3 px-4">
-        <div className="flex flex-col items-center gap-0.5">
-          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
-            step === 1 ? "bg-[#212121] text-white" : step > 1 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-          }`}>
-            {step > 1 ? "✓" : "1"}
-          </div>
-          <span className={`text-[8px] font-medium whitespace-nowrap ${step === 1 ? "text-foreground" : "text-muted-foreground"}`}>
-            Create Account
-          </span>
+    <div className="h-full flex justify-center bg-background animate-fade-in overflow-y-auto">
+      <div className="w-[186px] flex flex-col">
+        {/* Header */}
+        <div className="flex items-center py-2">
+          <button onClick={onBack} className="p-1">
+            <ChevronLeft size={20} className="text-foreground" />
+          </button>
+          <h1 className="flex-1 text-center text-[12px] font-semibold text-foreground pr-6">
+            Create An Account
+          </h1>
         </div>
 
-        <div className="flex flex-col items-center gap-0.5 ml-1">
-          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
-            step === 2 ? "bg-[#212121] text-white" : step > 2 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-          }`}>
-            {step > 2 ? "✓" : "2"}
+        {/* Step Indicators */}
+        <div className="flex items-center justify-between py-3">
+          <div className="flex items-center gap-1">
+            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
+              step === 1 ? "bg-[#212121] text-white" : step > 1 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+            }`}>
+              {step > 1 ? "✓" : "1"}
+            </div>
+            <span className={`text-[8px] font-medium whitespace-nowrap ${step === 1 ? "text-foreground" : "text-muted-foreground"}`}>
+              Create Account
+            </span>
           </div>
-          <span className={`text-[8px] font-medium ${step === 2 ? "text-foreground" : "text-muted-foreground"}`}>
-            Set PIN
-          </span>
+
+          <div className="flex items-center gap-1">
+            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
+              step === 2 ? "bg-[#212121] text-white" : step > 2 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+            }`}>
+              {step > 2 ? "✓" : "2"}
+            </div>
+            <span className={`text-[8px] font-medium ${step === 2 ? "text-foreground" : "text-muted-foreground"}`}>
+              Set PIN
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
+              step === 3 ? "bg-[#212121] text-white" : step > 3 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+            }`}>
+              {step > 3 ? "✓" : "3"}
+            </div>
+            <span className={`text-[8px] font-medium ${step === 3 ? "text-foreground" : "text-muted-foreground"}`}>
+              Confirmation
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
+              step === 4 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+            }`}>
+              4
+            </div>
+            <span className={`text-[8px] font-medium ${step === 4 ? "text-foreground" : "text-muted-foreground"}`}>
+              OTP
+            </span>
+          </div>
         </div>
 
-        <div className="flex flex-col items-center gap-0.5 ml-1">
-          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
-            step === 3 ? "bg-[#212121] text-white" : step > 3 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-          }`}>
-            {step > 3 ? "✓" : "3"}
-          </div>
-          <span className={`text-[8px] font-medium ${step === 3 ? "text-foreground" : "text-muted-foreground"}`}>
-            Confirmation
-          </span>
-        </div>
-
-        <div className="flex flex-col items-center gap-0.5 ml-1">
-          <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-full text-[10px] font-medium ${
-            step === 4 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-          }`}>
-            4
-          </div>
-          <span className={`text-[8px] font-medium ${step === 4 ? "text-foreground" : "text-muted-foreground"}`}>
-            OTP
-          </span>
-        </div>
-      </div>
-
-      {/* Step Content */}
-      <div className="flex-1 overflow-y-auto px-3 py-2">
+        {/* Step Content */}
+        <div className="flex-1 py-2">
         {step === 1 && (
           <div className="space-y-1.5">
             <div className="space-y-1">
@@ -517,9 +518,9 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
             </Button>
           </div>
         )}
-      </div>
+        </div>
 
-      {/* Success Dialog */}
+        {/* Success Dialog */}
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <DialogContent hideClose className="w-[186px] rounded-2xl p-4 bg-white border-none shadow-lg">
           <div className="flex flex-col items-center text-center space-y-2">
@@ -538,6 +539,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
           </div>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 };
