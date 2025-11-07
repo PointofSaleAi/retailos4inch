@@ -5,6 +5,7 @@ import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
 import { CustomerScreen, Customer } from "./CustomerScreen";
 import { NewCustomerScreen, CustomerFormData } from "./NewCustomerScreen";
+import { CustomerDetailScreen } from "./CustomerDetailScreen";
 import { SettingsScreen } from "./SettingsScreen";
 import { BottomNavigation } from "./BottomNavigation";
 import { CustomPaymentScreen } from "./CustomPaymentScreen";
@@ -84,6 +85,7 @@ export const RetailApp = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -391,8 +393,17 @@ export const RetailApp = () => {
     if (showNewCustomer) {
       return (
         <NewCustomerScreen
-          onClose={() => setShowNewCustomer(false)}
+          onBack={() => setShowNewCustomer(false)}
           onSave={handleSaveCustomer}
+        />
+      );
+    }
+
+    if (selectedCustomer) {
+      return (
+        <CustomerDetailScreen
+          customer={selectedCustomer}
+          onBack={() => setSelectedCustomer(null)}
         />
       );
     }
@@ -508,7 +519,7 @@ export const RetailApp = () => {
       case "transactions":
         return <TransactionsScreen transactions={transactions} onTransactionClick={handleOpenPendingTransaction} />;
       case "customer":
-        return <CustomerScreen onAddCustomer={() => setShowNewCustomer(true)} customers={customers} />;
+        return <CustomerScreen onAddCustomer={() => setShowNewCustomer(true)} customers={customers} onViewCustomer={setSelectedCustomer} />;
       case "settings":
         return <SettingsScreen />;
       default:
@@ -534,7 +545,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}

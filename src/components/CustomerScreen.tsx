@@ -15,6 +15,7 @@ import customer4 from "@/assets/customer-4.png";
 interface CustomerScreenProps {
   onAddCustomer: () => void;
   customers?: Customer[];
+  onViewCustomer: (customer: Customer) => void;
 }
 
 export interface Customer {
@@ -22,6 +23,15 @@ export interface Customer {
   name: string;
   phone: string;
   avatar?: string;
+  email?: string;
+  loyaltyPoints?: number;
+  customerSince?: string;
+  tax?: string;
+  companyName?: string;
+  birthday?: string;
+  anniversary?: string;
+  address?: string;
+  notes?: string;
 }
 
 const mockCustomers: Customer[] = [
@@ -63,7 +73,7 @@ const mockCustomers: Customer[] = [
   }
 ];
 
-export const CustomerScreen = ({ onAddCustomer, customers }: CustomerScreenProps) => {
+export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer }: CustomerScreenProps) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const allCustomers = [...(customers || []), ...mockCustomers];
@@ -149,6 +159,7 @@ export const CustomerScreen = ({ onAddCustomer, customers }: CustomerScreenProps
                 </div>
 
                 <button
+                  onClick={() => onViewCustomer(customer)}
                   className="flex-shrink-0 rounded text-[8px] font-medium text-foreground transition-colors"
                   style={{ backgroundColor: '#F1F2F5', width: '40px', height: '18px' }}
                 >

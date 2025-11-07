@@ -12,7 +12,7 @@ import iconUserCustomer from "@/assets/icon-user-customer.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
 import iconLocation from "@/assets/icon-location.png";
 interface NewCustomerScreenProps {
-  onClose: () => void;
+  onBack: () => void;
   onSave: (customer: CustomerFormData) => void;
 }
 export interface CustomerFormData {
@@ -27,7 +27,7 @@ export interface CustomerFormData {
   anniversary?: Date;
 }
 export const NewCustomerScreen = ({
-  onClose,
+  onBack,
   onSave
 }: NewCustomerScreenProps) => {
   const [formData, setFormData] = useState<CustomerFormData>({
@@ -82,7 +82,7 @@ export const NewCustomerScreen = ({
   const handleSave = () => {
     if (validateForm()) {
       onSave(formData);
-      onClose();
+      onBack();
     }
   };
   const updateField = (field: keyof CustomerFormData, value: string | Date | undefined) => {
@@ -102,7 +102,7 @@ export const NewCustomerScreen = ({
   }}>
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between py-[6px] px-[6px]">
-        <button onClick={onClose} className="p-1">
+        <button onClick={onBack} className="p-1">
           <img src={iconBackArrow} alt="Back" className="w-4 h-4" />
         </button>
         <h1 className="font-semibold text-foreground" style={{
