@@ -169,7 +169,7 @@ export const NewCustomerScreen = ({
           {/* Phone Number */}
           <div className="space-y-1">
             <div className="flex gap-2 py-0 px-0">
-              <Popover>
+              <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <button className="flex items-center gap-1 px-2 rounded-full" style={{
                   backgroundColor: '#FFFFFF',
@@ -182,7 +182,7 @@ export const NewCustomerScreen = ({
                     <ChevronDown className="w-3 h-3 text-foreground ml-auto" />
                   </button>
                 </PopoverTrigger>
-                <PopoverContent className="w-48 p-2" align="start">
+                <PopoverContent className="w-[170px] p-2 max-h-[200px] overflow-y-auto" align="start" sideOffset={2}>
                   <div className="space-y-1">
                     {[{
                     flag: "🇺🇸",
@@ -224,8 +224,8 @@ export const NewCustomerScreen = ({
                     flag: "🇧🇷",
                     code: "+55",
                     country: "Brazil"
-                  }].map(country => <button key={country.code + country.country} onClick={() => setCountryCode(country.code)} className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-muted rounded text-xs">
-                        <span>{country.flag}</span>
+                  }].map(country => <button key={country.code + country.country} onClick={() => setCountryCode(country.code)} className="w-full flex items-center gap-2 px-2 py-1 hover:bg-muted rounded" style={{ fontSize: '10px' }}>
+                        <span className="text-xs">{country.flag}</span>
                         <span className="text-foreground">{country.code}</span>
                         <span className="text-muted-foreground ml-auto">{country.country}</span>
                       </button>)}
@@ -280,7 +280,7 @@ export const NewCustomerScreen = ({
 
           {/* Date of Birth */}
           <div className="space-y-1 px-0 py-0">
-            <Popover>
+            <Popover modal={true}>
               <PopoverTrigger asChild>
                 <button className="w-full rounded-full text-xs px-4 text-left" style={{
                 backgroundColor: '#FFFFFF',
@@ -292,15 +292,32 @@ export const NewCustomerScreen = ({
                   {formData.dateOfBirth ? <span className="text-foreground">{format(formData.dateOfBirth, "MM/dd/yyyy")}</span> : <span className="text-muted-foreground">Date of Birth</span>}
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" selected={formData.dateOfBirth} onSelect={date => updateField("dateOfBirth", date)} disabled={date => date > new Date() || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
+              <PopoverContent className="w-auto p-0" align="center" sideOffset={2}>
+                <Calendar mode="single" selected={formData.dateOfBirth} onSelect={date => updateField("dateOfBirth", date)} disabled={date => date > new Date() || date < new Date("1900-01-01")} initialFocus className={cn("p-2 pointer-events-auto text-[10px] scale-90")} classNames={{
+                  months: "space-y-2",
+                  month: "space-y-2",
+                  caption: "flex justify-center pt-1 relative items-center text-[10px]",
+                  caption_label: "text-[10px] font-medium",
+                  nav: "space-x-1 flex items-center",
+                  nav_button: "h-5 w-5 bg-transparent p-0",
+                  nav_button_previous: "absolute left-1",
+                  nav_button_next: "absolute right-1",
+                  table: "w-full border-collapse space-y-1",
+                  head_row: "flex",
+                  head_cell: "text-muted-foreground rounded-md w-6 font-normal text-[9px]",
+                  row: "flex w-full mt-1",
+                  cell: "text-center text-[10px] p-0 relative",
+                  day: "h-6 w-6 p-0 font-normal text-[10px]",
+                  day_selected: "bg-primary text-primary-foreground",
+                  day_today: "bg-accent text-accent-foreground",
+                }} />
               </PopoverContent>
             </Popover>
           </div>
 
           {/* Anniversary */}
           <div className="space-y-1 px-0 py-0">
-            <Popover>
+            <Popover modal={true}>
               <PopoverTrigger asChild>
                 <button className="w-full rounded-full text-xs px-4 text-left" style={{
                 backgroundColor: '#FFFFFF',
@@ -312,8 +329,25 @@ export const NewCustomerScreen = ({
                   {formData.anniversary ? <span className="text-foreground">{format(formData.anniversary, "MM/dd/yyyy")}</span> : <span className="text-muted-foreground">Anniversary</span>}
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" selected={formData.anniversary} onSelect={date => updateField("anniversary", date)} initialFocus className={cn("p-3 pointer-events-auto")} />
+              <PopoverContent className="w-auto p-0" align="center" sideOffset={2}>
+                <Calendar mode="single" selected={formData.anniversary} onSelect={date => updateField("anniversary", date)} initialFocus className={cn("p-2 pointer-events-auto text-[10px] scale-90")} classNames={{
+                  months: "space-y-2",
+                  month: "space-y-2",
+                  caption: "flex justify-center pt-1 relative items-center text-[10px]",
+                  caption_label: "text-[10px] font-medium",
+                  nav: "space-x-1 flex items-center",
+                  nav_button: "h-5 w-5 bg-transparent p-0",
+                  nav_button_previous: "absolute left-1",
+                  nav_button_next: "absolute right-1",
+                  table: "w-full border-collapse space-y-1",
+                  head_row: "flex",
+                  head_cell: "text-muted-foreground rounded-md w-6 font-normal text-[9px]",
+                  row: "flex w-full mt-1",
+                  cell: "text-center text-[10px] p-0 relative",
+                  day: "h-6 w-6 p-0 font-normal text-[10px]",
+                  day_selected: "bg-primary text-primary-foreground",
+                  day_today: "bg-accent text-accent-foreground",
+                }} />
               </PopoverContent>
             </Popover>
           </div>
