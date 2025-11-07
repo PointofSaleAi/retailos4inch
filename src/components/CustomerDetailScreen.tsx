@@ -150,8 +150,8 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
           <div className="space-y-0">
             {/* Loyalty Points - Read Only */}
             <div className="flex items-center justify-between py-2">
-              <span className="text-xs text-muted-foreground">Loyalty Points</span>
-              <span className="text-xs font-semibold text-foreground">
+              <span className="text-muted-foreground" style={{ fontSize: '10px' }}>Loyalty Points</span>
+              <span className="font-semibold text-foreground" style={{ fontSize: '10px' }}>
                 {customerDetails.loyaltyPoints}
               </span>
             </div>
@@ -159,18 +159,20 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
 
             {/* Customer Since */}
             <div className="flex items-center justify-between py-2">
-              <span className="text-xs text-muted-foreground">Customer Since</span>
+              <span className="text-muted-foreground" style={{ fontSize: '10px' }}>Customer Since</span>
               {editingField === 'customerSince' ? (
                 <Input
                   value={customerDetails.customerSince}
                   onChange={(e) => handleFieldChange('customerSince', e.target.value)}
                   onBlur={handleFieldBlur}
                   autoFocus
-                  className="h-auto py-0 px-2 text-right w-32 text-xs font-semibold"
+                  className="h-auto py-0 px-2 text-right w-32 font-semibold"
+                  style={{ fontSize: '10px' }}
                 />
               ) : (
                 <span 
-                  className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70"
+                  className="font-semibold text-foreground cursor-pointer hover:opacity-70"
+                  style={{ fontSize: '10px' }}
                   onClick={() => handleFieldClick('customerSince')}
                 >
                   {customerDetails.customerSince}
@@ -181,18 +183,20 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
 
             {/* Tax */}
             <div className="flex items-center justify-between py-2">
-              <span className="text-xs text-muted-foreground">Tax</span>
+              <span className="text-muted-foreground" style={{ fontSize: '10px' }}>Tax</span>
               {editingField === 'tax' ? (
                 <Input
                   value={customerDetails.tax}
                   onChange={(e) => handleFieldChange('tax', e.target.value)}
                   onBlur={handleFieldBlur}
                   autoFocus
-                  className="h-auto py-0 px-2 text-right w-32 text-xs font-semibold"
+                  className="h-auto py-0 px-2 text-right w-32 font-semibold"
+                  style={{ fontSize: '10px' }}
                 />
               ) : (
                 <span 
-                  className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70"
+                  className="font-semibold text-foreground cursor-pointer hover:opacity-70"
+                  style={{ fontSize: '10px' }}
                   onClick={() => handleFieldClick('tax')}
                 >
                   {customerDetails.tax || '—'}
@@ -203,18 +207,20 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
 
             {/* Company Name */}
             <div className="flex items-center justify-between py-2">
-              <span className="text-xs text-muted-foreground">Company Name</span>
+              <span className="text-muted-foreground" style={{ fontSize: '10px' }}>Company Name</span>
               {editingField === 'companyName' ? (
                 <Input
                   value={customerDetails.companyName}
                   onChange={(e) => handleFieldChange('companyName', e.target.value)}
                   onBlur={handleFieldBlur}
                   autoFocus
-                  className="h-auto py-0 px-2 text-right w-40 text-xs font-semibold"
+                  className="h-auto py-0 px-2 text-right w-40 font-semibold"
+                  style={{ fontSize: '10px' }}
                 />
               ) : (
                 <span 
-                  className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70"
+                  className="font-semibold text-foreground cursor-pointer hover:opacity-70"
+                  style={{ fontSize: '10px' }}
                   onClick={() => handleFieldClick('companyName')}
                 >
                   {customerDetails.companyName || '—'}
@@ -226,12 +232,12 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
             {/* Birthday */}
             <div className="flex items-center justify-between py-2">
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">Birthday</span>
+                <span className="text-muted-foreground" style={{ fontSize: '10px' }}>Birthday</span>
                 <img src={iconBirthday} alt="" className="w-3.5 h-3.5" />
               </div>
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70">
+                  <button className="font-semibold text-foreground cursor-pointer hover:opacity-70" style={{ fontSize: '10px' }}>
                     {birthdayDate ? format(birthdayDate, "MM/dd/yyyy") : '—'}
                   </button>
                 </PopoverTrigger>
@@ -256,12 +262,12 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
             {/* Anniversary */}
             <div className="flex items-center justify-between py-2">
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">Anniversary</span>
+                <span className="text-muted-foreground" style={{ fontSize: '10px' }}>Anniversary</span>
                 <img src={iconAnniversary} alt="" className="w-3.5 h-3.5" />
               </div>
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70">
+                  <button className="font-semibold text-foreground cursor-pointer hover:opacity-70" style={{ fontSize: '10px' }}>
                     {anniversaryDate ? format(anniversaryDate, "MM/dd/yyyy") : '—'}
                   </button>
                 </PopoverTrigger>
@@ -285,15 +291,15 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
 
             {/* Address */}
             <div className="py-2">
-              <span className="text-xs text-muted-foreground block mb-1.5">Address</span>
+              <span className="text-muted-foreground block mb-1.5" style={{ fontSize: '10px' }}>Address</span>
               {editingField === 'address' ? (
                 <Input
                   value={customerDetails.address}
                   onChange={(e) => handleFieldChange('address', e.target.value)}
                   onBlur={handleFieldBlur}
                   autoFocus
-                  className="h-auto py-2 px-3 text-xs rounded-lg"
-                  style={{ backgroundColor: '#F1F2F5' }}
+                  className="h-auto py-2 px-3 rounded-lg"
+                  style={{ backgroundColor: '#F1F2F5', fontSize: '10px' }}
                 />
               ) : (
                 <div 
@@ -301,7 +307,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
                   style={{ backgroundColor: '#F1F2F5' }}
                   onClick={() => handleFieldClick('address')}
                 >
-                  <span className="text-xs text-foreground">{customerDetails.address || '—'}</span>
+                  <span className="text-foreground" style={{ fontSize: '10px' }}>{customerDetails.address || '—'}</span>
                   <span className="text-muted-foreground">›</span>
                 </div>
               )}
