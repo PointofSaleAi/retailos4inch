@@ -3,6 +3,8 @@ import { Separator } from "./ui/separator";
 import { Customer } from "./CustomerScreen";
 import iconBackArrow from "@/assets/icon-back-arrow.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
+import iconBirthday from "@/assets/icon-birthday.png";
+import iconAnniversary from "@/assets/icon-anniversary.png";
 
 interface CustomerDetailScreenProps {
   customer: Customer;
@@ -39,7 +41,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
         <button onClick={onBack} className="p-1">
           <img src={iconBackArrow} alt="" className="w-4 h-4" />
         </button>
-        <h1 className="text-base font-semibold text-foreground">Customer details</h1>
+        <h1 className="font-semibold text-foreground" style={{ fontSize: '12px' }}>Customer details</h1>
       </div>
 
       {/* Content */}
@@ -48,7 +50,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
           {/* Avatar Section */}
           <div className="flex flex-col items-center mb-4">
             <div className="relative mb-3">
-              <Avatar className="w-20 h-20">
+              <Avatar style={{ width: '75px', height: '75px' }}>
                 <AvatarImage src={customer.avatar} alt={customer.name} />
                 <AvatarFallback className="bg-muted text-foreground font-semibold text-lg">
                   {getInitials(customer.name)}
@@ -59,13 +61,13 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
               </button>
             </div>
 
-            <h2 className="text-lg font-bold text-foreground mb-1">
+            <h2 className="font-bold text-foreground mb-1" style={{ fontSize: '12px' }}>
               {customer.name}
             </h2>
-            <p className="text-xs text-foreground mb-0.5">
+            <p className="text-foreground mb-0.5" style={{ fontSize: '10px' }}>
               {customerDetails.email}
             </p>
-            <p className="text-xs text-foreground">
+            <p className="text-foreground" style={{ fontSize: '10px' }}>
               {customer.phone}
             </p>
           </div>
@@ -114,7 +116,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
                 <div className="flex items-center justify-between py-2.5">
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs text-muted-foreground">Birthday</span>
-                    <span className="text-xs">🎂</span>
+                    <img src={iconBirthday} alt="" className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-semibold text-foreground">{customerDetails.birthday}</span>
                 </div>
@@ -128,7 +130,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
                 <div className="flex items-center justify-between py-2.5">
                   <div className="flex items-center gap-1.5">
                     <span className="text-xs text-muted-foreground">Anniversary</span>
-                    <span className="text-xs">💍</span>
+                    <img src={iconAnniversary} alt="" className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-semibold text-foreground">{customerDetails.anniversary}</span>
                 </div>
