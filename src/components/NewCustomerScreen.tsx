@@ -182,7 +182,7 @@ export const NewCustomerScreen = ({
                     <ChevronDown className="w-3 h-3 text-foreground ml-auto" />
                   </button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[170px] p-2 max-h-[200px] overflow-y-auto" align="start" sideOffset={2}>
+                <PopoverContent className="w-[170px] p-2 max-h-[200px] overflow-y-auto bg-white" align="start" sideOffset={2} style={{ backgroundColor: '#FFFFFF' }}>
                   <div className="space-y-1">
                     {[{
                     flag: "🇺🇸",
@@ -292,7 +292,7 @@ export const NewCustomerScreen = ({
                   {formData.dateOfBirth ? <span className="text-foreground">{format(formData.dateOfBirth, "MM/dd/yyyy")}</span> : <span className="text-muted-foreground">Date of Birth</span>}
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="center" sideOffset={2}>
+              <PopoverContent className="w-auto p-0 bg-white" align="center" side="top" sideOffset={2} style={{ backgroundColor: '#FFFFFF' }}>
                 <Calendar mode="single" selected={formData.dateOfBirth} onSelect={date => updateField("dateOfBirth", date)} disabled={date => date > new Date() || date < new Date("1900-01-01")} initialFocus className={cn("p-2 pointer-events-auto text-[10px] scale-90")} classNames={{
                   months: "space-y-2",
                   month: "space-y-2",
@@ -329,7 +329,7 @@ export const NewCustomerScreen = ({
                   {formData.anniversary ? <span className="text-foreground">{format(formData.anniversary, "MM/dd/yyyy")}</span> : <span className="text-muted-foreground">Anniversary</span>}
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="center" sideOffset={2}>
+              <PopoverContent className="w-auto p-0 bg-white" align="center" side="top" sideOffset={2} style={{ backgroundColor: '#FFFFFF' }}>
                 <Calendar mode="single" selected={formData.anniversary} onSelect={date => updateField("anniversary", date)} initialFocus className={cn("p-2 pointer-events-auto text-[10px] scale-90")} classNames={{
                   months: "space-y-2",
                   month: "space-y-2",
