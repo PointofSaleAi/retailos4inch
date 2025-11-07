@@ -13,10 +13,9 @@ interface ProductCardProps {
   product: Product;
   onAddToCart: (productId: number, quantity: number) => void;
   hideImage?: boolean;
-  onCardClick?: (product: Product) => void;
 }
 
-export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardClick }: ProductCardProps) => {
+export const ProductCard = ({ product, onAddToCart, hideImage = false }: ProductCardProps) => {
   const [quantity, setQuantity] = useState(0);
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -58,12 +57,9 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
 
   if (hideImage) {
     return (
-      <div 
-        className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[78px] flex flex-col p-1.5 cursor-pointer ${
-          quantity > 0 ? 'border border-[#000]' : 'border border-border'
-        }`}
-        onClick={() => onCardClick?.(product)}
-      >
+      <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[78px] flex flex-col p-1.5 ${
+        quantity > 0 ? 'border border-[#000]' : 'border border-border'
+      }`}>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -89,12 +85,9 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
   }
 
   return (
-    <div 
-      className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col relative cursor-pointer ${
-        quantity > 0 ? 'border border-[#000]' : 'border border-border'
-      }`}
-      onClick={() => onCardClick?.(product)}
-    >
+    <div className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col relative ${
+      quantity > 0 ? 'border border-[#000]' : 'border border-border'
+    }`}>
       <button
         onClick={(e) => {
           e.stopPropagation();

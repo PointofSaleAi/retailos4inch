@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import iconGrid from "@/assets/icon-grid.png";
 import { ProductCard } from "./ProductCard";
-import { ProductDetailSheet } from "./ProductDetailSheet";
 
 interface Product {
   id: number;
@@ -20,18 +18,6 @@ interface FavoritesScreenProps {
 }
 
 export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  const handleCardClick = (product: Product) => {
-    setSelectedProduct(product);
-    setIsSheetOpen(true);
-  };
-
-  const handleCloseSheet = () => {
-    setIsSheetOpen(false);
-  };
-
   return (
     <div className="h-full flex flex-col bg-background w-[186px] mx-auto">
       {/* Header */}
@@ -64,19 +50,10 @@ export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScre
               key={product.id}
               product={product}
               onAddToCart={onAddToCart}
-              onCardClick={handleCardClick}
             />
           ))}
         </div>
       </div>
-
-      {/* Product Detail Sheet */}
-      <ProductDetailSheet
-        product={selectedProduct}
-        isOpen={isSheetOpen}
-        onClose={handleCloseSheet}
-        onAddToCart={onAddToCart}
-      />
     </div>
   );
 };

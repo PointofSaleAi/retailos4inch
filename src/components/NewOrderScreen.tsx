@@ -4,7 +4,6 @@ import { TopNavigation } from "./TopNavigation";
 import { ProductCard } from "./ProductCard";
 import { ProductListCard } from "./ProductListCard";
 import { CartStrip } from "./CartStrip";
-import { ProductDetailSheet } from "./ProductDetailSheet";
 import { ChevronDown } from "lucide-react";
 import iconGrid from "@/assets/icon-grid.png";
 import iconList from "@/assets/icon-list.png";
@@ -113,17 +112,6 @@ export const NewOrderScreen = ({
   const [showFilters, setShowFilters] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  const handleCardClick = (product: Product) => {
-    setSelectedProduct(product);
-    setIsSheetOpen(true);
-  };
-
-  const handleCloseSheet = () => {
-    setIsSheetOpen(false);
-  };
 
   const filteredProducts = searchQuery
     ? products.filter(product =>
@@ -237,11 +225,11 @@ export const NewOrderScreen = ({
         <div className="p-[6px]">
           {viewMode === "image" ? (
             <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={false} onCardClick={handleCardClick} />)}
+              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={false} />)}
             </div>
           ) : viewMode === "grid" ? (
             <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} onCardClick={handleCardClick} />)}
+              {filteredProducts.map(product => <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} hideImage={true} />)}
             </div>
           ) : (
             <div className="flex flex-col gap-2 pb-2">
@@ -253,13 +241,5 @@ export const NewOrderScreen = ({
       
       {/* Cart Strip - positioned as flex child at bottom */}
       <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
-
-      {/* Product Detail Sheet */}
-      <ProductDetailSheet
-        product={selectedProduct}
-        isOpen={isSheetOpen}
-        onClose={handleCloseSheet}
-        onAddToCart={onAddToCart}
-      />
     </div>;
 };
