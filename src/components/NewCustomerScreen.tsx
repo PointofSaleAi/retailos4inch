@@ -353,10 +353,12 @@ export const NewCustomerScreen = ({
           </div>
 
           {/* Action Button */}
-          <div className="pt-4 py-0">
-            <button onClick={handleSave} className="w-full rounded-full text-xs font-medium text-background transition-colors" style={{
+          <div className="pt-2 py-0">
+            <button onClick={handleSave} className="w-full rounded-full font-semibold transition-colors" style={{
             backgroundColor: '#1F2937',
-            height: '28px'
+            color: '#FFFFFF',
+            height: '28px',
+            fontSize: '11px'
           }}>
               Save
             </button>
