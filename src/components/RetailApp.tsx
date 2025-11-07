@@ -461,7 +461,9 @@ export const RetailApp = () => {
         price: item.price,
         quantity: item.quantity,
         image: item.type === 'product' ? (products.find(p => p.id === item.productId)?.image || '') : '',
-        note: item.note
+        note: item.note,
+        size: item.size,
+        color: item.color
       }));
       
       return (
