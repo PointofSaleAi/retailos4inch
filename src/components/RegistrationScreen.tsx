@@ -22,6 +22,8 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [country, setCountry] = useState("United States");
+  const [countryCode, setCountryCode] = useState("+1");
+  const [countryFlag, setCountryFlag] = useState("🇺🇸");
   const [companyName, setCompanyName] = useState("");
   const [businessVertical, setBusinessVertical] = useState("");
   const [subVertical, setSubVertical] = useState("");
@@ -36,6 +38,22 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+
+  const countryOptions = [
+    { code: "+1", flag: "🇺🇸", name: "United States" },
+    { code: "+1", flag: "🇨🇦", name: "Canada" },
+    { code: "+44", flag: "🇬🇧", name: "United Kingdom" },
+    { code: "+91", flag: "🇮🇳", name: "India" },
+    { code: "+61", flag: "🇦🇺", name: "Australia" },
+  ];
+
+  const handleCountryCodeChange = (value: string) => {
+    const selected = countryOptions.find(opt => `${opt.flag}-${opt.code}` === value);
+    if (selected) {
+      setCountryCode(selected.code);
+      setCountryFlag(selected.flag);
+    }
+  };
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -287,10 +305,24 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
             <div className="space-y-1">
               <Label className="text-[8px] font-medium text-foreground">Mobile Number</Label>
               <div className="flex gap-1">
-                <div className="flex items-center justify-center w-[50px] h-[28px] rounded-full border border-[#D1D1D1] bg-white px-2">
-                  <span className="text-[16px]">🇺🇸</span>
-                  <ChevronLeft size={10} className="-rotate-90 text-foreground" />
-                </div>
+                <Select value={`${countryFlag}-${countryCode}`} onValueChange={handleCountryCodeChange}>
+                  <SelectTrigger className="w-[50px] h-[28px] rounded-full border-[#D1D1D1] bg-white px-2">
+                    <div className="flex items-center justify-center gap-0.5">
+                      <span className="text-[16px]">{countryFlag}</span>
+                      <ChevronLeft size={10} className="-rotate-90 text-foreground" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent className="bg-white z-50">
+                    {countryOptions.map((option) => (
+                      <SelectItem key={`${option.flag}-${option.code}`} value={`${option.flag}-${option.code}`}>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[16px]">{option.flag}</span>
+                          <span className="text-[10px]">{option.code}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <Input
                   placeholder="(xxx) xxx xxxx"
                   value={mobileNumber}
@@ -336,7 +368,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
                 <SelectTrigger className="h-[28px] text-[10px] rounded-full border-[#D1D1D1]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white z-50">
                   <SelectItem value="United States">United States</SelectItem>
                   <SelectItem value="Canada">Canada</SelectItem>
                   <SelectItem value="United Kingdom">United Kingdom</SelectItem>
