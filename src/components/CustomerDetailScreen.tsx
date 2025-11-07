@@ -1,12 +1,16 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
+import { Calendar } from "./ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Customer } from "./CustomerScreen";
 import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
 import iconBirthday from "@/assets/icon-birthday.png";
 import iconAnniversary from "@/assets/icon-anniversary.png";
 import { useState } from "react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface CustomerDetailScreenProps {
   customer: Customer;
@@ -16,6 +20,12 @@ interface CustomerDetailScreenProps {
 export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenProps) => {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editedCustomer, setEditedCustomer] = useState(customer);
+  const [birthdayDate, setBirthdayDate] = useState<Date | undefined>(
+    customer.birthday ? new Date(customer.birthday) : undefined
+  );
+  const [anniversaryDate, setAnniversaryDate] = useState<Date | undefined>(
+    customer.anniversary ? new Date(customer.anniversary) : undefined
+  );
 
   const getInitials = (name: string) => {
     return name
@@ -219,22 +229,27 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
                 <span className="text-xs text-muted-foreground">Birthday</span>
                 <img src={iconBirthday} alt="" className="w-3.5 h-3.5" />
               </div>
-              {editingField === 'birthday' ? (
-                <Input
-                  value={customerDetails.birthday}
-                  onChange={(e) => handleFieldChange('birthday', e.target.value)}
-                  onBlur={handleFieldBlur}
-                  autoFocus
-                  className="h-auto py-0 px-2 text-right w-32 text-xs font-semibold"
-                />
-              ) : (
-                <span 
-                  className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70"
-                  onClick={() => handleFieldClick('birthday')}
-                >
-                  {customerDetails.birthday || '—'}
-                </span>
-              )}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70">
+                    {birthdayDate ? format(birthdayDate, "MM/dd/yyyy") : '—'}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    mode="single"
+                    selected={birthdayDate}
+                    onSelect={(date) => {
+                      setBirthdayDate(date);
+                      if (date) {
+                        handleFieldChange('birthday', format(date, "MM/dd/yyyy"));
+                      }
+                    }}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <Separator style={{ backgroundColor: '#F1F2F5' }} />
 
@@ -244,22 +259,27 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
                 <span className="text-xs text-muted-foreground">Anniversary</span>
                 <img src={iconAnniversary} alt="" className="w-3.5 h-3.5" />
               </div>
-              {editingField === 'anniversary' ? (
-                <Input
-                  value={customerDetails.anniversary}
-                  onChange={(e) => handleFieldChange('anniversary', e.target.value)}
-                  onBlur={handleFieldBlur}
-                  autoFocus
-                  className="h-auto py-0 px-2 text-right w-32 text-xs font-semibold"
-                />
-              ) : (
-                <span 
-                  className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70"
-                  onClick={() => handleFieldClick('anniversary')}
-                >
-                  {customerDetails.anniversary || '—'}
-                </span>
-              )}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="text-xs font-semibold text-foreground cursor-pointer hover:opacity-70">
+                    {anniversaryDate ? format(anniversaryDate, "MM/dd/yyyy") : '—'}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <Calendar
+                    mode="single"
+                    selected={anniversaryDate}
+                    onSelect={(date) => {
+                      setAnniversaryDate(date);
+                      if (date) {
+                        handleFieldChange('anniversary', format(date, "MM/dd/yyyy"));
+                      }
+                    }}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <Separator style={{ backgroundColor: '#F1F2F5' }} />
 
