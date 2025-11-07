@@ -63,8 +63,8 @@ export const ProductDetailSheet = ({
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent container={portalContainer} className="w-[177px] mx-auto rounded-t-[16px] bottom-[15px] max-h-[calc(100svh-25px)] overflow-y-auto">
-        <div className="w-full py-1" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+      <DrawerContent container={portalContainer} className="w-[177px] mx-auto rounded-t-[16px] bottom-[15px] max-h-[calc(100svh-25px)] overflow-y-auto pb-0 overscroll-contain">
+        <div className="w-full pt-1 pb-0" style={{ fontFamily: 'Montserrat, sans-serif' }}>
           {/* Handle bar */}
           <div className="w-[36px] h-[3px] bg-muted-foreground/30 rounded-full mx-auto mb-1" />
           
@@ -150,7 +150,7 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Add to Cart Button */}
-          <div className="px-3 pt-1">
+          <div className="px-3 pt-1 pb-0">
             <div className="flex items-center gap-2">
               <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
