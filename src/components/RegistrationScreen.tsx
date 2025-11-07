@@ -33,9 +33,74 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   const [showBusinessVerticalSelect, setShowBusinessVerticalSelect] = useState(false);
   const [showSubVerticalSelect, setShowSubVerticalSelect] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setEmailError("");
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      setEmailError("Please enter a valid email address");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const validatePassword = (password: string) => {
+    if (!password) {
+      setPasswordError("");
+      return false;
+    }
+    const hasMinLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    if (!hasMinLength) {
+      setPasswordError("Password must be at least 8 characters");
+      return false;
+    }
+    if (!hasUppercase) {
+      setPasswordError("Password must contain an uppercase letter");
+      return false;
+    }
+    if (!hasLowercase) {
+      setPasswordError("Password must contain a lowercase letter");
+      return false;
+    }
+    if (!hasNumber) {
+      setPasswordError("Password must contain a number");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
+
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^\(\d{3}\)\s\d{3}\s\d{4}$/;
+    if (!phone) {
+      setPhoneError("");
+      return false;
+    }
+    if (!phoneRegex.test(phone)) {
+      setPhoneError("Phone format: (xxx) xxx xxxx");
+      return false;
+    }
+    setPhoneError("");
+    return true;
+  };
 
   const handleCreateAccount = () => {
-    if (firstName && lastName && email && mobileNumber && password && country && companyName && businessVertical && subVertical && agreedToTerms) {
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = validatePassword(password);
+    const isPhoneValid = validatePhone(mobileNumber);
+    
+    if (firstName && lastName && isEmailValid && isPhoneValid && isPasswordValid && country && companyName && businessVertical && subVertical && agreedToTerms) {
       setStep(2);
     }
   };
@@ -200,9 +265,14 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
                 type="email"
                 placeholder="Enter Email Address"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-[28px] text-[10px] rounded-full border-[#D1D1D1]"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
+                onBlur={(e) => validateEmail(e.target.value)}
+                className={`h-[28px] text-[10px] rounded-full ${emailError ? "border-red-500" : "border-[#D1D1D1]"}`}
               />
+              {emailError && <p className="text-[8px] text-red-500 px-2">{emailError}</p>}
             </div>
 
             <div className="space-y-1">
@@ -215,10 +285,15 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
                 <Input
                   placeholder="(xxx) xxx xxxx"
                   value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
-                  className="flex-1 h-[28px] text-[10px] rounded-full border-[#D1D1D1]"
+                  onChange={(e) => {
+                    setMobileNumber(e.target.value);
+                    validatePhone(e.target.value);
+                  }}
+                  onBlur={(e) => validatePhone(e.target.value)}
+                  className={`flex-1 h-[28px] text-[10px] rounded-full ${phoneError ? "border-red-500" : "border-[#D1D1D1]"}`}
                 />
               </div>
+              {phoneError && <p className="text-[8px] text-red-500 px-2">{phoneError}</p>}
             </div>
 
             <div className="space-y-1">
@@ -228,8 +303,12 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="h-[28px] text-[10px] rounded-full border-[#D1D1D1] pr-8"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    validatePassword(e.target.value);
+                  }}
+                  onBlur={(e) => validatePassword(e.target.value)}
+                  className={`h-[28px] text-[10px] rounded-full pr-8 ${passwordError ? "border-red-500" : "border-[#D1D1D1]"}`}
                 />
                 <button
                   type="button"
@@ -239,6 +318,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
+              {passwordError && <p className="text-[8px] text-red-500 px-2">{passwordError}</p>}
             </div>
 
             <div className="space-y-1">
