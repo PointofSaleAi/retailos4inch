@@ -82,6 +82,15 @@
     background: hsl(var(--background));
   }
   
+  /* Contain dialog overlay within retail device */
+  .retail-device [data-radix-dialog-overlay] {
+    position: absolute !important;
+  }
+  
+  .retail-device [data-radix-dialog-content] {
+    position: absolute !important;
+  }
+  
   /* Typography Scale for Small Screen */
   .text-brand {
     font-size: 1.5rem;

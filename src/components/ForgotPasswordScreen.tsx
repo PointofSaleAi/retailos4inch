@@ -335,7 +335,7 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
 
       {/* Success Dialog */}
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-        <DialogContent className="w-[186px] rounded-2xl p-4 bg-white border-none shadow-lg">
+        <DialogContent hideClose className="w-[186px] rounded-2xl p-4 bg-white border-none shadow-lg [&~*[data-radix-dialog-overlay]]:!absolute [&~*[data-radix-dialog-overlay]]:!inset-0">
           <div className="flex flex-col items-center text-center space-y-2">
             <DialogTitle className="text-[10px] font-bold text-[#212121] leading-tight">
               Password Created Successfully
