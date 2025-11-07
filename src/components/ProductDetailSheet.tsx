@@ -54,8 +54,8 @@ export const ProductDetailSheet = ({
   portalContainer
 }: ProductDetailSheetProps) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedColor, setSelectedColor] = useState("Black");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   if (!product) return null;
   const handleQuantityChange = (change: number) => {
     const newQuantity = quantity + change;
@@ -69,7 +69,7 @@ export const ProductDetailSheet = ({
     setQuantity(1);
   };
   return <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent container={portalContainer} className="w-full rounded-t-[16px] bottom-0 max-h-[calc(100svh-10px)] overflow-y-auto pb-0 overscroll-contain">
+      <DrawerContent container={portalContainer} className="w-full rounded-t-[16px] bottom-0 h-[300px] overflow-hidden pb-0">
         <div className="w-full pt-1 pb-0" style={{
         fontFamily: 'Montserrat, sans-serif'
       }}>
@@ -97,47 +97,61 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Selected size & color / Stock */}
-          <div className="flex items-center justify-between px-3 mb-1 py-[6px]">
+          <div className="flex items-center justify-between px-3 mb-1 py-[6px] bg-muted/30 mx-3 rounded">
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-semibold text-foreground">{selectedSize}</span>
-              <span className="text-[10px] font-semibold text-foreground">{selectedColor}</span>
+              {selectedSize && selectedColor ? (
+                <>
+                  <span className="text-[10px] font-semibold text-foreground">{selectedSize}</span>
+                  <span className="text-[10px] font-semibold text-foreground">{selectedColor}</span>
+                </>
+              ) : (
+                <span className="text-[10px] font-semibold text-muted-foreground">Select size & color</span>
+              )}
             </div>
             <span className="text-[10px] font-semibold text-foreground">Stock 12</span>
           </div>
 
           {/* Size Section */}
           <div className="px-3 mb-2">
-            <div className="flex items-center mb-1">
-              <label className="text-[9px] font-semibold text-foreground">Size</label>
-              <span className="text-destructive ml-0.5">*</span>
-            </div>
-            <div className="grid grid-cols-4 gap-1">
-              {sizes.map(size => <button key={size} onClick={() => setSelectedSize(size)} className={`h-[20px] rounded-full text-[9px] font-medium border transition-colors ${selectedSize === size ? "bg-foreground text-background border-foreground" : size === "XXL" ? "bg-muted/30 text-muted-foreground/40 border-border/40" : "bg-background text-foreground border-border hover:bg-muted"}`} disabled={size === "XXL"}>
-                  {size}
-                </button>)}
+            <div className="bg-muted/30 p-2 rounded">
+              <div className="flex items-center mb-1">
+                <label className="text-[9px] font-semibold text-foreground">Size</label>
+                <span className="text-destructive ml-0.5">*</span>
+              </div>
+              <div className="grid grid-cols-4 gap-1">
+                {sizes.map(size => <button key={size} onClick={() => setSelectedSize(size)} className={`h-[20px] rounded-full text-[9px] font-medium border transition-colors ${selectedSize === size ? "bg-foreground text-background border-foreground" : size === "XXL" ? "bg-muted/30 text-muted-foreground/40 border-border/40" : "bg-background text-foreground border-border hover:bg-muted"}`} disabled={size === "XXL"}>
+                    {size}
+                  </button>)}
+              </div>
             </div>
           </div>
 
           {/* Color Section */}
           <div className="px-3 mb-2">
-            <div className="flex items-center mb-1">
-              <label className="text-[9px] font-semibold text-foreground">Color</label>
-              <span className="text-destructive ml-0.5">*</span>
-            </div>
-            <div className="grid grid-cols-5 gap-1.5">
-              {colors.map(color => <button key={color.name} onClick={() => setSelectedColor(color.name)} className={`w-[20px] h-[20px] rounded-full transition-all ${selectedColor === color.name ? "ring-1 ring-foreground ring-offset-1" : ""} ${color.value === "#FFFFFF" ? "border border-border" : ""}`} style={{
-              backgroundColor: color.value
-            }} title={color.name} />)}
+            <div className="bg-muted/30 p-2 rounded">
+              <div className="flex items-center mb-1">
+                <label className="text-[9px] font-semibold text-foreground">Color</label>
+                <span className="text-destructive ml-0.5">*</span>
+              </div>
+              <div className="grid grid-cols-5 gap-1.5">
+                {colors.map(color => <button key={color.name} onClick={() => setSelectedColor(color.name)} className={`w-[20px] h-[20px] rounded-full transition-all ${selectedColor === color.name ? "ring-1 ring-foreground ring-offset-1" : ""} ${color.value === "#FFFFFF" ? "border border-border" : ""}`} style={{
+                backgroundColor: color.value
+              }} title={color.name} />)}
+              </div>
             </div>
           </div>
 
           {/* Add to Cart Button */}
-          <div className="px-3 pt-1 pb-0 py-[6px]">
+          <div className="px-3 pt-1 pb-2.5 py-[6px]">
             <div className="flex items-center gap-2">
               <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
               </button>
-              <button onClick={handleAddToCart} className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors">
+              <button 
+                onClick={handleAddToCart} 
+                disabled={!selectedSize || !selectedColor}
+                className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 ADD ${product.price.toFixed(2)}
               </button>
             </div>
