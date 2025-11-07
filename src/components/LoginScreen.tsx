@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RetailLogo } from "./RetailLogo";
 import { ForgotPasswordScreen } from "./ForgotPasswordScreen";
+import { RegistrationScreen } from "./RegistrationScreen";
 import { Eye, EyeOff } from "lucide-react";
 interface LoginScreenProps {
   onLogin: () => void;
@@ -15,6 +16,7 @@ export const LoginScreen = ({
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin();
@@ -22,6 +24,10 @@ export const LoginScreen = ({
 
   if (showForgotPassword) {
     return <ForgotPasswordScreen onBack={() => setShowForgotPassword(false)} />;
+  }
+
+  if (showRegistration) {
+    return <RegistrationScreen onBack={() => setShowRegistration(false)} onSuccess={onLogin} />;
   }
 
   return <div className="h-full flex flex-col justify-center items-center p-6 bg-background animate-fade-in">
@@ -68,7 +74,11 @@ export const LoginScreen = ({
           
           <div className="text-center text-[10px]">
             <span className="text-muted-foreground">Haven't registered yet? </span>
-            <button type="button" className="text-foreground font-semibold hover:underline">
+            <button 
+              type="button" 
+              onClick={() => setShowRegistration(true)}
+              className="text-foreground font-semibold hover:underline"
+            >
               Register
             </button>
           </div>
