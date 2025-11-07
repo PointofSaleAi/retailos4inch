@@ -108,8 +108,8 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Size Section */}
-          <div className="px-3 mb-2">
-            <div className="bg-muted/30 p-2 rounded">
+          <div className="px-3 mb-1">
+            <div className="p-2">
               <div className="flex items-center mb-1">
                 <label className="text-[9px] font-semibold text-foreground">Size</label>
                 <span className="text-destructive ml-0.5">*</span>
@@ -123,8 +123,8 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Color Section */}
-          <div className="px-3 mb-2">
-            <div className="bg-muted/30 p-2 rounded">
+          <div className="px-3 mb-1">
+            <div className="p-2">
               <div className="flex items-center mb-1">
                 <label className="text-[9px] font-semibold text-foreground">Color</label>
                 <span className="text-destructive ml-0.5">*</span>
