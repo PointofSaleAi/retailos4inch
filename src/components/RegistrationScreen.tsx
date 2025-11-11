@@ -203,8 +203,8 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   }
 
   return (
-    <div className="h-full flex justify-center bg-background animate-fade-in overflow-y-auto px-4 sm:px-6 md:px-8">
-      <div className="w-full max-w-[90%] sm:max-w-[186px] flex flex-col">
+    <div className="h-full flex justify-center bg-background animate-fade-in overflow-y-auto">
+      <div className="w-[186px] flex flex-col">
         {/* Header */}
         <div className="flex items-center py-2">
           <button onClick={onBack} className="p-1">
