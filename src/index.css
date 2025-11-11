@@ -71,15 +71,36 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   
-  /* Device-specific styling for 4-inch display */
+  /* Fully responsive device container - adapts to all screen sizes */
   .retail-device {
-    width: 198px;
-    height: 330px;
+    width: 100%;
+    height: 100vh;
     margin: 0 auto;
     overflow: hidden;
-    border-radius: var(--radius);
-    box-shadow: 0 0 20px hsl(0 0% 0% / 0.15);
     background: hsl(var(--background));
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Desktop and tablet - maintain aspect ratio with max constraints */
+  @media (min-width: 640px) {
+    .retail-device {
+      max-width: min(90vw, 480px);
+      max-height: min(90vh, 800px);
+      aspect-ratio: 198 / 330;
+      border-radius: var(--radius);
+      box-shadow: 0 0 20px hsl(0 0% 0% / 0.15);
+    }
+  }
+  
+  /* Mobile - full screen */
+  @media (max-width: 639px) {
+    .retail-device {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      box-shadow: none;
+    }
   }
   
   /* Contain dialog overlay within retail device */
@@ -91,33 +112,33 @@
     position: absolute !important;
   }
   
-  /* Typography Scale for Small Screen */
+  /* Responsive Typography Scale */
   .text-brand {
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
     font-weight: 800;
     letter-spacing: -0.02em;
   }
   
   .text-subtitle {
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
     font-weight: 500;
     color: hsl(var(--muted-foreground));
   }
   
   .text-product-title {
-    font-size: 0.75rem;
+    font-size: clamp(0.625rem, 2vw, 0.75rem);
     font-weight: 600;
     line-height: 1.2;
   }
   
   .text-price {
-    font-size: 0.625rem;
+    font-size: clamp(0.5rem, 1.8vw, 0.625rem);
     font-weight: 700;
     color: hsl(var(--price));
   }
   
   .text-retail-xs {
-    font-size: 0.625rem;
+    font-size: clamp(0.5rem, 1.8vw, 0.625rem);
     line-height: 1.2;
   }
   
