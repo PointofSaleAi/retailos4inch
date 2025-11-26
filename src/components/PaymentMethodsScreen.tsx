@@ -86,8 +86,20 @@ export const PaymentMethodsScreen = ({
 
       {/* Payment Methods Grid */}
       <div className="flex-1 overflow-y-auto px-0">
+        {/* First 9 items in 3-column grid */}
         <div className="grid grid-cols-3 gap-x-3 gap-y-4">
-          {paymentMethods.map(method => <button key={method.id} onClick={() => onSelectMethod(method.id)} className="flex flex-col items-center">
+          {paymentMethods.slice(0, 9).map(method => <button key={method.id} onClick={() => onSelectMethod(method.id)} className="flex flex-col items-center">
+              <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center border border-[#E0E0E0] bg-white hover:bg-gray-50 transition-colors shadow-sm">
+                <img src={method.icon} alt={method.label} className="w-[24px] h-[24px] object-contain" />
+              </div>
+              <span className="text-[8px] font-medium mt-1.5 text-gray-600 whitespace-nowrap">
+                {method.label}
+              </span>
+            </button>)}
+        </div>
+        {/* Last 2 items centered */}
+        <div className="flex justify-center gap-x-3 mt-4">
+          {paymentMethods.slice(9).map(method => <button key={method.id} onClick={() => onSelectMethod(method.id)} className="flex flex-col items-center">
               <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center border border-[#E0E0E0] bg-white hover:bg-gray-50 transition-colors shadow-sm">
                 <img src={method.icon} alt={method.label} className="w-[24px] h-[24px] object-contain" />
               </div>
