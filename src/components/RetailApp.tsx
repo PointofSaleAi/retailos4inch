@@ -12,6 +12,7 @@ import { CustomPaymentScreen } from "./CustomPaymentScreen";
 import { FavoritesScreen } from "./FavoritesScreen";
 import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import { OrderSummaryScreen } from "./OrderSummaryScreen";
+import { PaymentMethodsScreen } from "./PaymentMethodsScreen";
 import { PaymentOptionsScreen } from "./PaymentOptionsScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
 import { TransactionDetailScreen } from "./TransactionDetailScreen";
@@ -72,7 +73,9 @@ export const RetailApp = () => {
   const [showFavoritesScreen, setShowFavoritesScreen] = useState(false);
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
   const [showOrderSummary, setShowOrderSummary] = useState(false);
+  const [showPaymentMethods, setShowPaymentMethods] = useState(false);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('Card');
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [showTransactionDetail, setShowTransactionDetail] = useState(false);
   const [showRefundScreen, setShowRefundScreen] = useState(false);
@@ -435,6 +438,28 @@ export const RetailApp = () => {
       );
     }
 
+    if (showPaymentMethods) {
+      const TAX_RATE = 0.08;
+      const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const tax = subtotal * TAX_RATE;
+      const totalDue = subtotal + tax;
+
+      return (
+        <PaymentMethodsScreen
+          totalDue={totalDue}
+          onBack={() => {
+            setShowPaymentMethods(false);
+            setShowOrderSummary(true);
+          }}
+          onSelectMethod={(method) => {
+            setSelectedPaymentMethod(method);
+            setShowPaymentMethods(false);
+            setShowPaymentOptions(true);
+          }}
+        />
+      );
+    }
+
     if (showPaymentOptions) {
       const TAX_RATE = 0.08;
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -446,7 +471,7 @@ export const RetailApp = () => {
           totalDue={totalDue}
           onClose={() => {
             setShowPaymentOptions(false);
-            setShowOrderSummary(true);
+            setShowPaymentMethods(true);
           }}
           onConfirmPayment={handleConfirmPayment}
         />
@@ -487,7 +512,7 @@ export const RetailApp = () => {
           }}
           onCharge={() => {
             setShowOrderSummary(false);
-            setShowPaymentOptions(true);
+            setShowPaymentMethods(true);
           }}
         />
       );
