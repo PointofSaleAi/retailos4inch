@@ -10,43 +10,67 @@ import iconLoyalty from '@/assets/icon-loyalty.png';
 import iconManualCC from '@/assets/icon-manual-cc.png';
 import iconManualCard from '@/assets/icon-manual-card.png';
 import iconExternalCC from '@/assets/icon-external-cc.png';
-
 interface PaymentMethodsScreenProps {
   totalDue: number;
   onBack: () => void;
   onSelectMethod: (method: string) => void;
 }
-
 export const PaymentMethodsScreen = ({
   totalDue,
   onBack,
   onSelectMethod
 }: PaymentMethodsScreenProps) => {
-  const paymentMethods = [
-    { id: 'Card', label: 'Card', icon: iconCardTap },
-    { id: 'Cash', label: 'Cash', icon: iconCash },
-    { id: 'Split Check', label: 'Split Check', icon: iconSplitCheck },
-    { id: 'Gift Card', label: 'Gift Card', icon: iconGiftCard },
-    { id: 'Pay by Link', label: 'Pay by Link', icon: iconPayByLink },
-    { id: 'QR Code', label: 'QR Code', icon: iconQrCode },
-    { id: 'Account', label: 'Account', icon: iconAccount },
-    { id: 'Loyalty', label: 'Loyalty', icon: iconLoyalty },
-    { id: 'Manual CC', label: 'Manual CC', icon: iconManualCC },
-    { id: 'Manual Card', label: 'Manual Card', icon: iconManualCard },
-    { id: 'External CC', label: 'External CC', icon: iconExternalCC },
-  ];
-
-  return (
-    <div 
-      className="w-[186px] h-full bg-[#F5F5F5] flex flex-col mx-auto"
-      style={{ fontFamily: 'Montserrat, sans-serif' }}
-    >
+  const paymentMethods = [{
+    id: 'Card',
+    label: 'Card',
+    icon: iconCardTap
+  }, {
+    id: 'Cash',
+    label: 'Cash',
+    icon: iconCash
+  }, {
+    id: 'Split Check',
+    label: 'Split Check',
+    icon: iconSplitCheck
+  }, {
+    id: 'Gift Card',
+    label: 'Gift Card',
+    icon: iconGiftCard
+  }, {
+    id: 'Pay by Link',
+    label: 'Pay by Link',
+    icon: iconPayByLink
+  }, {
+    id: 'QR Code',
+    label: 'QR Code',
+    icon: iconQrCode
+  }, {
+    id: 'Account',
+    label: 'Account',
+    icon: iconAccount
+  }, {
+    id: 'Loyalty',
+    label: 'Loyalty',
+    icon: iconLoyalty
+  }, {
+    id: 'Manual CC',
+    label: 'Manual CC',
+    icon: iconManualCC
+  }, {
+    id: 'Manual Card',
+    label: 'Manual Card',
+    icon: iconManualCard
+  }, {
+    id: 'External CC',
+    label: 'External CC',
+    icon: iconExternalCC
+  }];
+  return <div className="w-[186px] h-full bg-[#F5F5F5] flex flex-col mx-auto" style={{
+    fontFamily: 'Montserrat, sans-serif'
+  }}>
       {/* Header */}
       <div className="flex items-center justify-center h-[40px] px-2 relative">
-        <button 
-          onClick={onBack} 
-          className="absolute left-2 p-1"
-        >
+        <button onClick={onBack} className="absolute left-2 p-1">
           <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
         </button>
         <div className="flex items-baseline gap-1">
@@ -61,28 +85,17 @@ export const PaymentMethodsScreen = ({
       </div>
 
       {/* Payment Methods Grid */}
-      <div className="flex-1 overflow-y-auto px-3">
+      <div className="flex-1 overflow-y-auto px-0">
         <div className="grid grid-cols-3 gap-x-3 gap-y-4">
-          {paymentMethods.map((method) => (
-            <button
-              key={method.id}
-              onClick={() => onSelectMethod(method.id)}
-              className="flex flex-col items-center"
-            >
+          {paymentMethods.map(method => <button key={method.id} onClick={() => onSelectMethod(method.id)} className="flex flex-col items-center">
               <div className="w-[50px] h-[50px] rounded-full flex items-center justify-center border border-[#E0E0E0] bg-white hover:bg-gray-50 transition-colors shadow-sm">
-                <img 
-                  src={method.icon} 
-                  alt={method.label} 
-                  className="w-[24px] h-[24px] object-contain"
-                />
+                <img src={method.icon} alt={method.label} className="w-[24px] h-[24px] object-contain" />
               </div>
               <span className="text-[8px] font-medium mt-1.5 text-gray-600 whitespace-nowrap">
                 {method.label}
               </span>
-            </button>
-          ))}
+            </button>)}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
