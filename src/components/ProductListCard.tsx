@@ -28,13 +28,13 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   const getNameStyles = () => {
     const nameLength = product.name.length;
     if (nameLength <= 12) {
-      return "text-[11px] font-bold leading-[1.15]";
+      return "text-[11px] font-medium leading-[1.15]";
     } else if (nameLength <= 20) {
-      return "text-[9.5px] font-semibold leading-[1.15]";
+      return "text-[9.5px] font-medium leading-[1.15]";
     } else if (nameLength <= 28) {
       return "text-[8.5px] font-medium leading-[1.15]";
     } else {
-      return "text-[7.5px] font-normal leading-[1.15]";
+      return "text-[7.5px] font-medium leading-[1.15]";
     }
   };
 

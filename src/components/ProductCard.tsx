@@ -29,16 +29,7 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
   };
 
   const getNameStyles = () => {
-    const nameLength = product.name.length;
-    if (nameLength <= 12) {
-      return "font-bold";
-    } else if (nameLength <= 20) {
-      return "font-semibold";
-    } else if (nameLength <= 28) {
-      return "font-medium";
-    } else {
-      return "font-normal";
-    }
+    return "font-medium";
   };
 
   const getNameFontSize = (isHideImage: boolean) => {
