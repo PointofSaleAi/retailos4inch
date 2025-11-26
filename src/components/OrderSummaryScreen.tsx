@@ -110,7 +110,7 @@ export const OrderSummaryScreen = ({
             )}
           </div>
           <div className="flex-1 min-w-0">
-            {isEditingName ? <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} onBlur={() => setIsEditingName(false)} className="text-[12px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingName(true)} className="text-[12px] font-semibold text-gray-900 cursor-pointer">
+            {isEditingName ? <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} onBlur={() => setIsEditingName(false)} className="text-[10px] font-semibold text-gray-900 bg-transparent border-none outline-none w-full whitespace-nowrap" autoFocus /> : <div onClick={() => setIsEditingName(true)} className="text-[10px] font-semibold text-gray-900 cursor-pointer whitespace-nowrap truncate">
                 {customerName}
               </div>}
             {isEditingPhone ? <input type="tel" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} onBlur={() => setIsEditingPhone(false)} className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => setIsEditingPhone(true)} className="text-[10px] text-gray-600 cursor-pointer">
