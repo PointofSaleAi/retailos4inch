@@ -81,7 +81,7 @@ export const PaymentMethodsScreen = ({
 
       {/* Title */}
       <div className="text-center py-0">
-        <h2 className="text-[10px] font-medium text-gray-700">Choose Payment Method</h2>
+        <h2 className="text-[10px] font-medium text-gray-700 px-[3px]">Choose Payment Method</h2>
       </div>
 
       {/* Payment Methods Grid */}
