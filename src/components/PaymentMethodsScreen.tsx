@@ -80,7 +80,7 @@ export const PaymentMethodsScreen = ({
       </div>
 
       {/* Title */}
-      <div className="text-center py-1.5">
+      <div className="text-center py-0">
         <h2 className="text-[10px] font-medium text-gray-700">Choose Payment Method</h2>
       </div>
 
