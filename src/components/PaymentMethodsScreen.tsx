@@ -6,8 +6,10 @@ import iconGiftCard from '@/assets/icon-gift-card-new.png';
 import iconPayByLink from '@/assets/icon-pay-by-link.png';
 import iconQrCode from '@/assets/icon-qr-code.png';
 import iconAccount from '@/assets/icon-account.png';
-import iconRedeemLoyalty from '@/assets/icon-redeem-loyalty.png';
+import iconLoyalty from '@/assets/icon-loyalty.png';
 import iconManualCC from '@/assets/icon-manual-cc.png';
+import iconManualCard from '@/assets/icon-manual-card.png';
+import iconExternalCC from '@/assets/icon-external-cc.png';
 
 interface PaymentMethodsScreenProps {
   totalDue: number;
@@ -28,10 +30,10 @@ export const PaymentMethodsScreen = ({
     { id: 'Pay by Link', label: 'Pay by Link', icon: iconPayByLink },
     { id: 'QR Code', label: 'QR Code', icon: iconQrCode },
     { id: 'Account', label: 'Account', icon: iconAccount },
-    { id: 'Loyalty', label: 'Loyalty', icon: iconRedeemLoyalty },
+    { id: 'Loyalty', label: 'Loyalty', icon: iconLoyalty },
     { id: 'Manual CC', label: 'Manual CC', icon: iconManualCC },
-    { id: 'Manual Card', label: 'Manual Card', icon: iconManualCC },
-    { id: 'External CC', label: 'External CC', icon: iconManualCC },
+    { id: 'Manual Card', label: 'Manual Card', icon: iconManualCard },
+    { id: 'External CC', label: 'External CC', icon: iconExternalCC },
   ];
 
   return (
