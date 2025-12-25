@@ -207,13 +207,13 @@ export const CashPaymentScreen = ({
           </div>
         ) : (
           /* Number Pad */
-          <div className="grid grid-cols-3 gap-[3px]">
+          <div className="grid grid-cols-3 gap-2 flex-1">
             {['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'C'].map(
               (num) => (
                 <button
                   key={num}
                   onClick={() => handleNumberClick(num)}
-                  className="bg-[#F5F5F5] rounded-md border border-gray-200 flex items-center justify-center text-[14px] font-semibold transition-colors active:bg-gray-200 h-[32px]"
+                  className="bg-[#F5F5F5] rounded-lg border border-gray-200 flex items-center justify-center text-[16px] font-semibold transition-colors active:bg-gray-200"
                   style={{
                     color: num === 'C' ? '#C8102E' : '#1a1a1a'
                   }}
@@ -228,7 +228,7 @@ export const CashPaymentScreen = ({
         {/* Charge Button */}
         <button
           onClick={() => onCharge(tenderedAmount)}
-          className="mt-auto mb-1 w-full py-2 rounded-full text-white text-[10px] font-semibold transition-colors"
+          className="mt-2 w-full py-2 rounded-full text-white text-[10px] font-semibold transition-colors"
           style={{ backgroundColor: '#4A4A4A' }}
         >
           CHARGE $ {tenderedAmount.toFixed(2)}
