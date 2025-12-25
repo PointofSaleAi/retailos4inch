@@ -63,7 +63,7 @@ export const PaymentEntryScreen = ({
 
   return (
     <div 
-      className="w-[186px] h-full bg-[#F5F5F5] flex flex-col mx-auto"
+      className="w-[186px] h-full bg-white flex flex-col mx-auto px-[6px]"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
