@@ -57,11 +57,11 @@ export const PaymentSuccessScreen = ({
     // Add send logic here
   };
   return (
-    <div className="w-[186px] min-h-[330px] bg-white flex flex-col mx-auto" style={{
+    <div className="w-[186px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden" style={{
       fontFamily: 'Montserrat, sans-serif'
     }}>
       {/* Header with Title and Close Button */}
-      <div className="flex items-center justify-between pt-[10px] px-[6px]">
+      <div className="flex items-center justify-between pt-[8px] px-[6px]">
         <div className="w-[24px]" />
         <h1 className="text-[12px] font-bold text-gray-900">Pay by card</h1>
         <button onClick={onClose} className="w-[24px] h-[24px] rounded-full bg-gray-100 flex items-center justify-center">
@@ -70,44 +70,44 @@ export const PaymentSuccessScreen = ({
       </div>
 
       {/* Total Amount */}
-      <div className="text-center mt-[16px]">
-        <p className="text-[10px] text-gray-400 font-medium">Total Amount</p>
-        <div className="flex items-start justify-center mt-[2px]">
-          <span className="text-[12px] font-bold text-gray-900 mt-[4px]">$</span>
-          <span className="text-[32px] font-bold text-gray-900 leading-none">{amount.toFixed(2)}</span>
+      <div className="text-center mt-[10px]">
+        <p className="text-[9px] text-gray-400 font-medium">Total Amount</p>
+        <div className="flex items-start justify-center mt-[1px]">
+          <span className="text-[10px] font-bold text-gray-900 mt-[3px]">$</span>
+          <span className="text-[26px] font-bold text-gray-900 leading-none">{amount.toFixed(2)}</span>
         </div>
       </div>
 
       {/* Success Icon */}
-      <div className="flex justify-center mt-[16px]">
-        <img src={iconPaymentComplete} alt="Success" className="w-[80px] h-[80px]" />
+      <div className="flex justify-center mt-[10px]">
+        <img src={iconPaymentComplete} alt="Success" className="w-[60px] h-[60px]" />
       </div>
 
       {/* Payment Complete Text */}
-      <p className="text-center text-[14px] font-bold text-gray-900 mt-[8px]">
+      <p className="text-center text-[12px] font-bold text-gray-900 mt-[6px]">
         Payment Complete
       </p>
 
       {/* Receipt Section */}
-      <h2 className="text-center text-[16px] font-bold text-gray-900 mt-[16px]">
+      <h2 className="text-center text-[14px] font-bold text-gray-900 mt-[10px]">
         Receipt
       </h2>
 
       {/* Receipt Options */}
-      <div className="flex justify-center gap-[6px] mt-[10px] px-[3px]">
-        <button onClick={handlePrint} className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
-          <img src={iconReceiptPrint} alt="Print" className="w-[20px] h-[20px] mb-[4px]" />
-          <span className="text-[9px] font-semibold text-gray-900">Print</span>
+      <div className="flex justify-center gap-[5px] mt-[8px] px-[3px]">
+        <button onClick={handlePrint} className="flex flex-col items-center justify-center w-[52px] h-[48px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+          <img src={iconReceiptPrint} alt="Print" className="w-[18px] h-[18px] mb-[3px]" />
+          <span className="text-[8px] font-semibold text-gray-900">Print</span>
         </button>
 
-        <button onClick={handleText} className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
-          <img src={iconReceiptText} alt="Text" className="w-[20px] h-[20px] mb-[4px]" />
-          <span className="text-[9px] font-semibold text-gray-900">Text</span>
+        <button onClick={handleText} className="flex flex-col items-center justify-center w-[52px] h-[48px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+          <img src={iconReceiptText} alt="Text" className="w-[18px] h-[18px] mb-[3px]" />
+          <span className="text-[8px] font-semibold text-gray-900">Text</span>
         </button>
 
-        <button onClick={handleEmail} className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
-          <img src={iconReceiptEmail} alt="Email" className="w-[20px] h-[20px] mb-[4px]" />
-          <span className="text-[9px] font-semibold text-gray-900">Email</span>
+        <button onClick={handleEmail} className="flex flex-col items-center justify-center w-[52px] h-[48px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+          <img src={iconReceiptEmail} alt="Email" className="w-[18px] h-[18px] mb-[3px]" />
+          <span className="text-[8px] font-semibold text-gray-900">Email</span>
         </button>
       </div>
 
@@ -182,8 +182,8 @@ export const PaymentSuccessScreen = ({
       )}
 
       {/* NO RECEIPT Button */}
-      <div className="mt-[10px] mb-[10px] px-[3px]">
-        <button onClick={handleNoReceipt} className="w-full h-[32px] bg-gray-100 text-gray-900 rounded-full font-bold text-[10px] tracking-wide hover:bg-gray-200 transition-colors">
+      <div className="mt-auto pb-[8px] px-[3px]">
+        <button onClick={handleNoReceipt} className="w-full h-[28px] bg-gray-100 text-gray-900 rounded-full font-bold text-[9px] tracking-wide hover:bg-gray-200 transition-colors">
           NO RECEIPT
         </button>
       </div>
