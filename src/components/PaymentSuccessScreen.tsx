@@ -4,6 +4,9 @@ import iconPaymentComplete from '@/assets/icon-payment-complete.png';
 import iconReceiptPrint from '@/assets/icon-receipt-print.png';
 import iconReceiptText from '@/assets/icon-receipt-text.png';
 import iconReceiptEmail from '@/assets/icon-receipt-email.png';
+import iconPrintReceipt from '@/assets/icon-print-receipt.png';
+import iconPrintBill from '@/assets/icon-print-bill.png';
+import iconPrintBoth from '@/assets/icon-print-both.png';
 
 const countryCodes = [
   { code: '+1', country: 'US', flag: '🇺🇸' },
@@ -31,17 +34,37 @@ export const PaymentSuccessScreen = ({
   const [email, setEmail] = useState('');
   const [selectedCountryCode, setSelectedCountryCode] = useState(countryCodes[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [showPrintOptions, setShowPrintOptions] = useState(false);
+  
   const handlePrint = () => {
-    // Print logic here
-    console.log('Print receipt');
+    setShowPrintOptions(!showPrintOptions);
+    setShowTextInput(false);
+    setShowEmailInput(false);
+  };
+  
+  const handlePrintReceipt = () => {
+    console.log('Print Receipt');
+    setShowPrintOptions(false);
+  };
+  
+  const handlePrintBill = () => {
+    console.log('Print Bill');
+    setShowPrintOptions(false);
+  };
+  
+  const handlePrintBoth = () => {
+    console.log('Print Both');
+    setShowPrintOptions(false);
   };
   const handleText = () => {
     setShowTextInput(!showTextInput);
     setShowEmailInput(false);
+    setShowPrintOptions(false);
   };
   const handleEmail = () => {
     setShowEmailInput(!showEmailInput);
     setShowTextInput(false);
+    setShowPrintOptions(false);
   };
   const handleNoReceipt = () => {
     onClose();
@@ -95,9 +118,9 @@ export const PaymentSuccessScreen = ({
 
       {/* Receipt Options */}
       <div className="flex justify-center gap-[5px] mt-[8px] px-[3px]">
-        <button onClick={handlePrint} className="flex flex-col items-center justify-center w-[52px] h-[48px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
-          <img src={iconReceiptPrint} alt="Print" className="w-[18px] h-[18px] mb-[3px]" />
-          <span className="text-[8px] font-semibold text-gray-900">Print</span>
+        <button onClick={handlePrint} className={`flex flex-col items-center justify-center w-[52px] h-[48px] rounded-lg border transition-colors ${showPrintOptions ? 'border-gray-400 bg-gray-700' : 'border-gray-200 bg-gray-50 hover:bg-gray-100'}`}>
+          <img src={iconReceiptPrint} alt="Print" className={`w-[18px] h-[18px] mb-[3px] ${showPrintOptions ? 'brightness-0 invert' : ''}`} />
+          <span className={`text-[8px] font-semibold ${showPrintOptions ? 'text-white' : 'text-gray-900'}`}>Print</span>
         </button>
 
         <button onClick={handleText} className="flex flex-col items-center justify-center w-[52px] h-[48px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -110,6 +133,21 @@ export const PaymentSuccessScreen = ({
           <span className="text-[8px] font-semibold text-gray-900">Email</span>
         </button>
       </div>
+
+      {/* Print Options Row */}
+      {showPrintOptions && (
+        <div className="flex justify-center gap-[1px] mt-[6px] px-[3px]">
+          <button onClick={handlePrintReceipt} className="flex items-center justify-center flex-1 h-[32px] rounded-l-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <img src={iconPrintReceipt} alt="Print Receipt" className="w-[18px] h-[18px]" />
+          </button>
+          <button onClick={handlePrintBill} className="flex items-center justify-center flex-1 h-[32px] border-y border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <img src={iconPrintBill} alt="Print Bill" className="w-[18px] h-[18px]" />
+          </button>
+          <button onClick={handlePrintBoth} className="flex items-center justify-center flex-1 h-[32px] rounded-r-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <img src={iconPrintBoth} alt="Print Both" className="w-[30px] h-[18px]" />
+          </button>
+        </div>
+      )}
 
       {/* Conditional Input Fields */}
       {showTextInput && (
