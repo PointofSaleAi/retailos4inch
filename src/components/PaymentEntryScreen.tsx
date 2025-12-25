@@ -71,8 +71,8 @@ export const PaymentEntryScreen = ({
       </div>
 
       {/* Amount Display */}
-      <div className="mx-2 mb-2">
-        <div className="bg-white rounded-lg border border-gray-200 py-3 flex items-center justify-center px-0">
+      <div className="mb-2">
+        <div className="rounded-lg border border-gray-200 py-3 flex items-center justify-center">
           <span className="text-[22px] font-bold text-[#C8102E]">
             $ {amount}
           </span>
