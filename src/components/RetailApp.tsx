@@ -14,6 +14,7 @@ import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import { OrderSummaryScreen } from "./OrderSummaryScreen";
 import { PaymentMethodsScreen } from "./PaymentMethodsScreen";
 import { PaymentEntryScreen } from "./PaymentEntryScreen";
+import { CashPaymentScreen } from "./CashPaymentScreen";
 import { PaymentProcessingScreen } from "./PaymentProcessingScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
 import { TransactionDetailScreen } from "./TransactionDetailScreen";
@@ -486,6 +487,20 @@ export const RetailApp = () => {
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const tax = subtotal * TAX_RATE;
       const totalDue = subtotal + tax;
+
+      // Show CashPaymentScreen for Cash payment method
+      if (selectedPaymentMethod === 'Cash') {
+        return (
+          <CashPaymentScreen
+            totalDue={totalDue}
+            onBack={() => {
+              setShowPaymentEntry(false);
+              setShowPaymentMethods(true);
+            }}
+            onCharge={(amount) => handleConfirmPayment(selectedPaymentMethod, amount)}
+          />
+        );
+      }
 
       return (
         <PaymentEntryScreen
