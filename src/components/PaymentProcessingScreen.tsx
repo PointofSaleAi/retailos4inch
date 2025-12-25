@@ -1,6 +1,6 @@
 import { X } from 'lucide-react';
 import { useEffect } from 'react';
-import retailosLogo from '@/assets/retailos-logo.png';
+import iconPaymentProcessing from '@/assets/icon-payment-processing.png';
 
 interface PaymentProcessingScreenProps {
   paymentMethod: string;
@@ -67,26 +67,11 @@ export const PaymentProcessingScreen = ({
 
       {/* Processing Animation */}
       <div className="flex-1 flex flex-col items-center justify-center">
-        {/* Gradient Circle with Logo */}
-        <div 
-          className="w-[100px] h-[100px] rounded-full flex items-center justify-center animate-pulse"
-          style={{
-            background: 'conic-gradient(from 180deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd, #ff6b6b)'
-          }}
-        >
-          <div className="w-[90px] h-[90px] rounded-full bg-white flex items-center justify-center">
-            <div 
-              className="w-[80px] h-[80px] rounded-full flex items-center justify-center"
-              style={{
-                background: 'conic-gradient(from 180deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd, #ff6b6b)'
-              }}
-            >
-              <span className="text-white text-[32px] font-light italic">e</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Processing Text */}
+        <img 
+          src={iconPaymentProcessing} 
+          alt="Processing" 
+          className="w-[100px] h-[100px] animate-pulse" 
+        />
         <p className="text-[14px] text-gray-900 mt-4">Payment is processing...</p>
       </div>
     </div>

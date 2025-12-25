@@ -1,6 +1,6 @@
 import { X, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import iconSuccessCheck from '@/assets/icon-success-check.png';
+import iconPaymentComplete from '@/assets/icon-payment-complete.png';
 import iconReceiptPrint from '@/assets/icon-receipt-print.png';
 import iconReceiptText from '@/assets/icon-receipt-text.png';
 import iconReceiptEmail from '@/assets/icon-receipt-email.png';
@@ -68,7 +68,7 @@ export const PaymentSuccessScreen = ({
 
       {/* Success Icon */}
       <div className="flex justify-center mt-[4px]">
-        <img src={iconSuccessCheck} alt="Success" className="w-[48px] h-[48px]" />
+        <img src={iconPaymentComplete} alt="Success" className="w-[48px] h-[48px]" />
       </div>
 
       {/* Success Message */}
