@@ -111,29 +111,29 @@ export const CashPaymentScreen = ({
 
   return (
     <div
-      className="w-[186px] h-full bg-white flex flex-col mx-auto px-[6px]"
+      className="w-[186px] h-full bg-white flex flex-col mx-auto"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-center h-[40px] relative">
+      <div className="flex items-center justify-center h-[32px] relative">
         <button onClick={onBack} className="absolute left-0 p-1">
-          <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
+          <img src={iconBackArrow} alt="Back" className="w-[14px] h-[14px]" />
         </button>
-        <span className="text-[11px] font-semibold text-gray-900">
+        <span className="text-[10px] font-semibold text-gray-900">
           Pay by Cash
         </span>
       </div>
 
       {/* Amount Display with Number Pad Toggle */}
-      <div className="flex gap-1 mb-1">
-        <div className="flex-1 rounded-lg border border-gray-200 py-3 flex items-center justify-center bg-[#F8F8F8]">
-          <span className="text-[22px] font-bold text-[#C8102E]">
+      <div className="flex gap-1 mb-0.5">
+        <div className="flex-1 rounded-lg border border-gray-200 py-2 flex items-center justify-center bg-[#F8F8F8]">
+          <span className="text-[18px] font-bold text-[#C8102E]">
             $ {tenderedAmount.toFixed(2)}
           </span>
         </div>
         <button
           onClick={toggleView}
-          className={`w-[44px] h-[52px] rounded-lg border flex items-center justify-center transition-colors ${
+          className={`w-[40px] h-[40px] rounded-lg border flex items-center justify-center transition-colors ${
             showNumberPad
               ? 'bg-[#4A4A4A] border-[#4A4A4A]'
               : 'bg-white border-gray-200'
@@ -142,45 +142,44 @@ export const CashPaymentScreen = ({
           <img
             src={iconNumberPad}
             alt="Number Pad"
-            className={`w-[20px] h-[20px] ${showNumberPad ? 'invert brightness-0 invert' : ''}`}
+            className="w-[18px] h-[18px]"
             style={{ filter: showNumberPad ? 'invert(1)' : 'none' }}
           />
         </button>
       </div>
 
       {/* Tendered Amount Label */}
-      <div className="flex justify-between items-center py-1 mb-1">
-        <span className="text-[9px] text-gray-500">Tendered Amount</span>
-        <span className="text-[10px] font-semibold text-gray-900">
+      <div className="flex justify-between items-center py-0.5 mb-0.5">
+        <span className="text-[8px] text-gray-500">Tendered Amount</span>
+        <span className="text-[9px] font-semibold text-gray-900">
           $ {tenderedAmount.toFixed(2)}
         </span>
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-hidden flex flex-col">
+      <div className="flex-1 flex flex-col">
         {!showNumberPad ? (
           /* Preset Tender Amounts */
-          <div className="grid grid-cols-3 gap-1 flex-1">
+          <div className="grid grid-cols-3 gap-[3px]">
             {presetAmounts.map((amount, index) => {
               const qty = getQuantity(amount);
               const selected = isSelected(amount);
               return (
                 <div
                   key={index}
-                  className={`relative rounded-lg border flex items-center justify-center text-[11px] font-semibold transition-colors ${
+                  className={`relative rounded-md border flex items-center justify-center text-[9px] font-semibold transition-colors h-[32px] ${
                     selected
                       ? 'bg-white text-gray-900 border-[#1A1A1A] border-2'
                       : 'bg-white text-gray-600 border-gray-200'
                   }`}
-                  style={{ minHeight: '38px' }}
                 >
                   {/* Remove button */}
                   {selected && (
                     <button
                       onClick={() => handleRemove(amount)}
-                      className="absolute top-0 left-0 w-[18px] h-[18px] bg-[#1A1A1A] rounded-tl-md rounded-br-md flex items-center justify-center"
+                      className="absolute top-0 left-0 w-[14px] h-[14px] bg-[#1A1A1A] rounded-tl-sm rounded-br-sm flex items-center justify-center"
                     >
-                      <span className="text-white text-[10px] font-bold leading-none">
+                      <span className="text-white text-[8px] font-bold leading-none">
                         –
                       </span>
                     </button>
@@ -188,8 +187,8 @@ export const CashPaymentScreen = ({
 
                   {/* Quantity badge */}
                   {selected && (
-                    <div className="absolute top-0 right-0 w-[18px] h-[18px] bg-[#1A1A1A] rounded-tr-md rounded-bl-md flex items-center justify-center">
-                      <span className="text-white text-[8px] font-bold leading-none">
+                    <div className="absolute top-0 right-0 w-[14px] h-[14px] bg-[#1A1A1A] rounded-tr-sm rounded-bl-sm flex items-center justify-center">
+                      <span className="text-white text-[7px] font-bold leading-none">
                         x{qty}
                       </span>
                     </div>
@@ -208,16 +207,15 @@ export const CashPaymentScreen = ({
           </div>
         ) : (
           /* Number Pad */
-          <div className="grid grid-cols-3 gap-1 flex-1">
+          <div className="grid grid-cols-3 gap-[3px]">
             {['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'C'].map(
               (num) => (
                 <button
                   key={num}
                   onClick={() => handleNumberClick(num)}
-                  className="bg-[#F5F5F5] rounded-lg border border-gray-200 flex items-center justify-center text-[18px] font-semibold transition-colors active:bg-gray-200"
+                  className="bg-[#F5F5F5] rounded-md border border-gray-200 flex items-center justify-center text-[14px] font-semibold transition-colors active:bg-gray-200 h-[32px]"
                   style={{
-                    color: num === 'C' ? '#C8102E' : '#1a1a1a',
-                    minHeight: '38px'
+                    color: num === 'C' ? '#C8102E' : '#1a1a1a'
                   }}
                 >
                   {num}
@@ -230,7 +228,7 @@ export const CashPaymentScreen = ({
         {/* Charge Button */}
         <button
           onClick={() => onCharge(tenderedAmount)}
-          className="mt-2 mb-1 w-full py-2.5 rounded-full text-white text-[11px] font-semibold transition-colors"
+          className="mt-auto mb-1 w-full py-2 rounded-full text-white text-[10px] font-semibold transition-colors"
           style={{ backgroundColor: '#4A4A4A' }}
         >
           CHARGE $ {tenderedAmount.toFixed(2)}
