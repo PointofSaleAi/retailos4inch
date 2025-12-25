@@ -56,57 +56,64 @@ export const PaymentSuccessScreen = ({
     console.log('Sending email to:', email);
     // Add send logic here
   };
-  return <div className="w-[186px] min-h-[186px] bg-white flex flex-col mx-auto" style={{
-    fontFamily: 'Montserrat, sans-serif'
-  }}>
-      {/* Close Button */}
-      <div className="flex justify-end pt-[6px] pr-[6px]">
-        <button onClick={onClose} className="p-0">
-          <X size={16} className="text-gray-900" />
+  return (
+    <div className="w-[186px] min-h-[330px] bg-white flex flex-col mx-auto" style={{
+      fontFamily: 'Montserrat, sans-serif'
+    }}>
+      {/* Header with Title and Close Button */}
+      <div className="flex items-center justify-between pt-[10px] px-[6px]">
+        <div className="w-[24px]" />
+        <h1 className="text-[12px] font-bold text-gray-900">Pay by card</h1>
+        <button onClick={onClose} className="w-[24px] h-[24px] rounded-full bg-gray-100 flex items-center justify-center">
+          <X size={12} className="text-gray-600" />
         </button>
       </div>
 
+      {/* Total Amount */}
+      <div className="text-center mt-[16px]">
+        <p className="text-[10px] text-gray-400 font-medium">Total Amount</p>
+        <div className="flex items-start justify-center mt-[2px]">
+          <span className="text-[12px] font-bold text-gray-900 mt-[4px]">$</span>
+          <span className="text-[32px] font-bold text-gray-900 leading-none">{amount.toFixed(2)}</span>
+        </div>
+      </div>
+
       {/* Success Icon */}
-      <div className="flex justify-center mt-[4px]">
-        <img src={iconPaymentComplete} alt="Success" className="w-[48px] h-[48px]" />
+      <div className="flex justify-center mt-[16px]">
+        <img src={iconPaymentComplete} alt="Success" className="w-[80px] h-[80px]" />
       </div>
 
-      {/* Success Message */}
-      <div className="text-center mt-[6px] px-3">
-        <p className="text-[11px] text-gray-600 leading-tight">
-          <span className="font-bold text-gray-900">${amount.toFixed(2)}</span> has been successfully
-        </p>
-        <p className="text-[11px] text-gray-600">processed</p>
-      </div>
+      {/* Payment Complete Text */}
+      <p className="text-center text-[14px] font-bold text-gray-900 mt-[8px]">
+        Payment Complete
+      </p>
 
-      {/* Divider */}
-      <div className="w-full h-[1px] bg-gray-200 mt-[6px]" />
-
-      {/* Receipt Heading */}
-      <h2 className="text-center text-[12px] font-bold text-gray-900 mt-[6px] mb-[6px]">
+      {/* Receipt Section */}
+      <h2 className="text-center text-[16px] font-bold text-gray-900 mt-[16px]">
         Receipt
       </h2>
 
       {/* Receipt Options */}
-      <div className="flex justify-center gap-2 px-0">
-        <button onClick={handlePrint} className="flex flex-col items-center justify-center w-[58px] h-[58px] rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors">
-          <img src={iconReceiptPrint} alt="Print" className="w-[18px] h-[18px] mb-[4px]" />
-          <span className="text-[8px] font-semibold text-gray-900">Print</span>
+      <div className="flex justify-center gap-[6px] mt-[10px] px-[3px]">
+        <button onClick={handlePrint} className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+          <img src={iconReceiptPrint} alt="Print" className="w-[20px] h-[20px] mb-[4px]" />
+          <span className="text-[9px] font-semibold text-gray-900">Print</span>
         </button>
 
-        <button onClick={handleText} className="flex flex-col items-center justify-center w-[58px] h-[58px] rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors">
-          <img src={iconReceiptText} alt="Text" className="w-[18px] h-[18px] mb-[4px]" />
-          <span className="text-[8px] font-semibold text-gray-900">Text</span>
+        <button onClick={handleText} className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+          <img src={iconReceiptText} alt="Text" className="w-[20px] h-[20px] mb-[4px]" />
+          <span className="text-[9px] font-semibold text-gray-900">Text</span>
         </button>
 
-        <button onClick={handleEmail} className="flex flex-col items-center justify-center w-[58px] h-[58px] rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors">
-          <img src={iconReceiptEmail} alt="Email" className="w-[18px] h-[18px] mb-[4px]" />
-          <span className="text-[8px] font-semibold text-gray-900">Email</span>
+        <button onClick={handleEmail} className="flex flex-col items-center justify-center w-[56px] h-[56px] rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors">
+          <img src={iconReceiptEmail} alt="Email" className="w-[20px] h-[20px] mb-[4px]" />
+          <span className="text-[9px] font-semibold text-gray-900">Email</span>
         </button>
       </div>
 
       {/* Conditional Input Fields */}
-      {showTextInput && <div className="mt-[6px] px-0 relative">
+      {showTextInput && (
+        <div className="mt-[8px] px-[3px] relative">
           <div className="relative flex items-center w-full h-[28px] border border-gray-200 rounded-lg focus-within:border-gray-400">
             <button
               type="button"
@@ -151,10 +158,18 @@ export const PaymentSuccessScreen = ({
               SEND
             </button>
           )}
-        </div>}
+        </div>
+      )}
 
-      {showEmailInput && <div className="mt-[6px] px-0">
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter email address" className="w-full h-[28px] px-[10px] border border-gray-200 rounded-lg text-[10px] focus:outline-none focus:border-gray-400" />
+      {showEmailInput && (
+        <div className="mt-[8px] px-[3px]">
+          <input 
+            type="email" 
+            value={email} 
+            onChange={e => setEmail(e.target.value)} 
+            placeholder="Enter email address" 
+            className="w-full h-[28px] px-[10px] border border-gray-200 rounded-lg text-[10px] focus:outline-none focus:border-gray-400" 
+          />
           {email && (
             <button
               onClick={handleSendEmail}
@@ -163,13 +178,15 @@ export const PaymentSuccessScreen = ({
               SEND
             </button>
           )}
-        </div>}
+        </div>
+      )}
 
       {/* NO RECEIPT Button */}
-      <div className="mt-[6px] mb-[6px] px-0">
-        <button onClick={handleNoReceipt} className="w-full h-[28px] bg-gray-900 text-white rounded-full font-semibold text-[11px] tracking-wide hover:bg-gray-800 transition-colors">
+      <div className="mt-[10px] mb-[10px] px-[3px]">
+        <button onClick={handleNoReceipt} className="w-full h-[32px] bg-gray-100 text-gray-900 rounded-full font-bold text-[10px] tracking-wide hover:bg-gray-200 transition-colors">
           NO RECEIPT
         </button>
       </div>
-    </div>;
+    </div>
+  );
 };
