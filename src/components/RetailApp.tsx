@@ -13,7 +13,7 @@ import { FavoritesScreen } from "./FavoritesScreen";
 import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import { OrderSummaryScreen } from "./OrderSummaryScreen";
 import { PaymentMethodsScreen } from "./PaymentMethodsScreen";
-import { PaymentOptionsScreen } from "./PaymentOptionsScreen";
+import { PaymentEntryScreen } from "./PaymentEntryScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
 import { TransactionDetailScreen } from "./TransactionDetailScreen";
 import { RefundScreen } from "./RefundScreen";
@@ -74,7 +74,7 @@ export const RetailApp = () => {
   const [showBarcodeScanner, setShowBarcodeScanner] = useState(false);
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [showPaymentMethods, setShowPaymentMethods] = useState(false);
-  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [showPaymentEntry, setShowPaymentEntry] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('Card');
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [showTransactionDetail, setShowTransactionDetail] = useState(false);
@@ -253,7 +253,7 @@ export const RetailApp = () => {
 
     setTransactions(prev => [newTransaction, ...prev]);
     setPaymentAmount(amount);
-    setShowPaymentOptions(false);
+    setShowPaymentEntry(false);
     setShowPaymentSuccess(true);
   };
 
@@ -454,26 +454,27 @@ export const RetailApp = () => {
           onSelectMethod={(method) => {
             setSelectedPaymentMethod(method);
             setShowPaymentMethods(false);
-            setShowPaymentOptions(true);
+            setShowPaymentEntry(true);
           }}
         />
       );
     }
 
-    if (showPaymentOptions) {
+    if (showPaymentEntry) {
       const TAX_RATE = 0.08;
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const tax = subtotal * TAX_RATE;
       const totalDue = subtotal + tax;
 
       return (
-        <PaymentOptionsScreen
+        <PaymentEntryScreen
+          paymentMethod={selectedPaymentMethod}
           totalDue={totalDue}
-          onClose={() => {
-            setShowPaymentOptions(false);
+          onBack={() => {
+            setShowPaymentEntry(false);
             setShowPaymentMethods(true);
           }}
-          onConfirmPayment={handleConfirmPayment}
+          onCharge={(amount) => handleConfirmPayment(selectedPaymentMethod, amount)}
         />
       );
     }
@@ -597,7 +598,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentOptions && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
