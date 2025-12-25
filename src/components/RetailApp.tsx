@@ -14,6 +14,7 @@ import { BarcodeScannerScreen } from "./BarcodeScannerScreen";
 import { OrderSummaryScreen } from "./OrderSummaryScreen";
 import { PaymentMethodsScreen } from "./PaymentMethodsScreen";
 import { PaymentEntryScreen } from "./PaymentEntryScreen";
+import { PaymentProcessingScreen } from "./PaymentProcessingScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
 import { TransactionDetailScreen } from "./TransactionDetailScreen";
 import { RefundScreen } from "./RefundScreen";
@@ -76,6 +77,7 @@ export const RetailApp = () => {
   const [showPaymentMethods, setShowPaymentMethods] = useState(false);
   const [showPaymentEntry, setShowPaymentEntry] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('Card');
+  const [showPaymentProcessing, setShowPaymentProcessing] = useState(false);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [showTransactionDetail, setShowTransactionDetail] = useState(false);
   const [showRefundScreen, setShowRefundScreen] = useState(false);
@@ -229,7 +231,13 @@ export const RetailApp = () => {
 
   const handleConfirmPayment = (paymentMethod: string, amount: number) => {
     if (cartItems.length === 0) return;
+    
+    setPaymentAmount(amount);
+    setShowPaymentEntry(false);
+    setShowPaymentProcessing(true);
+  };
 
+  const handlePaymentComplete = () => {
     const now = new Date();
     const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
@@ -246,14 +254,13 @@ export const RetailApp = () => {
       quantity: cartItems.reduce((sum, item) => sum + item.quantity, 0),
       date,
       time,
-      amount: amount,
+      amount: paymentAmount,
       status: "Paid",
       cartItems: [...cartItems]
     };
 
     setTransactions(prev => [newTransaction, ...prev]);
-    setPaymentAmount(amount);
-    setShowPaymentEntry(false);
+    setShowPaymentProcessing(false);
     setShowPaymentSuccess(true);
   };
 
@@ -421,6 +428,20 @@ export const RetailApp = () => {
         <CustomerDetailScreen
           customer={selectedCustomer}
           onBack={() => setSelectedCustomer(null)}
+        />
+      );
+    }
+
+    if (showPaymentProcessing) {
+      return (
+        <PaymentProcessingScreen
+          paymentMethod={selectedPaymentMethod}
+          amount={paymentAmount}
+          onClose={() => {
+            setShowPaymentProcessing(false);
+            setShowPaymentMethods(true);
+          }}
+          onComplete={handlePaymentComplete}
         />
       );
     }
@@ -598,7 +619,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
