@@ -61,7 +61,7 @@ export const PaymentEntryScreen = ({
     fontFamily: 'Montserrat, sans-serif'
   }}>
       {/* Header */}
-      <div className="flex items-center justify-center h-[40px] relative px-2">
+      <div className="flex items-center justify-center h-[40px] relative px-0">
         <button onClick={onBack} className="absolute left-2 p-1">
           <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
         </button>
