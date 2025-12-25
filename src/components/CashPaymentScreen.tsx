@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
+import iconNumberPad from '@/assets/icon-number-pad.png';
 
 interface CashPaymentScreenProps {
   totalDue: number;
   onBack: () => void;
   onCharge: (amount: number) => void;
+}
+
+interface SelectedAmount {
+  amount: number;
+  quantity: number;
 }
 
 export const CashPaymentScreen = ({
@@ -13,8 +19,8 @@ export const CashPaymentScreen = ({
   onCharge
 }: CashPaymentScreenProps) => {
   const [showNumberPad, setShowNumberPad] = useState(false);
-  const [tenderedAmount, setTenderedAmount] = useState(totalDue);
-  const [customAmount, setCustomAmount] = useState(totalDue.toFixed(2));
+  const [selectedAmounts, setSelectedAmounts] = useState<SelectedAmount[]>([]);
+  const [customAmount, setCustomAmount] = useState('0.00');
 
   const presetAmounts = [
     totalDue,
@@ -31,15 +37,54 @@ export const CashPaymentScreen = ({
     0.01
   ];
 
+  const tenderedAmount = selectedAmounts.reduce(
+    (sum, item) => sum + item.amount * item.quantity,
+    0
+  );
+
   const handlePresetClick = (amount: number) => {
-    setTenderedAmount(amount);
-    setCustomAmount(amount.toFixed(2));
+    const existingIndex = selectedAmounts.findIndex(
+      (item) => item.amount === amount
+    );
+    if (existingIndex >= 0) {
+      // Increase quantity if already selected
+      const updated = [...selectedAmounts];
+      updated[existingIndex].quantity += 1;
+      setSelectedAmounts(updated);
+    } else {
+      // Add new selection
+      setSelectedAmounts([...selectedAmounts, { amount, quantity: 1 }]);
+    }
+  };
+
+  const handleRemove = (amount: number) => {
+    const existingIndex = selectedAmounts.findIndex(
+      (item) => item.amount === amount
+    );
+    if (existingIndex >= 0) {
+      const updated = [...selectedAmounts];
+      if (updated[existingIndex].quantity > 1) {
+        updated[existingIndex].quantity -= 1;
+        setSelectedAmounts(updated);
+      } else {
+        updated.splice(existingIndex, 1);
+        setSelectedAmounts(updated);
+      }
+    }
+  };
+
+  const getQuantity = (amount: number): number => {
+    const item = selectedAmounts.find((i) => i.amount === amount);
+    return item ? item.quantity : 0;
+  };
+
+  const isSelected = (amount: number): boolean => {
+    return selectedAmounts.some((item) => item.amount === amount);
   };
 
   const handleNumberClick = (num: string) => {
     if (num === 'C') {
       setCustomAmount('0.00');
-      setTenderedAmount(0);
       return;
     }
 
@@ -58,7 +103,6 @@ export const CashPaymentScreen = ({
     const cents = cleanAmount.slice(-2);
     const newAmount = `${dollars || '0'}.${cents}`;
     setCustomAmount(newAmount);
-    setTenderedAmount(parseFloat(newAmount));
   };
 
   const toggleView = () => {
@@ -95,16 +139,12 @@ export const CashPaymentScreen = ({
               : 'bg-white border-gray-200'
           }`}
         >
-          <div className="grid grid-cols-3 gap-[2px]">
-            {[...Array(9)].map((_, i) => (
-              <div
-                key={i}
-                className={`w-[4px] h-[4px] rounded-full ${
-                  showNumberPad ? 'bg-white' : 'bg-gray-800'
-                }`}
-              />
-            ))}
-          </div>
+          <img
+            src={iconNumberPad}
+            alt="Number Pad"
+            className={`w-[20px] h-[20px] ${showNumberPad ? 'invert brightness-0 invert' : ''}`}
+            style={{ filter: showNumberPad ? 'invert(1)' : 'none' }}
+          />
         </button>
       </div>
 
@@ -121,20 +161,50 @@ export const CashPaymentScreen = ({
         {!showNumberPad ? (
           /* Preset Tender Amounts */
           <div className="grid grid-cols-3 gap-1 flex-1">
-            {presetAmounts.map((amount, index) => (
-              <button
-                key={index}
-                onClick={() => handlePresetClick(amount)}
-                className={`rounded-lg border flex items-center justify-center text-[11px] font-semibold transition-colors ${
-                  tenderedAmount === amount
-                    ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
-                    : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-                }`}
-                style={{ minHeight: '38px' }}
-              >
-                $ {amount === totalDue ? amount.toFixed(2) : amount.toFixed(2)}
-              </button>
-            ))}
+            {presetAmounts.map((amount, index) => {
+              const qty = getQuantity(amount);
+              const selected = isSelected(amount);
+              return (
+                <div
+                  key={index}
+                  className={`relative rounded-lg border flex items-center justify-center text-[11px] font-semibold transition-colors ${
+                    selected
+                      ? 'bg-white text-gray-900 border-[#1A1A1A] border-2'
+                      : 'bg-white text-gray-600 border-gray-200'
+                  }`}
+                  style={{ minHeight: '38px' }}
+                >
+                  {/* Remove button */}
+                  {selected && (
+                    <button
+                      onClick={() => handleRemove(amount)}
+                      className="absolute top-0 left-0 w-[18px] h-[18px] bg-[#1A1A1A] rounded-tl-md rounded-br-md flex items-center justify-center"
+                    >
+                      <span className="text-white text-[10px] font-bold leading-none">
+                        –
+                      </span>
+                    </button>
+                  )}
+
+                  {/* Quantity badge */}
+                  {selected && (
+                    <div className="absolute top-0 right-0 w-[18px] h-[18px] bg-[#1A1A1A] rounded-tr-md rounded-bl-md flex items-center justify-center">
+                      <span className="text-white text-[8px] font-bold leading-none">
+                        x{qty}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Amount button */}
+                  <button
+                    onClick={() => handlePresetClick(amount)}
+                    className="w-full h-full flex items-center justify-center"
+                  >
+                    $ {amount.toFixed(2)}
+                  </button>
+                </div>
+              );
+            })}
           </div>
         ) : (
           /* Number Pad */
