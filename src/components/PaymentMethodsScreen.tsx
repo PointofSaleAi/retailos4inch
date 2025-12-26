@@ -69,7 +69,7 @@ export const PaymentMethodsScreen = ({
     fontFamily: 'Montserrat, sans-serif'
   }}>
       {/* Header */}
-      <div className="h-[40px] relative px-0 flex items-start justify-center">
+      <div className="h-[40px] relative px-0 flex items-center justify-center">
         <button onClick={onBack} className="absolute left-2 p-1">
           <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
         </button>
@@ -81,7 +81,7 @@ export const PaymentMethodsScreen = ({
 
       {/* Title */}
       <div className="text-center py-0">
-        <h2 className="text-[10px] font-medium text-gray-700 py-[6px] text-center px-0 my-0">Choose Payment Method</h2>
+        <h2 className="text-[10px] font-medium text-gray-700 text-center px-0 my-0 py-0">Choose Payment Method</h2>
       </div>
 
       {/* Payment Methods Grid */}
