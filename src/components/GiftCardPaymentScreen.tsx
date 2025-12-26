@@ -72,7 +72,12 @@ export const GiftCardPaymentScreen = ({
 
       const dollars = cleanAmount.slice(0, -2);
       const cents = cleanAmount.slice(-2);
-      setAmount(`${dollars || '0'}.${cents}`);
+      const newAmount = parseFloat(`${dollars || '0'}.${cents}`);
+      
+      // Limit amount to gift card balance
+      if (newAmount <= giftCardBalance) {
+        setAmount(`${dollars || '0'}.${cents}`);
+      }
     }
   };
 
