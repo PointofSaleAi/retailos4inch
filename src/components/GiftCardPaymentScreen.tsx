@@ -124,15 +124,15 @@ export const GiftCardPaymentScreen = ({
           </div>
 
           {/* Gift Card Number Display */}
-          <div className="mb-2">
-            <div className="bg-[#F5F5F5] rounded-lg border border-gray-200 py-3 flex items-center justify-center">
+          <div className="mb-1">
+            <div className="bg-[#F5F5F5] rounded-lg border border-gray-200 py-2 flex items-center justify-center">
               <span 
-                className="text-[16px] font-bold tracking-wide"
+                className="text-[12px] font-semibold tracking-wide text-center"
                 style={{ color: giftCardNumber.length > 0 ? '#1a1a1a' : '#ccc' }}
               >
                 {giftCardNumber.length > 0 
                   ? formatGiftCardNumber(giftCardNumber) + (giftCardNumber.length < 16 ? ' ' + 'X'.repeat(16 - giftCardNumber.length).match(/.{1,4}/g)?.join(' ') : '')
-                  : 'XXXX XXXX XXXX XXXX'
+                  : 'XXXX XXXX XXXX XXXX\nXXXX'
                 }
               </span>
             </div>
