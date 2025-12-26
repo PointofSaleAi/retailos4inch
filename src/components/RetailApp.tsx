@@ -15,6 +15,7 @@ import { OrderSummaryScreen } from "./OrderSummaryScreen";
 import { PaymentMethodsScreen } from "./PaymentMethodsScreen";
 import { PaymentEntryScreen } from "./PaymentEntryScreen";
 import { CashPaymentScreen } from "./CashPaymentScreen";
+import { GiftCardPaymentScreen } from "./GiftCardPaymentScreen";
 import { PaymentProcessingScreen } from "./PaymentProcessingScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
 import { TransactionDetailScreen } from "./TransactionDetailScreen";
@@ -498,6 +499,23 @@ export const RetailApp = () => {
               setShowPaymentMethods(true);
             }}
             onCharge={(amount) => handleConfirmPayment(selectedPaymentMethod, amount)}
+          />
+        );
+      }
+
+      // Show GiftCardPaymentScreen for Gift Card payment method
+      if (selectedPaymentMethod === 'Gift Card') {
+        return (
+          <GiftCardPaymentScreen
+            totalDue={totalDue}
+            onBack={() => {
+              setShowPaymentEntry(false);
+              setShowPaymentMethods(true);
+            }}
+            onCharge={(amount, giftCardNumber) => {
+              console.log('Gift card payment:', giftCardNumber);
+              handleConfirmPayment(selectedPaymentMethod, amount);
+            }}
           />
         );
       }
