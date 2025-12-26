@@ -20,9 +20,16 @@ export const GiftCardPaymentScreen = ({
   const [step, setStep] = useState<GiftCardStep>('enter-card');
   const [giftCardNumber, setGiftCardNumber] = useState('');
   const [amount, setAmount] = useState(totalDue.toFixed(2));
+  const [showBalanceError, setShowBalanceError] = useState(false);
   
   // Mock balance - in real app this would come from API after validating card
   const [giftCardBalance] = useState(10.00);
+  
+  // Set initial amount to minimum of totalDue and giftCardBalance when entering amount step
+  const initializeAmount = () => {
+    const maxAllowed = Math.min(totalDue, giftCardBalance);
+    setAmount(maxAllowed.toFixed(2));
+  };
 
   const isValidGiftCard = giftCardNumber.length === 16;
 
@@ -77,12 +84,17 @@ export const GiftCardPaymentScreen = ({
       // Limit amount to gift card balance
       if (newAmount <= giftCardBalance) {
         setAmount(`${dollars || '0'}.${cents}`);
+        setShowBalanceError(false);
+      } else {
+        // Show error when trying to exceed balance
+        setShowBalanceError(true);
       }
     }
   };
 
   const handleContinue = () => {
     if (step === 'enter-card' && isValidGiftCard) {
+      initializeAmount();
       setStep('edit-amount');
     }
   };
@@ -148,12 +160,25 @@ export const GiftCardPaymentScreen = ({
       {step === 'edit-amount' && (
         <>
           {/* Amount Display */}
-          <div className="mb-2">
+          <div className="mb-1">
             <div className="bg-white rounded-lg border border-gray-200 py-3 flex items-center justify-center">
               <span className="text-[22px] font-bold text-[#C8102E]">
                 $ {amount}
               </span>
             </div>
+          </div>
+          
+          {/* Balance Info & Error Message */}
+          <div className="px-1 mb-1">
+            <div className="flex items-center justify-between">
+              <span className="text-[8px] text-gray-500">Available Balance:</span>
+              <span className="text-[8px] font-semibold text-gray-700">${giftCardBalance.toFixed(2)}</span>
+            </div>
+            {showBalanceError && (
+              <p className="text-[7px] text-[#C8102E] mt-0.5 text-center">
+                Amount exceeds gift card balance
+              </p>
+            )}
           </div>
         </>
       )}
