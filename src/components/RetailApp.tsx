@@ -27,6 +27,9 @@ import { PayByLinkGuestListScreen, Guest } from "./PayByLinkGuestListScreen";
 import { PayByLinkAddGuestScreen } from "./PayByLinkAddGuestScreen";
 import { PayByLinkWaitingScreen } from "./PayByLinkWaitingScreen";
 import { PayByQRCodeScreen } from "./PayByQRCodeScreen";
+import { LoyaltyGuestListScreen, LoyaltyGuest } from "./LoyaltyGuestListScreen";
+import { LoyaltyAddGuestScreen } from "./LoyaltyAddGuestScreen";
+import { LoyaltyPaymentScreen } from "./LoyaltyPaymentScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -107,6 +110,11 @@ export const RetailApp = () => {
   const [payByLinkSentTo, setPayByLinkSentTo] = useState("");
   const [payByLinkGuests, setPayByLinkGuests] = useState<Guest[]>([]);
   const [showPayByQRCode, setShowPayByQRCode] = useState(false);
+  const [showLoyaltyGuestList, setShowLoyaltyGuestList] = useState(false);
+  const [showLoyaltyAddGuest, setShowLoyaltyAddGuest] = useState(false);
+  const [showLoyaltyPayment, setShowLoyaltyPayment] = useState(false);
+  const [loyaltyGuests, setLoyaltyGuests] = useState<LoyaltyGuest[]>([]);
+  const [selectedLoyaltyGuest, setSelectedLoyaltyGuest] = useState<LoyaltyGuest | null>(null);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -373,6 +381,76 @@ export const RetailApp = () => {
       );
     }
 
+    if (showLoyaltyPayment && selectedLoyaltyGuest) {
+      const TAX_RATE = 0.08;
+      const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const tax = subtotal * TAX_RATE;
+      const totalDue = subtotal + tax;
+
+      return (
+        <LoyaltyPaymentScreen
+          amount={totalDue}
+          guest={selectedLoyaltyGuest}
+          onClose={() => {
+            setShowLoyaltyPayment(false);
+            setSelectedLoyaltyGuest(null);
+            setShowPaymentMethods(true);
+          }}
+          onRedeem={(otp) => {
+            console.log('Redeeming loyalty points with OTP:', otp);
+            setPaymentAmount(totalDue);
+            setShowLoyaltyPayment(false);
+            setSelectedLoyaltyGuest(null);
+            setShowPaymentProcessing(true);
+          }}
+        />
+      );
+    }
+
+    if (showLoyaltyAddGuest) {
+      return (
+        <LoyaltyAddGuestScreen
+          onBack={() => {
+            setShowLoyaltyAddGuest(false);
+            setShowLoyaltyGuestList(true);
+          }}
+          onAdd={(guest) => {
+            const newGuest: LoyaltyGuest = {
+              id: Date.now().toString(),
+              name: guest.name,
+              phone: guest.phone,
+              email: guest.email,
+              points: 0
+            };
+            setLoyaltyGuests(prev => [newGuest, ...prev]);
+            setShowLoyaltyAddGuest(false);
+            setShowLoyaltyGuestList(true);
+          }}
+        />
+      );
+    }
+
+    if (showLoyaltyGuestList) {
+      return (
+        <LoyaltyGuestListScreen
+          addedGuests={loyaltyGuests}
+          onBack={() => {
+            setShowLoyaltyGuestList(false);
+            setShowPaymentMethods(true);
+          }}
+          onAddGuest={() => {
+            setShowLoyaltyGuestList(false);
+            setShowLoyaltyAddGuest(true);
+          }}
+          onSelectGuest={(guest: LoyaltyGuest) => {
+            setSelectedLoyaltyGuest(guest);
+            setShowLoyaltyGuestList(false);
+            setShowLoyaltyPayment(true);
+          }}
+        />
+      );
+    }
+
     if (showRefundedScreen) {
       return (
         <RefundedScreen
@@ -576,6 +654,9 @@ export const RetailApp = () => {
             if (method === 'QR Code') {
               setShowPaymentMethods(false);
               setShowPayByQRCode(true);
+            } else if (method === 'Loyalty') {
+              setShowPaymentMethods(false);
+              setShowLoyaltyGuestList(true);
             } else {
               setShowPaymentMethods(false);
               setShowPaymentEntry(true);
@@ -773,7 +854,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
