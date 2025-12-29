@@ -23,6 +23,9 @@ import { RefundScreen } from "./RefundScreen";
 import { RefundReasonScreen } from "./RefundReasonScreen";
 import { CustomRefundReasonScreen } from "./CustomRefundReasonScreen";
 import { RefundedScreen } from "./RefundedScreen";
+import { PayByLinkGuestListScreen, Guest } from "./PayByLinkGuestListScreen";
+import { PayByLinkAddGuestScreen } from "./PayByLinkAddGuestScreen";
+import { PayByLinkWaitingScreen } from "./PayByLinkWaitingScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -97,6 +100,10 @@ export const RetailApp = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [activeCustomerInOrder, setActiveCustomerInOrder] = useState<Customer | null>(null);
   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
+  const [showPayByLinkGuestList, setShowPayByLinkGuestList] = useState(false);
+  const [showPayByLinkAddGuest, setShowPayByLinkAddGuest] = useState(false);
+  const [showPayByLinkWaiting, setShowPayByLinkWaiting] = useState(false);
+  const [payByLinkSentTo, setPayByLinkSentTo] = useState("");
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -274,6 +281,67 @@ export const RetailApp = () => {
   const renderScreen = () => {
     if (!isLoggedIn) {
       return <LoginScreen onLogin={handleLogin} />;
+    }
+
+    if (showPayByLinkWaiting) {
+      return (
+        <PayByLinkWaitingScreen
+          amount={paymentAmount}
+          sentTo={payByLinkSentTo}
+          onClose={() => {
+            setShowPayByLinkWaiting(false);
+            setShowPaymentMethods(true);
+          }}
+          onCheckStatus={() => {
+            // Simulate payment complete
+            handlePaymentComplete();
+            setShowPayByLinkWaiting(false);
+          }}
+          onSendNewLink={() => {
+            setShowPayByLinkWaiting(false);
+            setShowPayByLinkGuestList(true);
+          }}
+        />
+      );
+    }
+
+    if (showPayByLinkAddGuest) {
+      return (
+        <PayByLinkAddGuestScreen
+          onBack={() => {
+            setShowPayByLinkAddGuest(false);
+            setShowPayByLinkGuestList(true);
+          }}
+          onAdd={(guest) => {
+            console.log('Added guest:', guest);
+            setPayByLinkSentTo(guest.phone);
+            setShowPayByLinkAddGuest(false);
+            setShowPayByLinkWaiting(true);
+          }}
+        />
+      );
+    }
+
+    if (showPayByLinkGuestList) {
+      return (
+        <PayByLinkGuestListScreen
+          amount={paymentAmount}
+          onBack={() => {
+            setShowPayByLinkGuestList(false);
+            setShowPaymentEntry(true);
+          }}
+          onAddGuest={() => {
+            setShowPayByLinkGuestList(false);
+            setShowPayByLinkAddGuest(true);
+          }}
+          onSendLink={(guest: Guest, method: 'whatsapp' | 'text' | 'email') => {
+            console.log('Sending link to:', guest.name, 'via', method);
+            setPayByLinkSentTo(guest.phone);
+            setShowPayByLinkGuestList(false);
+            setShowPayByLinkWaiting(true);
+          }}
+        />
+      );
     }
 
     if (showRefundedScreen) {
@@ -520,6 +588,25 @@ export const RetailApp = () => {
         );
       }
 
+      // Show Guest List for Pay by Link
+      if (selectedPaymentMethod === 'Pay by Link') {
+        return (
+          <PaymentEntryScreen
+            paymentMethod={selectedPaymentMethod}
+            totalDue={totalDue}
+            onBack={() => {
+              setShowPaymentEntry(false);
+              setShowPaymentMethods(true);
+            }}
+            onCharge={(amount) => {
+              setPaymentAmount(amount);
+              setShowPaymentEntry(false);
+              setShowPayByLinkGuestList(true);
+            }}
+          />
+        );
+      }
+
       return (
         <PaymentEntryScreen
           paymentMethod={selectedPaymentMethod}
@@ -652,7 +739,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
