@@ -104,6 +104,7 @@ export const RetailApp = () => {
   const [showPayByLinkAddGuest, setShowPayByLinkAddGuest] = useState(false);
   const [showPayByLinkWaiting, setShowPayByLinkWaiting] = useState(false);
   const [payByLinkSentTo, setPayByLinkSentTo] = useState("");
+  const [payByLinkGuests, setPayByLinkGuests] = useState<Guest[]>([]);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -313,10 +314,15 @@ export const RetailApp = () => {
             setShowPayByLinkGuestList(true);
           }}
           onAdd={(guest) => {
-            console.log('Added guest:', guest);
-            setPayByLinkSentTo(guest.phone);
+            const newGuest: Guest = {
+              id: Date.now().toString(),
+              name: guest.name,
+              phone: guest.phone,
+              email: guest.email,
+            };
+            setPayByLinkGuests(prev => [newGuest, ...prev]);
             setShowPayByLinkAddGuest(false);
-            setShowPayByLinkWaiting(true);
+            setShowPayByLinkGuestList(true);
           }}
         />
       );
@@ -326,6 +332,7 @@ export const RetailApp = () => {
       return (
         <PayByLinkGuestListScreen
           amount={paymentAmount}
+          addedGuests={payByLinkGuests}
           onBack={() => {
             setShowPayByLinkGuestList(false);
             setShowPaymentEntry(true);
