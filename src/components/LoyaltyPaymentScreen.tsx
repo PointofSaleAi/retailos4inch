@@ -152,21 +152,21 @@ export const LoyaltyPaymentScreen = ({
         </div>
 
         {/* Points to Redeem */}
-        <div className="flex-1 flex flex-col px-0 py-1 min-h-0">
-          <p className="text-[8px] text-gray-600 mb-1">Points to redeem</p>
-          <div className="bg-white rounded-lg border border-gray-200 py-2 px-3 mb-1">
-            <span className="text-[20px] font-bold text-[#D4163C] block text-center">
+        <div className="flex flex-col px-0 py-0.5 flex-shrink-0">
+          <p className="text-[7px] text-gray-600 mb-0.5">Points to redeem</p>
+          <div className="bg-white rounded-lg border border-gray-200 py-1.5 px-3 mb-0.5">
+            <span className="text-[18px] font-bold text-[#D4163C] block text-center">
               {pointsInput || '0'}
             </span>
           </div>
 
           {/* Number Pad */}
-          <div className="grid grid-cols-3 gap-1 flex-1">
-            {['1', '2', '3', '4', '5', '6', '7', '8', '9', '00', '0', 'C'].map(key => (
+          <div className="grid grid-cols-3 gap-0.5">
+            {['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', '00'].map(key => (
               <button
                 key={key}
                 onClick={() => handleAmountKeypadPress(key)}
-                className={`h-[28px] rounded-lg text-[14px] font-semibold transition-colors ${
+                className={`h-[24px] rounded-lg text-[12px] font-semibold transition-colors ${
                   key === 'C'
                     ? 'bg-white border border-gray-200 text-[#D4163C] hover:bg-gray-50'
                     : 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'
