@@ -26,6 +26,7 @@ import { RefundedScreen } from "./RefundedScreen";
 import { PayByLinkGuestListScreen, Guest } from "./PayByLinkGuestListScreen";
 import { PayByLinkAddGuestScreen } from "./PayByLinkAddGuestScreen";
 import { PayByLinkWaitingScreen } from "./PayByLinkWaitingScreen";
+import { PayByQRCodeScreen } from "./PayByQRCodeScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -105,6 +106,7 @@ export const RetailApp = () => {
   const [showPayByLinkWaiting, setShowPayByLinkWaiting] = useState(false);
   const [payByLinkSentTo, setPayByLinkSentTo] = useState("");
   const [payByLinkGuests, setPayByLinkGuests] = useState<Guest[]>([]);
+  const [showPayByQRCode, setShowPayByQRCode] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -282,6 +284,26 @@ export const RetailApp = () => {
   const renderScreen = () => {
     if (!isLoggedIn) {
       return <LoginScreen onLogin={handleLogin} />;
+    }
+
+    if (showPayByQRCode) {
+      const TAX_RATE = 0.08;
+      const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const tax = subtotal * TAX_RATE;
+      const totalDue = subtotal + tax;
+
+      return (
+        <PayByQRCodeScreen
+          amount={totalDue}
+          onBack={() => {
+            setShowPayByQRCode(false);
+            setShowPaymentMethods(true);
+          }}
+          onShare={(method) => {
+            console.log('Sharing QR code via:', method);
+          }}
+        />
+      );
     }
 
     if (showPayByLinkWaiting) {
@@ -551,8 +573,13 @@ export const RetailApp = () => {
           }}
           onSelectMethod={(method) => {
             setSelectedPaymentMethod(method);
-            setShowPaymentMethods(false);
-            setShowPaymentEntry(true);
+            if (method === 'QR Code') {
+              setShowPaymentMethods(false);
+              setShowPayByQRCode(true);
+            } else {
+              setShowPaymentMethods(false);
+              setShowPaymentEntry(true);
+            }
           }}
         />
       );
@@ -746,7 +773,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
