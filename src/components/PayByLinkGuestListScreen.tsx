@@ -18,6 +18,7 @@ export interface Guest {
 }
 interface PayByLinkGuestListScreenProps {
   amount: number;
+  addedGuests?: Guest[];
   onBack: () => void;
   onAddGuest: () => void;
   onSendLink: (guest: Guest, method: 'whatsapp' | 'text' | 'email') => void;
@@ -64,6 +65,7 @@ const mockGuests: Guest[] = [{
 }];
 export const PayByLinkGuestListScreen = ({
   amount,
+  addedGuests = [],
   onBack,
   onAddGuest,
   onSendLink
@@ -71,7 +73,10 @@ export const PayByLinkGuestListScreen = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGuest, setSelectedGuest] = useState<Guest | null>(null);
   const [activeTab, setActiveTab] = useState<'whatsapp' | 'text' | 'email'>('whatsapp');
-  const filteredGuests = mockGuests.filter(guest => guest.name.toLowerCase().includes(searchQuery.toLowerCase()) || guest.phone.includes(searchQuery) || guest.email.toLowerCase().includes(searchQuery.toLowerCase()));
+  
+  // Combine added guests with mock guests
+  const allGuests = [...addedGuests, ...mockGuests];
+  const filteredGuests = allGuests.filter(guest => guest.name.toLowerCase().includes(searchQuery.toLowerCase()) || guest.phone.includes(searchQuery) || guest.email.toLowerCase().includes(searchQuery.toLowerCase()));
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
