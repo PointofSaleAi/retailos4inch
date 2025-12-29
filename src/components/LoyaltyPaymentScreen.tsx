@@ -105,68 +105,68 @@ export const LoyaltyPaymentScreen = ({
         style={{ fontFamily: 'Montserrat, sans-serif' }}
       >
         {/* Header */}
-        <div className="flex items-center justify-center h-[40px] relative px-0 flex-shrink-0">
+        <div className="flex items-center justify-center h-[32px] relative px-0 flex-shrink-0">
           <div className="flex items-baseline gap-1">
-            <span className="text-[11px] font-semibold text-gray-900">Total Due</span>
-            <span className="text-[14px] font-bold text-[#FF4D6A]">${amount.toFixed(2)}</span>
+            <span className="text-[10px] font-semibold text-gray-900">Total Due</span>
+            <span className="text-[13px] font-bold text-[#FF4D6A]">${amount.toFixed(2)}</span>
           </div>
-          <button onClick={onClose} className="absolute right-2 p-1">
-            <img src={iconClose} alt="Close" className="w-[16px] h-[16px]" />
+          <button onClick={onClose} className="absolute right-2 p-0.5">
+            <img src={iconClose} alt="Close" className="w-[14px] h-[14px]" />
           </button>
         </div>
 
         {/* Guest Info Card */}
-        <div className="bg-white rounded-lg p-2 mx-0 border border-gray-100 flex-shrink-0">
-          <div className="flex items-center gap-2 mb-2">
-            <Avatar className="w-10 h-10 flex-shrink-0">
+        <div className="bg-white rounded-lg p-1.5 mx-0 border border-gray-100 flex-shrink-0">
+          <div className="flex items-center gap-1.5 mb-1">
+            <Avatar className="w-8 h-8 flex-shrink-0">
               <AvatarImage src={guest.avatar} alt={guest.name} />
-              <AvatarFallback className="bg-gray-400 text-white font-medium text-[12px]">
+              <AvatarFallback className="bg-gray-400 text-white font-medium text-[10px]">
                 {getInitials(guest.name)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <h3 className="text-[11px] font-semibold text-gray-900 truncate">
+              <h3 className="text-[10px] font-semibold text-gray-900 truncate">
                 {guest.name}
               </h3>
-              <p className="text-[8px] text-gray-500 truncate">
+              <p className="text-[7px] text-gray-500 truncate">
                 {guest.phone} · {guest.email}
               </p>
             </div>
           </div>
-          <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+          <div className="flex items-center justify-between pt-1 border-t border-gray-100">
             <div className="flex items-center gap-1">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5z" />
                 <path d="M2 17l10 5 10-5" />
                 <path d="M2 12l10 5 10-5" />
               </svg>
-              <span className="text-[10px] font-semibold text-gray-900">
+              <span className="text-[9px] font-semibold text-gray-900">
                 {guest.points?.toLocaleString() || '0'} Points
               </span>
             </div>
             <div className="text-right">
-              <span className="text-[10px] text-[#22C55E] font-semibold">${equivalentValue.toLocaleString()}.00</span>
-              <p className="text-[7px] text-gray-500">Equivalent Value</p>
+              <span className="text-[9px] text-[#22C55E] font-semibold">${equivalentValue.toLocaleString()}.00</span>
+              <p className="text-[6px] text-gray-500">Equivalent Value</p>
             </div>
           </div>
         </div>
 
         {/* Points to Redeem */}
-        <div className="flex-1 overflow-y-auto px-0 py-2">
-          <p className="text-[9px] text-gray-600 mb-1.5">Points to redeem</p>
-          <div className="bg-white rounded-lg border border-gray-200 p-4 mb-2">
-            <span className="text-[24px] font-bold text-[#D4163C] block text-center">
+        <div className="flex-1 flex flex-col px-0 py-1 min-h-0">
+          <p className="text-[8px] text-gray-600 mb-1">Points to redeem</p>
+          <div className="bg-white rounded-lg border border-gray-200 py-2 px-3 mb-1">
+            <span className="text-[20px] font-bold text-[#D4163C] block text-center">
               {pointsInput || '0'}
             </span>
           </div>
 
           {/* Number Pad */}
-          <div className="grid grid-cols-3 gap-1.5">
+          <div className="grid grid-cols-3 gap-1 flex-1">
             {['1', '2', '3', '4', '5', '6', '7', '8', '9', '00', '0', 'C'].map(key => (
               <button
                 key={key}
                 onClick={() => handleAmountKeypadPress(key)}
-                className={`h-[38px] rounded-lg text-[16px] font-semibold transition-colors ${
+                className={`h-[28px] rounded-lg text-[14px] font-semibold transition-colors ${
                   key === 'C'
                     ? 'bg-white border border-gray-200 text-[#D4163C] hover:bg-gray-50'
                     : 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'
@@ -179,11 +179,11 @@ export const LoyaltyPaymentScreen = ({
         </div>
 
         {/* Charge Button */}
-        <div className="px-0 pb-2 flex-shrink-0">
+        <div className="px-0 pb-1.5 flex-shrink-0">
           <button
             onClick={handleCharge}
             disabled={pointsToRedeem <= 0 || pointsToRedeem > (guest.points || 0)}
-            className="w-full py-2.5 bg-[#4A4A4A] text-white rounded-full text-[12px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3A3A3A] transition-colors"
+            className="w-full py-2 bg-[#4A4A4A] text-white rounded-full text-[11px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3A3A3A] transition-colors"
           >
             CHARGE $ {chargeAmount.toFixed(2)}
           </button>
