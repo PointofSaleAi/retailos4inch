@@ -117,7 +117,10 @@ export const TransactionDetailScreen = ({
         {/* Refund Button */}
         <div className="flex-shrink-0 pt-2.5 border-t border-border">
           <div className="flex items-center gap-2.5">
-            <button className="w-[22px] h-[22px] rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+            <button 
+              onClick={() => alert("Your receipt has been printed.")}
+              className="w-[22px] h-[22px] rounded-lg bg-muted flex items-center justify-center flex-shrink-0"
+            >
               <img src={iconPrint} alt="Print" className="w-[22px] h-[22px]" />
             </button>
             <button onClick={onRefund} className="flex-1 h-[28px] bg-foreground text-background rounded-full text-[12px] font-semibold hover:bg-foreground/90 transition-colors">
