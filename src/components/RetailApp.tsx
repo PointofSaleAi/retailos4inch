@@ -771,6 +771,34 @@ export const RetailApp = () => {
             setShowOrderSummary(false);
             setShowPaymentMethods(true);
           }}
+          onAddTax={() => {
+            console.log('Add Tax clicked');
+            // TODO: Implement Add Tax screen
+          }}
+          onDiscount={() => {
+            console.log('Discount clicked');
+            // TODO: Implement Discount screen
+          }}
+          onGiftCard={() => {
+            setShowOrderSummary(false);
+            setSelectedPaymentMethod('Gift Card');
+            setShowPaymentEntry(true);
+          }}
+          onClearCart={() => {
+            setCartItems([]);
+          }}
+          onAddCustomer={() => {
+            setShowOrderSummary(false);
+            setActiveTab("customer");
+          }}
+          onRedeemLoyalty={() => {
+            setShowOrderSummary(false);
+            setShowLoyaltyGuestList(true);
+          }}
+          onDeliveryCharge={() => {
+            console.log('Delivery Charge clicked');
+            // TODO: Implement Delivery Charge screen
+          }}
         />
       );
     }

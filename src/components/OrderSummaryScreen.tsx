@@ -44,6 +44,13 @@ interface OrderSummaryScreenProps {
   onNewOrder: () => void;
   onSaveOrder: () => void;
   onCharge: () => void;
+  onAddTax?: () => void;
+  onDiscount?: () => void;
+  onGiftCard?: () => void;
+  onClearCart?: () => void;
+  onAddCustomer?: () => void;
+  onRedeemLoyalty?: () => void;
+  onDeliveryCharge?: () => void;
 }
 export const OrderSummaryScreen = ({
   cartItems,
@@ -52,7 +59,14 @@ export const OrderSummaryScreen = ({
   onUpdateQuantity,
   onNewOrder,
   onSaveOrder,
-  onCharge
+  onCharge,
+  onAddTax,
+  onDiscount,
+  onGiftCard,
+  onClearCart,
+  onAddCustomer,
+  onRedeemLoyalty,
+  onDeliveryCharge
 }: OrderSummaryScreenProps) => {
   const [customerName, setCustomerName] = useState(selectedCustomer?.name || 'Customer Name');
   const [customerPhone, setCustomerPhone] = useState(selectedCustomer?.phone || '(xxx) xxx xxxx');
@@ -130,20 +144,23 @@ export const OrderSummaryScreen = ({
               <div className="absolute right-0 top-[22px] z-50 w-[140px]">
                 <div className="flex flex-col gap-1">
                   {[
-                    { label: 'Add Tax', icon: iconAddTax },
-                    { label: 'Discount', icon: iconDiscount },
-                    { label: 'Gift Card', icon: iconGiftCard },
-                    { label: 'Clear Cart', icon: iconClearCart },
-                    { label: 'Add Customer', icon: iconAddCustomer },
-                    { label: 'Redeem Loyalty', icon: iconRedeemLoyalty },
-                    { label: 'Delivery Charge', icon: iconDeliveryCharge },
+                    { label: 'Add Tax', icon: iconAddTax, action: onAddTax },
+                    { label: 'Discount', icon: iconDiscount, action: onDiscount },
+                    { label: 'Gift Card', icon: iconGiftCard, action: onGiftCard },
+                    { label: 'Clear Cart', icon: iconClearCart, action: onClearCart },
+                    { label: 'Add Customer', icon: iconAddCustomer, action: onAddCustomer },
+                    { label: 'Redeem Loyalty', icon: iconRedeemLoyalty, action: onRedeemLoyalty },
+                    { label: 'Delivery Charge', icon: iconDeliveryCharge, action: onDeliveryCharge },
                   ].map((item) => (
                     <button
                       key={item.label}
                       type="button"
                       className="flex h-[28px] w-full items-center gap-2 rounded-full bg-white px-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
                       style={{ fontFamily: 'Montserrat, sans-serif' }}
-                      onClick={() => setIsMoreMenuOpen(false)}
+                      onClick={() => {
+                        setIsMoreMenuOpen(false);
+                        item.action?.();
+                      }}
                     >
                       <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#F1F2F5]">
                         <img src={item.icon} alt={item.label} className="h-[12px] w-[12px]" />
