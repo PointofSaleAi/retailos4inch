@@ -33,7 +33,7 @@ export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between pt-3 pb-1 px-2">
+      <div className="flex items-center justify-between pt-3 pb-1 px-[6px]">
         <div className="w-5" />
         <h1 className="text-[13px] font-semibold text-[#1A1A1A]">Taxes</h1>
         <button onClick={onClose} className="flex h-5 w-5 items-center justify-center">
@@ -42,7 +42,7 @@ export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
       </div>
 
       {/* Subtitle */}
-      <p className="px-2 pb-2 text-left text-[10px] text-[#666666]">
+      <p className="px-[6px] pb-2 text-center text-[10px] text-[#666666]">
         Select a tax to apply to the current order
       </p>
 
