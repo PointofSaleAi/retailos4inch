@@ -121,32 +121,39 @@ export const OrderSummaryScreen = ({
           </button>
 
           {isMoreMenuOpen && (
-            <div className="absolute right-0 top-[22px] z-50 w-[150px]">
-              <div className="flex flex-col gap-2">
-                {[
-                  { label: 'Add Tax', icon: iconAddTax },
-                  { label: 'Discount', icon: iconDiscount },
-                  { label: 'Gift Card', icon: iconGiftCard },
-                  { label: 'Clear Cart', icon: iconClearCart },
-                  { label: 'Add Customer', icon: iconAddCustomer },
-                  { label: 'Redeem Loyalty', icon: iconRedeemLoyalty },
-                  { label: 'Delivery Charge', icon: iconDeliveryCharge },
-                ].map((item) => (
-                  <button
-                    key={item.label}
-                    type="button"
-                    className="flex h-[32px] w-full items-center gap-2 rounded-full bg-white px-3 shadow-[0_6px_18px_rgba(0,0,0,0.18)]"
-                    style={{ fontFamily: 'Montserrat, sans-serif' }}
-                    onClick={() => setIsMoreMenuOpen(false)}
-                  >
-                    <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[#F1F2F5]">
-                      <img src={item.icon} alt={item.label} className="h-[14px] w-[14px]" />
-                    </span>
-                    <span className="text-[11px] font-medium text-gray-900">{item.label}</span>
-                  </button>
-                ))}
+            <>
+              {/* Black overlay */}
+              <div 
+                className="fixed inset-0 bg-black/40 z-40"
+                onClick={() => setIsMoreMenuOpen(false)}
+              />
+              <div className="absolute right-0 top-[22px] z-50 w-[140px]">
+                <div className="flex flex-col gap-1">
+                  {[
+                    { label: 'Add Tax', icon: iconAddTax },
+                    { label: 'Discount', icon: iconDiscount },
+                    { label: 'Gift Card', icon: iconGiftCard },
+                    { label: 'Clear Cart', icon: iconClearCart },
+                    { label: 'Add Customer', icon: iconAddCustomer },
+                    { label: 'Redeem Loyalty', icon: iconRedeemLoyalty },
+                    { label: 'Delivery Charge', icon: iconDeliveryCharge },
+                  ].map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      className="flex h-[28px] w-full items-center gap-2 rounded-full bg-white px-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+                      style={{ fontFamily: 'Montserrat, sans-serif' }}
+                      onClick={() => setIsMoreMenuOpen(false)}
+                    >
+                      <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#F1F2F5]">
+                        <img src={item.icon} alt={item.label} className="h-[12px] w-[12px]" />
+                      </span>
+                      <span className="text-[10px] font-medium text-gray-900">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>
