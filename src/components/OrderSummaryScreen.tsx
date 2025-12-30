@@ -36,6 +36,20 @@ interface CartItem {
   size?: string;
   color?: string;
 }
+interface AppliedTax {
+  id: string;
+  name: string;
+  rate: number;
+  displayRate: string;
+}
+
+interface AppliedDiscount {
+  id: string;
+  name: string;
+  amount: number;
+  displayAmount: string;
+}
+
 interface OrderSummaryScreenProps {
   cartItems: CartItem[];
   selectedCustomer?: Customer | null;
@@ -51,6 +65,9 @@ interface OrderSummaryScreenProps {
   onAddCustomer?: () => void;
   onRedeemLoyalty?: () => void;
   onDeliveryCharge?: () => void;
+  appliedTax?: AppliedTax | null;
+  appliedDiscount?: AppliedDiscount | null;
+  deliveryCharge?: number;
 }
 export const OrderSummaryScreen = ({
   cartItems,
@@ -66,7 +83,10 @@ export const OrderSummaryScreen = ({
   onClearCart,
   onAddCustomer,
   onRedeemLoyalty,
-  onDeliveryCharge
+  onDeliveryCharge,
+  appliedTax,
+  appliedDiscount,
+  deliveryCharge = 0
 }: OrderSummaryScreenProps) => {
   const [customerName, setCustomerName] = useState(selectedCustomer?.name || 'Customer Name');
   const [customerPhone, setCustomerPhone] = useState(selectedCustomer?.phone || '(xxx) xxx xxxx');
@@ -101,11 +121,11 @@ export const OrderSummaryScreen = ({
   
   const customerPoints = selectedCustomer?.loyaltyPoints || 0;
   const pointsValue = customerPoints; // 1 point = $1.00
-  const TAX_RATE = 0.08;
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const discount = 0;
-  const tax = subtotal * TAX_RATE;
-  const total = subtotal - discount + tax;
+  const discountAmount = appliedDiscount?.amount || 0;
+  const taxRate = appliedTax?.rate || 0;
+  const taxAmount = subtotal * taxRate;
+  const total = subtotal - discountAmount + taxAmount + deliveryCharge;
   const handleQuantityChange = (id: string, delta: number) => {
     const item = cartItems.find(i => i.id === id);
     if (item) {
@@ -250,12 +270,20 @@ export const OrderSummaryScreen = ({
         </div>
         <div className="flex justify-between items-center">
           <span className="text-[9px] font-medium text-[#212121]">Discount</span>
-          <span className="text-[9px] font-medium text-[#212121]">${discount.toFixed(2)}</span>
+          <span className="text-[9px] font-medium text-[#212121]">-${discountAmount.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-[9px] font-medium text-[#212121]">Tax @ 8%</span>
-          <span className="text-[9px] font-medium text-[#212121]">${tax.toFixed(2)}</span>
-        </div>
+        {appliedTax && (
+          <div className="flex justify-between items-center">
+            <span className="text-[9px] font-medium text-[#212121]">Tax @ {appliedTax.displayRate}</span>
+            <span className="text-[9px] font-medium text-[#212121]">${taxAmount.toFixed(2)}</span>
+          </div>
+        )}
+        {deliveryCharge > 0 && (
+          <div className="flex justify-between items-center">
+            <span className="text-[9px] font-medium text-[#212121]">Delivery</span>
+            <span className="text-[9px] font-medium text-[#212121]">${deliveryCharge.toFixed(2)}</span>
+          </div>
+        )}
       </div>
 
       {/* Action Buttons */}

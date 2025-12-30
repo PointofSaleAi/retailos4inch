@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import iconClose from '@/assets/icon-close.png';
 
-interface Tax {
+export interface Tax {
   id: string;
   name: string;
-  rate: string;
+  rate: number; // Changed to number for calculations
+  displayRate: string;
 }
 
 interface AddTaxScreenProps {
@@ -13,9 +14,9 @@ interface AddTaxScreenProps {
 }
 
 const availableTaxes: Tax[] = [
-  { id: '1', name: 'Sales Tax(All Products)', rate: '1%' },
-  { id: '2', name: 'Value Added Tax', rate: '1%' },
-  { id: '3', name: 'Import/Export Duties', rate: '1%' },
+  { id: '1', name: 'Sales Tax(All Products)', rate: 0.01, displayRate: '1%' },
+  { id: '2', name: 'Value Added Tax', rate: 0.01, displayRate: '1%' },
+  { id: '3', name: 'Import/Export Duties', rate: 0.01, displayRate: '1%' },
 ];
 
 export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
@@ -67,7 +68,7 @@ export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
                 </div>
                 <span className="text-[12px] text-[#1A1A1A]">{tax.name}</span>
               </div>
-              <span className="text-[12px] font-semibold text-[#1A1A1A]">{tax.rate}</span>
+              <span className="text-[12px] font-semibold text-[#1A1A1A]">{tax.displayRate}</span>
             </button>
           ))}
         </div>
