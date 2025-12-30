@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
 import iconClose from '@/assets/icon-close.png';
 
-interface Discount {
+export interface Discount {
   id: string;
   name: string;
-  amount: string;
+  amount: number; // absolute value
+  amountDisplay: string;
 }
 
 interface DiscountScreenProps {
   onClose: () => void;
   onApply: (discount: Discount | null) => void;
+  selectedDiscountId?: string | null;
 }
 
 const availableDiscounts: Discount[] = [
-  { id: '1', name: '$10 Bonus card', amount: '-$10.00' },
-  { id: '2', name: 'Buy 1 get 1 at 50% off.', amount: '-$12.00' },
-  { id: '3', name: '15% Off for members only', amount: '-$15.00' },
-  { id: '4', name: 'Flat 10% off your first purchase', amount: '-$5.00' },
+  { id: '1', name: '$10 Bonus card', amount: 10, amountDisplay: '-$10.00' },
+  { id: '2', name: 'Buy 1 get 1 at 50% off.', amount: 12, amountDisplay: '-$12.00' },
+  { id: '3', name: '15% Off for members only', amount: 15, amountDisplay: '-$15.00' },
+  { id: '4', name: 'Flat 10% off your first purchase', amount: 5, amountDisplay: '-$5.00' },
 ];
 
-export const DiscountScreen = ({ onClose, onApply }: DiscountScreenProps) => {
-  const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
+export const DiscountScreen = ({ onClose, onApply, selectedDiscountId }: DiscountScreenProps) => {
+  const [selectedDiscount, setSelectedDiscount] = useState<string | null>(selectedDiscountId || null);
 
   const handleApply = () => {
     const discount = availableDiscounts.find(d => d.id === selectedDiscount) || null;
@@ -68,7 +70,7 @@ export const DiscountScreen = ({ onClose, onApply }: DiscountScreenProps) => {
                 </div>
                 <span className="text-[12px] text-[#1A1A1A]">{discount.name}</span>
               </div>
-              <span className="text-[12px] font-semibold text-[#1A1A1A]">{discount.amount}</span>
+              <span className="text-[12px] font-semibold text-[#1A1A1A]">{discount.amountDisplay}</span>
             </button>
           ))}
         </div>
