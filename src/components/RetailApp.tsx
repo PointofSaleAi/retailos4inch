@@ -1113,6 +1113,34 @@ export const RetailApp = () => {
             setShowCustomScreen(false);
             setShowOrderSummary(true);
           }}
+          onFavoritesClick={() => {
+            setShowCustomScreen(false);
+            setShowFavoritesScreen(true);
+          }}
+          onScanClick={() => {
+            setShowCustomScreen(false);
+            setShowBarcodeScanner(true);
+          }}
+          onAddTax={() => {
+            setShowCustomScreen(false);
+            setShowAddTaxScreen(true);
+          }}
+          onDiscount={() => {
+            setShowCustomScreen(false);
+            setShowDiscountScreen(true);
+          }}
+          onGiftCard={() => {
+            setShowCustomScreen(false);
+            setShowGiftCardMenu(true);
+          }}
+          onRedeemLoyalty={() => {
+            setShowCustomScreen(false);
+            setShowLoyaltyGuestList(true);
+          }}
+          onDeliveryCharge={() => {
+            setShowCustomScreen(false);
+            setShowDeliveryChargeScreen(true);
+          }}
         />
       );
     }

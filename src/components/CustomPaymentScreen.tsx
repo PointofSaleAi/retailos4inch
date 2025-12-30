@@ -2,13 +2,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CartStrip } from "./CartStrip";
-import iconCustom from "@/assets/icon-custom.png";
-import iconHeart from "@/assets/icon-heart.png";
-import iconSearch from "@/assets/icon-search.png";
-import iconMaximize from "@/assets/icon-maximize.png";
-import iconMore from "@/assets/icon-more.png";
+import { TopNavigation } from "./TopNavigation";
 import iconNote from "@/assets/icon-note.png";
-import { X, Minus, Plus, Delete } from "lucide-react";
+import { Minus, Plus, Delete } from "lucide-react";
 
 interface CustomPaymentScreenProps {
   onClose: () => void;
@@ -16,6 +12,13 @@ interface CustomPaymentScreenProps {
   cartItemCount: number;
   cartTotal: number;
   onCartClick: () => void;
+  onFavoritesClick?: () => void;
+  onScanClick?: () => void;
+  onAddTax?: () => void;
+  onDiscount?: () => void;
+  onGiftCard?: () => void;
+  onRedeemLoyalty?: () => void;
+  onDeliveryCharge?: () => void;
 }
 
 export const CustomPaymentScreen = ({
@@ -23,7 +26,14 @@ export const CustomPaymentScreen = ({
   onAddCustomToCart,
   cartItemCount,
   cartTotal,
-  onCartClick
+  onCartClick,
+  onFavoritesClick,
+  onScanClick,
+  onAddTax,
+  onDiscount,
+  onGiftCard,
+  onRedeemLoyalty,
+  onDeliveryCharge
 }: CustomPaymentScreenProps) => {
   const [quantity, setQuantity] = useState(1);
   const [amount, setAmount] = useState("0.00");
@@ -70,26 +80,16 @@ export const CustomPaymentScreen = ({
   };
   return <div className="h-full flex flex-col bg-background">
       {/* Top Navigation */}
-      <nav className="flex items-center justify-between px-[6px] py-2 bg-surface">
-        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onClose}>
-          <img src={iconCustom} alt="Custom" className="w-5 h-5" />
-        </Button>
-        
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <img src={iconHeart} alt="Favorites" className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <img src={iconSearch} alt="Search" className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <img src={iconMaximize} alt="Maximize" className="w-5 h-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <img src={iconMore} alt="More" className="w-5 h-5" />
-          </Button>
-        </div>
-      </nav>
+      <TopNavigation 
+        onCustomClick={onClose}
+        onFavoritesClick={onFavoritesClick}
+        onScanClick={onScanClick}
+        onAddTax={onAddTax}
+        onDiscount={onDiscount}
+        onGiftCard={onGiftCard}
+        onRedeemLoyalty={onRedeemLoyalty}
+        onDeliveryCharge={onDeliveryCharge}
+      />
 
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">
