@@ -15,20 +15,19 @@ export const DeliveryChargeScreen = ({ onClose, onApply }: DeliveryChargeScreenP
       return;
     }
 
+    // This keypad always formats to 2 decimals, so '.' is a no-op
     if (key === '.') {
-      if (amount.includes('.')) return;
-      setAmount(prev => prev + '.');
       return;
     }
 
-    // Handle number input
-    const currentValue = amount.replace('.', '');
-    if (currentValue === '000') return;
-    
-    const newValue = currentValue === '000' ? key : currentValue + key;
-    const cents = newValue.padStart(3, '0');
+    // Handle number input (always keep 2 decimal places)
+    const currentDigits = amount.replace('.', ''); // e.g. "1234" for "12.34"
+    const nextDigits = currentDigits === '000' ? key : currentDigits + key;
+
+    const cents = nextDigits.padStart(3, '0');
     const dollars = cents.slice(0, -2) || '0';
     const centsStr = cents.slice(-2);
+
     setAmount(`${parseInt(dollars, 10)}.${centsStr}`);
   };
 
