@@ -15,9 +15,13 @@ export const CheckBalanceScreen = ({ onBack, onCheckBalance }: CheckBalanceScree
     if (key === 'C') {
       setCardNumber('');
     } else if (key === '00') {
-      setCardNumber(prev => prev + '00');
+      if (cardNumber.length <= 14) {
+        setCardNumber(prev => prev + '00');
+      }
     } else {
-      setCardNumber(prev => prev + key);
+      if (cardNumber.length < 16) {
+        setCardNumber(prev => prev + key);
+      }
     }
   };
 
