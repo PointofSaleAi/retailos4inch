@@ -1,9 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Minus, Plus, ChevronLeft, MoreVertical } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import iconNewOrder from '@/assets/icon-new-order-order-summary.png';
 import iconSave from '@/assets/icon-save-order-summary.png';
 import iconCustomer from '@/assets/icon-customer.png';
-
+import iconAddTax from '@/assets/icon-add-tax.png';
+import iconDiscount from '@/assets/icon-discount.png';
+import iconGiftCard from '@/assets/icon-gift-card.png';
+import iconClearCart from '@/assets/icon-clear-cart.png';
+import iconAddCustomer from '@/assets/icon-add-customer.png';
+import iconRedeemLoyalty from '@/assets/icon-redeem-loyalty.png';
+import iconDeliveryCharge from '@/assets/icon-delivery-charge.png';
 interface Customer {
   id: string;
   name: string;
@@ -86,9 +98,47 @@ export const OrderSummaryScreen = ({
         <h1 className="text-[10px] font-semibold text-gray-900">
           Order Summary
         </h1>
-        <button className="p-1">
-          <MoreVertical size={20} className="text-gray-700" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="p-1">
+              <MoreVertical size={20} className="text-gray-700" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            align="end" 
+            className="w-[140px] bg-white rounded-xl shadow-lg border-0 p-1"
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+          >
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+              <img src={iconAddTax} alt="Add Tax" className="w-[18px] h-[18px]" />
+              <span className="text-[11px] font-medium text-gray-900">Add Tax</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+              <img src={iconDiscount} alt="Discount" className="w-[18px] h-[18px]" />
+              <span className="text-[11px] font-medium text-gray-900">Discount</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+              <img src={iconGiftCard} alt="Gift Card" className="w-[18px] h-[18px]" />
+              <span className="text-[11px] font-medium text-gray-900">Gift Card</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+              <img src={iconClearCart} alt="Clear Cart" className="w-[18px] h-[18px]" />
+              <span className="text-[11px] font-medium text-gray-900">Clear Cart</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+              <img src={iconAddCustomer} alt="Add Customer" className="w-[18px] h-[18px]" />
+              <span className="text-[11px] font-medium text-gray-900">Add Customer</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+              <img src={iconRedeemLoyalty} alt="Redeem Loyalty" className="w-[18px] h-[18px]" />
+              <span className="text-[11px] font-medium text-gray-900">Redeem Loyalty</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
+              <img src={iconDeliveryCharge} alt="Delivery Charge" className="w-[18px] h-[18px]" />
+              <span className="text-[11px] font-medium text-gray-900">Delivery Charge</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Amount Due */}
