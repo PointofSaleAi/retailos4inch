@@ -30,6 +30,9 @@ import { PayByQRCodeScreen } from "./PayByQRCodeScreen";
 import { LoyaltyGuestListScreen, LoyaltyGuest } from "./LoyaltyGuestListScreen";
 import { LoyaltyAddGuestScreen } from "./LoyaltyAddGuestScreen";
 import { LoyaltyPaymentScreen } from "./LoyaltyPaymentScreen";
+import { AddTaxScreen } from "./AddTaxScreen";
+import { DiscountScreen } from "./DiscountScreen";
+import { DeliveryChargeScreen } from "./DeliveryChargeScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -115,6 +118,9 @@ export const RetailApp = () => {
   const [showLoyaltyPayment, setShowLoyaltyPayment] = useState(false);
   const [loyaltyGuests, setLoyaltyGuests] = useState<LoyaltyGuest[]>([]);
   const [selectedLoyaltyGuest, setSelectedLoyaltyGuest] = useState<LoyaltyGuest | null>(null);
+  const [showAddTaxScreen, setShowAddTaxScreen] = useState(false);
+  const [showDiscountScreen, setShowDiscountScreen] = useState(false);
+  const [showDeliveryChargeScreen, setShowDeliveryChargeScreen] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -376,6 +382,54 @@ export const RetailApp = () => {
             setPayByLinkSentTo(guest.phone);
             setShowPayByLinkGuestList(false);
             setShowPayByLinkWaiting(true);
+          }}
+        />
+      );
+    }
+
+    if (showAddTaxScreen) {
+      return (
+        <AddTaxScreen
+          onClose={() => {
+            setShowAddTaxScreen(false);
+            setShowOrderSummary(true);
+          }}
+          onApply={(tax) => {
+            console.log('Applied tax:', tax);
+            setShowAddTaxScreen(false);
+            setShowOrderSummary(true);
+          }}
+        />
+      );
+    }
+
+    if (showDiscountScreen) {
+      return (
+        <DiscountScreen
+          onClose={() => {
+            setShowDiscountScreen(false);
+            setShowOrderSummary(true);
+          }}
+          onApply={(discount) => {
+            console.log('Applied discount:', discount);
+            setShowDiscountScreen(false);
+            setShowOrderSummary(true);
+          }}
+        />
+      );
+    }
+
+    if (showDeliveryChargeScreen) {
+      return (
+        <DeliveryChargeScreen
+          onClose={() => {
+            setShowDeliveryChargeScreen(false);
+            setShowOrderSummary(true);
+          }}
+          onApply={(amount) => {
+            console.log('Applied delivery charge:', amount);
+            setShowDeliveryChargeScreen(false);
+            setShowOrderSummary(true);
           }}
         />
       );
@@ -772,12 +826,12 @@ export const RetailApp = () => {
             setShowPaymentMethods(true);
           }}
           onAddTax={() => {
-            console.log('Add Tax clicked');
-            // TODO: Implement Add Tax screen
+            setShowOrderSummary(false);
+            setShowAddTaxScreen(true);
           }}
           onDiscount={() => {
-            console.log('Discount clicked');
-            // TODO: Implement Discount screen
+            setShowOrderSummary(false);
+            setShowDiscountScreen(true);
           }}
           onGiftCard={() => {
             setShowOrderSummary(false);
@@ -796,8 +850,8 @@ export const RetailApp = () => {
             setShowLoyaltyGuestList(true);
           }}
           onDeliveryCharge={() => {
-            console.log('Delivery Charge clicked');
-            // TODO: Implement Delivery Charge screen
+            setShowOrderSummary(false);
+            setShowDeliveryChargeScreen(true);
           }}
         />
       );
