@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import iconClose from '@/assets/icon-close.png';
 
-interface Discount {
+export interface Discount {
   id: string;
   name: string;
-  amount: string;
+  amount: number; // Changed to number for calculations
+  displayAmount: string;
 }
 
 interface DiscountScreenProps {
   onClose: () => void;
   onApply: (discount: Discount | null) => void;
+  subtotal: number;
 }
 
-const availableDiscounts: Discount[] = [
-  { id: '1', name: '$10 Bonus card', amount: '-$10.00' },
-  { id: '2', name: 'Buy 1 get 1 at 50% off.', amount: '-$12.00' },
-  { id: '3', name: '15% Off for members only', amount: '-$15.00' },
-  { id: '4', name: 'Flat 10% off your first purchase', amount: '-$5.00' },
+const getAvailableDiscounts = (subtotal: number): Discount[] => [
+  { id: '1', name: '$10 Bonus card', amount: 10, displayAmount: '-$10.00' },
+  { id: '2', name: 'Buy 1 get 1 at 50% off.', amount: 12, displayAmount: '-$12.00' },
+  { id: '3', name: '15% Off for members only', amount: subtotal * 0.15, displayAmount: `-$${(subtotal * 0.15).toFixed(2)}` },
+  { id: '4', name: 'Flat 10% off your first purchase', amount: subtotal * 0.10, displayAmount: `-$${(subtotal * 0.10).toFixed(2)}` },
 ];
 
-export const DiscountScreen = ({ onClose, onApply }: DiscountScreenProps) => {
+export const DiscountScreen = ({ onClose, onApply, subtotal }: DiscountScreenProps) => {
   const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
+  const availableDiscounts = getAvailableDiscounts(subtotal);
 
   const handleApply = () => {
     const discount = availableDiscounts.find(d => d.id === selectedDiscount) || null;
@@ -68,7 +71,7 @@ export const DiscountScreen = ({ onClose, onApply }: DiscountScreenProps) => {
                 </div>
                 <span className="text-[12px] text-[#1A1A1A]">{discount.name}</span>
               </div>
-              <span className="text-[12px] font-semibold text-[#1A1A1A]">{discount.amount}</span>
+              <span className="text-[12px] font-semibold text-[#1A1A1A]">{discount.displayAmount}</span>
             </button>
           ))}
         </div>

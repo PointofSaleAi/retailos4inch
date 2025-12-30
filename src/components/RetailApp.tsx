@@ -30,8 +30,8 @@ import { PayByQRCodeScreen } from "./PayByQRCodeScreen";
 import { LoyaltyGuestListScreen, LoyaltyGuest } from "./LoyaltyGuestListScreen";
 import { LoyaltyAddGuestScreen } from "./LoyaltyAddGuestScreen";
 import { LoyaltyPaymentScreen } from "./LoyaltyPaymentScreen";
-import { AddTaxScreen } from "./AddTaxScreen";
-import { DiscountScreen } from "./DiscountScreen";
+import { AddTaxScreen, Tax } from "./AddTaxScreen";
+import { DiscountScreen, Discount } from "./DiscountScreen";
 import { DeliveryChargeScreen } from "./DeliveryChargeScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
@@ -121,6 +121,9 @@ export const RetailApp = () => {
   const [showAddTaxScreen, setShowAddTaxScreen] = useState(false);
   const [showDiscountScreen, setShowDiscountScreen] = useState(false);
   const [showDeliveryChargeScreen, setShowDeliveryChargeScreen] = useState(false);
+  const [appliedTax, setAppliedTax] = useState<Tax | null>(null);
+  const [appliedDiscount, setAppliedDiscount] = useState<Discount | null>(null);
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -395,7 +398,7 @@ export const RetailApp = () => {
             setShowOrderSummary(true);
           }}
           onApply={(tax) => {
-            console.log('Applied tax:', tax);
+            setAppliedTax(tax);
             setShowAddTaxScreen(false);
             setShowOrderSummary(true);
           }}
@@ -406,12 +409,13 @@ export const RetailApp = () => {
     if (showDiscountScreen) {
       return (
         <DiscountScreen
+          subtotal={cartTotal}
           onClose={() => {
             setShowDiscountScreen(false);
             setShowOrderSummary(true);
           }}
           onApply={(discount) => {
-            console.log('Applied discount:', discount);
+            setAppliedDiscount(discount);
             setShowDiscountScreen(false);
             setShowOrderSummary(true);
           }}
@@ -427,7 +431,7 @@ export const RetailApp = () => {
             setShowOrderSummary(true);
           }}
           onApply={(amount) => {
-            console.log('Applied delivery charge:', amount);
+            setDeliveryCharge(amount);
             setShowDeliveryChargeScreen(false);
             setShowOrderSummary(true);
           }}
@@ -853,6 +857,9 @@ export const RetailApp = () => {
             setShowOrderSummary(false);
             setShowDeliveryChargeScreen(true);
           }}
+          appliedTax={appliedTax}
+          appliedDiscount={appliedDiscount}
+          deliveryCharge={deliveryCharge}
         />
       );
     }
@@ -936,7 +943,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && !showAddTaxScreen && !showDiscountScreen && !showDeliveryChargeScreen && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
