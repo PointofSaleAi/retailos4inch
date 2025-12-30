@@ -38,6 +38,7 @@ import { SellPlasticGiftCardScreen } from "./SellPlasticGiftCardScreen";
 import { SelectAmountScreen } from "./SelectAmountScreen";
 import { CustomAmountScreen } from "./CustomAmountScreen";
 import { RecipientEmailScreen } from "./RecipientEmailScreen";
+import { EGiftCardDesignScreen } from "./EGiftCardDesignScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -133,13 +134,13 @@ export const RetailApp = () => {
   // Gift Card Selling Flow States
   const [showGiftCardMenu, setShowGiftCardMenu] = useState(false);
   const [showSellPlasticGiftCard, setShowSellPlasticGiftCard] = useState(false);
-  const [showSellEGiftCard, setShowSellEGiftCard] = useState(false);
+  const [showEGiftCardDesign, setShowEGiftCardDesign] = useState(false);
   const [showSelectAmount, setShowSelectAmount] = useState(false);
   const [showCustomAmount, setShowCustomAmount] = useState(false);
   const [showRecipientEmail, setShowRecipientEmail] = useState(false);
   const [giftCardNumber, setGiftCardNumber] = useState('');
   const [giftCardAmount, setGiftCardAmount] = useState(0);
-  const [isEGiftCard, setIsEGiftCard] = useState(false);
+  const [selectedGiftCardDesign, setSelectedGiftCardDesign] = useState('');
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -464,20 +465,35 @@ export const RetailApp = () => {
             setShowOrderSummary(true);
           }}
           onSellPlastic={() => {
-            setIsEGiftCard(false);
+            setSelectedGiftCardDesign('');
             setShowGiftCardMenu(false);
             setShowSellPlasticGiftCard(true);
           }}
           onSellEGift={() => {
-            setIsEGiftCard(true);
             setShowGiftCardMenu(false);
-            setShowSellPlasticGiftCard(true);
+            setShowEGiftCardDesign(true);
           }}
           onCheckBalance={() => {
             // For now, same as sell plastic flow
-            setIsEGiftCard(false);
+            setSelectedGiftCardDesign('');
             setShowGiftCardMenu(false);
             setShowSellPlasticGiftCard(true);
+          }}
+        />
+      );
+    }
+
+    if (showEGiftCardDesign) {
+      return (
+        <EGiftCardDesignScreen
+          onBack={() => {
+            setShowEGiftCardDesign(false);
+            setShowGiftCardMenu(true);
+          }}
+          onSelectDesign={(design) => {
+            setSelectedGiftCardDesign(design);
+            setShowEGiftCardDesign(false);
+            setShowSelectAmount(true);
           }}
         />
       );
@@ -486,7 +502,7 @@ export const RetailApp = () => {
     if (showSellPlasticGiftCard) {
       return (
         <SellPlasticGiftCardScreen
-          isEGift={isEGiftCard}
+          isEGift={false}
           onBack={() => {
             setShowSellPlasticGiftCard(false);
             setShowGiftCardMenu(true);
@@ -501,15 +517,20 @@ export const RetailApp = () => {
     }
 
     if (showSelectAmount) {
+      const isEGiftFlow = selectedGiftCardDesign !== '';
       return (
         <SelectAmountScreen
           onBack={() => {
             setShowSelectAmount(false);
-            setShowSellPlasticGiftCard(true);
+            if (isEGiftFlow) {
+              setShowEGiftCardDesign(true);
+            } else {
+              setShowSellPlasticGiftCard(true);
+            }
           }}
           onSelectAmount={(amount) => {
             setGiftCardAmount(amount);
-            if (isEGiftCard) {
+            if (isEGiftFlow) {
               setShowSelectAmount(false);
               setShowRecipientEmail(true);
             } else {
@@ -538,6 +559,7 @@ export const RetailApp = () => {
     }
 
     if (showCustomAmount) {
+      const isEGiftFlow = selectedGiftCardDesign !== '';
       return (
         <CustomAmountScreen
           onBack={() => {
@@ -546,7 +568,7 @@ export const RetailApp = () => {
           }}
           onDone={(amount) => {
             setGiftCardAmount(amount);
-            if (isEGiftCard) {
+            if (isEGiftFlow) {
               setShowCustomAmount(false);
               setShowRecipientEmail(true);
             } else {
@@ -583,7 +605,7 @@ export const RetailApp = () => {
             const eGiftCardItem: CartItem = {
               id: `egiftcard-${Date.now()}`,
               type: 'custom',
-              name: `eGift Card ${giftCardNumber.slice(-4)}`,
+              name: `eGift Card (${selectedGiftCardDesign})`,
               price: giftCardAmount,
               quantity: 1,
               image: ''
@@ -593,7 +615,7 @@ export const RetailApp = () => {
             setShowOrderSummary(true);
             setGiftCardNumber('');
             setGiftCardAmount(0);
-            setIsEGiftCard(false);
+            setSelectedGiftCardDesign('');
           }}
         />
       );
