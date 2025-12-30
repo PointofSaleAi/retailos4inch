@@ -48,40 +48,40 @@ export const DeliveryChargeScreen = ({ onClose, onApply }: DeliveryChargeScreenP
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-3 pt-3 pb-1">
+      <div className="flex items-center justify-between px-3 pt-2 pb-0.5">
         <div className="w-6" />
-        <h1 className="text-[14px] font-semibold text-[#1A1A1A]">Delivery Charge</h1>
+        <h1 className="text-[13px] font-semibold text-[#1A1A1A]">Delivery Charge</h1>
         <button onClick={onClose} className="flex h-6 w-6 items-center justify-center">
           <img src={iconClose} alt="Close" className="h-3 w-3" />
         </button>
       </div>
 
       {/* Subtitle */}
-      <p className="px-3 pb-2 text-center text-[10px] text-[#666666]">
+      <p className="px-3 pb-1.5 text-center text-[9px] text-[#666666]">
         Enter the delivery charge for this order.
       </p>
 
       {/* Amount Display */}
-      <div className="mx-3 mb-2 rounded-lg bg-white py-2.5 shadow-sm">
-        <p className="text-center text-[16px] font-semibold text-[#1A1A1A]">
+      <div className="mx-3 mb-1.5 rounded-lg bg-white py-2 shadow-sm">
+        <p className="text-center text-[15px] font-semibold text-[#1A1A1A]">
           ${amount}
         </p>
       </div>
 
       {/* Number Pad */}
       <div className="flex-1 px-3">
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-1">
           {numpadKeys.map((row, rowIndex) => (
-            <div key={rowIndex} className="flex gap-1.5">
+            <div key={rowIndex} className="flex gap-1">
               {row.map((key) => (
                 <button
                   key={key}
                   onClick={() => handleKeyPress(key)}
-                  className={`flex h-[38px] flex-1 items-center justify-center rounded-lg bg-white shadow-sm ${
+                  className={`flex h-[34px] flex-1 items-center justify-center rounded-lg bg-white shadow-sm ${
                     key === 'C' ? 'text-[#CC0000]' : 'text-[#1A1A1A]'
                   }`}
                 >
-                  <span className="text-[14px] font-medium">{key}</span>
+                  <span className="text-[13px] font-medium">{key}</span>
                 </button>
               ))}
             </div>
@@ -90,11 +90,11 @@ export const DeliveryChargeScreen = ({ onClose, onApply }: DeliveryChargeScreenP
       </div>
 
       {/* Apply Button */}
-      <div className="px-3 pb-3 pt-2">
+      <div className="px-3 pb-2 pt-1.5">
         <button
           onClick={handleApply}
           disabled={parseFloat(amount) === 0}
-          className={`w-full rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide ${
+          className={`w-full rounded-full py-2 text-[11px] font-semibold uppercase tracking-wide ${
             parseFloat(amount) > 0
               ? 'bg-[#1A1A1A] text-white'
               : 'bg-[#CCCCCC] text-white'
