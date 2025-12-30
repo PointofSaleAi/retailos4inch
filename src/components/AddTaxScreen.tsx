@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 import iconClose from '@/assets/icon-close.png';
 
-export interface Tax {
+interface Tax {
   id: string;
   name: string;
-  rate: number; // percentage as decimal (e.g., 0.01 for 1%)
-  rateDisplay: string;
+  rate: string;
 }
 
 interface AddTaxScreenProps {
   onClose: () => void;
   onApply: (tax: Tax | null) => void;
-  selectedTaxId?: string | null;
 }
 
 const availableTaxes: Tax[] = [
-  { id: '1', name: 'Sales Tax(All Products)', rate: 0.01, rateDisplay: '1%' },
-  { id: '2', name: 'Value Added Tax', rate: 0.01, rateDisplay: '1%' },
-  { id: '3', name: 'Import/Export Duties', rate: 0.01, rateDisplay: '1%' },
+  { id: '1', name: 'Sales Tax(All Products)', rate: '1%' },
+  { id: '2', name: 'Value Added Tax', rate: '1%' },
+  { id: '3', name: 'Import/Export Duties', rate: '1%' },
 ];
 
-export const AddTaxScreen = ({ onClose, onApply, selectedTaxId }: AddTaxScreenProps) => {
-  const [selectedTax, setSelectedTax] = useState<string | null>(selectedTaxId || null);
+export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
+  const [selectedTax, setSelectedTax] = useState<string | null>(null);
 
   const handleApply = () => {
     const tax = availableTaxes.find(t => t.id === selectedTax) || null;
@@ -69,7 +67,7 @@ export const AddTaxScreen = ({ onClose, onApply, selectedTaxId }: AddTaxScreenPr
                 </div>
                 <span className="text-[12px] text-[#1A1A1A]">{tax.name}</span>
               </div>
-              <span className="text-[12px] font-semibold text-[#1A1A1A]">{tax.rateDisplay}</span>
+              <span className="text-[12px] font-semibold text-[#1A1A1A]">{tax.rate}</span>
             </button>
           ))}
         </div>

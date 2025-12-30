@@ -30,8 +30,8 @@ import { PayByQRCodeScreen } from "./PayByQRCodeScreen";
 import { LoyaltyGuestListScreen, LoyaltyGuest } from "./LoyaltyGuestListScreen";
 import { LoyaltyAddGuestScreen } from "./LoyaltyAddGuestScreen";
 import { LoyaltyPaymentScreen } from "./LoyaltyPaymentScreen";
-import { AddTaxScreen, Tax } from "./AddTaxScreen";
-import { DiscountScreen, Discount } from "./DiscountScreen";
+import { AddTaxScreen } from "./AddTaxScreen";
+import { DiscountScreen } from "./DiscountScreen";
 import { DeliveryChargeScreen } from "./DeliveryChargeScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
@@ -121,9 +121,6 @@ export const RetailApp = () => {
   const [showAddTaxScreen, setShowAddTaxScreen] = useState(false);
   const [showDiscountScreen, setShowDiscountScreen] = useState(false);
   const [showDeliveryChargeScreen, setShowDeliveryChargeScreen] = useState(false);
-  const [appliedTax, setAppliedTax] = useState<Tax | null>(null);
-  const [appliedDiscount, setAppliedDiscount] = useState<Discount | null>(null);
-  const [deliveryCharge, setDeliveryCharge] = useState(0);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -211,10 +208,6 @@ export const RetailApp = () => {
   };
 
   const handleNewOrder = () => {
-    setCartItems([]);
-    setAppliedTax(null);
-    setAppliedDiscount(null);
-    setDeliveryCharge(0);
     setShowOrderSummary(false);
     setActiveTab("order");
   };
@@ -397,13 +390,12 @@ export const RetailApp = () => {
     if (showAddTaxScreen) {
       return (
         <AddTaxScreen
-          selectedTaxId={appliedTax?.id}
           onClose={() => {
             setShowAddTaxScreen(false);
             setShowOrderSummary(true);
           }}
           onApply={(tax) => {
-            setAppliedTax(tax);
+            console.log('Applied tax:', tax);
             setShowAddTaxScreen(false);
             setShowOrderSummary(true);
           }}
@@ -414,13 +406,12 @@ export const RetailApp = () => {
     if (showDiscountScreen) {
       return (
         <DiscountScreen
-          selectedDiscountId={appliedDiscount?.id}
           onClose={() => {
             setShowDiscountScreen(false);
             setShowOrderSummary(true);
           }}
           onApply={(discount) => {
-            setAppliedDiscount(discount);
+            console.log('Applied discount:', discount);
             setShowDiscountScreen(false);
             setShowOrderSummary(true);
           }}
@@ -436,7 +427,7 @@ export const RetailApp = () => {
             setShowOrderSummary(true);
           }}
           onApply={(amount) => {
-            setDeliveryCharge(amount);
+            console.log('Applied delivery charge:', amount);
             setShowDeliveryChargeScreen(false);
             setShowOrderSummary(true);
           }}
@@ -862,9 +853,6 @@ export const RetailApp = () => {
             setShowOrderSummary(false);
             setShowDeliveryChargeScreen(true);
           }}
-          appliedTax={appliedTax}
-          appliedDiscount={appliedDiscount}
-          deliveryCharge={deliveryCharge}
         />
       );
     }
