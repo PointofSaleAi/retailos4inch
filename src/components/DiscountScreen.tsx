@@ -36,7 +36,7 @@ export const DiscountScreen = ({ onClose, onApply, subtotal }: DiscountScreenPro
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-4 pb-2">
+      <div className="flex items-center justify-between px-3 pt-3 pb-1">
         <div className="w-6" />
         <h1 className="text-[14px] font-semibold text-[#1A1A1A]">Discount</h1>
         <button onClick={onClose} className="flex h-6 w-6 items-center justify-center">
@@ -45,31 +45,31 @@ export const DiscountScreen = ({ onClose, onApply, subtotal }: DiscountScreenPro
       </div>
 
       {/* Subtitle */}
-      <p className="px-4 pb-3 text-center text-[11px] text-[#666666]">
+      <p className="px-3 pb-2 text-center text-[11px] text-[#666666]">
         Select a discount to apply to{'\n'}the current order
       </p>
 
       {/* Divider */}
-      <div className="mx-4 h-[1px] bg-[#E5E5E5]" />
+      <div className="h-[1px] bg-[#E5E5E5]" />
 
       {/* Discount Options */}
-      <div className="flex-1 px-4 pt-3">
-        <div className="flex flex-col gap-2">
+      <div className="flex-1 overflow-auto pt-2">
+        <div className="flex flex-col gap-1.5">
           {availableDiscounts.map((discount) => (
             <button
               key={discount.id}
               onClick={() => setSelectedDiscount(discount.id)}
-              className="flex items-center justify-between rounded-lg bg-white px-3 py-3 shadow-sm"
+              className="flex items-center justify-between bg-white px-3 py-2.5 shadow-sm"
             >
               <div className="flex items-center gap-3">
-                <div className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
+                <div className={`flex h-5 w-5 items-center justify-center rounded-[50%] border-2 ${
                   selectedDiscount === discount.id ? 'border-[#1A1A1A]' : 'border-[#CCCCCC]'
                 }`}>
                   {selectedDiscount === discount.id && (
-                    <div className="h-2.5 w-2.5 rounded-full bg-[#1A1A1A]" />
+                    <div className="h-2.5 w-2.5 rounded-[50%] bg-[#1A1A1A]" />
                   )}
                 </div>
-                <span className="text-[12px] text-[#1A1A1A]">{discount.name}</span>
+                <span className="text-[12px] text-[#1A1A1A] text-left">{discount.name}</span>
               </div>
               <span className="text-[12px] font-semibold text-[#1A1A1A]">{discount.displayAmount}</span>
             </button>
@@ -78,11 +78,11 @@ export const DiscountScreen = ({ onClose, onApply, subtotal }: DiscountScreenPro
       </div>
 
       {/* Apply Button */}
-      <div className="px-4 pb-4">
+      <div className="px-3 pb-3 pt-2">
         <button
           onClick={handleApply}
           disabled={!selectedDiscount}
-          className={`w-full rounded-full py-3 text-[12px] font-semibold uppercase tracking-wide ${
+          className={`w-full rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide ${
             selectedDiscount
               ? 'bg-[#1A1A1A] text-white'
               : 'bg-[#CCCCCC] text-white'
