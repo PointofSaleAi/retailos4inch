@@ -1,11 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Minus, Plus, ChevronLeft, MoreVertical } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import iconNewOrder from '@/assets/icon-new-order-order-summary.png';
 import iconSave from '@/assets/icon-save-order-summary.png';
 import iconCustomer from '@/assets/icon-customer.png';
@@ -64,6 +58,8 @@ export const OrderSummaryScreen = ({
   const [customerPhone, setCustomerPhone] = useState(selectedCustomer?.phone || '(xxx) xxx xxxx');
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement | null>(null);
   
   // Update customer info when selectedCustomer changes
   useEffect(() => {
@@ -72,6 +68,22 @@ export const OrderSummaryScreen = ({
       setCustomerPhone(selectedCustomer.phone);
     }
   }, [selectedCustomer]);
+
+  // Close the More menu when tapping outside
+  useEffect(() => {
+    if (!isMoreMenuOpen) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      const el = moreMenuRef.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) {
+        setIsMoreMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('pointerdown', onPointerDown);
+    return () => window.removeEventListener('pointerdown', onPointerDown);
+  }, [isMoreMenuOpen]);
   
   const customerPoints = selectedCustomer?.loyaltyPoints || 0;
   const pointsValue = customerPoints; // 1 point = $1.00
@@ -91,54 +103,52 @@ export const OrderSummaryScreen = ({
     fontFamily: 'Montserrat, sans-serif'
   }}>
       {/* Header */}
-      <div className="flex items-center justify-between h-[36px] px-0">
+      <div className="relative flex items-center justify-between h-[36px] px-0">
         <button onClick={onClose} className="p-1 px-0 py-0">
           <ChevronLeft size={20} className="text-gray-700" />
         </button>
-        <h1 className="text-[10px] font-semibold text-gray-900">
-          Order Summary
-        </h1>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="p-1">
-              <MoreVertical size={20} className="text-gray-700" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent 
-            align="end" 
-            className="w-[140px] bg-white rounded-xl shadow-lg border-0 p-1"
-            style={{ fontFamily: 'Montserrat, sans-serif' }}
+        <h1 className="text-[10px] font-semibold text-gray-900">Order Summary</h1>
+
+        <div ref={moreMenuRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setIsMoreMenuOpen(v => !v)}
+            className="p-1"
+            aria-label="More options"
+            aria-expanded={isMoreMenuOpen}
           >
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
-              <img src={iconAddTax} alt="Add Tax" className="w-[18px] h-[18px]" />
-              <span className="text-[11px] font-medium text-gray-900">Add Tax</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
-              <img src={iconDiscount} alt="Discount" className="w-[18px] h-[18px]" />
-              <span className="text-[11px] font-medium text-gray-900">Discount</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
-              <img src={iconGiftCard} alt="Gift Card" className="w-[18px] h-[18px]" />
-              <span className="text-[11px] font-medium text-gray-900">Gift Card</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
-              <img src={iconClearCart} alt="Clear Cart" className="w-[18px] h-[18px]" />
-              <span className="text-[11px] font-medium text-gray-900">Clear Cart</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
-              <img src={iconAddCustomer} alt="Add Customer" className="w-[18px] h-[18px]" />
-              <span className="text-[11px] font-medium text-gray-900">Add Customer</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
-              <img src={iconRedeemLoyalty} alt="Redeem Loyalty" className="w-[18px] h-[18px]" />
-              <span className="text-[11px] font-medium text-gray-900">Redeem Loyalty</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
-              <img src={iconDeliveryCharge} alt="Delivery Charge" className="w-[18px] h-[18px]" />
-              <span className="text-[11px] font-medium text-gray-900">Delivery Charge</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <MoreVertical size={20} className="text-gray-700" />
+          </button>
+
+          {isMoreMenuOpen && (
+            <div className="absolute right-0 top-[22px] z-50 w-[150px]">
+              <div className="flex flex-col gap-2">
+                {[
+                  { label: 'Add Tax', icon: iconAddTax },
+                  { label: 'Discount', icon: iconDiscount },
+                  { label: 'Gift Card', icon: iconGiftCard },
+                  { label: 'Clear Cart', icon: iconClearCart },
+                  { label: 'Add Customer', icon: iconAddCustomer },
+                  { label: 'Redeem Loyalty', icon: iconRedeemLoyalty },
+                  { label: 'Delivery Charge', icon: iconDeliveryCharge },
+                ].map((item) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    className="flex h-[32px] w-full items-center gap-2 rounded-full bg-white px-3 shadow-[0_6px_18px_rgba(0,0,0,0.18)]"
+                    style={{ fontFamily: 'Montserrat, sans-serif' }}
+                    onClick={() => setIsMoreMenuOpen(false)}
+                  >
+                    <span className="flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[#F1F2F5]">
+                      <img src={item.icon} alt={item.label} className="h-[14px] w-[14px]" />
+                    </span>
+                    <span className="text-[11px] font-medium text-gray-900">{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Amount Due */}
