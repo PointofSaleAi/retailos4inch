@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import iconBackArrow from '@/assets/icon-back-arrow.png';
+import iconBackArrowNew from '@/assets/icon-back-arrow-new.png';
 import iconGiftCard from '@/assets/icon-gift-card.png';
 import iconCamera from '@/assets/icon-camera-black.png';
 
@@ -33,26 +33,23 @@ export const CheckBalanceScreen = ({ onBack, onCheckBalance }: CheckBalanceScree
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center h-[36px] px-[6px] relative">
-        <button onClick={onBack} className="p-1">
-          <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
+      <div className="flex items-center h-[32px] px-[8px] relative">
+        <button onClick={onBack} className="w-[24px] h-[24px] flex items-center justify-center">
+          <img src={iconBackArrowNew} alt="Back" className="w-[20px] h-[20px]" />
         </button>
-        <span className="absolute left-1/2 -translate-x-1/2 text-[11px] font-semibold text-[#1A1A1A]">
+        <span className="absolute left-1/2 -translate-x-1/2 text-[12px] font-semibold text-[#1A1A1A]">
           Check Balance
         </span>
       </div>
 
       {/* Subtitle */}
-      <p className="px-[6px] pb-2 text-[8px] text-[#666666] leading-tight">
+      <p className="px-[8px] pb-2 text-[8px] text-[#666666] leading-tight">
         You can scan, swipe, or enter the number found on your gift card.
       </p>
 
       {/* Card Number Input */}
-      <div className="px-[6px] mb-2">
-        <div 
-          className="flex items-center gap-2 px-2 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer"
-          onClick={handleContinue}
-        >
+      <div className="px-[8px] mb-2">
+        <div className="flex items-center gap-2 px-2 py-2 border border-gray-300 rounded-lg bg-white">
           <img src={iconGiftCard} alt="Card" className="w-[16px] h-[16px]" />
           <span className={`flex-1 text-[10px] ${cardNumber ? 'text-[#1A1A1A]' : 'text-gray-400'}`}>
             {cardNumber || 'Card number'}
@@ -62,15 +59,15 @@ export const CheckBalanceScreen = ({ onBack, onCheckBalance }: CheckBalanceScree
       </div>
 
       {/* Helper Text */}
-      <p className="px-[6px] pb-2 text-[7px] text-[#999999] leading-tight">
+      <p className="px-[8px] pb-2 text-[7px] text-[#999999] leading-tight">
         You can scan gift cards with barcodes or QR codes if your device has a camera.
       </p>
 
       {/* Divider */}
-      <div className="border-t border-gray-200 mx-[6px] mb-2" />
+      <div className="border-t border-gray-200 mx-[8px] mb-2" />
 
       {/* Number Pad */}
-      <div className="flex-1 px-[6px] pb-[6px]">
+      <div className="flex-1 px-[8px]">
         <div className="grid grid-cols-3 gap-1 h-full">
           {['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '00', 'C'].map((key) => (
             <button
@@ -86,6 +83,21 @@ export const CheckBalanceScreen = ({ onBack, onCheckBalance }: CheckBalanceScree
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Continue Button */}
+      <div className="px-[8px] py-[8px]">
+        <button
+          onClick={handleContinue}
+          disabled={cardNumber.length === 0}
+          className={`w-full py-2 rounded-lg text-[11px] font-semibold transition-colors ${
+            cardNumber.length > 0
+              ? 'bg-[#1A1A1A] text-white'
+              : 'bg-gray-200 text-gray-400'
+          }`}
+        >
+          Continue
+        </button>
       </div>
     </div>
   );
