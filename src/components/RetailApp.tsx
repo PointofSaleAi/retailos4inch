@@ -1131,6 +1131,11 @@ export const RetailApp = () => {
             cartTotal={cartTotal}
             onCartClick={() => setShowOrderSummary(true)}
             onProductDetailOpen={setIsProductDetailOpen}
+            onAddTax={() => setShowAddTaxScreen(true)}
+            onDiscount={() => setShowDiscountScreen(true)}
+            onGiftCard={() => setShowGiftCardMenu(true)}
+            onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
+            onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
           />
         );
       case "transactions":
@@ -1160,6 +1165,11 @@ export const RetailApp = () => {
             cartTotal={cartTotal}
             onCartClick={() => setShowOrderSummary(true)}
             onProductDetailOpen={setIsProductDetailOpen}
+            onAddTax={() => setShowAddTaxScreen(true)}
+            onDiscount={() => setShowDiscountScreen(true)}
+            onGiftCard={() => setShowGiftCardMenu(true)}
+            onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
+            onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
           />
         );
     }

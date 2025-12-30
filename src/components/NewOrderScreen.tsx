@@ -93,6 +93,11 @@ interface NewOrderScreenProps {
   cartTotal: number;
   onCartClick?: () => void;
   onProductDetailOpen?: (isOpen: boolean) => void;
+  onAddTax?: () => void;
+  onDiscount?: () => void;
+  onGiftCard?: () => void;
+  onRedeemLoyalty?: () => void;
+  onDeliveryCharge?: () => void;
 }
 
 export const NewOrderScreen = ({ 
@@ -105,7 +110,12 @@ export const NewOrderScreen = ({
   cartItemCount,
   cartTotal,
   onCartClick,
-  onProductDetailOpen
+  onProductDetailOpen,
+  onAddTax,
+  onDiscount,
+  onGiftCard,
+  onRedeemLoyalty,
+  onDeliveryCharge
 }: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"image" | "grid" | "list">("image");
   const [selectedProductType, setSelectedProductType] = useState("Products");
@@ -159,6 +169,11 @@ export const NewOrderScreen = ({
           onFavoritesClick={onFavoritesClick}
           onScanClick={onScanClick}
           onSearchChange={setSearchQuery}
+          onAddTax={onAddTax}
+          onDiscount={onDiscount}
+          onGiftCard={onGiftCard}
+          onRedeemLoyalty={onRedeemLoyalty}
+          onDeliveryCharge={onDeliveryCharge}
         />
         
         {/* Category Filters */}
