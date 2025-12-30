@@ -39,6 +39,8 @@ import { SelectAmountScreen } from "./SelectAmountScreen";
 import { CustomAmountScreen } from "./CustomAmountScreen";
 import { RecipientEmailScreen } from "./RecipientEmailScreen";
 import { EGiftCardDesignScreen } from "./EGiftCardDesignScreen";
+import { CheckBalanceScreen } from "./CheckBalanceScreen";
+import { GiftCardBalanceScreen } from "./GiftCardBalanceScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -138,9 +140,12 @@ export const RetailApp = () => {
   const [showSelectAmount, setShowSelectAmount] = useState(false);
   const [showCustomAmount, setShowCustomAmount] = useState(false);
   const [showRecipientEmail, setShowRecipientEmail] = useState(false);
+  const [showCheckBalance, setShowCheckBalance] = useState(false);
+  const [showGiftCardBalance, setShowGiftCardBalance] = useState(false);
   const [giftCardNumber, setGiftCardNumber] = useState('');
   const [giftCardAmount, setGiftCardAmount] = useState(0);
   const [selectedGiftCardDesign, setSelectedGiftCardDesign] = useState('');
+  const [checkBalanceCardNumber, setCheckBalanceCardNumber] = useState('');
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -474,10 +479,52 @@ export const RetailApp = () => {
             setShowEGiftCardDesign(true);
           }}
           onCheckBalance={() => {
-            // For now, same as sell plastic flow
-            setSelectedGiftCardDesign('');
             setShowGiftCardMenu(false);
-            setShowSellPlasticGiftCard(true);
+            setShowCheckBalance(true);
+          }}
+        />
+      );
+    }
+
+    if (showCheckBalance) {
+      return (
+        <CheckBalanceScreen
+          onBack={() => {
+            setShowCheckBalance(false);
+            setShowGiftCardMenu(true);
+          }}
+          onCheckBalance={(cardNum) => {
+            setCheckBalanceCardNumber(cardNum);
+            setShowCheckBalance(false);
+            setShowGiftCardBalance(true);
+          }}
+        />
+      );
+    }
+
+    if (showGiftCardBalance) {
+      // Mock activity data
+      const mockActivity = [
+        { date: '15 May 25', amount: 10.00 },
+        { date: '20 Apr 25', amount: 25.55 },
+        { date: '30 Apr 25', amount: 25.55 },
+      ];
+      
+      return (
+        <GiftCardBalanceScreen
+          cardNumber={checkBalanceCardNumber}
+          balance={10.00}
+          activity={mockActivity}
+          onBack={() => {
+            setShowGiftCardBalance(false);
+            setShowGiftCardMenu(true);
+            setCheckBalanceCardNumber('');
+          }}
+          onAddValue={() => {
+            // Go to amount selection for reload
+            setGiftCardNumber(checkBalanceCardNumber);
+            setShowGiftCardBalance(false);
+            setShowSelectAmount(true);
           }}
         />
       );

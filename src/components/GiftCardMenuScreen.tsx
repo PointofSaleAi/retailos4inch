@@ -45,7 +45,7 @@ export const GiftCardMenuScreen = ({
         >
           <div className="flex items-center gap-2">
             <img src={iconGiftCard} alt="Plastic" className="w-[18px] h-[18px]" />
-            <span className="text-[10px] font-medium text-[#1A1A1A]">Sell a plastic gift card</span>
+            <span className="text-[10px] font-medium text-[#1A1A1A] text-left leading-tight">Sell a plastic gift<br/>card</span>
           </div>
           <ChevronRight size={16} className="text-gray-400" />
         </button>
