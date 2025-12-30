@@ -1,12 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import iconMenu from "@/assets/icon-menu.png";
 import iconHeart from "@/assets/icon-heart.png";
 import iconSearch20 from "@/assets/icon-search-20.png";
@@ -27,11 +21,44 @@ interface TopNavigationProps {
   onFavoritesClick?: () => void;
   onSearchChange?: (query: string) => void;
   onScanClick?: () => void;
+  onAddTax?: () => void;
+  onDiscount?: () => void;
+  onGiftCard?: () => void;
+  onRedeemLoyalty?: () => void;
+  onDeliveryCharge?: () => void;
 }
 
-export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange, onScanClick }: TopNavigationProps) => {
+export const TopNavigation = ({ 
+  onCustomClick, 
+  onFavoritesClick, 
+  onSearchChange, 
+  onScanClick,
+  onAddTax,
+  onDiscount,
+  onGiftCard,
+  onRedeemLoyalty,
+  onDeliveryCharge
+}: TopNavigationProps) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement | null>(null);
+
+  // Close the More menu when tapping outside
+  useEffect(() => {
+    if (!isMoreMenuOpen) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      const el = moreMenuRef.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) {
+        setIsMoreMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('pointerdown', onPointerDown);
+    return () => window.removeEventListener('pointerdown', onPointerDown);
+  }, [isMoreMenuOpen]);
 
   const handleSearchClick = () => {
     setShowSearch(true);
@@ -48,6 +75,14 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange,
     setSearchQuery(query);
     onSearchChange?.(query);
   };
+
+  const menuItems = [
+    { label: 'Add Tax', icon: iconAddTax, action: onAddTax },
+    { label: 'Discount', icon: iconDiscount, action: onDiscount },
+    { label: 'Gift Card', icon: iconGiftCard, action: onGiftCard },
+    { label: 'Redeem Loyalty', icon: iconRedeemLoyalty, action: onRedeemLoyalty },
+    { label: 'Delivery Charge', icon: iconDeliveryCharge, action: onDeliveryCharge },
+  ];
 
   if (showSearch) {
     return (
@@ -112,35 +147,48 @@ export const TopNavigation = ({ onCustomClick, onFavoritesClick, onSearchChange,
         >
           <img src={iconMaximize} alt="Scan" className="w-5 h-5 min-w-5 min-h-5" />
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <img src={iconMore} alt="More" className="w-5 h-5 min-w-5 min-h-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[156px] bg-white p-0">
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 cursor-pointer">
-              <img src={iconAddTax} alt="Add Tax" className="w-5 h-5 min-w-5 min-h-5" />
-              <span className="text-[11px] font-['Montserrat']">Add Tax</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 cursor-pointer">
-              <img src={iconDiscount} alt="Discount" className="w-5 h-5 min-w-5 min-h-5" />
-              <span className="text-[11px] font-['Montserrat']">Discount</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 cursor-pointer">
-              <img src={iconGiftCard} alt="Gift Card" className="w-5 h-5 min-w-5 min-h-5" />
-              <span className="text-[11px] font-['Montserrat']">Gift Card</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 cursor-pointer">
-              <img src={iconRedeemLoyalty} alt="Redeem Loyalty" className="w-5 h-5 min-w-5 min-h-5" />
-              <span className="text-[11px] font-['Montserrat']">Redeem Loyalty</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 cursor-pointer">
-              <img src={iconDeliveryCharge} alt="Delivery Charge" className="w-5 h-5 min-w-5 min-h-5" />
-              <span className="text-[11px] font-['Montserrat']">Delivery Charge</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        
+        <div ref={moreMenuRef} className="relative">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8"
+            onClick={() => setIsMoreMenuOpen(v => !v)}
+          >
+            <img src={iconMore} alt="More" className="w-5 h-5 min-w-5 min-h-5" />
+          </Button>
+
+          {isMoreMenuOpen && (
+            <>
+              {/* Black overlay */}
+              <div 
+                className="fixed inset-0 bg-black/40 z-40"
+                onClick={() => setIsMoreMenuOpen(false)}
+              />
+              <div className="absolute right-0 top-[32px] z-50 w-[140px]">
+                <div className="flex flex-col gap-1">
+                  {menuItems.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      className="flex h-[28px] w-full items-center gap-2 rounded-full bg-white px-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+                      style={{ fontFamily: 'Montserrat, sans-serif' }}
+                      onClick={() => {
+                        setIsMoreMenuOpen(false);
+                        item.action?.();
+                      }}
+                    >
+                      <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#F1F2F5]">
+                        <img src={item.icon} alt={item.label} className="h-[12px] w-[12px]" />
+                      </span>
+                      <span className="text-[10px] font-medium text-gray-900">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
