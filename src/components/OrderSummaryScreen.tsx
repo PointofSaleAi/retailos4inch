@@ -230,7 +230,13 @@ export const OrderSummaryScreen = ({
         {/* Cart Items */}
         <div className="mt-3 space-y-3 px-0 my-[6px]">
           {cartItems.map(item => <div key={item.id} className="flex items-center gap-2 pb-3 border-b border-gray-100">
-              <img src={item.image} alt={item.name} className="w-[35px] h-[35px] object-cover rounded-md flex-shrink-0" />
+              {item.image ? (
+                <img src={item.image} alt={item.name} className="w-[35px] h-[35px] object-cover rounded-md flex-shrink-0" />
+              ) : (
+                <div className="w-[35px] h-[35px] rounded-md flex-shrink-0 bg-gradient-to-br from-yellow-200 to-pink-200 flex items-center justify-center">
+                  <span className="text-[16px]">🎁</span>
+                </div>
+              )}
               <div className="flex-1 min-w-0">
                 <h3 className="text-[10px] font-semibold text-gray-900 leading-tight">
                   {item.name}
