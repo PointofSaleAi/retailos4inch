@@ -33,6 +33,11 @@ import { LoyaltyPaymentScreen } from "./LoyaltyPaymentScreen";
 import { AddTaxScreen, Tax } from "./AddTaxScreen";
 import { DiscountScreen, Discount } from "./DiscountScreen";
 import { DeliveryChargeScreen } from "./DeliveryChargeScreen";
+import { GiftCardMenuScreen } from "./GiftCardMenuScreen";
+import { SellPlasticGiftCardScreen } from "./SellPlasticGiftCardScreen";
+import { SelectAmountScreen } from "./SelectAmountScreen";
+import { CustomAmountScreen } from "./CustomAmountScreen";
+import { RecipientEmailScreen } from "./RecipientEmailScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -124,6 +129,17 @@ export const RetailApp = () => {
   const [appliedTax, setAppliedTax] = useState<Tax | null>(null);
   const [appliedDiscount, setAppliedDiscount] = useState<Discount | null>(null);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
+  
+  // Gift Card Selling Flow States
+  const [showGiftCardMenu, setShowGiftCardMenu] = useState(false);
+  const [showSellPlasticGiftCard, setShowSellPlasticGiftCard] = useState(false);
+  const [showSellEGiftCard, setShowSellEGiftCard] = useState(false);
+  const [showSelectAmount, setShowSelectAmount] = useState(false);
+  const [showCustomAmount, setShowCustomAmount] = useState(false);
+  const [showRecipientEmail, setShowRecipientEmail] = useState(false);
+  const [giftCardNumber, setGiftCardNumber] = useState('');
+  const [giftCardAmount, setGiftCardAmount] = useState(0);
+  const [isEGiftCard, setIsEGiftCard] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -434,6 +450,150 @@ export const RetailApp = () => {
             setDeliveryCharge(amount);
             setShowDeliveryChargeScreen(false);
             setShowOrderSummary(true);
+          }}
+        />
+      );
+    }
+
+    // Gift Card Selling Flow
+    if (showGiftCardMenu) {
+      return (
+        <GiftCardMenuScreen
+          onClose={() => {
+            setShowGiftCardMenu(false);
+            setShowOrderSummary(true);
+          }}
+          onSellPlastic={() => {
+            setIsEGiftCard(false);
+            setShowGiftCardMenu(false);
+            setShowSellPlasticGiftCard(true);
+          }}
+          onSellEGift={() => {
+            setIsEGiftCard(true);
+            setShowGiftCardMenu(false);
+            setShowSellPlasticGiftCard(true);
+          }}
+          onCheckBalance={() => {
+            // For now, same as sell plastic flow
+            setIsEGiftCard(false);
+            setShowGiftCardMenu(false);
+            setShowSellPlasticGiftCard(true);
+          }}
+        />
+      );
+    }
+
+    if (showSellPlasticGiftCard) {
+      return (
+        <SellPlasticGiftCardScreen
+          isEGift={isEGiftCard}
+          onBack={() => {
+            setShowSellPlasticGiftCard(false);
+            setShowGiftCardMenu(true);
+          }}
+          onContinue={(cardNum) => {
+            setGiftCardNumber(cardNum);
+            setShowSellPlasticGiftCard(false);
+            setShowSelectAmount(true);
+          }}
+        />
+      );
+    }
+
+    if (showSelectAmount) {
+      return (
+        <SelectAmountScreen
+          onBack={() => {
+            setShowSelectAmount(false);
+            setShowSellPlasticGiftCard(true);
+          }}
+          onSelectAmount={(amount) => {
+            setGiftCardAmount(amount);
+            if (isEGiftCard) {
+              setShowSelectAmount(false);
+              setShowRecipientEmail(true);
+            } else {
+              // Add gift card to cart and go back to order summary
+              const giftCardItem: CartItem = {
+                id: `giftcard-${Date.now()}`,
+                type: 'custom',
+                name: `Gift Card ${giftCardNumber.slice(-4)}`,
+                price: amount,
+                quantity: 1,
+                image: ''
+              };
+              setCartItems(prev => [...prev, giftCardItem]);
+              setShowSelectAmount(false);
+              setShowOrderSummary(true);
+              setGiftCardNumber('');
+              setGiftCardAmount(0);
+            }
+          }}
+          onCustom={() => {
+            setShowSelectAmount(false);
+            setShowCustomAmount(true);
+          }}
+        />
+      );
+    }
+
+    if (showCustomAmount) {
+      return (
+        <CustomAmountScreen
+          onBack={() => {
+            setShowCustomAmount(false);
+            setShowSelectAmount(true);
+          }}
+          onDone={(amount) => {
+            setGiftCardAmount(amount);
+            if (isEGiftCard) {
+              setShowCustomAmount(false);
+              setShowRecipientEmail(true);
+            } else {
+              // Add gift card to cart and go back to order summary
+              const giftCardItem: CartItem = {
+                id: `giftcard-${Date.now()}`,
+                type: 'custom',
+                name: `Gift Card ${giftCardNumber.slice(-4)}`,
+                price: amount,
+                quantity: 1,
+                image: ''
+              };
+              setCartItems(prev => [...prev, giftCardItem]);
+              setShowCustomAmount(false);
+              setShowOrderSummary(true);
+              setGiftCardNumber('');
+              setGiftCardAmount(0);
+            }
+          }}
+        />
+      );
+    }
+
+    if (showRecipientEmail) {
+      return (
+        <RecipientEmailScreen
+          onBack={() => {
+            setShowRecipientEmail(false);
+            setShowSelectAmount(true);
+          }}
+          onSend={(email) => {
+            console.log('Sending eGift card to:', email);
+            // Add eGift card to cart
+            const eGiftCardItem: CartItem = {
+              id: `egiftcard-${Date.now()}`,
+              type: 'custom',
+              name: `eGift Card ${giftCardNumber.slice(-4)}`,
+              price: giftCardAmount,
+              quantity: 1,
+              image: ''
+            };
+            setCartItems(prev => [...prev, eGiftCardItem]);
+            setShowRecipientEmail(false);
+            setShowOrderSummary(true);
+            setGiftCardNumber('');
+            setGiftCardAmount(0);
+            setIsEGiftCard(false);
           }}
         />
       );
@@ -839,8 +999,7 @@ export const RetailApp = () => {
           }}
           onGiftCard={() => {
             setShowOrderSummary(false);
-            setSelectedPaymentMethod('Gift Card');
-            setShowPaymentEntry(true);
+            setShowGiftCardMenu(true);
           }}
           onClearCart={() => {
             setCartItems([]);
@@ -943,7 +1102,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && !showAddTaxScreen && !showDiscountScreen && !showDeliveryChargeScreen && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && !showAddTaxScreen && !showDiscountScreen && !showDeliveryChargeScreen && !showGiftCardMenu && !showSellPlasticGiftCard && !showSelectAmount && !showCustomAmount && !showRecipientEmail && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
