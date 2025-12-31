@@ -271,22 +271,22 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                   </button>
                 </PopoverTrigger>
                 <PopoverContent 
-                  className="p-0 z-[100] bg-white rounded-md shadow-lg border border-border"
+                  className="p-0 z-[100] bg-white rounded-md shadow-lg border border-border overflow-hidden"
                   align="end" 
                   side="bottom"
                   sideOffset={4}
-                  collisionPadding={8}
-                  style={{ width: '140px', maxHeight: '240px' }}
+                  avoidCollisions={false}
+                  style={{ width: '186px' }}
                 >
-                  <div className="px-2 py-1 border-b border-border bg-white">
-                    <p className="text-[7px] font-medium text-foreground">Quick Select</p>
-                    <div className="flex gap-1 mt-1">
+                  <div className="px-2 py-1.5 border-b border-border bg-white">
+                    <p className="text-[8px] font-medium text-foreground">Quick Select</p>
+                    <div className="flex gap-1.5 mt-1">
                       <button
                         onClick={() => {
                           const today = new Date();
                           setDateRange({ from: today, to: today });
                         }}
-                        className="flex-1 px-1 py-0.5 text-[6px] bg-muted rounded hover:bg-muted/80"
+                        className="flex-1 px-2 py-1 text-[7px] bg-muted rounded hover:bg-muted/80"
                       >
                         Today
                       </button>
@@ -296,7 +296,7 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                           yesterday.setDate(yesterday.getDate() - 1);
                           setDateRange({ from: yesterday, to: yesterday });
                         }}
-                        className="flex-1 px-1 py-0.5 text-[6px] bg-muted rounded hover:bg-muted/80"
+                        className="flex-1 px-2 py-1 text-[7px] bg-muted rounded hover:bg-muted/80"
                       >
                         Yesterday
                       </button>
@@ -307,39 +307,49 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                           last7Days.setDate(today.getDate() - 6);
                           setDateRange({ from: last7Days, to: today });
                         }}
-                        className="flex-1 px-1 py-0.5 text-[6px] bg-muted rounded hover:bg-muted/80"
+                        className="flex-1 px-2 py-1 text-[7px] bg-muted rounded hover:bg-muted/80"
                       >
                         7 Days
                       </button>
                     </div>
                   </div>
-                  <Calendar
-                    mode="range"
-                    selected={dateRange}
-                    onSelect={setDateRange}
-                    numberOfMonths={1}
-                    className={cn(
-                      "p-0.5 pointer-events-auto bg-white",
-                      "[&_.rdp-day]:h-4 [&_.rdp-day]:w-4 [&_.rdp-day]:text-[6px]",
-                      "[&_.rdp-head_cell]:w-4 [&_.rdp-head_cell]:text-[6px] [&_.rdp-head_cell]:font-normal",
-                      "[&_.rdp-cell]:p-0",
-                      "[&_.rdp-caption]:text-[7px] [&_.rdp-caption]:py-0.5",
-                      "[&_.rdp-nav_button]:h-3 [&_.rdp-nav_button]:w-3",
-                      "[&_.rdp-months]:gap-0",
-                      "[&_.rdp-table]:w-full",
-                      "[&_.rdp-month]:w-full"
-                    )}
-                  />
-                  <div className="px-1.5 py-1 border-t border-border flex gap-1 bg-white">
+                  <div className="w-full bg-white">
+                    <Calendar
+                      mode="range"
+                      selected={dateRange}
+                      onSelect={setDateRange}
+                      numberOfMonths={1}
+                      className={cn(
+                        "p-1 pointer-events-auto bg-white w-full",
+                        "[&_.rdp-months]:w-full",
+                        "[&_.rdp-month]:w-full",
+                        "[&_.rdp-table]:w-full",
+                        "[&_.rdp-tbody]:w-full",
+                        "[&_.rdp-head_row]:flex [&_.rdp-head_row]:w-full [&_.rdp-head_row]:justify-between",
+                        "[&_.rdp-row]:flex [&_.rdp-row]:w-full [&_.rdp-row]:justify-between [&_.rdp-row]:mt-0.5",
+                        "[&_.rdp-head_cell]:w-[22px] [&_.rdp-head_cell]:text-[8px] [&_.rdp-head_cell]:font-medium [&_.rdp-head_cell]:text-muted-foreground",
+                        "[&_.rdp-cell]:w-[22px] [&_.rdp-cell]:h-[22px] [&_.rdp-cell]:p-0",
+                        "[&_.rdp-day]:h-[22px] [&_.rdp-day]:w-[22px] [&_.rdp-day]:text-[9px] [&_.rdp-day]:p-0",
+                        "[&_.rdp-day_selected]:bg-foreground [&_.rdp-day_selected]:text-white",
+                        "[&_.rdp-caption]:flex [&_.rdp-caption]:justify-center [&_.rdp-caption]:items-center [&_.rdp-caption]:py-1 [&_.rdp-caption]:relative",
+                        "[&_.rdp-caption_label]:text-[9px] [&_.rdp-caption_label]:font-semibold",
+                        "[&_.rdp-nav]:flex [&_.rdp-nav]:items-center [&_.rdp-nav]:gap-0.5",
+                        "[&_.rdp-nav_button]:h-5 [&_.rdp-nav_button]:w-5 [&_.rdp-nav_button]:p-0 [&_.rdp-nav_button]:opacity-70",
+                        "[&_.rdp-nav_button_previous]:absolute [&_.rdp-nav_button_previous]:left-0",
+                        "[&_.rdp-nav_button_next]:absolute [&_.rdp-nav_button_next]:right-0"
+                      )}
+                    />
+                  </div>
+                  <div className="px-2 py-1.5 border-t border-border flex gap-2 bg-white">
                     <button 
                       onClick={handleClearDateFilter}
-                      className="flex-1 px-1.5 py-0.5 text-[6px] text-muted-foreground bg-muted rounded"
+                      className="flex-1 px-2 py-1 text-[8px] text-muted-foreground bg-muted rounded"
                     >
                       Clear
                     </button>
                     <button 
                       onClick={() => setIsCalendarOpen(false)}
-                      className="flex-1 px-1.5 py-0.5 text-[6px] text-white bg-foreground rounded"
+                      className="flex-1 px-2 py-1 text-[8px] text-white bg-foreground rounded"
                     >
                       Apply
                     </button>
