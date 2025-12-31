@@ -7,6 +7,7 @@ import iconSearch20 from "@/assets/icon-search-20.png";
 import iconMaximize from "@/assets/icon-maximize.png";
 import iconMore from "@/assets/icon-more.png";
 import iconCustom from "@/assets/icon-custom.png";
+import iconNewOrder from "@/assets/icon-new-order.png";
 import iconSearch14 from "@/assets/icon-search-14.png";
 import iconMic14 from "@/assets/icon-mic-14.png";
 import iconClose14 from "@/assets/icon-close-14.png";
@@ -26,6 +27,7 @@ interface TopNavigationProps {
   onGiftCard?: () => void;
   onRedeemLoyalty?: () => void;
   onDeliveryCharge?: () => void;
+  isCustomScreen?: boolean;
 }
 
 export const TopNavigation = ({ 
@@ -37,7 +39,8 @@ export const TopNavigation = ({
   onDiscount,
   onGiftCard,
   onRedeemLoyalty,
-  onDeliveryCharge
+  onDeliveryCharge,
+  isCustomScreen = false
 }: TopNavigationProps) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -119,7 +122,7 @@ export const TopNavigation = ({
         className="h-8 w-8"
         onClick={onCustomClick}
       >
-        <img src={onCustomClick ? iconCustom : iconMenu} alt="Custom" className="w-5 h-5 min-w-5 min-h-5" />
+        <img src={isCustomScreen ? iconNewOrder : (onCustomClick ? iconCustom : iconMenu)} alt="Custom" className="w-5 h-5 min-w-5 min-h-5" />
       </Button>
       
       <div className="flex items-center gap-2">
