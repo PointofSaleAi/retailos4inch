@@ -230,30 +230,22 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       {/* Header */}
       <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
         {showSearch ? (
-          <div className="flex-1 flex items-center gap-2 bg-[#F1F2F5] rounded-lg px-2 py-1.5">
-            <img src={iconSearchTx} alt="Search" className="w-3 h-3 opacity-50" />
+          <div className="flex-1 flex items-center gap-2 bg-[#F1F2F5] rounded-full px-3" style={{ height: '32px' }}>
+            <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px] opacity-60" />
             <input
               ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by product, order #..."
-              className="flex-1 bg-transparent text-[10px] text-foreground placeholder:text-muted-foreground outline-none"
+              placeholder="Search by product, ord..."
+              className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none"
               style={{ fontFamily: 'Montserrat, sans-serif' }}
             />
-            <button className="p-0.5" onClick={() => {}}>
-              <img src={iconMic} alt="Voice" className="w-3 h-3 opacity-50" />
-            </button>
-            {searchQuery && (
-              <button className="p-0.5" onClick={() => setSearchQuery("")}>
-                <img src={iconClose} alt="Clear" className="w-3 h-3 opacity-50" />
-              </button>
-            )}
             <button 
-              className="p-0.5 ml-0.5" 
+              className="p-0.5 flex items-center justify-center" 
               onClick={handleClearSearch}
             >
-              <span className="text-[10px] font-medium text-muted-foreground">✕</span>
+              <span className="text-[14px] text-muted-foreground">×</span>
             </button>
           </div>
         ) : (
