@@ -264,7 +264,7 @@ export const NewOrderScreen = ({
             </div>
           ) : (
             <div className="flex flex-col gap-2 pb-2">
-              {filteredProducts.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} />)}
+              {filteredProducts.map(product => <ProductListCard key={product.id} product={product} onAddToCart={onAddToCart} onCardClick={handleCardClick} />)}
             </div>
           )}
         </div>
