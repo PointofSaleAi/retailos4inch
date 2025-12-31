@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { ChevronLeft } from "lucide-react";
+
 interface Product {
   name: string;
   size: string;
   color: string;
   price: number;
+  originalIndex?: number;
 }
+
 interface RefundScreenProps {
   products: Product[];
   onBack: () => void;
-  onNext: (amount: number) => void;
+  onNext: (amount: number, selectedIndices: number[]) => void;
 }
+
 export const RefundScreen = ({
   products,
   onBack,
@@ -19,6 +23,7 @@ export const RefundScreen = ({
   const [activeTab, setActiveTab] = useState<"products" | "amount">("products");
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set());
   const [refundAmount, setRefundAmount] = useState<string>("0.00");
+
   const handleSelectAll = () => {
     if (selectedProducts.size === products.length) {
       setSelectedProducts(new Set());
@@ -26,6 +31,7 @@ export const RefundScreen = ({
       setSelectedProducts(new Set(products.map((_, index) => index)));
     }
   };
+
   const handleToggleProduct = (index: number) => {
     const newSelected = new Set(selectedProducts);
     if (newSelected.has(index)) {
@@ -35,13 +41,15 @@ export const RefundScreen = ({
     }
     setSelectedProducts(newSelected);
   };
+
   const handleNext = () => {
     if (activeTab === "products") {
       const selected = products.filter((_, index) => selectedProducts.has(index));
       const totalAmount = selected.reduce((sum, product) => sum + product.price, 0);
-      onNext(totalAmount);
+      const selectedIndices = Array.from(selectedProducts);
+      onNext(totalAmount, selectedIndices);
     } else {
-      onNext(parseFloat(refundAmount));
+      onNext(parseFloat(refundAmount), []);
     }
   };
   const handleNumberClick = (num: string) => {
