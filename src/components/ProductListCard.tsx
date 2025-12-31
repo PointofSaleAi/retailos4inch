@@ -11,9 +11,10 @@ interface Product {
 interface ProductListCardProps {
   product: Product;
   onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
+  onCardClick?: (product: Product) => void;
 }
 
-export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) => {
+export const ProductListCard = ({ product, onAddToCart, onCardClick }: ProductListCardProps) => {
   const [quantity, setQuantity] = useState(0);
 
   const handleQuantityChange = (newQuantity: number) => {
@@ -39,9 +40,12 @@ export const ProductListCard = ({ product, onAddToCart }: ProductListCardProps) 
   };
 
   return (
-    <div className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-3 py-2 ${
-      quantity > 0 ? 'border border-[#000]' : 'border border-border'
-    }`}>
+    <div 
+      className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-3 py-2 cursor-pointer ${
+        quantity > 0 ? 'border border-[#000]' : 'border border-border'
+      }`}
+      onClick={() => onCardClick?.(product)}
+    >
       <div className="flex-1 flex flex-col gap-0.5 min-w-0">
         <h3 className={`${getNameStyles()} break-words leading-tight line-clamp-2`}>
           {product.name}
