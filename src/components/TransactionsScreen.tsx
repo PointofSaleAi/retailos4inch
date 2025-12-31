@@ -421,7 +421,7 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
           ) : (
             filteredTransactions.map(transaction => {
               const iconSrc = iconMap[transaction.icon];
-              const isClickable = transaction.status === "Pending" || transaction.status === "Paid";
+              const isClickable = transaction.status === "Pending" || transaction.status === "Paid" || transaction.status === "Refunded";
               return (
                 <div 
                   key={transaction.id} 
