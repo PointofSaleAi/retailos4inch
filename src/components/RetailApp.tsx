@@ -80,6 +80,8 @@ interface Transaction {
   refundDate?: string;
   refundTime?: string;
   refundReason?: string;
+  refundedItems?: CartItem[];
+  refundedAmount?: number;
 }
 
 const mockProducts: Product[] = [
@@ -112,6 +114,7 @@ export const RetailApp = () => {
   const [currentRefundReason, setCurrentRefundReason] = useState("");
   const [showNewCustomer, setShowNewCustomer] = useState(false);
   const [refundAmount, setRefundAmount] = useState(0);
+  const [selectedRefundItems, setSelectedRefundItems] = useState<CartItem[]>([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState<string>("");
   const [paymentAmount, setPaymentAmount] = useState(0);
   const [products, setProducts] = useState<Product[]>(mockProducts);
@@ -751,7 +754,8 @@ export const RetailApp = () => {
       const transaction = transactions.find(t => t.id === selectedTransactionId);
       if (!transaction) return null;
 
-      const refundProducts = transaction.cartItems?.map(item => ({
+      // Show only the refunded items, not all cart items
+      const refundProducts = (transaction.refundedItems || transaction.cartItems)?.map(item => ({
         name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
         size: item.size || "XS",
         color: item.color || "Olive Green",
@@ -761,7 +765,7 @@ export const RetailApp = () => {
       return (
         <RefundDetailScreen
           transactionId="256"
-          amount={transaction.amount}
+          amount={transaction.refundedAmount || transaction.amount}
           customer="Micheal David"
           products={refundProducts}
           refundDate={transaction.refundDate || transaction.date}
@@ -786,7 +790,7 @@ export const RetailApp = () => {
             const refundDate = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
             const refundTime = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
             
-            // Update transaction status to Refunded with refund details
+            // Update transaction with refund details and refunded items
             setTransactions(prev =>
               prev.map(t =>
                 t.id === selectedTransactionId
@@ -795,7 +799,9 @@ export const RetailApp = () => {
                       status: "Refunded" as const,
                       refundDate,
                       refundTime,
-                      refundReason: currentRefundReason || "Customer changed mind"
+                      refundReason: currentRefundReason || "Customer changed mind",
+                      refundedItems: selectedRefundItems,
+                      refundedAmount: refundAmount
                     }
                   : t
               )
@@ -807,6 +813,7 @@ export const RetailApp = () => {
             setShowCustomRefundReasonScreen(false);
             setShowTransactionDetail(false);
             setCurrentRefundReason("");
+            setSelectedRefundItems([]);
             setActiveTab("transactions");
           }}
         />
@@ -853,11 +860,12 @@ export const RetailApp = () => {
 
     if (showRefundScreen) {
       const transaction = transactions.find(t => t.id === selectedTransactionId);
-      const refundProducts = transaction?.cartItems?.map(item => ({
+      const refundProducts = transaction?.cartItems?.map((item, index) => ({
         name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
-        size: "XS",
-        color: "Olive Green",
-        price: item.price * item.quantity
+        size: item.size || "XS",
+        color: item.color || "Olive Green",
+        price: item.price * item.quantity,
+        originalIndex: index
       })) || [];
 
       return (
@@ -867,8 +875,13 @@ export const RetailApp = () => {
             setShowRefundScreen(false);
             setShowTransactionDetail(true);
           }}
-          onNext={(amount) => {
+          onNext={(amount, selectedIndices) => {
             setRefundAmount(amount);
+            // Store the selected items for refund
+            const selectedItems = transaction?.cartItems?.filter((_, index) => 
+              selectedIndices.includes(index)
+            ) || [];
+            setSelectedRefundItems(selectedItems);
             setShowRefundScreen(false);
             setShowRefundReasonScreen(true);
           }}
