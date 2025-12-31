@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import iconGrid from "@/assets/icon-grid.png";
@@ -17,19 +17,23 @@ interface FavoritesScreenProps {
   onBack: () => void;
   products: Product[];
   onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
+  onProductDetailOpen?: (isOpen: boolean) => void;
 }
 
-export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {
+export const FavoritesScreen = ({ onBack, products, onAddToCart, onProductDetailOpen }: FavoritesScreenProps) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const popupContainerRef = useRef<HTMLDivElement>(null);
 
   const handleCardClick = (product: Product) => {
     setSelectedProduct(product);
     setIsSheetOpen(true);
+    onProductDetailOpen?.(true);
   };
 
   const handleCloseSheet = () => {
     setIsSheetOpen(false);
+    onProductDetailOpen?.(false);
   };
 
   return (
@@ -48,25 +52,28 @@ export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScre
         <div className="w-5" />
       </div>
 
-      {/* Grid Icon and Instructions */}
-      <div className="flex flex-col items-center justify-center py-3 px-3">
-        <img src={iconGrid} alt="Grid" className="w-5 h-5 mb-1.5 opacity-40" />
-        <p className="text-[11px] text-center text-muted-foreground leading-tight">
-          Press and hold anywhere on<br />the grid to add items
-        </p>
-      </div>
+      {/* Scrollable content area */}
+      <div ref={popupContainerRef} className="flex-1 overflow-y-auto scrollbar-hide relative">
+        {/* Grid Icon and Instructions */}
+        <div className="flex flex-col items-center justify-center py-3 px-3">
+          <img src={iconGrid} alt="Grid" className="w-5 h-5 mb-1.5 opacity-40" />
+          <p className="text-[11px] text-center text-muted-foreground leading-tight">
+            Press and hold anywhere on<br />the grid to add items
+          </p>
+        </div>
 
-      {/* Products Grid */}
-      <div className="flex-1 overflow-y-auto px-[6px] pb-2">
-        <div className="grid grid-cols-2 gap-2 justify-items-center">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={onAddToCart}
-              onCardClick={handleCardClick}
-            />
-          ))}
+        {/* Products Grid */}
+        <div className="px-[6px] pb-2">
+          <div className="grid grid-cols-2 gap-2 justify-items-center">
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={onAddToCart}
+                onCardClick={handleCardClick}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -76,6 +83,7 @@ export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScre
         isOpen={isSheetOpen}
         onClose={handleCloseSheet}
         onAddToCart={onAddToCart}
+        portalContainer={popupContainerRef.current}
       />
     </div>
   );
