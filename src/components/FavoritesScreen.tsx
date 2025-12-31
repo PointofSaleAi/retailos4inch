@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import iconGrid from "@/assets/icon-grid.png";
@@ -22,6 +22,7 @@ interface FavoritesScreenProps {
 export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const popupContainerRef = useRef<HTMLDivElement>(null);
 
   const handleCardClick = (product: Product) => {
     setSelectedProduct(product);
@@ -33,7 +34,7 @@ export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScre
   };
 
   return (
-    <div className="h-full flex flex-col bg-background w-[186px] mx-auto">
+    <div ref={popupContainerRef} className="h-full flex flex-col bg-background w-[186px] mx-auto relative">
       {/* Header */}
       <div className="flex items-center justify-between px-2 h-6 bg-surface border-b border-border">
         <Button
@@ -76,6 +77,7 @@ export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScre
         isOpen={isSheetOpen}
         onClose={handleCloseSheet}
         onAddToCart={onAddToCart}
+        portalContainer={popupContainerRef.current}
       />
     </div>
   );
