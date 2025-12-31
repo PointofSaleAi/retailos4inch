@@ -271,14 +271,15 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                   </button>
                 </PopoverTrigger>
                 <PopoverContent 
-                  className="p-0 z-50 bg-white rounded-lg shadow-lg border border-border"
-                  align="center" 
-                  sideOffset={8}
-                  style={{ width: '160px' }}
+                  className="p-0 z-[100] bg-white rounded-md shadow-lg border border-border"
+                  align="end" 
+                  side="bottom"
+                  sideOffset={4}
+                  collisionPadding={8}
+                  style={{ width: '140px', maxHeight: '200px' }}
                 >
-                  <div className="p-1.5 border-b border-border bg-white rounded-t-lg">
-                    <p className="text-[8px] font-medium text-foreground">Select Date Range</p>
-                    <p className="text-[7px] text-muted-foreground">Tap once for single, twice for range</p>
+                  <div className="px-2 py-1 border-b border-border bg-white">
+                    <p className="text-[7px] font-medium text-foreground">Select Date</p>
                   </div>
                   <Calendar
                     mode="range"
@@ -286,26 +287,27 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                     onSelect={setDateRange}
                     numberOfMonths={1}
                     className={cn(
-                      "p-1 pointer-events-auto bg-white",
-                      "[&_.rdp-day]:h-5 [&_.rdp-day]:w-5 [&_.rdp-day]:text-[8px]",
-                      "[&_.rdp-head_cell]:w-5 [&_.rdp-head_cell]:text-[7px]",
+                      "p-0.5 pointer-events-auto bg-white",
+                      "[&_.rdp-day]:h-4 [&_.rdp-day]:w-4 [&_.rdp-day]:text-[6px]",
+                      "[&_.rdp-head_cell]:w-4 [&_.rdp-head_cell]:text-[6px] [&_.rdp-head_cell]:font-normal",
                       "[&_.rdp-cell]:p-0",
-                      "[&_.rdp-caption]:text-[9px] [&_.rdp-caption]:py-1",
-                      "[&_.rdp-nav_button]:h-4 [&_.rdp-nav_button]:w-4",
+                      "[&_.rdp-caption]:text-[7px] [&_.rdp-caption]:py-0.5",
+                      "[&_.rdp-nav_button]:h-3 [&_.rdp-nav_button]:w-3",
                       "[&_.rdp-months]:gap-0",
-                      "[&_.rdp-table]:w-full"
+                      "[&_.rdp-table]:w-full",
+                      "[&_.rdp-month]:w-full"
                     )}
                   />
-                  <div className="p-1.5 border-t border-border flex gap-1.5 bg-white rounded-b-lg">
+                  <div className="px-1.5 py-1 border-t border-border flex gap-1 bg-white">
                     <button 
                       onClick={handleClearDateFilter}
-                      className="flex-1 px-2 py-1 text-[8px] text-muted-foreground bg-[#F1F2F5] rounded"
+                      className="flex-1 px-1.5 py-0.5 text-[6px] text-muted-foreground bg-muted rounded"
                     >
                       Clear
                     </button>
                     <button 
                       onClick={() => setIsCalendarOpen(false)}
-                      className="flex-1 px-2 py-1 text-[8px] text-white bg-foreground rounded"
+                      className="flex-1 px-1.5 py-0.5 text-[6px] text-white bg-foreground rounded"
                     >
                       Apply
                     </button>
