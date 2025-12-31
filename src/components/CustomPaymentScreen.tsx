@@ -89,6 +89,7 @@ export const CustomPaymentScreen = ({
         onGiftCard={onGiftCard}
         onRedeemLoyalty={onRedeemLoyalty}
         onDeliveryCharge={onDeliveryCharge}
+        isCustomScreen={true}
       />
 
       {/* Main Content */}
