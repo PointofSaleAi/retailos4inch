@@ -756,7 +756,7 @@ export const RetailApp = () => {
 
       // Show only the refunded items, not all cart items
       const refundProducts = (transaction.refundedItems || transaction.cartItems)?.map(item => ({
-        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        name: item.name || (item.productId ? (products.find(p => p.id === item.productId)?.name || 'Product') : 'Item'),
         size: item.size || "XS",
         color: item.color || "Olive Green",
         price: item.price * item.quantity
