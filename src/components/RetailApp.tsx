@@ -23,6 +23,7 @@ import { RefundScreen } from "./RefundScreen";
 import { RefundReasonScreen } from "./RefundReasonScreen";
 import { CustomRefundReasonScreen } from "./CustomRefundReasonScreen";
 import { RefundedScreen } from "./RefundedScreen";
+import { RefundDetailScreen } from "./RefundDetailScreen";
 import { PayByLinkGuestListScreen, Guest } from "./PayByLinkGuestListScreen";
 import { PayByLinkAddGuestScreen } from "./PayByLinkAddGuestScreen";
 import { PayByLinkWaitingScreen } from "./PayByLinkWaitingScreen";
@@ -76,6 +77,9 @@ interface Transaction {
   amount: number;
   status: "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
   cartItems?: CartItem[];
+  refundDate?: string;
+  refundTime?: string;
+  refundReason?: string;
 }
 
 const mockProducts: Product[] = [
@@ -104,6 +108,8 @@ export const RetailApp = () => {
   const [showRefundReasonScreen, setShowRefundReasonScreen] = useState(false);
   const [showCustomRefundReasonScreen, setShowCustomRefundReasonScreen] = useState(false);
   const [showRefundedScreen, setShowRefundedScreen] = useState(false);
+  const [showRefundDetailScreen, setShowRefundDetailScreen] = useState(false);
+  const [currentRefundReason, setCurrentRefundReason] = useState("");
   const [showNewCustomer, setShowNewCustomer] = useState(false);
   const [refundAmount, setRefundAmount] = useState(0);
   const [selectedTransactionId, setSelectedTransactionId] = useState<string>("");
@@ -276,6 +282,9 @@ export const RetailApp = () => {
       } else if (transaction.status === "Paid") {
         setSelectedTransactionId(transactionId);
         setShowTransactionDetail(true);
+      } else if (transaction.status === "Refunded") {
+        setSelectedTransactionId(transactionId);
+        setShowRefundDetailScreen(true);
       }
     }
   };
@@ -738,17 +747,56 @@ export const RetailApp = () => {
       );
     }
 
+    if (showRefundDetailScreen) {
+      const transaction = transactions.find(t => t.id === selectedTransactionId);
+      if (!transaction) return null;
+
+      const refundProducts = transaction.cartItems?.map(item => ({
+        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        size: item.size || "XS",
+        color: item.color || "Olive Green",
+        price: item.price * item.quantity
+      })) || [];
+
+      return (
+        <RefundDetailScreen
+          transactionId="256"
+          amount={transaction.amount}
+          customer="Micheal David"
+          products={refundProducts}
+          refundDate={transaction.refundDate || transaction.date}
+          refundTime={transaction.refundTime || transaction.time}
+          refundReason={transaction.refundReason || "Customer changed mind"}
+          paymentMethod="Card | 0486"
+          onBack={() => {
+            setShowRefundDetailScreen(false);
+            setActiveTab("transactions");
+          }}
+        />
+      );
+    }
+
     if (showRefundedScreen) {
       return (
         <RefundedScreen
           amount={refundAmount}
           paymentMethod="Card | 0486"
           onClose={() => {
-            // Update transaction status to Refunded
+            const now = new Date();
+            const refundDate = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+            const refundTime = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            
+            // Update transaction status to Refunded with refund details
             setTransactions(prev =>
               prev.map(t =>
                 t.id === selectedTransactionId
-                  ? { ...t, status: "Refunded" as const }
+                  ? { 
+                      ...t, 
+                      status: "Refunded" as const,
+                      refundDate,
+                      refundTime,
+                      refundReason: currentRefundReason || "Customer changed mind"
+                    }
                   : t
               )
             );
@@ -758,6 +806,7 @@ export const RetailApp = () => {
             setShowRefundReasonScreen(false);
             setShowCustomRefundReasonScreen(false);
             setShowTransactionDetail(false);
+            setCurrentRefundReason("");
             setActiveTab("transactions");
           }}
         />
@@ -772,7 +821,7 @@ export const RetailApp = () => {
             setShowRefundReasonScreen(true);
           }}
           onNext={(customReason) => {
-            console.log("Refund reason:", customReason);
+            setCurrentRefundReason(customReason);
             setShowCustomRefundReasonScreen(false);
             setShowRefundedScreen(true);
           }}
@@ -790,7 +839,7 @@ export const RetailApp = () => {
             setShowRefundScreen(true);
           }}
           onRefund={(reason) => {
-            console.log("Refund reason:", reason);
+            setCurrentRefundReason(reason);
             setShowRefundReasonScreen(false);
             setShowRefundedScreen(true);
           }}
