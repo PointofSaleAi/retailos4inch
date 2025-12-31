@@ -69,7 +69,7 @@ export const ProductDetailSheet = ({
     setQuantity(1);
   };
   return <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent container={portalContainer} className="w-[198px] rounded-t-[16px] bottom-0 h-[300px] overflow-hidden pb-0">
+      <DrawerContent container={portalContainer} className="!w-full !left-0 !right-0 !inset-x-0 rounded-t-[16px] bottom-0 h-[300px] overflow-hidden pb-0">
         <div className="w-full pt-1 pb-0" style={{
         fontFamily: 'Montserrat, sans-serif'
       }}>
