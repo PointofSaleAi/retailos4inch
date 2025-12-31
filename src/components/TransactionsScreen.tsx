@@ -276,10 +276,42 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                   side="bottom"
                   sideOffset={4}
                   collisionPadding={8}
-                  style={{ width: '140px', maxHeight: '200px' }}
+                  style={{ width: '140px', maxHeight: '240px' }}
                 >
                   <div className="px-2 py-1 border-b border-border bg-white">
-                    <p className="text-[7px] font-medium text-foreground">Select Date</p>
+                    <p className="text-[7px] font-medium text-foreground">Quick Select</p>
+                    <div className="flex gap-1 mt-1">
+                      <button
+                        onClick={() => {
+                          const today = new Date();
+                          setDateRange({ from: today, to: today });
+                        }}
+                        className="flex-1 px-1 py-0.5 text-[6px] bg-muted rounded hover:bg-muted/80"
+                      >
+                        Today
+                      </button>
+                      <button
+                        onClick={() => {
+                          const yesterday = new Date();
+                          yesterday.setDate(yesterday.getDate() - 1);
+                          setDateRange({ from: yesterday, to: yesterday });
+                        }}
+                        className="flex-1 px-1 py-0.5 text-[6px] bg-muted rounded hover:bg-muted/80"
+                      >
+                        Yesterday
+                      </button>
+                      <button
+                        onClick={() => {
+                          const today = new Date();
+                          const last7Days = new Date();
+                          last7Days.setDate(today.getDate() - 6);
+                          setDateRange({ from: last7Days, to: today });
+                        }}
+                        className="flex-1 px-1 py-0.5 text-[6px] bg-muted rounded hover:bg-muted/80"
+                      >
+                        7 Days
+                      </button>
+                    </div>
                   </div>
                   <Calendar
                     mode="range"
