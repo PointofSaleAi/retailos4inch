@@ -41,16 +41,15 @@ export const CustomPaymentScreen = ({
   const [note, setNote] = useState("");
   const [isEditingProductName, setIsEditingProductName] = useState(false);
   const handleNumberClick = (num: string) => {
-    if (amount === "0.00") {
-      setAmount(`0.${num}`);
-    } else {
-      const [dollars, cents = ""] = amount.split(".");
-      if (cents.length < 2) {
-        setAmount(`${dollars}.${cents}${num}`);
-      } else {
-        setAmount(`${dollars}${cents}.${num}`);
-      }
-    }
+    // Remove the decimal and treat as cents
+    const currentCents = amount.replace(".", "");
+    // Add new digits
+    const newCents = currentCents + num;
+    // Convert to number to remove leading zeros, then format
+    const centsNum = parseInt(newCents, 10);
+    // Format as dollars.cents with exactly 2 decimal places
+    const formatted = (centsNum / 100).toFixed(2);
+    setAmount(formatted);
   };
   const handleBackspace = () => {
     if (amount.length > 4) {
