@@ -244,8 +244,16 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
             <button className="p-0.5" onClick={() => {}}>
               <img src={iconMic} alt="Voice" className="w-3 h-3 opacity-50" />
             </button>
-            <button className="p-0.5" onClick={handleClearSearch}>
-              <img src={iconClose} alt="Close" className="w-3 h-3" />
+            {searchQuery && (
+              <button className="p-0.5" onClick={() => setSearchQuery("")}>
+                <img src={iconClose} alt="Clear" className="w-3 h-3 opacity-50" />
+              </button>
+            )}
+            <button 
+              className="p-0.5 ml-0.5" 
+              onClick={handleClearSearch}
+            >
+              <span className="text-[10px] font-medium text-muted-foreground">✕</span>
             </button>
           </div>
         ) : (
@@ -262,28 +270,33 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                     <img src={iconCalendarTx} alt="Calendar" className="w-4 h-4" />
                   </button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="end" sideOffset={8}>
-                  <div className="p-2 border-b border-border">
-                    <p className="text-[10px] font-medium text-foreground mb-1">Select Date Range</p>
-                    <p className="text-[9px] text-muted-foreground">Click once for single date, click two dates for range</p>
+                <PopoverContent 
+                  className="w-auto p-0 z-50" 
+                  align="end" 
+                  sideOffset={4}
+                  style={{ maxWidth: '200px' }}
+                >
+                  <div className="p-1.5 border-b border-border">
+                    <p className="text-[9px] font-medium text-foreground">Select Date Range</p>
+                    <p className="text-[8px] text-muted-foreground">Tap once for single date, twice for range</p>
                   </div>
                   <Calendar
                     mode="range"
                     selected={dateRange}
                     onSelect={setDateRange}
                     numberOfMonths={1}
-                    className={cn("p-2 pointer-events-auto")}
+                    className={cn("p-1 pointer-events-auto text-[9px] [&_.rdp-day]:h-6 [&_.rdp-day]:w-6 [&_.rdp-head_cell]:w-6 [&_.rdp-cell]:p-0 [&_.rdp-caption]:text-[10px] [&_.rdp-nav_button]:h-5 [&_.rdp-nav_button]:w-5")}
                   />
-                  <div className="p-2 border-t border-border flex gap-2">
+                  <div className="p-1.5 border-t border-border flex gap-1.5">
                     <button 
                       onClick={handleClearDateFilter}
-                      className="flex-1 px-2 py-1 text-[9px] text-muted-foreground bg-[#F1F2F5] rounded"
+                      className="flex-1 px-2 py-1 text-[8px] text-muted-foreground bg-[#F1F2F5] rounded"
                     >
                       Clear
                     </button>
                     <button 
                       onClick={() => setIsCalendarOpen(false)}
-                      className="flex-1 px-2 py-1 text-[9px] text-background bg-foreground rounded"
+                      className="flex-1 px-2 py-1 text-[8px] text-background bg-foreground rounded"
                     >
                       Apply
                     </button>
