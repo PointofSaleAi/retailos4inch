@@ -24,6 +24,7 @@ interface SplitCheckSummaryScreenProps {
   cartItems: CartItem[];
   numberOfChecks: number;
   splitMode: 'evenly' | 'custom';
+  paidChecks: Set<number>;
   onBack: () => void;
   onChargeCheck: (checkIndex: number, amount: number) => void;
   onResetSplit: () => void;
@@ -33,6 +34,7 @@ export const SplitCheckSummaryScreen = ({
   cartItems,
   numberOfChecks,
   splitMode,
+  paidChecks,
   onBack,
   onChargeCheck,
   onResetSplit
@@ -47,8 +49,8 @@ export const SplitCheckSummaryScreen = ({
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   
   const perCheckAmount = numberOfChecks > 0 ? total / numberOfChecks : total;
+  const remainingAmount = total - (paidChecks.size * perCheckAmount);
   
-  const [paidChecks, setPaidChecks] = useState<Set<number>>(new Set());
   const [expandedItems, setExpandedItems] = useState(false);
 
   const handleChargeCheck = (checkIndex: number) => {
@@ -76,7 +78,7 @@ export const SplitCheckSummaryScreen = ({
       {/* Amount Due */}
       <div className="text-center pb-3 flex-shrink-0 px-[6px]">
         <span className="text-[13px] font-bold text-black">Amount Due </span>
-        <span className="text-[13px] font-bold text-[#FF4757]">${total.toFixed(2)}</span>
+        <span className="text-[13px] font-bold text-[#FF4757]">${remainingAmount.toFixed(2)}</span>
       </div>
 
       {/* Order Info Bar */}
