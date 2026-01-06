@@ -207,8 +207,8 @@ export const OrderSummaryScreen = ({
       <div className="flex-1 overflow-y-auto">
         {/* Order Info Bar */}
         <div className="flex items-center justify-between bg-gray-100 px-2.5 py-1.5 mx-0 rounded mt-1">
-          <div className="flex items-center gap-1">
-            <span className="text-[9px]">🍽️</span>
+          <div className="flex items-center gap-0.5">
+            <span className="text-[10px] font-semibold text-black">#</span>
             <span className="text-[10px] font-semibold text-black">20</span>
           </div>
           <div className="flex items-center gap-1">
