@@ -43,6 +43,7 @@ import { EGiftCardDesignScreen } from "./EGiftCardDesignScreen";
 import { CheckBalanceScreen } from "./CheckBalanceScreen";
 import { GiftCardBalanceScreen } from "./GiftCardBalanceScreen";
 import { SplitCheckScreen } from "./SplitCheckScreen";
+import { SplitCheckSummaryScreen } from "./SplitCheckSummaryScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -157,6 +158,9 @@ export const RetailApp = () => {
   const [selectedGiftCardDesign, setSelectedGiftCardDesign] = useState('');
   const [checkBalanceCardNumber, setCheckBalanceCardNumber] = useState('');
   const [showSplitCheck, setShowSplitCheck] = useState(false);
+  const [showSplitCheckSummary, setShowSplitCheckSummary] = useState(false);
+  const [splitCheckCount, setSplitCheckCount] = useState(1);
+  const [splitCheckMode, setSplitCheckMode] = useState<'evenly' | 'custom'>('evenly');
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -987,6 +991,42 @@ export const RetailApp = () => {
       );
     }
 
+    if (showSplitCheckSummary) {
+      // Convert unified cart items to screen format
+      const cartItemsWithDetails = cartItems.map(item => ({
+        id: item.id,
+        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        price: item.price,
+        quantity: item.quantity,
+        image: item.type === 'product' ? (products.find(p => p.id === item.productId)?.image || '') : '',
+        size: item.size,
+        color: item.color
+      }));
+
+      return (
+        <SplitCheckSummaryScreen
+          cartItems={cartItemsWithDetails}
+          numberOfChecks={splitCheckCount}
+          splitMode={splitCheckMode}
+          onBack={() => {
+            setShowSplitCheckSummary(false);
+            setShowSplitCheck(true);
+          }}
+          onChargeCheck={(checkIndex, amount) => {
+            setPaymentAmount(amount);
+            setShowSplitCheckSummary(false);
+            setShowPaymentMethods(true);
+          }}
+          onResetSplit={() => {
+            setSplitCheckCount(1);
+            setSplitCheckMode('evenly');
+            setShowSplitCheckSummary(false);
+            setShowSplitCheck(true);
+          }}
+        />
+      );
+    }
+
     if (showSplitCheck) {
       // Convert unified cart items to SplitCheckScreen format
       const cartItemsWithDetails = cartItems.map(item => ({
@@ -1010,6 +1050,12 @@ export const RetailApp = () => {
             setPaymentAmount(amount);
             setShowSplitCheck(false);
             setShowPaymentProcessing(true);
+          }}
+          onProceedToSummary={(numberOfChecks, splitMode) => {
+            setSplitCheckCount(numberOfChecks);
+            setSplitCheckMode(splitMode);
+            setShowSplitCheck(false);
+            setShowSplitCheckSummary(true);
           }}
         />
       );
@@ -1304,7 +1350,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && !showAddTaxScreen && !showDiscountScreen && !showDeliveryChargeScreen && !showGiftCardMenu && !showSellPlasticGiftCard && !showSelectAmount && !showCustomAmount && !showRecipientEmail && !showCheckBalance && !showGiftCardBalance && !showEGiftCardDesign && !showSplitCheck && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && !showAddTaxScreen && !showDiscountScreen && !showDeliveryChargeScreen && !showGiftCardMenu && !showSellPlasticGiftCard && !showSelectAmount && !showCustomAmount && !showRecipientEmail && !showCheckBalance && !showGiftCardBalance && !showEGiftCardDesign && !showSplitCheck && !showSplitCheckSummary && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
