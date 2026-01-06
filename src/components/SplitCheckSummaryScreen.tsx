@@ -24,7 +24,7 @@ interface SplitCheckSummaryScreenProps {
   cartItems: CartItem[];
   numberOfChecks: number;
   splitMode: 'evenly' | 'custom';
-  paidChecks: Set<number>;
+  paidChecks: Map<number, string>;
   onBack: () => void;
   onChargeCheck: (checkIndex: number, amount: number) => void;
   onResetSplit: () => void;
@@ -144,34 +144,39 @@ export const SplitCheckSummaryScreen = ({
         </div>
 
         {/* Individual Checks - Stacked Vertically */}
-        {Array.from({ length: numberOfChecks }, (_, i) => (
-          <div 
-            key={i} 
-            className="border border-gray-200 rounded-lg px-3 py-2.5 mb-2"
-          >
-            <div className="flex items-center justify-between pb-2 border-b border-gray-200">
-              <div className="flex items-center gap-1.5">
-                <img src={iconDocument} alt="" className="w-[14px] h-[14px] opacity-60" />
-                <span className="text-[10px] font-semibold text-black">{getCheckLabel(i)}</span>
+        {Array.from({ length: numberOfChecks }, (_, i) => {
+          const isPaid = paidChecks.has(i);
+          const paymentMethod = paidChecks.get(i);
+          
+          return (
+            <div 
+              key={i} 
+              className="border border-gray-200 rounded-lg px-3 py-2.5 mb-2"
+            >
+              <div className="flex items-center justify-between pb-2 border-b border-gray-200">
+                <div className="flex items-center gap-1.5">
+                  <img src={iconDocument} alt="" className="w-[14px] h-[14px] opacity-60" />
+                  <span className="text-[10px] font-semibold text-black">{getCheckLabel(i)}</span>
+                </div>
+                <button
+                  onClick={() => handleChargeCheck(i)}
+                  disabled={isPaid}
+                  className={`px-3.5 py-1 rounded-full text-[8px] font-bold tracking-wide ${
+                    isPaid
+                      ? 'bg-green-500 text-white'
+                      : 'bg-[#4A4A4A] text-white'
+                  }`}
+                >
+                  {isPaid ? `PAID - ${paymentMethod}` : 'CHARGE'}
+                </button>
               </div>
-              <button
-                onClick={() => handleChargeCheck(i)}
-                disabled={paidChecks.has(i)}
-                className={`px-3.5 py-1 rounded-full text-[8px] font-bold tracking-wide ${
-                  paidChecks.has(i)
-                    ? 'bg-green-500 text-white'
-                    : 'bg-[#4A4A4A] text-white'
-                }`}
-              >
-                {paidChecks.has(i) ? 'PAID' : 'CHARGE'}
-              </button>
+              <div className="flex justify-between pt-2">
+                <span className="text-[10px] font-bold text-black">Total Amount</span>
+                <span className="text-[10px] font-bold text-black">${perCheckAmount.toFixed(2)}</span>
+              </div>
             </div>
-            <div className="flex justify-between pt-2">
-              <span className="text-[10px] font-bold text-black">Total Amount</span>
-              <span className="text-[10px] font-bold text-black">${perCheckAmount.toFixed(2)}</span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Bottom Action */}
