@@ -16,6 +16,7 @@ export const ManualCardPaymentScreen = ({
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
   const [activeField, setActiveField] = useState<'card' | 'expiry' | 'cvv'>('card');
+  const [showErrors, setShowErrors] = useState(false);
 
   const formatCardNumber = (value: string) => {
     const digits = value.replace(/\D/g, '').slice(0, 16);
@@ -31,6 +32,7 @@ export const ManualCardPaymentScreen = ({
   };
 
   const handleNumberClick = (num: string) => {
+    setShowErrors(false);
     if (activeField === 'card') {
       if (cardNumber.replace(/\s/g, '').length < 16) {
         setCardNumber(formatCardNumber(cardNumber.replace(/\s/g, '') + num));
@@ -47,6 +49,7 @@ export const ManualCardPaymentScreen = ({
   };
 
   const handleBackspace = () => {
+    setShowErrors(false);
     if (activeField === 'card') {
       const digits = cardNumber.replace(/\s/g, '');
       setCardNumber(formatCardNumber(digits.slice(0, -1)));
@@ -59,6 +62,7 @@ export const ManualCardPaymentScreen = ({
   };
 
   const handleClear = () => {
+    setShowErrors(false);
     if (activeField === 'card') {
       setCardNumber('');
     } else if (activeField === 'expiry') {
@@ -85,18 +89,40 @@ export const ManualCardPaymentScreen = ({
     return cvv.padEnd(3, 'X');
   };
 
-  const isValid = cardNumber.replace(/\s/g, '').length === 16 && 
-                  expiry.replace(/\D/g, '').length === 4 && 
-                  cvv.length === 3;
+  // Validation functions
+  const isCardNumberValid = () => cardNumber.replace(/\s/g, '').length === 16;
+  
+  const isExpiryValid = () => {
+    const digits = expiry.replace(/\D/g, '');
+    if (digits.length !== 4) return false;
+    const month = parseInt(digits.slice(0, 2), 10);
+    const year = parseInt(digits.slice(2, 4), 10);
+    if (month < 1 || month > 12) return false;
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear() % 100;
+    const currentMonth = currentDate.getMonth() + 1;
+    if (year < currentYear || (year === currentYear && month < currentMonth)) return false;
+    return true;
+  };
+  
+  const isCvvValid = () => cvv.length === 3;
+
+  const cardNumberError = showErrors && !isCardNumberValid();
+  const expiryError = showErrors && !isExpiryValid();
+  const cvvError = showErrors && !isCvvValid();
+
+  const isValid = isCardNumberValid() && isExpiryValid() && isCvvValid();
 
   const handleCharge = () => {
-    if (isValid) {
-      onCharge(totalDue, {
-        cardNumber: cardNumber.replace(/\s/g, ''),
-        expiry: expiry.replace(/\s/g, ''),
-        cvv
-      });
+    if (!isValid) {
+      setShowErrors(true);
+      return;
     }
+    onCharge(totalDue, {
+      cardNumber: cardNumber.replace(/\s/g, ''),
+      expiry: expiry.replace(/\s/g, ''),
+      cvv
+    });
   };
 
   const numberPad = [
@@ -124,12 +150,19 @@ export const ManualCardPaymentScreen = ({
 
       {/* Card Number Field */}
       <div className="px-2 mb-1 flex-shrink-0">
-        <label className="text-[8px] font-medium text-gray-500 uppercase tracking-wide">Card Number</label>
+        <div className="flex items-center justify-between">
+          <label className={`text-[8px] font-medium uppercase tracking-wide ${cardNumberError ? 'text-[#FF4D6A]' : 'text-gray-500'}`}>
+            Card Number
+          </label>
+          {cardNumberError && (
+            <span className="text-[7px] text-[#FF4D6A]">Invalid</span>
+          )}
+        </div>
         <button 
           onClick={() => setActiveField('card')}
-          className={`w-full h-[28px] rounded-full border ${activeField === 'card' ? 'border-gray-400' : 'border-gray-200'} bg-white flex items-center justify-center mt-0.5`}
+          className={`w-full h-[28px] rounded-full border ${cardNumberError ? 'border-[#FF4D6A]' : activeField === 'card' ? 'border-gray-400' : 'border-gray-200'} bg-white flex items-center justify-center mt-0.5`}
         >
-          <span className={`text-[11px] tracking-[2px] ${cardNumber ? 'text-gray-800' : 'text-gray-400'}`}>
+          <span className={`text-[11px] tracking-[2px] ${cardNumberError ? 'text-[#FF4D6A]' : cardNumber ? 'text-gray-800' : 'text-gray-400'}`}>
             {getDisplayCardNumber()}
           </span>
         </button>
@@ -138,23 +171,37 @@ export const ManualCardPaymentScreen = ({
       {/* Expiry and CVV Fields */}
       <div className="flex gap-2 px-2 mb-2 flex-shrink-0">
         <div className="flex-1">
-          <label className="text-[8px] font-medium text-gray-500 uppercase tracking-wide">Expiry Date</label>
+          <div className="flex items-center justify-between">
+            <label className={`text-[8px] font-medium uppercase tracking-wide ${expiryError ? 'text-[#FF4D6A]' : 'text-gray-500'}`}>
+              Expiry Date
+            </label>
+            {expiryError && (
+              <span className="text-[6px] text-[#FF4D6A]">Invalid</span>
+            )}
+          </div>
           <button 
             onClick={() => setActiveField('expiry')}
-            className={`w-full h-[26px] rounded-full border ${activeField === 'expiry' ? 'border-gray-400' : 'border-gray-200'} bg-white flex items-center justify-center mt-0.5`}
+            className={`w-full h-[26px] rounded-full border ${expiryError ? 'border-[#FF4D6A]' : activeField === 'expiry' ? 'border-gray-400' : 'border-gray-200'} bg-white flex items-center justify-center mt-0.5`}
           >
-            <span className={`text-[10px] ${expiry ? 'text-gray-800' : 'text-gray-400'}`}>
+            <span className={`text-[10px] ${expiryError ? 'text-[#FF4D6A]' : expiry ? 'text-gray-800' : 'text-gray-400'}`}>
               {getDisplayExpiry()}
             </span>
           </button>
         </div>
         <div className="flex-1">
-          <label className="text-[8px] font-medium text-gray-500 uppercase tracking-wide">CVV</label>
+          <div className="flex items-center justify-between">
+            <label className={`text-[8px] font-medium uppercase tracking-wide ${cvvError ? 'text-[#FF4D6A]' : 'text-gray-500'}`}>
+              CVV
+            </label>
+            {cvvError && (
+              <span className="text-[6px] text-[#FF4D6A]">Invalid</span>
+            )}
+          </div>
           <button 
             onClick={() => setActiveField('cvv')}
-            className={`w-full h-[26px] rounded-full border ${activeField === 'cvv' ? 'border-gray-400' : 'border-gray-200'} bg-white flex items-center justify-center mt-0.5`}
+            className={`w-full h-[26px] rounded-full border ${cvvError ? 'border-[#FF4D6A]' : activeField === 'cvv' ? 'border-gray-400' : 'border-gray-200'} bg-white flex items-center justify-center mt-0.5`}
           >
-            <span className={`text-[10px] ${cvv ? 'text-gray-800' : 'text-gray-400'}`}>
+            <span className={`text-[10px] ${cvvError ? 'text-[#FF4D6A]' : cvv ? 'text-gray-800' : 'text-gray-400'}`}>
               {getDisplayCvv()}
             </span>
           </button>
