@@ -42,6 +42,7 @@ import { RecipientEmailScreen } from "./RecipientEmailScreen";
 import { EGiftCardDesignScreen } from "./EGiftCardDesignScreen";
 import { CheckBalanceScreen } from "./CheckBalanceScreen";
 import { GiftCardBalanceScreen } from "./GiftCardBalanceScreen";
+import { SplitCheckScreen } from "./SplitCheckScreen";
 import productNew1 from "@/assets/product-new-1.png";
 import productNew2 from "@/assets/product-new-2.png";
 import productNew3 from "@/assets/product-new-3.png";
@@ -155,6 +156,7 @@ export const RetailApp = () => {
   const [giftCardAmount, setGiftCardAmount] = useState(0);
   const [selectedGiftCardDesign, setSelectedGiftCardDesign] = useState('');
   const [checkBalanceCardNumber, setCheckBalanceCardNumber] = useState('');
+  const [showSplitCheck, setShowSplitCheck] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -985,6 +987,34 @@ export const RetailApp = () => {
       );
     }
 
+    if (showSplitCheck) {
+      // Convert unified cart items to SplitCheckScreen format
+      const cartItemsWithDetails = cartItems.map(item => ({
+        id: item.id,
+        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        price: item.price,
+        quantity: item.quantity,
+        image: item.type === 'product' ? (products.find(p => p.id === item.productId)?.image || '') : '',
+        size: item.size,
+        color: item.color
+      }));
+
+      return (
+        <SplitCheckScreen
+          cartItems={cartItemsWithDetails}
+          onBack={() => {
+            setShowSplitCheck(false);
+            setShowPaymentMethods(true);
+          }}
+          onPay={(checkIndex, amount) => {
+            setPaymentAmount(amount);
+            setShowSplitCheck(false);
+            setShowPaymentProcessing(true);
+          }}
+        />
+      );
+    }
+
     if (showPaymentMethods) {
       const TAX_RATE = 0.08;
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -1006,6 +1036,9 @@ export const RetailApp = () => {
             } else if (method === 'Loyalty') {
               setShowPaymentMethods(false);
               setShowLoyaltyGuestList(true);
+            } else if (method === 'Split Check') {
+              setShowPaymentMethods(false);
+              setShowSplitCheck(true);
             } else {
               setShowPaymentMethods(false);
               setShowPaymentEntry(true);
