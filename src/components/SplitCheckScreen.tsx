@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Minus, Plus, ChevronLeft } from 'lucide-react';
 import iconDiscountTag from '@/assets/icon-discount-tag.png';
 import iconPrinter from '@/assets/icon-printer.png';
@@ -60,6 +60,7 @@ export const SplitCheckScreen = ({
   const [itemAssignments, setItemAssignments] = useState<ItemAssignment[]>([]);
   const [selectedItem, setSelectedItem] = useState<CartItem | null>(null);
   const [showAssignmentSheet, setShowAssignmentSheet] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const TAX_RATE = 0.15;
   const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -248,7 +249,8 @@ export const SplitCheckScreen = ({
 
   return (
     <div 
-      className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden px-[6px]"
+      ref={containerRef}
+      className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden px-[6px] relative"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
@@ -470,6 +472,7 @@ export const SplitCheckScreen = ({
         numberOfChecks={numberOfChecks}
         selectedChecks={selectedItem ? getItemAssignedChecks(selectedItem.id) : []}
         onSave={handleAssignmentSave}
+        containerRef={containerRef}
       />
     </div>
   );
