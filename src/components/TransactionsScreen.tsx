@@ -137,6 +137,15 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
 
   const allTransactions = [...transactions, ...mockTransactions];
 
+  // Calculate totals dynamically
+  const totalNetSale = allTransactions
+    .filter(t => t.status === "Paid")
+    .reduce((sum, t) => sum + t.amount, 0);
+  
+  const totalRefunded = allTransactions
+    .filter(t => t.status === "Refunded")
+    .reduce((sum, t) => sum + t.amount, 0);
+
   // Parse date string to Date object for comparison
   const parseTransactionDate = (dateStr: string): Date => {
     // Parse "27 Aug" format - assume current year
@@ -306,11 +315,11 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       <div className="flex-shrink-0 flex gap-2 px-3 py-2">
         <div className="flex-1 bg-[#D4F5E9] rounded-lg px-3 py-2">
           <p className="text-[9px] text-gray-700 font-medium">Total Net Sale</p>
-          <p className="text-[14px] text-gray-900 font-bold">$77.00</p>
+          <p className="text-[14px] text-gray-900 font-bold">${totalNetSale.toFixed(2)}</p>
         </div>
         <div className="flex-1 bg-[#F1F2F5] rounded-lg px-3 py-2">
           <p className="text-[9px] text-gray-700 font-medium">Total Refunded</p>
-          <p className="text-[14px] text-gray-900 font-bold">$20.00</p>
+          <p className="text-[14px] text-gray-900 font-bold">${totalRefunded.toFixed(2)}</p>
         </div>
       </div>
 
