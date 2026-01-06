@@ -1134,7 +1134,9 @@ export const RetailApp = () => {
       const TAX_RATE = 0.08;
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const tax = subtotal * TAX_RATE;
-      const totalDue = subtotal + tax;
+      const calculatedTotal = subtotal + tax;
+      // Use paymentAmount if set (for split checks), otherwise use calculated total
+      const totalDue = currentChargingCheckIndex !== null ? paymentAmount : calculatedTotal;
 
       return (
         <PaymentMethodsScreen
@@ -1167,7 +1169,9 @@ export const RetailApp = () => {
       const TAX_RATE = 0.08;
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const tax = subtotal * TAX_RATE;
-      const totalDue = subtotal + tax;
+      const calculatedTotal = subtotal + tax;
+      // Use paymentAmount if set (for split checks), otherwise use calculated total
+      const totalDue = currentChargingCheckIndex !== null ? paymentAmount : calculatedTotal;
 
       // Show CashPaymentScreen for Cash payment method
       if (selectedPaymentMethod === 'Cash') {
