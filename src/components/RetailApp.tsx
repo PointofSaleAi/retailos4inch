@@ -161,6 +161,8 @@ export const RetailApp = () => {
   const [showSplitCheckSummary, setShowSplitCheckSummary] = useState(false);
   const [splitCheckCount, setSplitCheckCount] = useState(1);
   const [splitCheckMode, setSplitCheckMode] = useState<'evenly' | 'custom'>('evenly');
+  const [paidSplitChecks, setPaidSplitChecks] = useState<Set<number>>(new Set());
+  const [currentChargingCheckIndex, setCurrentChargingCheckIndex] = useState<number | null>(null);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -983,9 +985,33 @@ export const RetailApp = () => {
         <PaymentSuccessScreen
           amount={paymentAmount}
           onClose={() => {
-            setShowPaymentSuccess(false);
-            setCartItems([]);
-            setActiveTab("order");
+            // Check if we were charging a split check
+            if (currentChargingCheckIndex !== null) {
+              // Mark the check as paid
+              setPaidSplitChecks(prev => new Set([...prev, currentChargingCheckIndex]));
+              
+              // Check if all checks are paid
+              const newPaidCount = paidSplitChecks.size + 1;
+              if (newPaidCount >= splitCheckCount) {
+                // All checks paid, complete the order
+                setShowPaymentSuccess(false);
+                setCartItems([]);
+                setCurrentChargingCheckIndex(null);
+                setPaidSplitChecks(new Set());
+                setSplitCheckCount(1);
+                setActiveTab("order");
+              } else {
+                // Go back to summary to pay remaining checks
+                setShowPaymentSuccess(false);
+                setCurrentChargingCheckIndex(null);
+                setShowSplitCheckSummary(true);
+              }
+            } else {
+              // Regular payment flow
+              setShowPaymentSuccess(false);
+              setCartItems([]);
+              setActiveTab("order");
+            }
           }}
         />
       );
@@ -1008,11 +1034,13 @@ export const RetailApp = () => {
           cartItems={cartItemsWithDetails}
           numberOfChecks={splitCheckCount}
           splitMode={splitCheckMode}
+          paidChecks={paidSplitChecks}
           onBack={() => {
             setShowSplitCheckSummary(false);
             setShowSplitCheck(true);
           }}
           onChargeCheck={(checkIndex, amount) => {
+            setCurrentChargingCheckIndex(checkIndex);
             setPaymentAmount(amount);
             setShowSplitCheckSummary(false);
             setShowPaymentMethods(true);
@@ -1020,6 +1048,7 @@ export const RetailApp = () => {
           onResetSplit={() => {
             setSplitCheckCount(1);
             setSplitCheckMode('evenly');
+            setPaidSplitChecks(new Set());
             setShowSplitCheckSummary(false);
             setShowSplitCheck(true);
           }}
