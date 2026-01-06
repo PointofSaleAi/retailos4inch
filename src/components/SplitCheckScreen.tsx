@@ -213,7 +213,7 @@ export const SplitCheckScreen = ({
       </div>
 
       {/* Number of Checks */}
-      <div className="flex items-center justify-between px-3 py-2.5 border-b border-gray-200 flex-shrink-0">
+      <div className="mx-3 px-3 py-2 border border-gray-300 rounded-lg flex items-center justify-between flex-shrink-0 mb-2">
         <span className="text-[11px] font-medium text-black">No. of Checks</span>
         <div className="flex items-center bg-black rounded-full">
           <button 
@@ -237,71 +237,75 @@ export const SplitCheckScreen = ({
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {/* Products List */}
-        <div className="px-3 py-2 border-b border-gray-200">
-          {cartItems.map(item => (
-            <div key={item.id} className="flex items-start justify-between py-1.5">
-              <div className="flex-1 min-w-0 pr-2">
-                <span className="text-[11px] font-medium text-black leading-tight">
-                  {item.quantity}  {item.name}
-                </span>
-              </div>
-              <span className="text-[11px] font-medium text-black flex-shrink-0">
-                ${(item.price * item.quantity).toFixed(2)}
-              </span>
-              {splitMode === 'custom' && (
-                <div className="flex items-center gap-1 ml-2">
-                  <button
-                    onClick={() => removeItemFromCheck(item.id)}
-                    className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full"
-                  >
-                    <Minus size={8} className="text-gray-600" />
-                  </button>
-                  <button
-                    onClick={() => addItemToCheck(item.id)}
-                    className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full"
-                  >
-                    <Plus size={8} className="text-gray-600" />
-                  </button>
+        <div className="mx-3 border border-gray-300 rounded-lg">
+          <div className="px-3 py-2">
+            {cartItems.map(item => (
+              <div key={item.id} className="flex items-start justify-between py-1.5">
+                <div className="flex-1 min-w-0 pr-2">
+                  <span className="text-[11px] font-medium text-black leading-tight">
+                    {item.quantity}  {item.name}
+                  </span>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+                <span className="text-[11px] font-medium text-black flex-shrink-0">
+                  ${(item.price * item.quantity).toFixed(2)}
+                </span>
+                {splitMode === 'custom' && (
+                  <div className="flex items-center gap-1 ml-2">
+                    <button
+                      onClick={() => removeItemFromCheck(item.id)}
+                      className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full"
+                    >
+                      <Minus size={8} className="text-gray-600" />
+                    </button>
+                    <button
+                      onClick={() => addItemToCheck(item.id)}
+                      className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full"
+                    >
+                      <Plus size={8} className="text-gray-600" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
 
-        {/* Billing Summary */}
-        <div className="px-3 py-2 space-y-1.5 border-b border-gray-200">
-          <div className="flex justify-between">
-            <span className="text-[11px] text-gray-500">Sub Total</span>
-            <span className="text-[11px] font-medium text-black">${subTotal.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-[11px] text-gray-500">Tax</span>
-            <span className="text-[11px] font-medium text-black">${tax.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-[11px] font-bold text-black">Total</span>
-            <span className="text-[11px] font-bold text-black">${total.toFixed(2)}</span>
+          {/* Billing Summary */}
+          <div className="px-3 py-2 space-y-1.5 border-t border-gray-200">
+            <div className="flex justify-between">
+              <span className="text-[11px] text-gray-500">Sub Total</span>
+              <span className="text-[11px] font-medium text-black">${subTotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[11px] text-gray-500">Tax</span>
+              <span className="text-[11px] font-medium text-black">${tax.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-[11px] font-bold text-black">Total</span>
+              <span className="text-[11px] font-bold text-black">${total.toFixed(2)}</span>
+            </div>
           </div>
         </div>
 
         {/* Check Summary */}
-        <div className="px-3 py-2">
-          <div className="flex items-center justify-between py-1.5 border-b border-gray-200">
-            <div className="flex items-center gap-2">
-              <img src={iconDocument} alt="" className="w-[16px] h-[16px]" />
-              <span className="text-[11px] font-medium text-black">
-                Check {activeCheckIndex + 1} {splitMode === 'evenly' ? 'a' : ''}
+        <div className="mx-3 mt-2 border border-gray-300 rounded-lg">
+          <div className="px-3 py-2">
+            <div className="flex items-center justify-between py-1.5 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                <img src={iconDocument} alt="" className="w-[16px] h-[16px]" />
+                <span className="text-[11px] font-medium text-black">
+                  Check {activeCheckIndex + 1} {splitMode === 'evenly' ? 'a' : ''}
+                </span>
+              </div>
+              <span className="text-[11px] text-gray-500">
+                {splitMode === 'evenly' ? totalItems : getCheckItems(activeCheckIndex).reduce((sum, i) => sum + i.quantity, 0)} Item
               </span>
             </div>
-            <span className="text-[11px] text-gray-500">
-              {splitMode === 'evenly' ? totalItems : getCheckItems(activeCheckIndex).reduce((sum, i) => sum + i.quantity, 0)} Item
-            </span>
-          </div>
-          <div className="flex justify-between py-2">
-            <span className="text-[11px] font-bold text-black">Total Amount</span>
-            <span className="text-[11px] font-bold text-black">
-              ${getCheckTotal(activeCheckIndex).toFixed(2)}
-            </span>
+            <div className="flex justify-between py-2">
+              <span className="text-[11px] font-bold text-black">Total Amount</span>
+              <span className="text-[11px] font-bold text-black">
+                ${getCheckTotal(activeCheckIndex).toFixed(2)}
+              </span>
+            </div>
           </div>
         </div>
 
