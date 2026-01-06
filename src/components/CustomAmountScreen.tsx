@@ -109,7 +109,7 @@ export const CustomAmountScreen = ({
       {/* Number Pad */}
       <div className="flex-1 flex flex-col px-[6px] pb-2">
         <div className="grid grid-cols-3 gap-1.5 flex-1">
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '00', 'C'].map(num => (
+          {['9', '8', '7', '6', '5', '4', '3', '2', '1', '0', '00', 'C'].map(num => (
             <button
               key={num}
               onClick={() => handleNumberClick(num)}

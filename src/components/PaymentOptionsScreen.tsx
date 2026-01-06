@@ -157,7 +157,7 @@ export const PaymentOptionsScreen = ({
       {/* Number Pad */}
       <div className="flex-1 pb-2 px-0">
         <div className="grid grid-cols-3 gap-[3px]">
-          {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-[32px] rounded-lg font-semibold text-[16px] transition-colors border border-[#E8E8E8] ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
+          {['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className={`h-[32px] rounded-lg font-semibold text-[16px] transition-colors border border-[#E8E8E8] ${num === 'C' ? 'bg-gray-100 text-red-500 hover:bg-gray-200' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'}`}>
               {num}
             </button>)}
         </div>

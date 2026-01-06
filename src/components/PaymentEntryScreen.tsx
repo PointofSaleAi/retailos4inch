@@ -82,7 +82,7 @@ export const PaymentEntryScreen = ({
       {/* Number Pad */}
       <div className="flex-1 pb-2 flex flex-col px-0">
         <div className="grid grid-cols-3 gap-1.5 flex-1">
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className="bg-white rounded-lg border border-gray-200 flex items-center justify-center text-[18px] font-semibold transition-colors active:bg-gray-100" style={{
+          {['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'C'].map(num => <button key={num} onClick={() => handleNumberClick(num)} className="bg-white rounded-lg border border-gray-200 flex items-center justify-center text-[18px] font-semibold transition-colors active:bg-gray-100" style={{
           color: num === 'C' ? '#C8102E' : '#1a1a1a',
           minHeight: '42px'
         }}>
