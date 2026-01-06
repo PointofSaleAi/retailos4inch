@@ -178,11 +178,11 @@ export const SplitCheckScreen = ({
         </div>
       </div>
 
-      {/* Split Mode Tabs */}
-      <div className="flex gap-1.5 flex-shrink-0 pb-2">
+      {/* Split Mode Tabs - Same line with horizontal scrolling */}
+      <div className="flex gap-1.5 flex-shrink-0 pb-2 overflow-x-auto scrollbar-hide">
         <button
           onClick={() => handleModeChange('evenly')}
-          className={`flex-1 h-[28px] rounded-full text-[8px] font-semibold flex items-center justify-center gap-1 transition-colors leading-tight ${
+          className={`flex-shrink-0 h-[28px] px-3 rounded-full text-[8px] font-semibold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap ${
             splitMode === 'evenly' 
               ? 'bg-black text-white' 
               : 'bg-gray-100 text-gray-500'
@@ -193,11 +193,11 @@ export const SplitCheckScreen = ({
             alt="" 
             className={`w-[14px] h-[14px] ${splitMode === 'evenly' ? 'invert' : ''}`} 
           />
-          <span className="leading-tight">SPLIT<br/>EVENLY</span>
+          SPLIT EVENLY
         </button>
         <button
           onClick={() => handleModeChange('custom')}
-          className={`flex-1 h-[28px] rounded-full text-[8px] font-semibold flex items-center justify-center gap-1 transition-colors leading-tight ${
+          className={`flex-shrink-0 h-[28px] px-3 rounded-full text-[8px] font-semibold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap ${
             splitMode === 'custom' 
               ? 'bg-black text-white' 
               : 'bg-gray-100 text-gray-500'
@@ -208,13 +208,13 @@ export const SplitCheckScreen = ({
             alt="" 
             className={`w-[14px] h-[14px] ${splitMode === 'custom' ? 'invert' : ''}`} 
           />
-          <span className="leading-tight">CUSTOM<br/>SP...</span>
+          CUSTOM SPLIT
         </button>
       </div>
 
       {/* Number of Checks */}
       <div className="px-3 py-2 border border-gray-300 rounded-lg flex items-center justify-between flex-shrink-0 mb-2">
-        <span className="text-[11px] font-medium text-black">No. of<br/>Checks</span>
+        <span className="text-[11px] font-medium text-black">No. of Checks</span>
         <div className="flex items-center bg-black rounded-full">
           <button 
             onClick={handleDecrementChecks}
@@ -286,6 +286,25 @@ export const SplitCheckScreen = ({
           </div>
         </div>
 
+        {/* Check Tabs - Above Check Summary */}
+        {numberOfChecks > 1 && (
+          <div className="flex gap-1 py-2 overflow-x-auto scrollbar-hide">
+            {Array.from({ length: numberOfChecks }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveCheckIndex(i)}
+                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-[9px] font-medium whitespace-nowrap ${
+                  activeCheckIndex === i 
+                    ? 'bg-black text-white' 
+                    : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                Check {i + 1}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Check Summary */}
         <div className="mt-2 border border-gray-300 rounded-lg">
           <div className="px-3 py-2">
@@ -308,25 +327,6 @@ export const SplitCheckScreen = ({
             </div>
           </div>
         </div>
-
-        {/* Check Tabs for multiple checks */}
-        {numberOfChecks > 1 && (
-          <div className="flex gap-1 py-1 overflow-x-auto">
-            {Array.from({ length: numberOfChecks }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveCheckIndex(i)}
-                className={`px-2.5 py-1 rounded-full text-[9px] font-medium whitespace-nowrap ${
-                  activeCheckIndex === i 
-                    ? 'bg-black text-white' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                Check {i + 1}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Bottom Actions */}
