@@ -66,42 +66,43 @@ export const SplitCheckSummaryScreen = ({
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-center py-2.5 flex-shrink-0 relative px-[6px]">
-        <button onClick={onBack} className="absolute left-[6px] p-0">
-          <ChevronLeft size={18} className="text-black" strokeWidth={2} />
+      <div className="flex items-center justify-center py-3 flex-shrink-0 relative px-[6px]">
+        <button onClick={onBack} className="absolute left-[6px] p-1 bg-gray-100 rounded-full">
+          <ChevronLeft size={16} className="text-black" strokeWidth={2} />
         </button>
-        <h1 className="text-[13px] font-semibold text-black">Order Summary</h1>
+        <h1 className="text-[12px] font-semibold text-black">Order Summary</h1>
       </div>
 
       {/* Amount Due */}
-      <div className="text-center pb-2 flex-shrink-0 px-[6px]">
-        <span className="text-[13px] font-semibold text-black">Amount Due </span>
-        <span className="text-[13px] font-semibold text-[#FF4757]">${total.toFixed(2)}</span>
+      <div className="text-center pb-3 flex-shrink-0 px-[6px]">
+        <span className="text-[13px] font-bold text-black">Amount Due </span>
+        <span className="text-[13px] font-bold text-[#FF4757]">${total.toFixed(2)}</span>
       </div>
 
       {/* Order Info Bar */}
-      <div className="flex items-center justify-between bg-gray-100 px-3 py-1.5 flex-shrink-0 mx-[6px] rounded">
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] text-gray-600">🍽️</span>
-          <span className="text-[10px] font-medium text-black">20</span>
+      <div className="flex items-center justify-between bg-gray-100 px-2.5 py-1.5 flex-shrink-0 mx-[6px] rounded">
+        <div className="flex items-center gap-1">
+          <span className="text-[9px]">🍽️</span>
+          <span className="text-[10px] font-semibold text-black">20</span>
         </div>
-        <span className="text-[10px] font-medium text-black">JOHN DOE</span>
-        <div className="flex items-center gap-1 bg-gray-800 px-2 py-0.5 rounded-full">
-          <span className="text-[8px] text-white">🕐 12:30 PM</span>
+        <span className="text-[10px] font-semibold text-black tracking-wide">JOHN DOE</span>
+        <div className="flex items-center gap-0.5 bg-[#3D3D3D] px-2 py-0.5 rounded-full">
+          <span className="text-[8px]">🕐</span>
+          <span className="text-[8px] text-white font-medium">12:30 PM</span>
         </div>
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-[6px] mt-2">
+      <div className="flex-1 overflow-y-auto px-[6px] mt-2.5">
         {/* Items Collapsible */}
         <button 
           onClick={() => setExpandedItems(!expandedItems)}
-          className="w-full flex items-center justify-between bg-gray-100 px-3 py-2 rounded-lg mb-2"
+          className="w-full flex items-center justify-between bg-gray-100 px-3 py-2.5 rounded-lg mb-2"
         >
-          <span className="text-[11px] font-medium text-black">{totalItems} Items</span>
+          <span className="text-[10px] font-semibold text-black">{totalItems} Items</span>
           <ChevronRight 
             size={14} 
-            className={`text-gray-600 transition-transform ${expandedItems ? 'rotate-90' : ''}`} 
+            className={`text-gray-500 transition-transform ${expandedItems ? 'rotate-90' : ''}`} 
           />
         </button>
 
@@ -109,34 +110,34 @@ export const SplitCheckSummaryScreen = ({
           <div className="bg-gray-50 rounded-lg px-3 py-2 mb-2">
             {cartItems.map(item => (
               <div key={item.id} className="flex justify-between py-1">
-                <span className="text-[10px] text-gray-700">{item.quantity}x {item.name}</span>
-                <span className="text-[10px] text-gray-700">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="text-[9px] text-gray-700">{item.quantity}x {item.name}</span>
+                <span className="text-[9px] text-gray-700">${(item.price * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>
         )}
 
         {/* Billing Summary */}
-        <div className="border border-gray-200 rounded-lg px-3 py-2 mb-2">
+        <div className="border border-gray-200 rounded-lg px-3 py-2.5 mb-2">
           <div className="flex justify-between py-1">
-            <span className="text-[10px] text-gray-600">Sub Total</span>
-            <span className="text-[10px] font-medium text-black">${subTotal.toFixed(2)}</span>
+            <span className="text-[10px] text-black">Sub Total</span>
+            <span className="text-[10px] text-black">${subTotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between py-1">
             <span className="text-[10px] text-[#FF4757]">Discount</span>
-            <span className="text-[10px] font-medium text-[#FF4757]">${DISCOUNT.toFixed(2)}</span>
+            <span className="text-[10px] text-[#FF4757]">${DISCOUNT.toFixed(2)}</span>
           </div>
           <div className="flex justify-between py-1">
-            <span className="text-[10px] text-gray-600">Service Charge</span>
-            <span className="text-[10px] font-medium text-black">${SERVICE_CHARGE.toFixed(2)}</span>
+            <span className="text-[10px] text-black">Service Charge</span>
+            <span className="text-[10px] text-black">${SERVICE_CHARGE.toFixed(2)}</span>
           </div>
           <div className="flex justify-between py-1">
-            <span className="text-[10px] text-gray-600">Tax</span>
-            <span className="text-[10px] font-medium text-black">${tax.toFixed(2)}</span>
+            <span className="text-[10px] text-black">Tax</span>
+            <span className="text-[10px] text-black">${tax.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between py-1.5 border-t border-gray-200 mt-1">
-            <span className="text-[11px] font-bold text-black">Total Amount</span>
-            <span className="text-[11px] font-bold text-black">${total.toFixed(2)}</span>
+          <div className="flex justify-between pt-2 mt-1.5 border-t border-gray-200">
+            <span className="text-[10px] font-bold text-black">Total Amount</span>
+            <span className="text-[10px] font-bold text-black">${total.toFixed(2)}</span>
           </div>
         </div>
 
@@ -144,26 +145,26 @@ export const SplitCheckSummaryScreen = ({
         {Array.from({ length: numberOfChecks }, (_, i) => (
           <div 
             key={i} 
-            className="border border-gray-200 rounded-lg px-3 py-2 mb-2"
+            className="border border-gray-200 rounded-lg px-3 py-2.5 mb-2"
           >
-            <div className="flex items-center justify-between pb-1.5 border-b border-gray-200">
-              <div className="flex items-center gap-2">
-                <img src={iconDocument} alt="" className="w-[14px] h-[14px]" />
-                <span className="text-[10px] font-medium text-black">{getCheckLabel(i)}</span>
+            <div className="flex items-center justify-between pb-2 border-b border-gray-200">
+              <div className="flex items-center gap-1.5">
+                <img src={iconDocument} alt="" className="w-[14px] h-[14px] opacity-60" />
+                <span className="text-[10px] font-semibold text-black">{getCheckLabel(i)}</span>
               </div>
               <button
                 onClick={() => handleChargeCheck(i)}
                 disabled={paidChecks.has(i)}
-                className={`px-3 py-1 rounded-full text-[9px] font-semibold ${
+                className={`px-3.5 py-1 rounded-full text-[8px] font-bold tracking-wide ${
                   paidChecks.has(i)
                     ? 'bg-green-500 text-white'
-                    : 'bg-gray-700 text-white'
+                    : 'bg-[#4A4A4A] text-white'
                 }`}
               >
                 {paidChecks.has(i) ? 'PAID' : 'CHARGE'}
               </button>
             </div>
-            <div className="flex justify-between pt-1.5">
+            <div className="flex justify-between pt-2">
               <span className="text-[10px] font-bold text-black">Total Amount</span>
               <span className="text-[10px] font-bold text-black">${perCheckAmount.toFixed(2)}</span>
             </div>
@@ -172,10 +173,10 @@ export const SplitCheckSummaryScreen = ({
       </div>
 
       {/* Bottom Action */}
-      <div className="px-[6px] py-2 flex-shrink-0">
+      <div className="px-[6px] py-3 flex-shrink-0">
         <button 
           onClick={onResetSplit}
-          className="w-full h-[32px] bg-gray-100 text-black rounded-full font-semibold text-[11px] flex items-center justify-center border border-gray-300"
+          className="w-full h-[34px] bg-gray-100 text-black rounded-full font-bold text-[10px] tracking-wide flex items-center justify-center border border-gray-300"
         >
           RESET EVEN SPLIT
         </button>
