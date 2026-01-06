@@ -15,6 +15,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
 } from '@/components/ui/alert-dialog';
+import { ItemAssignmentSheet } from './ItemAssignmentSheet';
 
 interface CartItem {
   id: string;
@@ -40,6 +41,12 @@ interface Check {
   items: { itemId: string; quantity: number }[];
 }
 
+// Track which checks each item is assigned to
+interface ItemAssignment {
+  itemId: string;
+  checkIndices: number[];
+}
+
 export const SplitCheckScreen = ({
   cartItems,
   onBack,
@@ -50,6 +57,9 @@ export const SplitCheckScreen = ({
   const [numberOfChecks, setNumberOfChecks] = useState(1);
   const [customChecks, setCustomChecks] = useState<Check[]>([{ id: 1, items: [] }]);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [itemAssignments, setItemAssignments] = useState<ItemAssignment[]>([]);
+  const [selectedItem, setSelectedItem] = useState<CartItem | null>(null);
+  const [showAssignmentSheet, setShowAssignmentSheet] = useState(false);
 
   const TAX_RATE = 0.15;
   const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -180,6 +190,62 @@ export const SplitCheckScreen = ({
     return `Check ${index + 1} - ${letters[index] || index + 1}`;
   };
 
+  const handleItemClick = (item: CartItem) => {
+    if (splitMode === 'custom') {
+      setSelectedItem(item);
+      setShowAssignmentSheet(true);
+    }
+  };
+
+  const getItemAssignedChecks = (itemId: string): number[] => {
+    const assignment = itemAssignments.find(a => a.itemId === itemId);
+    return assignment?.checkIndices || [];
+  };
+
+  const handleAssignmentSave = (selectedChecks: number[]) => {
+    if (!selectedItem) return;
+    
+    // Update item assignments
+    setItemAssignments(prev => {
+      const existing = prev.find(a => a.itemId === selectedItem.id);
+      if (existing) {
+        return prev.map(a => 
+          a.itemId === selectedItem.id 
+            ? { ...a, checkIndices: selectedChecks }
+            : a
+        );
+      } else {
+        return [...prev, { itemId: selectedItem.id, checkIndices: selectedChecks }];
+      }
+    });
+
+    // Update customChecks based on assignments
+    setCustomChecks(prev => {
+      return prev.map((check, checkIndex) => {
+        const isAssigned = selectedChecks.includes(checkIndex);
+        const existingItem = check.items.find(ci => ci.itemId === selectedItem.id);
+        
+        if (isAssigned && !existingItem) {
+          // Add item to this check (split quantity evenly among selected checks)
+          const quantityPerCheck = Math.ceil(selectedItem.quantity / selectedChecks.length);
+          return {
+            ...check,
+            items: [...check.items, { itemId: selectedItem.id, quantity: quantityPerCheck }]
+          };
+        } else if (!isAssigned && existingItem) {
+          // Remove item from this check
+          return {
+            ...check,
+            items: check.items.filter(ci => ci.itemId !== selectedItem.id)
+          };
+        }
+        return check;
+      });
+    });
+
+    setSelectedItem(null);
+  };
+
   return (
     <div 
       className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden px-[6px]"
@@ -263,7 +329,13 @@ export const SplitCheckScreen = ({
         <div className="border border-gray-300 rounded-lg">
           <div className="px-3 py-2">
             {cartItems.map(item => (
-              <div key={item.id} className="flex items-start justify-between py-1.5">
+              <div 
+                key={item.id} 
+                className={`flex items-start justify-between py-1.5 ${
+                  splitMode === 'custom' ? 'cursor-pointer active:bg-gray-50' : ''
+                }`}
+                onClick={() => handleItemClick(item)}
+              >
                 <div className="flex-1 min-w-0 pr-2">
                   <span className="text-[11px] font-medium text-black leading-tight">
                     {item.quantity}  {item.name}
@@ -389,6 +461,16 @@ export const SplitCheckScreen = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Item Assignment Sheet */}
+      <ItemAssignmentSheet
+        open={showAssignmentSheet}
+        onOpenChange={setShowAssignmentSheet}
+        itemName={selectedItem?.name || ''}
+        numberOfChecks={numberOfChecks}
+        selectedChecks={selectedItem ? getItemAssignedChecks(selectedItem.id) : []}
+        onSave={handleAssignmentSave}
+      />
     </div>
   );
 };
