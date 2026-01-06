@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
+import iconContactless from '@/assets/icon-contactless.png';
 
 interface ManualCCPaymentScreenProps {
   totalDue: number;
@@ -27,56 +28,44 @@ export const ManualCCPaymentScreen = ({
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="h-[40px] relative flex items-center justify-center">
+      <div className="h-[36px] relative flex items-center justify-center">
         <button 
           onClick={onBack} 
           className="absolute left-2 p-1"
           disabled={isProcessing}
         >
-          <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
+          <img src={iconBackArrow} alt="Back" className="w-[14px] h-[14px]" />
         </button>
-        <h1 className="text-[12px] font-semibold text-gray-900">Pay by Manual CC</h1>
+        <h1 className="text-[11px] font-semibold text-gray-900">Pay by Manual CC</h1>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4">
+      {/* Content - positioned to match reference */}
+      <div className="flex-1 flex flex-col items-center pt-[50px]">
         {/* Contactless Icon */}
-        <div className="w-[64px] h-[64px] rounded-full border-[2px] border-gray-900 flex items-center justify-center mb-6">
-          <svg 
-            width="32" 
-            height="32" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-            className="text-gray-900"
-          >
-            <circle cx="12" cy="12" r="2" fill="currentColor" />
-            <path d="M16.24 7.76a6 6 0 0 1 0 8.49" />
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-          </svg>
-        </div>
+        <img 
+          src={iconContactless} 
+          alt="Contactless" 
+          className="w-[60px] h-[60px] object-contain mb-[24px]"
+        />
 
         {/* Instruction Text */}
-        <p className="text-[11px] text-gray-700 text-center mb-4">
+        <p className="text-[10px] text-gray-800 text-center mb-[8px]">
           Please tap credit card on reader
         </p>
 
         {/* Total Amount */}
-        <div className="flex items-baseline gap-2 mb-6">
-          <span className="text-[12px] font-semibold text-gray-900">Total Amount</span>
-          <span className="text-[14px] font-bold text-gray-900">${totalDue.toFixed(2)}</span>
+        <div className="flex items-baseline gap-[6px]">
+          <span className="text-[11px] font-bold text-gray-900">Total Amount</span>
+          <span className="text-[13px] font-bold text-gray-900">${totalDue.toFixed(2)}</span>
         </div>
       </div>
 
       {/* Bottom Button */}
-      <div className="px-4 pb-6">
+      <div className="px-3 pb-[50px]">
         <button
           onClick={handleSimulateTap}
           disabled={isProcessing}
-          className="w-full h-[40px] bg-[#1A1A1A] text-white rounded-full font-bold text-[11px] tracking-wide disabled:opacity-70"
+          className="w-full h-[36px] bg-[#1A1A1A] text-white rounded-full font-bold text-[10px] tracking-wide disabled:opacity-70"
         >
           {isProcessing ? 'PROCESSING' : 'SIMULATE CARD TAP'}
         </button>
