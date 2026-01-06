@@ -228,47 +228,50 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   return (
     <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat, sans-serif' }}>
       {/* Header */}
-      <div className="flex-shrink-0 flex items-center justify-between px-3 py-2.5">
+      <div className="flex-shrink-0 px-3 py-2">
         {showSearch ? (
-          <div className="flex-1 flex items-center gap-2 bg-[#F1F2F5] rounded-full px-3" style={{ height: '32px' }}>
-            <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px] opacity-60" />
+          <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-3" style={{ height: '34px' }}>
+            <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px] opacity-50" />
             <input
               ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by product, ord..."
+              placeholder="Search Products..."
               className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none"
               style={{ fontFamily: 'Montserrat, sans-serif' }}
             />
+            <button className="p-0.5 flex items-center justify-center">
+              <img src={iconMic} alt="Mic" className="w-[16px] h-[16px] opacity-60" />
+            </button>
             <button 
               className="p-0.5 flex items-center justify-center" 
               onClick={handleClearSearch}
             >
-              <span className="text-[14px] text-muted-foreground">×</span>
+              <img src={iconClose} alt="Close" className="w-[14px] h-[14px] opacity-60" />
             </button>
           </div>
         ) : (
-          <>
+          <div className="flex items-center justify-between">
             <h1 className="text-foreground font-semibold" style={{ fontSize: '12px' }}>Transactions</h1>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <button className="p-1" onClick={() => setShowSearch(true)}>
-                <img src={iconSearchTx} alt="Search" className="w-4 h-4" />
+                <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px]" />
               </button>
               
               <button 
                 className={cn("p-1", dateRange?.from && "bg-primary/10 rounded")}
                 onClick={() => setIsCalendarOpen(!isCalendarOpen)}
               >
-                <img src={iconCalendarTx} alt="Calendar" className="w-4 h-4" />
+                <img src={iconCalendarTx} alt="Calendar" className="w-[16px] h-[16px]" />
               </button>
 
               <div className="relative" ref={sortMenuRef}>
                 <button 
-                  className={cn("p-1 px-[6px] py-[6px]", sortOrder !== "newest" && "bg-primary/10 rounded")}
+                  className={cn("p-1", sortOrder !== "newest" && "bg-primary/10 rounded")}
                   onClick={() => setShowSortMenu(!showSortMenu)}
                 >
-                  <img src={iconMenuTx} alt="Menu" className="w-4 h-4" />
+                  <img src={iconMenuTx} alt="Menu" className="w-[16px] h-[16px]" />
                 </button>
                 
                 {showSortMenu && (
@@ -295,8 +298,20 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                 )}
               </div>
             </div>
-          </>
+          </div>
         )}
+      </div>
+
+      {/* Summary Section */}
+      <div className="flex-shrink-0 flex gap-2 px-3 py-2">
+        <div className="flex-1 bg-[#D4F5E9] rounded-lg px-3 py-2">
+          <p className="text-[9px] text-gray-700 font-medium">Total Net Sale</p>
+          <p className="text-[14px] text-gray-900 font-bold">$77.00</p>
+        </div>
+        <div className="flex-1 bg-[#F1F2F5] rounded-lg px-3 py-2">
+          <p className="text-[9px] text-gray-700 font-medium">Total Refunded</p>
+          <p className="text-[14px] text-gray-900 font-bold">$20.00</p>
+        </div>
       </div>
 
       {/* Active Date Filter Indicator */}
@@ -363,15 +378,14 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
 
       {/* Filters */}
       {!isCalendarOpen && (
-        <div className="flex-shrink-0 flex gap-1.5 overflow-x-auto scrollbar-hide px-[6px] py-[6px]">
-          {(["All", "Pending", "Ordering", "Refunded", "Paid", "Payment Progress", "Completed", "Cancelled"] as FilterType[]).map(filter => (
+        <div className="flex-shrink-0 flex gap-2 px-3 py-1">
+          {(["All", "Ordering", "Refunded", "Paid"] as FilterType[]).map(filter => (
             <button 
               key={filter} 
               onClick={() => setActiveFilter(filter)} 
-              className={`px-3 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${
-                activeFilter === filter ? "bg-foreground text-background" : "text-muted-foreground"
-              }`} 
-              style={activeFilter !== filter ? { backgroundColor: '#F1F2F5' } : undefined}
+              className={`px-3 py-1.5 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${
+                activeFilter === filter ? "bg-foreground text-background" : "bg-[#F5F5F5] text-gray-700"
+              }`}
             >
               {filter}
             </button>
