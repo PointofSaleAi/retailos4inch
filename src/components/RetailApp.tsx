@@ -163,6 +163,7 @@ export const RetailApp = () => {
   const [splitCheckMode, setSplitCheckMode] = useState<'evenly' | 'custom'>('evenly');
   const [paidSplitChecks, setPaidSplitChecks] = useState<Set<number>>(new Set());
   const [currentChargingCheckIndex, setCurrentChargingCheckIndex] = useState<number | null>(null);
+  const [showAllChecksCompleteDialog, setShowAllChecksCompleteDialog] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -980,6 +981,47 @@ export const RetailApp = () => {
       );
     }
 
+    if (showAllChecksCompleteDialog) {
+      return (
+        <div 
+          className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden items-center justify-center px-4"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+        >
+          <div className="text-center mb-6">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <span className="text-green-600 text-xl">✓</span>
+            </div>
+            <h2 className="text-[12px] font-bold text-black mb-2">All Checks Paid!</h2>
+            <p className="text-[10px] text-gray-600">All split checks have been successfully paid. Complete the order?</p>
+          </div>
+          <div className="w-full space-y-2">
+            <button
+              onClick={() => {
+                setShowAllChecksCompleteDialog(false);
+                setCartItems([]);
+                setCurrentChargingCheckIndex(null);
+                setPaidSplitChecks(new Set());
+                setSplitCheckCount(1);
+                setActiveTab("order");
+              }}
+              className="w-full h-[32px] bg-[#4A4A4A] text-white rounded-full font-bold text-[10px]"
+            >
+              COMPLETE ORDER
+            </button>
+            <button
+              onClick={() => {
+                setShowAllChecksCompleteDialog(false);
+                setShowSplitCheckSummary(true);
+              }}
+              className="w-full h-[32px] bg-gray-100 text-black rounded-full font-semibold text-[10px] border border-gray-300"
+            >
+              BACK TO SUMMARY
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     if (showPaymentSuccess) {
       return (
         <PaymentSuccessScreen
@@ -988,18 +1030,15 @@ export const RetailApp = () => {
             // Check if we were charging a split check
             if (currentChargingCheckIndex !== null) {
               // Mark the check as paid
-              setPaidSplitChecks(prev => new Set([...prev, currentChargingCheckIndex]));
+              const newPaidChecks = new Set([...paidSplitChecks, currentChargingCheckIndex]);
+              setPaidSplitChecks(newPaidChecks);
               
               // Check if all checks are paid
-              const newPaidCount = paidSplitChecks.size + 1;
-              if (newPaidCount >= splitCheckCount) {
-                // All checks paid, complete the order
+              if (newPaidChecks.size >= splitCheckCount) {
+                // All checks paid, show confirmation dialog
                 setShowPaymentSuccess(false);
-                setCartItems([]);
                 setCurrentChargingCheckIndex(null);
-                setPaidSplitChecks(new Set());
-                setSplitCheckCount(1);
-                setActiveTab("order");
+                setShowAllChecksCompleteDialog(true);
               } else {
                 // Go back to summary to pay remaining checks
                 setShowPaymentSuccess(false);
