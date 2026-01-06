@@ -83,8 +83,8 @@ export const SplitCheckSummaryScreen = ({
 
       {/* Order Info Bar */}
       <div className="flex items-center justify-between bg-gray-100 px-2.5 py-1.5 flex-shrink-0 mx-[6px] rounded">
-        <div className="flex items-center gap-1">
-          <span className="text-[9px]">🍽️</span>
+        <div className="flex items-center gap-0.5">
+          <span className="text-[10px] font-semibold text-black">#</span>
           <span className="text-[10px] font-semibold text-black">20</span>
         </div>
         <span className="text-[10px] font-semibold text-black tracking-wide">JOHN DOE</span>
