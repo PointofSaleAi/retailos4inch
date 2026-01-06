@@ -208,7 +208,7 @@ export const CashPaymentScreen = ({
         ) : (
           /* Number Pad */
           <div className="grid grid-cols-3 gap-2 flex-1">
-            {['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'C'].map(
+            {['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'C'].map(
               (num) => (
                 <button
                   key={num}
