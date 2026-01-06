@@ -159,11 +159,11 @@ export const SplitCheckScreen = ({
 
   return (
     <div 
-      className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden"
+      className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden px-[6px]"
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2.5 flex-shrink-0">
+      <div className="flex items-center justify-between py-2.5 flex-shrink-0">
         <button onClick={onBack} className="p-0">
           <ChevronLeft size={18} className="text-black" strokeWidth={2} />
         </button>
@@ -179,10 +179,10 @@ export const SplitCheckScreen = ({
       </div>
 
       {/* Split Mode Tabs */}
-      <div className="flex px-3 gap-1.5 flex-shrink-0 pb-2">
+      <div className="flex gap-1.5 flex-shrink-0 pb-2">
         <button
           onClick={() => handleModeChange('evenly')}
-          className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
+          className={`flex-1 h-[28px] rounded-full text-[8px] font-semibold flex items-center justify-center gap-1 transition-colors leading-tight ${
             splitMode === 'evenly' 
               ? 'bg-black text-white' 
               : 'bg-gray-100 text-gray-500'
@@ -193,11 +193,11 @@ export const SplitCheckScreen = ({
             alt="" 
             className={`w-[14px] h-[14px] ${splitMode === 'evenly' ? 'invert' : ''}`} 
           />
-          SPLIT EVENLY
+          <span className="leading-tight">SPLIT<br/>EVENLY</span>
         </button>
         <button
           onClick={() => handleModeChange('custom')}
-          className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
+          className={`flex-1 h-[28px] rounded-full text-[8px] font-semibold flex items-center justify-center gap-1 transition-colors leading-tight ${
             splitMode === 'custom' 
               ? 'bg-black text-white' 
               : 'bg-gray-100 text-gray-500'
@@ -208,13 +208,13 @@ export const SplitCheckScreen = ({
             alt="" 
             className={`w-[14px] h-[14px] ${splitMode === 'custom' ? 'invert' : ''}`} 
           />
-          CUSTOM SP...
+          <span className="leading-tight">CUSTOM<br/>SP...</span>
         </button>
       </div>
 
       {/* Number of Checks */}
-      <div className="mx-3 px-3 py-2 border border-gray-300 rounded-lg flex items-center justify-between flex-shrink-0 mb-2">
-        <span className="text-[11px] font-medium text-black">No. of Checks</span>
+      <div className="px-3 py-2 border border-gray-300 rounded-lg flex items-center justify-between flex-shrink-0 mb-2">
+        <span className="text-[11px] font-medium text-black">No. of<br/>Checks</span>
         <div className="flex items-center bg-black rounded-full">
           <button 
             onClick={handleDecrementChecks}
@@ -237,7 +237,7 @@ export const SplitCheckScreen = ({
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {/* Products List */}
-        <div className="mx-3 border border-gray-300 rounded-lg">
+        <div className="border border-gray-300 rounded-lg">
           <div className="px-3 py-2">
             {cartItems.map(item => (
               <div key={item.id} className="flex items-start justify-between py-1.5">
@@ -287,7 +287,7 @@ export const SplitCheckScreen = ({
         </div>
 
         {/* Check Summary */}
-        <div className="mx-3 mt-2 border border-gray-300 rounded-lg">
+        <div className="mt-2 border border-gray-300 rounded-lg">
           <div className="px-3 py-2">
             <div className="flex items-center justify-between py-1.5 border-b border-gray-200">
               <div className="flex items-center gap-2">
@@ -311,7 +311,7 @@ export const SplitCheckScreen = ({
 
         {/* Check Tabs for multiple checks */}
         {numberOfChecks > 1 && (
-          <div className="flex gap-1 px-3 py-1 overflow-x-auto">
+          <div className="flex gap-1 py-1 overflow-x-auto">
             {Array.from({ length: numberOfChecks }, (_, i) => (
               <button
                 key={i}
@@ -330,7 +330,7 @@ export const SplitCheckScreen = ({
       </div>
 
       {/* Bottom Actions */}
-      <div className="flex items-center gap-2 px-3 py-2 border-t border-gray-200 flex-shrink-0">
+      <div className="flex items-center gap-2 py-2 border-t border-gray-200 flex-shrink-0">
         <button className="w-[32px] h-[32px] flex items-center justify-center">
           <img src={iconSave} alt="Save" className="w-[22px] h-[22px]" />
         </button>
