@@ -7,6 +7,14 @@ import iconCustomSplit from '@/assets/icon-custom-split.png';
 import iconSave from '@/assets/icon-save.png';
 import iconClearRed from '@/assets/icon-clear-red.png';
 import iconDocument from '@/assets/icon-document.png';
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+} from '@/components/ui/alert-dialog';
 
 interface CartItem {
   id: string;
@@ -22,6 +30,7 @@ interface SplitCheckScreenProps {
   cartItems: CartItem[];
   onBack: () => void;
   onPay: (checkIndex: number, amount: number) => void;
+  onProceedToSummary?: (numberOfChecks: number, splitMode: 'evenly' | 'custom') => void;
 }
 
 type SplitMode = 'evenly' | 'custom';
@@ -34,12 +43,13 @@ interface Check {
 export const SplitCheckScreen = ({
   cartItems,
   onBack,
-  onPay
+  onPay,
+  onProceedToSummary
 }: SplitCheckScreenProps) => {
   const [splitMode, setSplitMode] = useState<SplitMode>('evenly');
   const [numberOfChecks, setNumberOfChecks] = useState(1);
-  const [activeCheckIndex, setActiveCheckIndex] = useState(0);
   const [customChecks, setCustomChecks] = useState<Check[]>([{ id: 1, items: [] }]);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   const TAX_RATE = 0.15;
   const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -65,9 +75,6 @@ export const SplitCheckScreen = ({
       if (splitMode === 'custom') {
         setCustomChecks(prev => prev.slice(0, newCount));
       }
-      if (activeCheckIndex >= newCount) {
-        setActiveCheckIndex(newCount - 1);
-      }
     }
   };
 
@@ -92,7 +99,7 @@ export const SplitCheckScreen = ({
     return itemTotal + (itemTotal * TAX_RATE);
   };
 
-  const addItemToCheck = (itemId: string) => {
+  const addItemToCheck = (itemId: string, checkIndex: number) => {
     if (splitMode !== 'custom') return;
     
     const item = cartItems.find(i => i.id === itemId);
@@ -105,7 +112,7 @@ export const SplitCheckScreen = ({
 
     if (totalAssigned < item.quantity) {
       setCustomChecks(prev => prev.map((check, idx) => {
-        if (idx !== activeCheckIndex) return check;
+        if (idx !== checkIndex) return check;
         const existingItem = check.items.find(ci => ci.itemId === itemId);
         if (existingItem) {
           return {
@@ -124,11 +131,11 @@ export const SplitCheckScreen = ({
     }
   };
 
-  const removeItemFromCheck = (itemId: string) => {
+  const removeItemFromCheck = (itemId: string, checkIndex: number) => {
     if (splitMode !== 'custom') return;
     
     setCustomChecks(prev => prev.map((check, idx) => {
-      if (idx !== activeCheckIndex) return check;
+      if (idx !== checkIndex) return check;
       const existingItem = check.items.find(ci => ci.itemId === itemId);
       if (existingItem && existingItem.quantity > 1) {
         return {
@@ -155,6 +162,22 @@ export const SplitCheckScreen = ({
       }));
       setCustomChecks(checks);
     }
+  };
+
+  const handlePayClick = () => {
+    setShowDisclaimer(true);
+  };
+
+  const handleDisclaimerProceed = () => {
+    setShowDisclaimer(false);
+    if (onProceedToSummary) {
+      onProceedToSummary(numberOfChecks, splitMode);
+    }
+  };
+
+  const getCheckLabel = (index: number) => {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    return `Check ${index + 1} - ${letters[index] || index + 1}`;
   };
 
   return (
@@ -249,22 +272,6 @@ export const SplitCheckScreen = ({
                 <span className="text-[11px] font-medium text-black flex-shrink-0">
                   ${(item.price * item.quantity).toFixed(2)}
                 </span>
-                {splitMode === 'custom' && (
-                  <div className="flex items-center gap-1 ml-2">
-                    <button
-                      onClick={() => removeItemFromCheck(item.id)}
-                      className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full"
-                    >
-                      <Minus size={8} className="text-gray-600" />
-                    </button>
-                    <button
-                      onClick={() => addItemToCheck(item.id)}
-                      className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full"
-                    >
-                      <Plus size={8} className="text-gray-600" />
-                    </button>
-                  </div>
-                )}
               </div>
             ))}
           </div>
@@ -286,47 +293,59 @@ export const SplitCheckScreen = ({
           </div>
         </div>
 
-        {/* Check Tabs - Above Check Summary */}
+        {/* Stacked Check Summaries */}
         {numberOfChecks > 1 && (
-          <div className="flex gap-1 py-2 overflow-x-auto scrollbar-hide">
+          <div className="mt-2 space-y-2">
             {Array.from({ length: numberOfChecks }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveCheckIndex(i)}
-                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-[9px] font-medium whitespace-nowrap ${
-                  activeCheckIndex === i 
-                    ? 'bg-black text-white' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                Check {i + 1}
-              </button>
+              <div key={i} className="border border-gray-300 rounded-lg">
+                <div className="px-3 py-2">
+                  <div className="flex items-center justify-between py-1.5 border-b border-gray-200">
+                    <div className="flex items-center gap-2">
+                      <img src={iconDocument} alt="" className="w-[14px] h-[14px]" />
+                      <span className="text-[10px] font-medium text-black">
+                        {getCheckLabel(i)}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-gray-500">
+                      {splitMode === 'evenly' ? totalItems : getCheckItems(i).reduce((sum, item) => sum + item.quantity, 0)} Items
+                    </span>
+                  </div>
+                  <div className="flex justify-between py-1.5">
+                    <span className="text-[10px] font-bold text-black">Total Amount</span>
+                    <span className="text-[10px] font-bold text-black">
+                      ${getCheckTotal(i).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         )}
 
-        {/* Check Summary */}
-        <div className="mt-2 border border-gray-300 rounded-lg">
-          <div className="px-3 py-2">
-            <div className="flex items-center justify-between py-1.5 border-b border-gray-200">
-              <div className="flex items-center gap-2">
-                <img src={iconDocument} alt="" className="w-[16px] h-[16px]" />
-                <span className="text-[11px] font-medium text-black">
-                  Check {activeCheckIndex + 1} {splitMode === 'evenly' ? 'a' : ''}
+        {/* Single Check Summary (when only 1 check) */}
+        {numberOfChecks === 1 && (
+          <div className="mt-2 border border-gray-300 rounded-lg">
+            <div className="px-3 py-2">
+              <div className="flex items-center justify-between py-1.5 border-b border-gray-200">
+                <div className="flex items-center gap-2">
+                  <img src={iconDocument} alt="" className="w-[16px] h-[16px]" />
+                  <span className="text-[11px] font-medium text-black">
+                    Check 1
+                  </span>
+                </div>
+                <span className="text-[11px] text-gray-500">
+                  {totalItems} Items
                 </span>
               </div>
-              <span className="text-[11px] text-gray-500">
-                {splitMode === 'evenly' ? totalItems : getCheckItems(activeCheckIndex).reduce((sum, i) => sum + i.quantity, 0)} Item
-              </span>
-            </div>
-            <div className="flex justify-between py-2">
-              <span className="text-[11px] font-bold text-black">Total Amount</span>
-              <span className="text-[11px] font-bold text-black">
-                ${getCheckTotal(activeCheckIndex).toFixed(2)}
-              </span>
+              <div className="flex justify-between py-2">
+                <span className="text-[11px] font-bold text-black">Total Amount</span>
+                <span className="text-[11px] font-bold text-black">
+                  ${getCheckTotal(0).toFixed(2)}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Bottom Actions */}
@@ -338,12 +357,38 @@ export const SplitCheckScreen = ({
           <img src={iconClearRed} alt="Clear" className="w-[22px] h-[22px]" />
         </button>
         <button 
-          onClick={() => onPay(activeCheckIndex, getCheckTotal(activeCheckIndex))}
+          onClick={handlePayClick}
           className="flex-1 h-[32px] bg-black text-white rounded-full font-semibold text-[12px] flex items-center justify-center"
         >
           PAY
         </button>
       </div>
+
+      {/* Disclaimer Dialog */}
+      <AlertDialog open={showDisclaimer} onOpenChange={setShowDisclaimer}>
+        <AlertDialogContent className="w-[160px] rounded-2xl p-4" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-[13px] font-bold text-black">Disclaimer</AlertDialogTitle>
+            <AlertDialogDescription className="text-[10px] text-gray-700 leading-relaxed">
+              Product additions are not allowed after check has been split. Please remerge and save to add more items or start a new order
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex flex-row gap-2 mt-3">
+            <button
+              onClick={() => setShowDisclaimer(false)}
+              className="flex-1 h-[28px] bg-gray-100 text-black rounded-full font-semibold text-[10px]"
+            >
+              Close
+            </button>
+            <button
+              onClick={handleDisclaimerProceed}
+              className="flex-1 h-[28px] bg-gradient-to-r from-gray-700 to-gray-900 text-white rounded-full font-semibold text-[10px]"
+            >
+              Proceed
+            </button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
