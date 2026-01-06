@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { RefreshCw } from "lucide-react";
 import { format, isWithinInterval, parse, isSameDay } from "date-fns";
 import iconDocument from "@/assets/icon-document.png";
 import iconGrid from "@/assets/icon-grid-tx.png";
@@ -116,8 +117,15 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [pullDistance, setPullDistance] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef(0);
+  const isPulling = useRef(false);
+
+  const PULL_THRESHOLD = 50;
 
   useEffect(() => {
     if (showSearch && searchInputRef.current) {
@@ -134,6 +142,39 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    // Simulate data reload - in real app this would fetch from API
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsRefreshing(false);
+  }, []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (listRef.current && listRef.current.scrollTop === 0) {
+      touchStartY.current = e.touches[0].clientY;
+      isPulling.current = true;
+    }
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isPulling.current || isRefreshing) return;
+    
+    const currentY = e.touches[0].clientY;
+    const distance = currentY - touchStartY.current;
+    
+    if (distance > 0 && listRef.current?.scrollTop === 0) {
+      setPullDistance(Math.min(distance * 0.5, 80));
+    }
+  }, [isRefreshing]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (pullDistance >= PULL_THRESHOLD && !isRefreshing) {
+      handleRefresh();
+    }
+    setPullDistance(0);
+    isPulling.current = false;
+  }, [pullDistance, isRefreshing, handleRefresh]);
 
   const allTransactions = [...transactions, ...mockTransactions];
 
@@ -404,7 +445,35 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
 
       {/* Transaction List */}
       {!isCalendarOpen && (
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
+      <div 
+        ref={listRef}
+        className="flex-1 overflow-y-auto scrollbar-hide"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Pull to refresh indicator */}
+        <div 
+          className="flex justify-center items-center overflow-hidden transition-all duration-200"
+          style={{ height: isRefreshing ? 40 : pullDistance }}
+        >
+          <RefreshCw 
+            className={cn(
+              "w-4 h-4 text-gray-500 transition-transform",
+              isRefreshing && "animate-spin",
+              pullDistance >= PULL_THRESHOLD && !isRefreshing && "text-primary"
+            )}
+            style={{ 
+              transform: !isRefreshing ? `rotate(${pullDistance * 3}deg)` : undefined 
+            }}
+          />
+          {pullDistance >= PULL_THRESHOLD && !isRefreshing && (
+            <span className="text-[9px] text-primary ml-1">Release to refresh</span>
+          )}
+          {isRefreshing && (
+            <span className="text-[9px] text-gray-500 ml-1">Refreshing...</span>
+          )}
+        </div>
         <div className="px-3 py-2 space-y-2 flex flex-col items-center">
           {filteredTransactions.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8">
