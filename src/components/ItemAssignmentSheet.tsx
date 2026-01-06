@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, RefObject } from 'react';
 import { X, Check } from 'lucide-react';
 import iconDocument from '@/assets/icon-document.png';
 import {
   Drawer,
   DrawerContent,
-  DrawerPortal,
-  DrawerOverlay,
 } from '@/components/ui/drawer';
 
 interface ItemAssignmentSheetProps {
@@ -15,6 +13,7 @@ interface ItemAssignmentSheetProps {
   numberOfChecks: number;
   selectedChecks: number[];
   onSave: (selectedChecks: number[]) => void;
+  containerRef?: RefObject<HTMLDivElement>;
 }
 
 export const ItemAssignmentSheet = ({
@@ -24,6 +23,7 @@ export const ItemAssignmentSheet = ({
   numberOfChecks,
   selectedChecks: initialSelectedChecks,
   onSave,
+  containerRef,
 }: ItemAssignmentSheetProps) => {
   const [selectedChecks, setSelectedChecks] = useState<number[]>(initialSelectedChecks);
 
@@ -64,94 +64,92 @@ export const ItemAssignmentSheet = ({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerPortal>
-        <DrawerOverlay className="fixed inset-0 bg-black/40 z-50" />
-        <DrawerContent 
-          className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-[20px] px-[16px] pt-[8px] pb-[16px]"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
+      <DrawerContent 
+        container={containerRef?.current}
+        className="bg-white rounded-t-[10px] px-[8px] pt-[4px] pb-[8px] border-0"
+        style={{ fontFamily: 'Montserrat, sans-serif' }}
+      >
+        {/* Drag Handle */}
+        <div className="flex justify-center mb-[6px]">
+          <div className="w-[24px] h-[3px] bg-gray-300 rounded-full" />
+        </div>
+
+        {/* Header */}
+        <div className="flex items-center justify-between mb-[6px]">
+          <h2 className="text-[11px] font-bold text-black">{itemName}</h2>
+          <button 
+            onClick={() => onOpenChange(false)}
+            className="p-0.5"
+          >
+            <X size={12} className="text-black" strokeWidth={2} />
+          </button>
+        </div>
+
+        {/* Split With Label */}
+        <p className="text-[8px] text-gray-400 font-medium mb-[6px]">Split With</p>
+
+        {/* Select All Option */}
+        <button
+          onClick={toggleSelectAll}
+          className={`w-full h-[26px] rounded-full border flex items-center justify-between px-[10px] mb-[5px] transition-all ${
+            allSelected 
+              ? 'border-gray-300 bg-white' 
+              : 'border-gray-200 bg-white'
+          }`}
         >
-          {/* Drag Handle */}
-          <div className="flex justify-center mb-[12px]">
-            <div className="w-[40px] h-[4px] bg-gray-300 rounded-full" />
+          <span className="text-[9px] font-medium text-black">Select All</span>
+          <div className={`w-[14px] h-[14px] rounded-full flex items-center justify-center ${
+            allSelected 
+              ? 'bg-[#2d2d2d]' 
+              : 'border border-gray-300 bg-white'
+          }`}>
+            {allSelected && <Check size={8} className="text-white" strokeWidth={3} />}
           </div>
+        </button>
 
-          {/* Header */}
-          <div className="flex items-center justify-between mb-[12px]">
-            <h2 className="text-[16px] font-bold text-black">{itemName}</h2>
-            <button 
-              onClick={() => onOpenChange(false)}
-              className="p-1"
+        {/* Check Options */}
+        {allChecks.map((checkIndex) => {
+          const isSelected = selectedChecks.includes(checkIndex);
+          return (
+            <button
+              key={checkIndex}
+              onClick={() => toggleCheck(checkIndex)}
+              className={`w-full h-[26px] rounded-full border flex items-center justify-between px-[10px] mb-[5px] transition-all ${
+                isSelected 
+                  ? 'border-gray-300 bg-white' 
+                  : 'border-gray-200 bg-white'
+              }`}
             >
-              <X size={20} className="text-black" strokeWidth={2} />
+              <div className="flex items-center gap-[6px]">
+                <img src={iconDocument} alt="" className="w-[10px] h-[10px] opacity-60" />
+                <span className="text-[9px] font-medium text-black">
+                  {getCheckLabel(checkIndex)}
+                </span>
+              </div>
+              <div className={`w-[14px] h-[14px] rounded-full flex items-center justify-center ${
+                isSelected 
+                  ? 'bg-[#2d2d2d]' 
+                  : 'border border-gray-300 bg-white'
+              }`}>
+                {isSelected && <Check size={8} className="text-white" strokeWidth={3} />}
+              </div>
             </button>
-          </div>
+          );
+        })}
 
-          {/* Split With Label */}
-          <p className="text-[12px] text-gray-400 font-medium mb-[10px]">Split With</p>
-
-          {/* Select All Option */}
-          <button
-            onClick={toggleSelectAll}
-            className={`w-full h-[44px] rounded-full border flex items-center justify-between px-[16px] mb-[8px] transition-all ${
-              allSelected 
-                ? 'border-gray-300 bg-white' 
-                : 'border-gray-200 bg-white'
-            }`}
-          >
-            <span className="text-[12px] font-medium text-black">Select All</span>
-            <div className={`w-[24px] h-[24px] rounded-full flex items-center justify-center ${
-              allSelected 
-                ? 'bg-[#2d2d2d]' 
-                : 'border border-gray-300 bg-white'
-            }`}>
-              {allSelected && <Check size={14} className="text-white" strokeWidth={3} />}
-            </div>
-          </button>
-
-          {/* Check Options */}
-          {allChecks.map((checkIndex) => {
-            const isSelected = selectedChecks.includes(checkIndex);
-            return (
-              <button
-                key={checkIndex}
-                onClick={() => toggleCheck(checkIndex)}
-                className={`w-full h-[44px] rounded-full border flex items-center justify-between px-[16px] mb-[8px] transition-all ${
-                  isSelected 
-                    ? 'border-gray-300 bg-white' 
-                    : 'border-gray-200 bg-white'
-                }`}
-              >
-                <div className="flex items-center gap-[10px]">
-                  <img src={iconDocument} alt="" className="w-[16px] h-[16px] opacity-60" />
-                  <span className="text-[12px] font-medium text-black">
-                    {getCheckLabel(checkIndex)}
-                  </span>
-                </div>
-                <div className={`w-[24px] h-[24px] rounded-full flex items-center justify-center ${
-                  isSelected 
-                    ? 'bg-[#2d2d2d]' 
-                    : 'border border-gray-300 bg-white'
-                }`}>
-                  {isSelected && <Check size={14} className="text-white" strokeWidth={3} />}
-                </div>
-              </button>
-            );
-          })}
-
-          {/* Save Button */}
-          <button
-            onClick={handleSave}
-            disabled={!hasSelections}
-            className={`w-full h-[44px] rounded-full font-semibold text-[14px] mt-[8px] transition-all ${
-              hasSelections
-                ? 'bg-gradient-to-r from-[#3d3d3d] to-[#1a1a1a] text-white'
-                : 'bg-gray-300 text-gray-500'
-            }`}
-          >
-            SAVE
-          </button>
-        </DrawerContent>
-      </DrawerPortal>
+        {/* Save Button */}
+        <button
+          onClick={handleSave}
+          disabled={!hasSelections}
+          className={`w-full h-[26px] rounded-full font-semibold text-[9px] mt-[4px] transition-all ${
+            hasSelections
+              ? 'bg-gradient-to-r from-[#3d3d3d] to-[#1a1a1a] text-white'
+              : 'bg-gray-200 text-gray-400'
+          }`}
+        >
+          SAVE
+        </button>
+      </DrawerContent>
     </Drawer>
   );
 };
