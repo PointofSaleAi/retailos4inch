@@ -16,6 +16,7 @@ import { PaymentMethodsScreen } from "./PaymentMethodsScreen";
 import { PaymentEntryScreen } from "./PaymentEntryScreen";
 import { CashPaymentScreen } from "./CashPaymentScreen";
 import { GiftCardPaymentScreen } from "./GiftCardPaymentScreen";
+import { ManualCardPaymentScreen } from "./ManualCardPaymentScreen";
 import { PaymentProcessingScreen } from "./PaymentProcessingScreen";
 import { PaymentSuccessScreen } from "./PaymentSuccessScreen";
 import { TransactionDetailScreen } from "./TransactionDetailScreen";
@@ -1198,6 +1199,23 @@ export const RetailApp = () => {
             }}
             onCharge={(amount, giftCardNumber) => {
               console.log('Gift card payment:', giftCardNumber);
+              handleConfirmPayment(selectedPaymentMethod, amount);
+            }}
+          />
+        );
+      }
+
+      // Show ManualCardPaymentScreen for Manual Card payment method
+      if (selectedPaymentMethod === 'Manual Card') {
+        return (
+          <ManualCardPaymentScreen
+            totalDue={totalDue}
+            onBack={() => {
+              setShowPaymentEntry(false);
+              setShowPaymentMethods(true);
+            }}
+            onCharge={(amount, cardDetails) => {
+              console.log('Manual card payment:', cardDetails);
               handleConfirmPayment(selectedPaymentMethod, amount);
             }}
           />
