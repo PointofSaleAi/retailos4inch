@@ -178,61 +178,59 @@ export const SplitCheckScreen = ({
         </div>
       </div>
 
-      {/* Split Mode Tabs - Full width, 186px height, no side padding */}
-      <div className="w-full h-[186px] flex flex-col flex-shrink-0">
-        <div className="flex gap-1.5 px-3 pb-2">
-          <button
-            onClick={() => handleModeChange('evenly')}
-            className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
-              splitMode === 'evenly' 
-                ? 'bg-black text-white' 
-                : 'bg-gray-100 text-gray-500'
-            }`}
-          >
-            <img 
-              src={iconSplitEvenly} 
-              alt="" 
-              className={`w-[14px] h-[14px] ${splitMode === 'evenly' ? 'invert' : ''}`} 
-            />
-            SPLIT EVENLY
-          </button>
-          <button
-            onClick={() => handleModeChange('custom')}
-            className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
-              splitMode === 'custom' 
-                ? 'bg-black text-white' 
-                : 'bg-gray-100 text-gray-500'
-            }`}
-          >
-            <img 
-              src={iconCustomSplit} 
-              alt="" 
-              className={`w-[14px] h-[14px] ${splitMode === 'custom' ? 'invert' : ''}`} 
-            />
-            CUSTOM SP...
-          </button>
-        </div>
+      {/* Split Mode Tabs */}
+      <div className="flex px-3 gap-1.5 flex-shrink-0 pb-2">
+        <button
+          onClick={() => handleModeChange('evenly')}
+          className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
+            splitMode === 'evenly' 
+              ? 'bg-black text-white' 
+              : 'bg-gray-100 text-gray-500'
+          }`}
+        >
+          <img 
+            src={iconSplitEvenly} 
+            alt="" 
+            className={`w-[14px] h-[14px] ${splitMode === 'evenly' ? 'invert' : ''}`} 
+          />
+          SPLIT EVENLY
+        </button>
+        <button
+          onClick={() => handleModeChange('custom')}
+          className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
+            splitMode === 'custom' 
+              ? 'bg-black text-white' 
+              : 'bg-gray-100 text-gray-500'
+          }`}
+        >
+          <img 
+            src={iconCustomSplit} 
+            alt="" 
+            className={`w-[14px] h-[14px] ${splitMode === 'custom' ? 'invert' : ''}`} 
+          />
+          CUSTOM SP...
+        </button>
+      </div>
 
-        {/* Number of Checks */}
-        <div className="mx-3 px-3 py-2 border border-gray-300 rounded-lg flex items-center justify-between mb-2">
-          <span className="text-[11px] font-medium text-black">No. of Checks</span>
-          <div className="flex items-center bg-black rounded-full">
-            <button 
-              onClick={handleDecrementChecks}
-              className="w-[26px] h-[26px] flex items-center justify-center text-white"
-            >
-              <Minus size={14} strokeWidth={2} />
-            </button>
-            <span className="text-[12px] font-semibold text-white min-w-[16px] text-center">
-              {numberOfChecks}
-            </span>
-            <button 
-              onClick={handleIncrementChecks}
-              className="w-[26px] h-[26px] flex items-center justify-center text-white"
-            >
-              <Plus size={14} strokeWidth={2} />
-            </button>
-          </div>
+      {/* Number of Checks */}
+      <div className="mx-3 px-3 py-2 border border-gray-300 rounded-lg flex items-center justify-between flex-shrink-0 mb-2">
+        <span className="text-[11px] font-medium text-black">No. of Checks</span>
+        <div className="flex items-center bg-black rounded-full">
+          <button 
+            onClick={handleDecrementChecks}
+            className="w-[26px] h-[26px] flex items-center justify-center text-white"
+          >
+            <Minus size={14} strokeWidth={2} />
+          </button>
+          <span className="text-[12px] font-semibold text-white min-w-[16px] text-center">
+            {numberOfChecks}
+          </span>
+          <button 
+            onClick={handleIncrementChecks}
+            className="w-[26px] h-[26px] flex items-center justify-center text-white"
+          >
+            <Plus size={14} strokeWidth={2} />
+          </button>
         </div>
       </div>
 
