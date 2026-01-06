@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { Minus, Plus, ChevronLeft, Settings, Printer } from 'lucide-react';
+import { Minus, Plus, ChevronLeft } from 'lucide-react';
+import iconDiscountTag from '@/assets/icon-discount-tag.png';
+import iconPrinter from '@/assets/icon-printer.png';
+import iconSplitEvenly from '@/assets/icon-split-evenly.png';
+import iconCustomSplit from '@/assets/icon-custom-split.png';
+import iconSave from '@/assets/icon-save.png';
+import iconClearRed from '@/assets/icon-clear-red.png';
+import iconDocument from '@/assets/icon-document.png';
 
 interface CartItem {
   id: string;
@@ -41,10 +48,8 @@ export const SplitCheckScreen = ({
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Calculate per-check amount for even split
   const perCheckAmount = numberOfChecks > 0 ? total / numberOfChecks : total;
 
-  // Handle increment/decrement of number of checks
   const handleIncrementChecks = () => {
     const newCount = numberOfChecks + 1;
     setNumberOfChecks(newCount);
@@ -66,7 +71,6 @@ export const SplitCheckScreen = ({
     }
   };
 
-  // Get items for current check in custom mode
   const getCheckItems = (checkIndex: number) => {
     if (splitMode === 'evenly') {
       return cartItems;
@@ -79,7 +83,6 @@ export const SplitCheckScreen = ({
     }).filter(Boolean) as CartItem[];
   };
 
-  // Get check total in custom mode
   const getCheckTotal = (checkIndex: number) => {
     if (splitMode === 'evenly') {
       return perCheckAmount;
@@ -89,20 +92,17 @@ export const SplitCheckScreen = ({
     return itemTotal + (itemTotal * TAX_RATE);
   };
 
-  // Add item to current check in custom mode
   const addItemToCheck = (itemId: string) => {
     if (splitMode !== 'custom') return;
     
     const item = cartItems.find(i => i.id === itemId);
     if (!item) return;
 
-    // Calculate how many of this item are already assigned across all checks
     const totalAssigned = customChecks.reduce((sum, check) => {
       const checkItem = check.items.find(ci => ci.itemId === itemId);
       return sum + (checkItem?.quantity || 0);
     }, 0);
 
-    // Can only add if there are unassigned items
     if (totalAssigned < item.quantity) {
       setCustomChecks(prev => prev.map((check, idx) => {
         if (idx !== activeCheckIndex) return check;
@@ -124,7 +124,6 @@ export const SplitCheckScreen = ({
     }
   };
 
-  // Remove item from current check in custom mode
   const removeItemFromCheck = (itemId: string) => {
     if (splitMode !== 'custom') return;
     
@@ -150,7 +149,6 @@ export const SplitCheckScreen = ({
   const handleModeChange = (mode: SplitMode) => {
     setSplitMode(mode);
     if (mode === 'custom') {
-      // Initialize custom checks based on current number
       const checks: Check[] = Array.from({ length: numberOfChecks }, (_, i) => ({
         id: i + 1,
         items: []
@@ -165,65 +163,73 @@ export const SplitCheckScreen = ({
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between h-[32px] px-2 flex-shrink-0">
-        <button onClick={onBack} className="p-0.5">
-          <ChevronLeft size={16} className="text-gray-700" />
+      <div className="flex items-center justify-between px-3 py-2.5 flex-shrink-0">
+        <button onClick={onBack} className="p-0">
+          <ChevronLeft size={18} className="text-black" strokeWidth={2} />
         </button>
-        <h1 className="text-[10px] font-semibold text-gray-900">Split Check</h1>
-        <div className="flex items-center gap-1">
-          <button className="p-0.5">
-            <Settings size={14} className="text-gray-700" />
+        <h1 className="text-[13px] font-semibold text-black">Split Check</h1>
+        <div className="flex items-center gap-2">
+          <button className="p-0">
+            <img src={iconDiscountTag} alt="Discount" className="w-[18px] h-[18px]" />
           </button>
-          <button className="p-0.5">
-            <Printer size={14} className="text-gray-700" />
+          <button className="p-0">
+            <img src={iconPrinter} alt="Print" className="w-[18px] h-[18px]" />
           </button>
         </div>
       </div>
 
       {/* Split Mode Tabs */}
-      <div className="flex px-2 gap-1 flex-shrink-0">
+      <div className="flex px-3 gap-1.5 flex-shrink-0 pb-2">
         <button
           onClick={() => handleModeChange('evenly')}
-          className={`flex-1 h-[24px] rounded-full text-[8px] font-semibold flex items-center justify-center gap-1 transition-colors ${
+          className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
             splitMode === 'evenly' 
-              ? 'bg-gray-900 text-white' 
-              : 'bg-gray-100 text-gray-600'
+              ? 'bg-black text-white' 
+              : 'bg-gray-100 text-gray-500'
           }`}
         >
-          <span className="text-[10px]">👥</span>
+          <img 
+            src={iconSplitEvenly} 
+            alt="" 
+            className={`w-[14px] h-[14px] ${splitMode === 'evenly' ? 'invert' : ''}`} 
+          />
           SPLIT EVENLY
         </button>
         <button
           onClick={() => handleModeChange('custom')}
-          className={`flex-1 h-[24px] rounded-full text-[8px] font-semibold flex items-center justify-center gap-1 transition-colors ${
+          className={`flex-1 h-[28px] rounded-full text-[9px] font-semibold flex items-center justify-center gap-1.5 transition-colors ${
             splitMode === 'custom' 
-              ? 'bg-gray-900 text-white' 
-              : 'bg-gray-100 text-gray-600'
+              ? 'bg-black text-white' 
+              : 'bg-gray-100 text-gray-500'
           }`}
         >
-          <span className="text-[10px]">✂️</span>
-          CUSTOM SPLIT
+          <img 
+            src={iconCustomSplit} 
+            alt="" 
+            className={`w-[14px] h-[14px] ${splitMode === 'custom' ? 'invert' : ''}`} 
+          />
+          CUSTOM SP...
         </button>
       </div>
 
       {/* Number of Checks */}
-      <div className="flex items-center justify-between px-2 py-2 border-b border-gray-100 flex-shrink-0">
-        <span className="text-[9px] font-medium text-gray-800">No. of Checks</span>
-        <div className="flex items-center gap-2 bg-gray-900 rounded-full px-2 py-1">
+      <div className="flex items-center justify-between px-3 py-2.5 border-b border-gray-200 flex-shrink-0">
+        <span className="text-[11px] font-medium text-black">No. of Checks</span>
+        <div className="flex items-center bg-black rounded-full">
           <button 
             onClick={handleDecrementChecks}
-            className="text-white"
+            className="w-[26px] h-[26px] flex items-center justify-center text-white"
           >
-            <Minus size={12} />
+            <Minus size={14} strokeWidth={2} />
           </button>
-          <span className="text-[10px] font-semibold text-white min-w-[12px] text-center">
+          <span className="text-[12px] font-semibold text-white min-w-[16px] text-center">
             {numberOfChecks}
           </span>
           <button 
             onClick={handleIncrementChecks}
-            className="text-white"
+            className="w-[26px] h-[26px] flex items-center justify-center text-white"
           >
-            <Plus size={12} />
+            <Plus size={14} strokeWidth={2} />
           </button>
         </div>
       </div>
@@ -231,15 +237,15 @@ export const SplitCheckScreen = ({
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {/* Products List */}
-        <div className="px-2 py-1 border-b border-gray-100">
+        <div className="px-3 py-2 border-b border-gray-200">
           {cartItems.map(item => (
-            <div key={item.id} className="flex items-center justify-between py-1">
-              <div className="flex-1 min-w-0">
-                <span className="text-[9px] font-medium text-gray-800">
-                  {item.quantity} {item.name}
+            <div key={item.id} className="flex items-start justify-between py-1.5">
+              <div className="flex-1 min-w-0 pr-2">
+                <span className="text-[11px] font-medium text-black leading-tight">
+                  {item.quantity}  {item.name}
                 </span>
               </div>
-              <span className="text-[9px] font-medium text-gray-800 ml-2">
+              <span className="text-[11px] font-medium text-black flex-shrink-0">
                 ${(item.price * item.quantity).toFixed(2)}
               </span>
               {splitMode === 'custom' && (
@@ -263,37 +269,37 @@ export const SplitCheckScreen = ({
         </div>
 
         {/* Billing Summary */}
-        <div className="px-2 py-1 space-y-0.5 border-b border-gray-100">
+        <div className="px-3 py-2 space-y-1.5 border-b border-gray-200">
           <div className="flex justify-between">
-            <span className="text-[9px] text-gray-600">Sub Total</span>
-            <span className="text-[9px] text-gray-800">${subTotal.toFixed(2)}</span>
+            <span className="text-[11px] text-gray-500">Sub Total</span>
+            <span className="text-[11px] font-medium text-black">${subTotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[9px] text-gray-600">Tax</span>
-            <span className="text-[9px] text-gray-800">${tax.toFixed(2)}</span>
+            <span className="text-[11px] text-gray-500">Tax</span>
+            <span className="text-[11px] font-medium text-black">${tax.toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[9px] font-semibold text-gray-900">Total</span>
-            <span className="text-[9px] font-semibold text-gray-900">${total.toFixed(2)}</span>
+            <span className="text-[11px] font-bold text-black">Total</span>
+            <span className="text-[11px] font-bold text-black">${total.toFixed(2)}</span>
           </div>
         </div>
 
         {/* Check Summary */}
-        <div className="px-2 py-1">
-          <div className="flex items-center justify-between py-1 border-b border-gray-100">
-            <div className="flex items-center gap-1">
-              <span className="text-[10px]">📄</span>
-              <span className="text-[9px] font-medium text-gray-800">
+        <div className="px-3 py-2">
+          <div className="flex items-center justify-between py-1.5 border-b border-gray-200">
+            <div className="flex items-center gap-2">
+              <img src={iconDocument} alt="" className="w-[16px] h-[16px]" />
+              <span className="text-[11px] font-medium text-black">
                 Check {activeCheckIndex + 1} {splitMode === 'evenly' ? 'a' : ''}
               </span>
             </div>
-            <span className="text-[9px] text-gray-600">
+            <span className="text-[11px] text-gray-500">
               {splitMode === 'evenly' ? totalItems : getCheckItems(activeCheckIndex).reduce((sum, i) => sum + i.quantity, 0)} Item
             </span>
           </div>
-          <div className="flex justify-between py-1">
-            <span className="text-[9px] font-semibold text-gray-900">Total Amount</span>
-            <span className="text-[9px] font-semibold text-gray-900">
+          <div className="flex justify-between py-2">
+            <span className="text-[11px] font-bold text-black">Total Amount</span>
+            <span className="text-[11px] font-bold text-black">
               ${getCheckTotal(activeCheckIndex).toFixed(2)}
             </span>
           </div>
@@ -301,14 +307,14 @@ export const SplitCheckScreen = ({
 
         {/* Check Tabs for multiple checks */}
         {numberOfChecks > 1 && (
-          <div className="flex gap-1 px-2 py-1 overflow-x-auto">
+          <div className="flex gap-1 px-3 py-1 overflow-x-auto">
             {Array.from({ length: numberOfChecks }, (_, i) => (
               <button
                 key={i}
                 onClick={() => setActiveCheckIndex(i)}
-                className={`px-2 py-1 rounded-full text-[8px] font-medium whitespace-nowrap ${
+                className={`px-2.5 py-1 rounded-full text-[9px] font-medium whitespace-nowrap ${
                   activeCheckIndex === i 
-                    ? 'bg-gray-900 text-white' 
+                    ? 'bg-black text-white' 
                     : 'bg-gray-100 text-gray-600'
                 }`}
               >
@@ -320,16 +326,16 @@ export const SplitCheckScreen = ({
       </div>
 
       {/* Bottom Actions */}
-      <div className="flex items-center gap-2 px-2 py-2 border-t border-gray-100 flex-shrink-0">
-        <button className="w-[26px] h-[26px] flex items-center justify-center bg-gray-100 rounded-lg">
-          <span className="text-[12px]">💾</span>
+      <div className="flex items-center gap-2 px-3 py-2 border-t border-gray-200 flex-shrink-0">
+        <button className="w-[32px] h-[32px] flex items-center justify-center">
+          <img src={iconSave} alt="Save" className="w-[22px] h-[22px]" />
         </button>
-        <button className="w-[26px] h-[26px] flex items-center justify-center bg-gray-100 rounded-lg">
-          <span className="text-[14px] font-bold text-red-500">C</span>
+        <button className="w-[32px] h-[32px] flex items-center justify-center">
+          <img src={iconClearRed} alt="Clear" className="w-[22px] h-[22px]" />
         </button>
         <button 
           onClick={() => onPay(activeCheckIndex, getCheckTotal(activeCheckIndex))}
-          className="flex-1 h-[26px] bg-gray-900 text-white rounded-full font-semibold text-[10px] flex items-center justify-center"
+          className="flex-1 h-[32px] bg-black text-white rounded-full font-semibold text-[12px] flex items-center justify-center"
         >
           PAY
         </button>
