@@ -161,7 +161,7 @@ export const RetailApp = () => {
   const [showSplitCheckSummary, setShowSplitCheckSummary] = useState(false);
   const [splitCheckCount, setSplitCheckCount] = useState(1);
   const [splitCheckMode, setSplitCheckMode] = useState<'evenly' | 'custom'>('evenly');
-  const [paidSplitChecks, setPaidSplitChecks] = useState<Set<number>>(new Set());
+  const [paidSplitChecks, setPaidSplitChecks] = useState<Map<number, string>>(new Map());
   const [currentChargingCheckIndex, setCurrentChargingCheckIndex] = useState<number | null>(null);
   const [showAllChecksCompleteDialog, setShowAllChecksCompleteDialog] = useState(false);
 
@@ -1000,7 +1000,7 @@ export const RetailApp = () => {
                 setShowAllChecksCompleteDialog(false);
                 setCartItems([]);
                 setCurrentChargingCheckIndex(null);
-                setPaidSplitChecks(new Set());
+                setPaidSplitChecks(new Map());
                 setSplitCheckCount(1);
                 setActiveTab("order");
               }}
@@ -1029,8 +1029,9 @@ export const RetailApp = () => {
           onClose={() => {
             // Check if we were charging a split check
             if (currentChargingCheckIndex !== null) {
-              // Mark the check as paid
-              const newPaidChecks = new Set([...paidSplitChecks, currentChargingCheckIndex]);
+              // Mark the check as paid with payment method
+              const newPaidChecks = new Map(paidSplitChecks);
+              newPaidChecks.set(currentChargingCheckIndex, selectedPaymentMethod || 'Card');
               setPaidSplitChecks(newPaidChecks);
               
               // Check if all checks are paid
@@ -1087,7 +1088,7 @@ export const RetailApp = () => {
           onResetSplit={() => {
             setSplitCheckCount(1);
             setSplitCheckMode('evenly');
-            setPaidSplitChecks(new Set());
+            setPaidSplitChecks(new Map());
             setShowSplitCheckSummary(false);
             setShowSplitCheck(true);
           }}
