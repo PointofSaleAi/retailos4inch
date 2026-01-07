@@ -126,6 +126,23 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
     return true;
   };
 
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, "");
+    
+    // Format based on length
+    if (digits.length === 0) return "";
+    if (digits.length <= 3) return `(${digits}`;
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setMobileNumber(formatted);
+    validatePhone(formatted);
+  };
+
   const handleCreateAccount = () => {
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
@@ -346,17 +363,17 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               <Label className="text-[8px] font-medium text-foreground">Mobile Number</Label>
               <div className="flex gap-1">
                 <Select value={`${countryFlag}-${countryCode}`} onValueChange={handleCountryCodeChange}>
-                  <SelectTrigger className="w-[50px] h-[28px] rounded-full border-[#D1D1D1] bg-white px-2">
+                  <SelectTrigger className="w-[60px] h-[28px] rounded-full border-[#D1D1D1] bg-white px-2">
                     <div className="flex items-center justify-center gap-0.5">
-                      <span className="text-[16px]">{countryFlag}</span>
-                      <ChevronLeft size={10} className="-rotate-90 text-foreground" />
+                      <span className="text-[12px]">{countryFlag}</span>
+                      <ChevronLeft size={8} className="-rotate-90 text-muted-foreground" />
                     </div>
                   </SelectTrigger>
                   <SelectContent className="bg-white z-50">
                     {countryOptions.map((option) => (
                       <SelectItem key={`${option.flag}-${option.code}`} value={`${option.flag}-${option.code}`}>
                         <div className="flex items-center gap-2">
-                          <span className="text-[16px]">{option.flag}</span>
+                          <span className="text-[14px]">{option.flag}</span>
                           <span className="text-[10px]">{option.code}</span>
                         </div>
                       </SelectItem>
@@ -366,11 +383,9 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
                 <Input
                   placeholder="(xxx) xxx xxxx"
                   value={mobileNumber}
-                  onChange={(e) => {
-                    setMobileNumber(e.target.value);
-                    validatePhone(e.target.value);
-                  }}
+                  onChange={handlePhoneChange}
                   onBlur={(e) => validatePhone(e.target.value)}
+                  maxLength={14}
                   className={`flex-1 h-[28px] text-[10px] rounded-full ${phoneError ? "border-red-500" : "border-[#D1D1D1]"}`}
                 />
               </div>
