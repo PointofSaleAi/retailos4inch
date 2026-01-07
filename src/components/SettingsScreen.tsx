@@ -139,12 +139,12 @@ export const SettingsScreen = () => {
                       className="flex items-center justify-center flex-shrink-0"
                       style={{ 
                         backgroundColor: item.iconBg,
-                        width: '20px',
-                        height: '20px',
+                        width: '16px',
+                        height: '16px',
                         borderRadius: '3px'
                       }}
                     >
-                      <img src={item.icon} alt="" style={{ width: '20px', height: '20px' }} />
+                      <img src={item.icon} alt="" style={{ width: '16px', height: '16px' }} />
                     </div>
                     
                     <span className="flex-1 text-left font-medium text-foreground" style={{ fontSize: '10px' }}>
