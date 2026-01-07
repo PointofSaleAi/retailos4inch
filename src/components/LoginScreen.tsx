@@ -57,12 +57,12 @@ export const LoginScreen = ({
           </div>
         </div>
         
-        <div className="space-y-2 mt-[20px] my-[10px]">
-          <Button type="submit" variant="retail" size="retail-full" className="h-[28px] my-[16px]">
+        <div className="space-y-2 mt-[20px]">
+          <Button type="submit" variant="retail" size="retail-full" className="h-[28px]">
             SIGN IN
           </Button>
           
-          <div className="text-center">
+          <div className="text-center py-3">
             <button 
               type="button" 
               onClick={() => setShowForgotPassword(true)}
