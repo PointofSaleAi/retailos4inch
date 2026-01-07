@@ -20,8 +20,8 @@ export const countryOptions: CountryOption[] = [
 ];
 
 export const formatPhoneNumber = (value: string): string => {
-  // Remove all non-digit characters
-  const digits = value.replace(/\D/g, "");
+  // Remove all non-digit characters and limit to 10 digits
+  const digits = value.replace(/\D/g, "").slice(0, 10);
   
   // Format based on length
   if (digits.length === 0) return "";
@@ -30,9 +30,13 @@ export const formatPhoneNumber = (value: string): string => {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
 };
 
+export const getDigitsFromPhone = (phone: string): string => {
+  return phone.replace(/\D/g, "");
+};
+
 export const validatePhoneNumber = (phone: string): boolean => {
-  const phoneRegex = /^\(\d{3}\)\s\d{3}\s\d{4}$/;
-  return phoneRegex.test(phone);
+  const digits = getDigitsFromPhone(phone);
+  return digits.length === 10;
 };
 
 export const usePhoneInput = (initialValue: string = "", initialCountryCode: string = "+1") => {
