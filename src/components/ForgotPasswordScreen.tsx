@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { formatPhoneNumber, countryOptions } from "@/hooks/usePhoneInput";
 
 interface ForgotPasswordScreenProps {
   onBack: () => void;
@@ -27,6 +28,7 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("+1");
+  const [countryFlag, setCountryFlag] = useState("🇺🇸");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(300); // 5 minutes in seconds
   const [newPassword, setNewPassword] = useState("");
@@ -34,6 +36,19 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhone(formatted);
+  };
+
+  const handleCountryCodeChange = (value: string) => {
+    const selected = countryOptions.find(opt => `${opt.flag}-${opt.code}` === value);
+    if (selected) {
+      setCountryCode(selected.code);
+      setCountryFlag(selected.flag);
+    }
+  };
 
   // Timer countdown for OTP
   useEffect(() => {
@@ -145,30 +160,22 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
                 Mobile Number
               </Label>
               <div className="flex gap-2">
-                <Select value={countryCode} onValueChange={setCountryCode}>
-                  <SelectTrigger className="h-[28px] w-[70px] px-2 rounded-xl border border-input-border bg-surface text-xs">
-                    <SelectValue>
-                      <div className="flex items-center gap-1">
-                        <span className="text-[14px]">{countryCode === "+1" ? "🇺🇸" : countryCode === "+44" ? "🇬🇧" : countryCode === "+91" ? "🇮🇳" : "🇺🇸"}</span>
-                      </div>
-                    </SelectValue>
+                <Select value={`${countryFlag}-${countryCode}`} onValueChange={handleCountryCodeChange}>
+                  <SelectTrigger className="h-[28px] w-[60px] px-2 rounded-xl border border-input-border bg-surface text-xs">
+                    <div className="flex items-center gap-0.5">
+                      <span className="text-[12px]">{countryFlag}</span>
+                      <ChevronDown size={8} className="text-muted-foreground" />
+                    </div>
                   </SelectTrigger>
                   <SelectContent className="bg-surface border-input-border">
-                    <SelectItem value="+1" className="text-xs">
-                      <span className="flex items-center gap-2">
-                        <span className="text-[14px]">🇺🇸</span> +1
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="+44" className="text-xs">
-                      <span className="flex items-center gap-2">
-                        <span className="text-[14px]">🇬🇧</span> +44
-                      </span>
-                    </SelectItem>
-                    <SelectItem value="+91" className="text-xs">
-                      <span className="flex items-center gap-2">
-                        <span className="text-[14px]">🇮🇳</span> +91
-                      </span>
-                    </SelectItem>
+                    {countryOptions.map((option) => (
+                      <SelectItem key={`${option.flag}-${option.code}-${option.name}`} value={`${option.flag}-${option.code}`} className="text-xs">
+                        <span className="flex items-center gap-2">
+                          <span className="text-[12px]">{option.flag}</span>
+                          <span className="text-[10px]">{option.code}</span>
+                        </span>
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <Input
@@ -176,7 +183,8 @@ export const ForgotPasswordScreen = ({ onBack }: ForgotPasswordScreenProps) => {
                   type="tel"
                   placeholder="(xxx) xxx xxxx"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={handlePhoneChange}
+                  maxLength={14}
                   className="h-[28px] flex-1 text-xs"
                 />
               </div>
