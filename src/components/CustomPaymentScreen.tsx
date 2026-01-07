@@ -139,55 +139,53 @@ export const CustomPaymentScreen = ({
         </div>
 
         {/* Numeric Keypad */}
-        <div className="flex justify-center mt-2">
-          <div className="grid grid-cols-4 gap-[8px]">
-            {/* Row 1 */}
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("7")}>
-              7
-            </Button>
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("8")}>
-              8
-            </Button>
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("9")}>
-              9
-            </Button>
-            <Button variant="outline" className="h-[112px] w-[40px] row-span-2 bg-surface hover:bg-surface/80 border-border/30 flex items-center justify-center rounded-[10px]" onClick={handleBackspace}>
-              <Delete className="w-5 h-5 rotate-180" />
-            </Button>
+        <div className="grid grid-cols-4 gap-1 p-[2px]">
+          {/* Row 1 */}
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("9")}>
+            9
+          </Button>
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("8")}>
+            8
+          </Button>
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("7")}>
+            7
+          </Button>
+          <Button variant="outline" className="h-[82px] w-[37px] row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center rounded-xl" onClick={handleBackspace}>
+            <Delete className="w-5 h-5 rotate-180" />
+          </Button>
 
-            {/* Row 2 */}
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("4")}>
-              4
-            </Button>
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("5")}>
-              5
-            </Button>
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("6")}>
-              6
-            </Button>
+          {/* Row 2 */}
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("6")}>
+            6
+          </Button>
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("5")}>
+            5
+          </Button>
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("4")}>
+            4
+          </Button>
 
-            {/* Row 3 */}
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("1")}>
-              1
-            </Button>
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("2")}>
-              2
-            </Button>
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("3")}>
-              3
-            </Button>
-            <Button variant="outline" className="h-[112px] w-[40px] row-span-2 bg-surface hover:bg-surface/80 border-border/30 flex items-center justify-center rounded-[10px]" onClick={handleAddToCart}>
-              <Plus className="w-5 h-5" />
-            </Button>
+          {/* Row 3 */}
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("3")}>
+            3
+          </Button>
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("2")}>
+            2
+          </Button>
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("1")}>
+            1
+          </Button>
+          <Button variant="outline" className="h-[82px] w-[37px] row-span-2 bg-surface hover:bg-surface/80 border-border/50 flex items-center justify-center rounded-xl" onClick={handleAddToCart}>
+            <Plus className="w-6 h-6" />
+          </Button>
 
-            {/* Row 4 */}
-            <Button variant="outline" className="h-[52px] w-[88px] col-span-2 text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("00")}>
-              00
-            </Button>
-            <Button variant="outline" className="h-[52px] w-[40px] text-[15px] font-medium bg-surface hover:bg-surface/80 border-border/30 rounded-[10px]" onClick={() => handleNumberClick("0")}>
-              0
-            </Button>
-          </div>
+          {/* Row 4 */}
+          <Button variant="outline" className="h-[40px] col-span-2 text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("00")}>
+            00
+          </Button>
+          <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("0")}>
+            0
+          </Button>
         </div>
         </div>
       </div>
