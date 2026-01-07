@@ -209,6 +209,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
       <SubVerticalScreen
         onBack={() => setShowSubVerticalSelect(false)}
         selectedSubVerticals={subVerticals}
+        selectedBusinessVerticals={businessVerticals}
         onSelect={(selected) => {
           setSubVerticals(selected);
           setShowSubVerticalSelect(false);

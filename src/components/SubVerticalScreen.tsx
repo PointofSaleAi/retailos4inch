@@ -1,27 +1,99 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ChevronLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface SubVerticalScreenProps {
   onBack: () => void;
   selectedSubVerticals: string[];
+  selectedBusinessVerticals: string[];
   onSelect: (subVerticals: string[]) => void;
 }
 
-const subVerticals = [
-  "Fashion And Apparel",
-  "Grocery And Super Markets",
-  "Restaurants And Cafes",
-  "Convenience Stores",
-  "Electronics And Appliances",
-  "Luxury Goods",
-  "Health And Beauty",
-  "Furniture And Home Goods",
-  "Sporting Goods",
-];
+// Mapping of business verticals to their sub-verticals
+const subVerticalsByBusiness: Record<string, string[]> = {
+  "Hospitality": [
+    "Restaurants And Cafes",
+    "Hotels And Lodging",
+    "Bars And Nightclubs",
+    "Catering Services",
+    "Food Trucks",
+  ],
+  "Retail": [
+    "Fashion And Apparel",
+    "Grocery And Super Markets",
+    "Convenience Stores",
+    "Electronics And Appliances",
+    "Furniture And Home Goods",
+    "Sporting Goods",
+    "Luxury Goods",
+  ],
+  "Wellness": [
+    "Gyms And Fitness Centers",
+    "Yoga And Pilates Studios",
+    "Spas And Massage",
+    "Nutrition And Supplements",
+    "Mental Health Services",
+  ],
+  "Services": [
+    "Professional Services",
+    "Home Services",
+    "Automotive Services",
+    "Cleaning Services",
+    "Repair And Maintenance",
+  ],
+  "Beauty": [
+    "Hair Salons",
+    "Nail Salons",
+    "Skincare And Aesthetics",
+    "Makeup And Cosmetics",
+    "Barbershops",
+    "Health And Beauty",
+  ],
+  "Travel": [
+    "Travel Agencies",
+    "Tour Operators",
+    "Car Rentals",
+    "Airlines And Flights",
+    "Cruise Lines",
+  ],
+  "Entertainment": [
+    "Movie Theaters",
+    "Gaming And Arcades",
+    "Live Events And Concerts",
+    "Amusement Parks",
+    "Streaming Services",
+  ],
+  "Others": [
+    "Education And Training",
+    "Non-Profit Organizations",
+    "Government Services",
+    "Other Services",
+  ],
+};
 
-export const SubVerticalScreen = ({ onBack, selectedSubVerticals, onSelect }: SubVerticalScreenProps) => {
+export const SubVerticalScreen = ({ 
+  onBack, 
+  selectedSubVerticals, 
+  selectedBusinessVerticals,
+  onSelect 
+}: SubVerticalScreenProps) => {
   const [selected, setSelected] = useState<string[]>(selectedSubVerticals);
+
+  // Filter sub-verticals based on selected business verticals
+  const availableSubVerticals = useMemo(() => {
+    if (selectedBusinessVerticals.length === 0) {
+      // If no business verticals selected, show all
+      return Object.values(subVerticalsByBusiness).flat();
+    }
+    
+    // Get unique sub-verticals from all selected business verticals
+    const subs = new Set<string>();
+    selectedBusinessVerticals.forEach(vertical => {
+      const verticalSubs = subVerticalsByBusiness[vertical] || [];
+      verticalSubs.forEach(sub => subs.add(sub));
+    });
+    return Array.from(subs);
+  }, [selectedBusinessVerticals]);
 
   const toggleSubVertical = (name: string) => {
     setSelected(prev => 
@@ -50,7 +122,7 @@ export const SubVerticalScreen = ({ onBack, selectedSubVerticals, onSelect }: Su
       {/* Sub Vertical List */}
       <div className="flex-1 overflow-y-auto px-3 py-3">
         <div className="space-y-2">
-          {subVerticals.map((subVertical) => {
+          {availableSubVerticals.map((subVertical) => {
             const isSelected = selected.includes(subVertical);
             return (
               <button
