@@ -379,7 +379,7 @@ export const TransactionsScreen = ({
       </div>
 
       {/* Summary Section */}
-      <div className="flex-shrink-0 flex items-center justify-center py-[6px] gap-[6px] px-[3px]">
+      <div className="flex-shrink-0 py-[6px] gap-[6px] flex items-center justify-center px-[6px]">
         <div className="flex-1 bg-[#D4F5E9] rounded-lg px-[6px] py-[6px]">
           <p className="text-[10px] text-gray-600 font-medium mb-1">Total Net Sale</p>
           <p className="text-[16px] text-gray-900 font-bold">${totalNetSale.toFixed(2)}</p>
