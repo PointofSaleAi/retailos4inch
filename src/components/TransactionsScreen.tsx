@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { RefreshCw } from "lucide-react";
-import { format, isWithinInterval, parse, isSameDay } from "date-fns";
+import { format, isSameDay, parse } from "date-fns";
 import iconDocument from "@/assets/icon-document.png";
 import iconGrid from "@/assets/icon-grid-tx.png";
 import iconTag from "@/assets/icon-tag-tx.png";
@@ -10,11 +10,8 @@ import iconCalendarTx from "@/assets/icon-calendar-tx.png";
 import iconMenuTx from "@/assets/icon-menu-tx.png";
 import iconMic from "@/assets/icon-mic-14.png";
 import iconClose from "@/assets/icon-close-14.png";
-import { Calendar } from "@/components/ui/calendar";
-
+import { IOSDatePicker } from "@/components/IOSDatePicker";
 import { cn } from "@/lib/utils";
-import { DateRange } from "react-day-picker";
-
 // Web Speech API types
 interface SpeechRecognitionEvent extends Event {
   results: SpeechRecognitionResultList;
@@ -157,8 +154,9 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [isDateFilterActive, setIsDateFilterActive] = useState(false);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
   const [isListening, setIsListening] = useState(false);
@@ -318,19 +316,11 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
         }
       }
 
-      // Date range filter
-      if (dateRange?.from) {
+      // Date filter
+      if (isDateFilterActive) {
         const transactionDate = parseTransactionDate(transaction.date);
-        if (dateRange.to) {
-          // Date range selected
-          if (!isWithinInterval(transactionDate, { start: dateRange.from, end: dateRange.to })) {
-            return false;
-          }
-        } else {
-          // Single date selected
-          if (!isSameDay(transactionDate, dateRange.from)) {
-            return false;
-          }
+        if (!isSameDay(transactionDate, selectedDate)) {
+          return false;
         }
       }
 
@@ -355,15 +345,13 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   };
 
   const handleClearDateFilter = () => {
-    setDateRange(undefined);
+    setIsDateFilterActive(false);
+    setSelectedDate(new Date());
   };
 
   const getDateFilterLabel = () => {
-    if (!dateRange?.from) return null;
-    if (dateRange.to) {
-      return `${format(dateRange.from, "MMM d")} - ${format(dateRange.to, "MMM d")}`;
-    }
-    return format(dateRange.from, "MMM d, yyyy");
+    if (!isDateFilterActive) return null;
+    return format(selectedDate, "MMM d, yyyy");
   };
 
   return (
@@ -413,7 +401,7 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
               </button>
               <button 
                 className="p-0 flex items-center justify-center"
-                onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                onClick={() => setIsPickerOpen(!isPickerOpen)}
               >
                 <img src={iconCalendarTx} alt="Calendar" className="w-4 h-4" />
               </button>
@@ -464,7 +452,7 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       </div>
 
       {/* Active Date Filter Indicator */}
-      {dateRange?.from && (
+      {isDateFilterActive && (
         <div className="flex-shrink-0 px-3 pb-1">
           <div className="flex items-center gap-1 bg-primary/10 rounded px-2 py-1 w-fit">
             <span className="text-[9px] text-primary font-medium">{getDateFilterLabel()}</span>
@@ -475,58 +463,20 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
         </div>
       )}
 
-      {/* Inline Calendar - positioned below calendar icon */}
-      {isCalendarOpen && (
-        <div className="flex-shrink-0 px-3 py-2">
-          <div className="bg-white rounded-xl shadow-lg border border-border p-2 mx-auto" style={{ width: '160px' }}>
-            <Calendar
-              mode="range"
-              selected={dateRange}
-              onSelect={setDateRange}
-              numberOfMonths={1}
-              className={cn(
-                "p-0 pointer-events-auto bg-white w-full",
-                "[&_.rdp-months]:w-full",
-                "[&_.rdp-month]:w-full [&_.rdp-month]:space-y-0.5",
-                "[&_.rdp-table]:w-full [&_.rdp-table]:border-collapse",
-                "[&_.rdp-tbody]:w-full",
-                "[&_.rdp-head_row]:flex [&_.rdp-head_row]:w-full [&_.rdp-head_row]:justify-between",
-                "[&_.rdp-row]:flex [&_.rdp-row]:w-full [&_.rdp-row]:justify-between [&_.rdp-row]:mt-0",
-                "[&_.rdp-head_cell]:w-[18px] [&_.rdp-head_cell]:text-[7px] [&_.rdp-head_cell]:font-medium [&_.rdp-head_cell]:text-muted-foreground [&_.rdp-head_cell]:text-center",
-                "[&_.rdp-cell]:w-[18px] [&_.rdp-cell]:h-[16px] [&_.rdp-cell]:p-0 [&_.rdp-cell]:text-center",
-                "[&_.rdp-day]:h-[16px] [&_.rdp-day]:w-[18px] [&_.rdp-day]:text-[8px] [&_.rdp-day]:p-0 [&_.rdp-day]:font-medium [&_.rdp-day]:rounded-sm",
-                "[&_.rdp-day_selected]:bg-primary [&_.rdp-day_selected]:text-primary-foreground [&_.rdp-day_selected]:rounded-sm",
-                "[&_.rdp-day_today]:bg-accent [&_.rdp-day_today]:text-accent-foreground [&_.rdp-day_today]:rounded-sm",
-                "[&_.rdp-caption]:flex [&_.rdp-caption]:justify-center [&_.rdp-caption]:items-center [&_.rdp-caption]:py-0.5 [&_.rdp-caption]:relative",
-                "[&_.rdp-caption_label]:text-[9px] [&_.rdp-caption_label]:font-semibold",
-                "[&_.rdp-nav]:flex [&_.rdp-nav]:items-center [&_.rdp-nav]:gap-0",
-                "[&_.rdp-nav_button]:h-4 [&_.rdp-nav_button]:w-4 [&_.rdp-nav_button]:p-0 [&_.rdp-nav_button]:opacity-60 [&_.rdp-nav_button]:hover:opacity-100 [&_.rdp-nav_button]:bg-transparent",
-                "[&_.rdp-nav_button_previous]:absolute [&_.rdp-nav_button_previous]:left-0",
-                "[&_.rdp-nav_button_next]:absolute [&_.rdp-nav_button_next]:right-0",
-                "[&_.rdp-day_outside]:text-muted-foreground [&_.rdp-day_outside]:opacity-40",
-                "[&_.rdp-day_range_middle]:bg-accent [&_.rdp-day_range_middle]:rounded-none"
-              )}
-            />
-            <div className="flex gap-1.5 mt-1.5 pt-1.5 border-t border-border">
-              <button 
-                onClick={() => { handleClearDateFilter(); setIsCalendarOpen(false); }}
-                className="flex-1 px-2 py-1 text-[8px] text-muted-foreground bg-muted rounded-md"
-              >
-                Clear
-              </button>
-              <button 
-                onClick={() => setIsCalendarOpen(false)}
-                className="flex-1 px-2 py-1 text-[8px] text-primary-foreground bg-primary rounded-md"
-              >
-                Apply
-              </button>
-            </div>
-          </div>
+      {/* iOS Date Picker - positioned below calendar icon */}
+      {isPickerOpen && (
+        <div className="flex-shrink-0 px-3 py-2 flex justify-center">
+          <IOSDatePicker
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+            onClose={() => { handleClearDateFilter(); setIsPickerOpen(false); }}
+            onApply={() => { setIsDateFilterActive(true); setIsPickerOpen(false); }}
+          />
         </div>
       )}
 
       {/* Filters - Horizontally Scrollable */}
-      {!isCalendarOpen && (
+      {!isPickerOpen && (
         <div className="flex-shrink-0 overflow-x-auto scrollbar-hide px-3 py-1">
           <div className="flex gap-2 w-max">
             {(["All", "Ordering", "Refunded", "Paid", "Pending", "Cancelled"] as FilterType[]).map(filter => (
@@ -545,7 +495,7 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       )}
 
       {/* Transaction List */}
-      {!isCalendarOpen && (
+      {!isPickerOpen && (
       <div 
         ref={listRef}
         className="flex-1 overflow-y-auto scrollbar-hide"
