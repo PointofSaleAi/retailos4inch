@@ -138,7 +138,7 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Add to Cart Button */}
-          <div className="px-3 pt-1 pb-2.5 py-0">
+          <div className="pt-1 pb-2.5 py-0 px-0">
             <div className="flex items-center gap-2">
               <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
