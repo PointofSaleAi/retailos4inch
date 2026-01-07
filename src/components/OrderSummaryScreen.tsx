@@ -206,22 +206,6 @@ export const OrderSummaryScreen = ({
 
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
-        {/* Order Info Bar */}
-        <div className="flex items-center justify-between bg-gray-100 px-2.5 py-1.5 mx-0 rounded mt-1">
-          <div className="flex items-center gap-0.5">
-            <span className="text-[10px] font-semibold text-black">#</span>
-            <span className="text-[10px] font-semibold text-black">20</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <img src={iconCashier} alt="Cashier" className="w-[10px] h-[10px]" />
-            <span className="text-[10px] font-semibold text-black tracking-wide">JOHN</span>
-          </div>
-          <div className="flex items-center gap-0.5 bg-[#3D3D3D] px-2 py-0.5 rounded-full">
-            <span className="text-[8px]">🕐</span>
-            <span className="text-[8px] text-white font-medium">12:30 PM</span>
-          </div>
-        </div>
-
         {/* Customer Section */}
         <div className="bg-gray-50 rounded-lg p-3 flex items-center gap-3 px-0 py-0 mx-0 my-2">
           <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0 overflow-hidden">
