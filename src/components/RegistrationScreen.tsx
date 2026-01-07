@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,7 +38,20 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // Auto-scroll to active step when step changes
+  useEffect(() => {
+    const activeStepRef = stepRefs.current[step - 1];
+    if (activeStepRef) {
+      activeStepRef.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }, [step]);
   const countryOptions = [
     { code: "+1", flag: "🇺🇸", name: "United States" },
     { code: "+1", flag: "🇨🇦", name: "Canada" },
@@ -218,7 +231,10 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
         {/* Step Indicators */}
         <div className="overflow-x-auto scrollbar-hide py-3">
           <div className="flex items-center gap-2 min-w-max">
-            <div className="flex items-center gap-1">
+            <div 
+              ref={(el) => (stepRefs.current[0] = el)}
+              className="flex items-center gap-1"
+            >
               <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
                 step === 1 ? "bg-[#212121] text-white" : step > 1 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
               }`}>
@@ -229,7 +245,10 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               </span>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div 
+              ref={(el) => (stepRefs.current[1] = el)}
+              className="flex items-center gap-1"
+            >
               <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
                 step === 2 ? "bg-[#212121] text-white" : step > 2 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
               }`}>
@@ -240,7 +259,10 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               </span>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div 
+              ref={(el) => (stepRefs.current[2] = el)}
+              className="flex items-center gap-1"
+            >
               <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
                 step === 3 ? "bg-[#212121] text-white" : step > 3 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
               }`}>
@@ -251,7 +273,10 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               </span>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div 
+              ref={(el) => (stepRefs.current[3] = el)}
+              className="flex items-center gap-1"
+            >
               <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
                 step === 4 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
               }`}>
