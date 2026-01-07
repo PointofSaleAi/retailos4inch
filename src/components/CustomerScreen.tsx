@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
@@ -7,86 +7,27 @@ import iconPlus from "@/assets/icon-plus.png";
 import iconSearch from "@/assets/icon-search.png";
 import iconMic from "@/assets/icon-mic.png";
 import iconFilter from "@/assets/icon-filter.png";
-import customer1 from "@/assets/customer-1.png";
-import customer2 from "@/assets/customer-2.png";
-import customer3 from "@/assets/customer-3.png";
-import customer4 from "@/assets/customer-4.png";
+import { useCustomerSearch, Customer } from "@/hooks/useCustomerSearch";
 
 interface CustomerScreenProps {
   onAddCustomer: () => void;
-  customers?: Customer[];
   onViewCustomer: (customer: Customer) => void;
   onSelectCustomer: (customer: Customer) => void;
 }
 
-export interface Customer {
-  id: string;
-  name: string;
-  phone: string;
-  avatar?: string;
-  email?: string;
-  loyaltyPoints?: number;
-  customerSince?: string;
-  tax?: string;
-  companyName?: string;
-  birthday?: string;
-  anniversary?: string;
-  address?: string;
-  notes?: string;
-}
+export type { Customer };
 
-const mockCustomers: Customer[] = [
-  {
-    id: "0",
-    name: "Micheal David",
-    phone: "+1 (122) 586-7854",
-    avatar: customer1,
-    loyaltyPoints: 120
-  },
-  {
-    id: "1",
-    name: "Alex Venom",
-    phone: "+1 (122) 456-7890",
-    avatar: customer2,
-    loyaltyPoints: 85
-  },
-  {
-    id: "2",
-    name: "Arjun Gerhold",
-    phone: "+1 (122) 456-5456",
-    avatar: customer3,
-    loyaltyPoints: 50
-  },
-  {
-    id: "3",
-    name: "Cleora Hills",
-    phone: "+1 (122) 456-8495",
-    avatar: customer4,
-    loyaltyPoints: 200
-  },
-  {
-    id: "4",
-    name: "Eden Kautzer",
-    phone: "+1 (122) 456-9865",
-    avatar: customer1,
-    loyaltyPoints: 150
-  },
-  {
-    id: "5",
-    name: "Morticia Adams",
-    phone: "+1 (122) 456-1562",
-    avatar: customer2,
-    loyaltyPoints: 75
-  }
-];
-
-export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer, onSelectCustomer }: CustomerScreenProps) => {
+export const CustomerScreen = ({ onAddCustomer, onViewCustomer, onSelectCustomer }: CustomerScreenProps) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { searchResults, isLoading, searchCustomers } = useCustomerSearch();
 
-  const allCustomers = [...(customers || []), ...mockCustomers];
-  const filteredCustomers = allCustomers.filter(customer =>
-    customer.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      searchCustomers(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, searchCustomers]);
 
   const getInitials = (name: string) => {
     return name
@@ -146,44 +87,50 @@ export const CustomerScreen = ({ onAddCustomer, customers, onViewCustomer, onSel
       {/* Customer List */}
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="space-y-1" style={{ width: '186px', padding: '6px', margin: '0 auto' }}>
-          {filteredCustomers.map((customer, index) => (
-            <div key={customer.id}>
-              <div 
-                className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded transition-colors"
-                onClick={() => onSelectCustomer(customer)}
-              >
-                <Avatar className="w-7 h-7 flex-shrink-0">
-                  <AvatarImage src={customer.avatar} alt={customer.name} />
-                  <AvatarFallback className="bg-muted text-foreground font-medium text-xs">
-                    {getInitials(customer.name)}
-                  </AvatarFallback>
-                </Avatar>
-                
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-xs font-semibold text-foreground truncate">
-                    {customer.name}
-                  </h3>
-                  <p className="text-[8px] text-muted-foreground">
-                    {customer.phone}
-                  </p>
-                </div>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onViewCustomer(customer);
-                  }}
-                  className="flex-shrink-0 rounded text-[8px] font-medium text-foreground transition-colors"
-                  style={{ backgroundColor: '#F1F2F5', width: '40px', height: '18px' }}
+          {isLoading && searchResults.length === 0 ? (
+            <div className="text-center py-4 text-xs text-muted-foreground">Loading...</div>
+          ) : searchResults.length === 0 ? (
+            <div className="text-center py-4 text-xs text-muted-foreground">No customers found</div>
+          ) : (
+            searchResults.map((customer, index) => (
+              <div key={customer.id}>
+                <div 
+                  className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 rounded transition-colors"
+                  onClick={() => onSelectCustomer(customer)}
                 >
-                  View
-                </button>
+                  <Avatar className="w-7 h-7 flex-shrink-0">
+                    <AvatarImage src={customer.avatar} alt={customer.name} />
+                    <AvatarFallback className="bg-muted text-foreground font-medium text-xs">
+                      {getInitials(customer.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xs font-semibold text-foreground truncate">
+                      {customer.name}
+                    </h3>
+                    <p className="text-[8px] text-muted-foreground">
+                      {customer.phone}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onViewCustomer(customer);
+                    }}
+                    className="flex-shrink-0 rounded text-[8px] font-medium text-foreground transition-colors"
+                    style={{ backgroundColor: '#F1F2F5', width: '40px', height: '18px' }}
+                  >
+                    View
+                  </button>
+                </div>
+                {index < searchResults.length - 1 && (
+                  <Separator className="my-1" style={{ backgroundColor: '#F1F2F5' }} />
+                )}
               </div>
-              {index < filteredCustomers.length - 1 && (
-                <Separator className="my-1" style={{ backgroundColor: '#F1F2F5' }} />
-              )}
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

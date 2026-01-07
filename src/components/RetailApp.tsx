@@ -1420,7 +1420,6 @@ export const RetailApp = () => {
       case "customer":
         return <CustomerScreen 
           onAddCustomer={() => setShowNewCustomer(true)} 
-          customers={customers} 
           onViewCustomer={setSelectedCustomer}
           onSelectCustomer={(customer) => {
             setActiveCustomerInOrder(customer);
