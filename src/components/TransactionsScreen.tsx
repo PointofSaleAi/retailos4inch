@@ -280,52 +280,75 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       {/* Header */}
       <div className="flex-shrink-0 px-3 py-2">
         {showSearch ? (
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 flex-1 bg-[#F1F2F5] rounded-lg px-3" style={{ height: '34px' }}>
-              <img src={iconSearchTx} alt="Search" className="w-[18px] h-[18px] min-w-[18px] min-h-[18px] opacity-60" />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-1 bg-[#F1F2F5] rounded-lg px-2" style={{ height: '28px' }}>
+              <img src={iconSearchTx} alt="Search" className="w-3.5 h-3.5 flex-shrink-0 opacity-60" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search Products..."
-                className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
+                className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               />
-              <img src={iconMic} alt="Voice" className="w-[18px] h-[18px] min-w-[18px] min-h-[18px] opacity-60 cursor-pointer" />
+              <img src={iconMic} alt="Voice" className="w-3.5 h-3.5 flex-shrink-0 opacity-60 cursor-pointer" />
             </div>
             <button 
-              className="p-0 flex items-center justify-center"
+              className="p-0 flex items-center justify-center flex-shrink-0"
               onClick={handleClearSearch}
             >
-              <img src={iconClose} alt="Close" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px]" />
+              <img src={iconClose} alt="Close" className="w-3 h-3" />
             </button>
           </div>
         ) : (
-          <div className="flex items-center justify-between">
-            <h1 className="text-[16px] font-semibold text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+          <div className="flex items-center justify-between relative">
+            <h1 className="text-[13px] font-semibold text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
               Transactions
             </h1>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-4">
               <button 
                 className="p-0 flex items-center justify-center"
                 onClick={() => setShowSearch(true)}
               >
-                <img src={iconSearchTx} alt="Search" className="w-[20px] h-[20px]" />
+                <img src={iconSearchTx} alt="Search" className="w-4 h-4" />
               </button>
               <button 
                 className="p-0 flex items-center justify-center"
                 onClick={() => setIsCalendarOpen(!isCalendarOpen)}
               >
-                <img src={iconCalendarTx} alt="Calendar" className="w-[20px] h-[20px]" />
+                <img src={iconCalendarTx} alt="Calendar" className="w-4 h-4" />
               </button>
               <button 
                 className="p-0 flex items-center justify-center"
                 onClick={() => setShowSortMenu(!showSortMenu)}
               >
-                <img src={iconMenuTx} alt="Filter" className="w-[20px] h-[20px]" />
+                <img src={iconMenuTx} alt="Filter" className="w-4 h-4" />
               </button>
             </div>
+            
+            {/* Sort Menu Dropdown */}
+            {showSortMenu && (
+              <div 
+                ref={sortMenuRef}
+                className="absolute right-0 top-7 bg-white rounded-lg shadow-lg border border-border z-50 py-1 min-w-[100px]"
+              >
+                <button
+                  onClick={() => { setSortOrder("newest"); setShowSortMenu(false); }}
+                  className={`w-full px-3 py-2 text-left text-[11px] hover:bg-gray-50 ${sortOrder === "newest" ? "font-semibold text-primary" : "text-foreground"}`}
+                  style={{ fontFamily: 'Montserrat, sans-serif' }}
+                >
+                  Newest First
+                </button>
+                <button
+                  onClick={() => { setSortOrder("oldest"); setShowSortMenu(false); }}
+                  className={`w-full px-3 py-2 text-left text-[11px] hover:bg-gray-50 ${sortOrder === "oldest" ? "font-semibold text-primary" : "text-foreground"}`}
+                  style={{ fontFamily: 'Montserrat, sans-serif' }}
+                >
+                  Oldest First
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
