@@ -380,11 +380,11 @@ export const TransactionsScreen = ({
 
       {/* Summary Section */}
       <div className="flex-shrink-0 flex items-center justify-center py-[6px] gap-[6px] px-[3px]">
-        <div className="flex-1 bg-[#D4F5E9] rounded-lg px-4 py-3">
+        <div className="flex-1 bg-[#D4F5E9] rounded-lg px-[6px] py-[6px]">
           <p className="text-[10px] text-gray-600 font-medium mb-1">Total Net Sale</p>
           <p className="text-[16px] text-gray-900 font-bold">${totalNetSale.toFixed(2)}</p>
         </div>
-        <div className="flex-1 bg-[#F1F2F5] rounded-lg px-4 py-3">
+        <div className="flex-1 bg-[#F1F2F5] rounded-lg px-[6px] py-[6px]">
           <p className="text-[10px] text-gray-600 font-medium mb-1">Total Refunded</p>
           <p className="text-[16px] text-gray-900 font-bold">${totalRefunded.toFixed(2)}</p>
         </div>
