@@ -278,32 +278,44 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   return (
     <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat, sans-serif' }}>
       {/* Header */}
-      <div className="flex-shrink-0 px-3 py-2">
-        <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-3" style={{ height: '34px' }}>
-          <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px] opacity-50" />
-          <input
-            ref={searchInputRef}
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => setShowSearch(true)}
-            placeholder="Search Products..."
-            className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none"
-            style={{ fontFamily: 'Montserrat, sans-serif' }}
-          />
-          <button className="p-0.5 flex items-center justify-center">
-            <img src={iconMic} alt="Mic" className="w-[16px] h-[16px] opacity-60" />
-          </button>
-          {showSearch && (
+      <div className="flex-shrink-0 px-[6px] py-2">
+        {showSearch ? (
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-2 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '26px', width: '156px' }}>
+              <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px]" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search Products..."
+                className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
+                style={{ fontFamily: 'Montserrat, sans-serif' }}
+              />
+              <img src={iconMic} alt="Voice" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px] cursor-pointer" />
+            </div>
             <button 
-              className="p-0.5 flex items-center justify-center" 
+              className="h-[26px] w-[26px] p-0 flex items-center justify-center"
               onClick={handleClearSearch}
             >
-              <img src={iconClose} alt="Close" className="w-[14px] h-[14px] opacity-60" />
+              <img src={iconClose} alt="Close" className="w-[10px] h-[10px] min-w-[10px] min-h-[10px]" />
             </button>
-          )}
-              
-        </div>
+          </div>
+        ) : (
+          <div 
+            className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-3 cursor-pointer" 
+            style={{ height: '34px' }}
+            onClick={() => setShowSearch(true)}
+          >
+            <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px] opacity-50" />
+            <span 
+              className="flex-1 text-[11px] text-muted-foreground"
+              style={{ fontFamily: 'Montserrat, sans-serif' }}
+            >
+              Search Products...
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Summary Section */}
