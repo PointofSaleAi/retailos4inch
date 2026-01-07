@@ -26,8 +26,8 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   const [countryCode, setCountryCode] = useState("+1");
   const [countryFlag, setCountryFlag] = useState("🇺🇸");
   const [companyName, setCompanyName] = useState("");
-  const [businessVertical, setBusinessVertical] = useState("");
-  const [subVertical, setSubVertical] = useState("");
+  const [businessVerticals, setBusinessVerticals] = useState<string[]>([]);
+  const [subVerticals, setSubVerticals] = useState<string[]>([]);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [pin, setPin] = useState("");
   const [confirmationMethod, setConfirmationMethod] = useState<"email" | "phone">("email");
@@ -131,7 +131,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
     const isPasswordValid = validatePassword(password);
     const isPhoneValid = validatePhone(mobileNumber);
     
-    if (firstName && lastName && isEmailValid && isPhoneValid && isPasswordValid && country && companyName && businessVertical && subVertical && agreedToTerms) {
+    if (firstName && lastName && isEmailValid && isPhoneValid && isPasswordValid && country && companyName && businessVerticals.length > 0 && subVerticals.length > 0 && agreedToTerms) {
       setStep(2);
     }
   };
@@ -195,8 +195,9 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
     return (
       <BusinessVerticalScreen
         onBack={() => setShowBusinessVerticalSelect(false)}
-        onSelect={(vertical) => {
-          setBusinessVertical(vertical);
+        selectedVerticals={businessVerticals}
+        onSelect={(verticals) => {
+          setBusinessVerticals(verticals);
           setShowBusinessVerticalSelect(false);
         }}
       />
@@ -207,8 +208,9 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
     return (
       <SubVerticalScreen
         onBack={() => setShowSubVerticalSelect(false)}
-        onSelect={(subVertical) => {
-          setSubVertical(subVertical);
+        selectedSubVerticals={subVerticals}
+        onSelect={(selected) => {
+          setSubVerticals(selected);
           setShowSubVerticalSelect(false);
         }}
       />
@@ -428,12 +430,12 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               <Label className="text-[8px] font-medium text-foreground">Business Vertical</Label>
               <button
                 onClick={() => setShowBusinessVerticalSelect(true)}
-                className="w-full h-[28px] px-3 text-[10px] rounded-full border border-[#D1D1D1] bg-white text-left flex items-center justify-between"
+                className="w-full min-h-[28px] px-3 py-1 text-[10px] rounded-full border border-[#D1D1D1] bg-white text-left flex items-center justify-between"
               >
-                <span className={businessVertical ? "text-foreground" : "text-muted-foreground"}>
-                  {businessVertical || "Select Business Vertical"}
+                <span className={businessVerticals.length > 0 ? "text-foreground" : "text-muted-foreground"}>
+                  {businessVerticals.length > 0 ? businessVerticals.join(", ") : "Select Business Vertical"}
                 </span>
-                <ChevronLeft size={14} className="-rotate-90 text-foreground" />
+                <ChevronLeft size={14} className="-rotate-90 text-foreground flex-shrink-0" />
               </button>
             </div>
 
@@ -441,12 +443,12 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               <Label className="text-[8px] font-medium text-foreground">Sub Vertical</Label>
               <button
                 onClick={() => setShowSubVerticalSelect(true)}
-                className="w-full h-[28px] px-3 text-[10px] rounded-full border border-[#D1D1D1] bg-white text-left flex items-center justify-between"
+                className="w-full min-h-[28px] px-3 py-1 text-[10px] rounded-full border border-[#D1D1D1] bg-white text-left flex items-center justify-between"
               >
-                <span className={subVertical ? "text-foreground" : "text-muted-foreground"}>
-                  {subVertical || "Select Sub Vertical"}
+                <span className={subVerticals.length > 0 ? "text-foreground" : "text-muted-foreground"}>
+                  {subVerticals.length > 0 ? subVerticals.join(", ") : "Select Sub Vertical"}
                 </span>
-                <ChevronLeft size={14} className="-rotate-90 text-foreground" />
+                <ChevronLeft size={14} className="-rotate-90 text-foreground flex-shrink-0" />
               </button>
             </div>
 
@@ -466,7 +468,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
 
             <Button
               onClick={handleCreateAccount}
-              disabled={!agreedToTerms || !firstName || !lastName || !email || !mobileNumber || !password || !companyName || !businessVertical || !subVertical}
+              disabled={!agreedToTerms || !firstName || !lastName || !email || !mobileNumber || !password || !companyName || businessVerticals.length === 0 || subVerticals.length === 0}
               className="w-full h-[32px] text-[10px] font-bold rounded-full disabled:bg-[#E5E5E5] disabled:text-[#9E9E9E] bg-[#212121] text-white hover:bg-[#212121]/90"
             >
               CREATE ACCOUNT
