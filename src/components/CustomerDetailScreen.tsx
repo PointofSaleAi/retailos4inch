@@ -3,6 +3,7 @@ import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
 import { Customer } from "./CustomerScreen";
 import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
@@ -11,6 +12,8 @@ import iconAnniversary from "@/assets/icon-anniversary.png";
 import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
+import { formatPhoneNumber, countryOptions } from "@/hooks/usePhoneInput";
 
 interface CustomerDetailScreenProps {
   customer: Customer;
@@ -26,6 +29,8 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
   const [anniversaryDate, setAnniversaryDate] = useState<Date | undefined>(
     customer.anniversary ? new Date(customer.anniversary) : undefined
   );
+  const [countryCode, setCountryCode] = useState("+1");
+  const [countryFlag, setCountryFlag] = useState("🇺🇸");
 
   const getInitials = (name: string) => {
     return name
@@ -59,6 +64,19 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
 
   const handleFieldBlur = () => {
     setEditingField(null);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setEditedCustomer(prev => ({ ...prev, phone: formatted }));
+  };
+
+  const handleCountryCodeChange = (value: string) => {
+    const selected = countryOptions.find(opt => `${opt.flag}-${opt.code}` === value);
+    if (selected) {
+      setCountryCode(selected.code);
+      setCountryFlag(selected.flag);
+    }
   };
 
   return (
@@ -127,14 +145,36 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
             )}
             
             {editingField === 'phone' ? (
-              <Input
-                value={editedCustomer.phone}
-                onChange={(e) => handleFieldChange('phone', e.target.value)}
-                onBlur={handleFieldBlur}
-                autoFocus
-                className="h-auto py-0 px-2 text-center"
-                style={{ fontSize: '10px' }}
-              />
+              <div className="flex items-center gap-1">
+                <Select value={`${countryFlag}-${countryCode}`} onValueChange={handleCountryCodeChange}>
+                  <SelectTrigger className="h-5 w-auto px-1 border-none bg-transparent text-xs">
+                    <div className="flex items-center gap-0.5">
+                      <span style={{ fontSize: '10px' }}>{countryFlag}</span>
+                      <ChevronDown size={8} className="text-muted-foreground" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border-[#E5E5E5]">
+                    {countryOptions.map((option) => (
+                      <SelectItem key={`${option.flag}-${option.code}-${option.name}`} value={`${option.flag}-${option.code}`} className="text-xs">
+                        <span className="flex items-center gap-2">
+                          <span style={{ fontSize: '10px' }}>{option.flag}</span>
+                          <span style={{ fontSize: '9px' }}>{option.code}</span>
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  value={editedCustomer.phone}
+                  onChange={handlePhoneChange}
+                  onBlur={handleFieldBlur}
+                  autoFocus
+                  maxLength={14}
+                  placeholder="(xxx) xxx xxxx"
+                  className="h-auto py-0 px-2 text-center"
+                  style={{ fontSize: '10px', width: '100px' }}
+                />
+              </div>
             ) : (
               <p 
                 className="text-foreground cursor-pointer hover:opacity-70" 
