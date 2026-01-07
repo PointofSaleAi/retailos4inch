@@ -216,49 +216,51 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
         </div>
 
         {/* Step Indicators */}
-        <div className="flex items-center justify-between py-3">
-          <div className="flex items-center gap-1">
-            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
-              step === 1 ? "bg-[#212121] text-white" : step > 1 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-            }`}>
-              {step > 1 ? "✓" : "1"}
+        <div className="overflow-x-auto scrollbar-hide py-3">
+          <div className="flex items-center gap-2 min-w-max">
+            <div className="flex items-center gap-1">
+              <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
+                step === 1 ? "bg-[#212121] text-white" : step > 1 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+              }`}>
+                {step > 1 ? "✓" : "1"}
+              </div>
+              <span className={`text-[8px] font-medium whitespace-nowrap ${step === 1 ? "text-foreground" : "text-muted-foreground"}`}>
+                Create Account
+              </span>
             </div>
-            <span className={`text-[8px] font-medium whitespace-nowrap ${step === 1 ? "text-foreground" : "text-muted-foreground"}`}>
-              Create Account
-            </span>
-          </div>
 
-          <div className="flex items-center gap-1">
-            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
-              step === 2 ? "bg-[#212121] text-white" : step > 2 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-            }`}>
-              {step > 2 ? "✓" : "2"}
+            <div className="flex items-center gap-1">
+              <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
+                step === 2 ? "bg-[#212121] text-white" : step > 2 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+              }`}>
+                {step > 2 ? "✓" : "2"}
+              </div>
+              <span className={`text-[8px] font-medium whitespace-nowrap ${step === 2 ? "text-foreground" : "text-muted-foreground"}`}>
+                Set PIN
+              </span>
             </div>
-            <span className={`text-[8px] font-medium ${step === 2 ? "text-foreground" : "text-muted-foreground"}`}>
-              Set PIN
-            </span>
-          </div>
 
-          <div className="flex items-center gap-1">
-            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
-              step === 3 ? "bg-[#212121] text-white" : step > 3 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-            }`}>
-              {step > 3 ? "✓" : "3"}
+            <div className="flex items-center gap-1">
+              <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
+                step === 3 ? "bg-[#212121] text-white" : step > 3 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+              }`}>
+                {step > 3 ? "✓" : "3"}
+              </div>
+              <span className={`text-[8px] font-medium whitespace-nowrap ${step === 3 ? "text-foreground" : "text-muted-foreground"}`}>
+                Confirmation
+              </span>
             </div>
-            <span className={`text-[8px] font-medium ${step === 3 ? "text-foreground" : "text-muted-foreground"}`}>
-              Confirmation
-            </span>
-          </div>
 
-          <div className="flex items-center gap-1">
-            <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium ${
-              step === 4 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
-            }`}>
-              4
+            <div className="flex items-center gap-1">
+              <div className={`flex items-center justify-center w-[20px] h-[20px] rounded-full text-[10px] font-medium flex-shrink-0 ${
+                step === 4 ? "bg-[#212121] text-white" : "bg-white border border-[#D1D1D1] text-[#212121]"
+              }`}>
+                4
+              </div>
+              <span className={`text-[8px] font-medium whitespace-nowrap ${step === 4 ? "text-foreground" : "text-muted-foreground"}`}>
+                OTP
+              </span>
             </div>
-            <span className={`text-[8px] font-medium ${step === 4 ? "text-foreground" : "text-muted-foreground"}`}>
-              OTP
-            </span>
           </div>
         </div>
 
