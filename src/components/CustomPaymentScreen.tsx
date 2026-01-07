@@ -5,14 +5,10 @@ import { CartStrip } from "./CartStrip";
 import { TopNavigation } from "./TopNavigation";
 import iconNote from "@/assets/icon-note.png";
 import { Minus, Plus, Delete } from "lucide-react";
+
 interface CustomPaymentScreenProps {
   onClose: () => void;
-  onAddCustomToCart: (item: {
-    name: string;
-    price: number;
-    quantity: number;
-    note: string;
-  }) => void;
+  onAddCustomToCart: (item: { name: string; price: number; quantity: number; note: string }) => void;
   cartItemCount: number;
   cartTotal: number;
   onCartClick: () => void;
@@ -24,6 +20,7 @@ interface CustomPaymentScreenProps {
   onRedeemLoyalty?: () => void;
   onDeliveryCharge?: () => void;
 }
+
 export const CustomPaymentScreen = ({
   onClose,
   onAddCustomToCart,
@@ -62,6 +59,7 @@ export const CustomPaymentScreen = ({
       setAmount("0.00");
     }
   };
+
   const handleAddToCart = () => {
     const price = parseFloat(amount);
     if (price > 0) {
@@ -71,7 +69,7 @@ export const CustomPaymentScreen = ({
         quantity: quantity,
         note: note
       });
-
+      
       // Reset form but don't close - stay on screen to add more
       setAmount("0.00");
       setProductName("Product Name");
@@ -81,22 +79,41 @@ export const CustomPaymentScreen = ({
   };
   return <div className="h-full flex flex-col bg-background">
       {/* Top Navigation */}
-      <TopNavigation onCustomClick={onClose} onFavoritesClick={onFavoritesClick} onScanClick={onScanClick} onAddTax={onAddTax} onDiscount={onDiscount} onGiftCard={onGiftCard} onRedeemLoyalty={onRedeemLoyalty} onDeliveryCharge={onDeliveryCharge} isCustomScreen={true} />
+      <TopNavigation 
+        onCustomClick={onClose}
+        onFavoritesClick={onFavoritesClick}
+        onScanClick={onScanClick}
+        onAddTax={onAddTax}
+        onDiscount={onDiscount}
+        onGiftCard={onGiftCard}
+        onRedeemLoyalty={onRedeemLoyalty}
+        onDeliveryCharge={onDeliveryCharge}
+        isCustomScreen={true}
+      />
 
       {/* Main Content */}
       <div className="flex-1 flex justify-center overflow-y-auto">
         <div className="w-[186px] space-y-1.5 px-0 py-0">
           {/* Product Name Card */}
           <div className="bg-surface rounded-xl p-3 flex items-center justify-between shadow-sm">
-          {isEditingProductName ? <Input value={productName} onChange={e => setProductName(e.target.value)} onBlur={() => {
-            if (productName.trim() === "") {
-              setProductName("Product Name");
-            }
-            setIsEditingProductName(false);
-          }} autoFocus className="h-auto p-0 border-0 bg-transparent text-[10px] text-[#666666] focus-visible:ring-0 focus-visible:ring-offset-0" /> : <span className="text-[10px] text-[#666666] cursor-pointer" onClick={() => {
-            setProductName("");
-            setIsEditingProductName(true);
-          }}>
+          {isEditingProductName ? <Input 
+            value={productName} 
+            onChange={e => setProductName(e.target.value)} 
+            onBlur={() => {
+              if (productName.trim() === "") {
+                setProductName("Product Name");
+              }
+              setIsEditingProductName(false);
+            }} 
+            autoFocus 
+            className="h-auto p-0 border-0 bg-transparent text-[10px] text-[#666666] focus-visible:ring-0 focus-visible:ring-offset-0" 
+          /> : <span 
+            className="text-[10px] text-[#666666] cursor-pointer" 
+            onClick={() => {
+              setProductName("");
+              setIsEditingProductName(true);
+            }}
+          >
               {productName}
             </span>}
           <span className="text-sm font-semibold text-foreground">${amount}</span>
@@ -141,7 +158,7 @@ export const CustomPaymentScreen = ({
           <Button variant="outline" className="h-[42px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("6")}>
             6
           </Button>
-          <Button variant="outline" onClick={() => handleNumberClick("5")} className="h-[42px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl px-[2px]">
+          <Button variant="outline" className="h-[42px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("5")}>
             5
           </Button>
           <Button variant="outline" className="h-[42px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("4")}>
@@ -174,6 +191,10 @@ export const CustomPaymentScreen = ({
       </div>
       
       {/* Cart Strip */}
-      <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
+      <CartStrip 
+        itemCount={cartItemCount} 
+        totalAmount={cartTotal} 
+        onClick={onCartClick}
+      />
     </div>;
 };
