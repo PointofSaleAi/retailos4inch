@@ -15,6 +15,48 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 
+// Web Speech API types
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionResultList {
+  length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+  length: number;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+  isFinal: boolean;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognitionInterface extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: Event) => void) | null;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognitionInterface;
+    webkitSpeechRecognition: new () => SpeechRecognitionInterface;
+  }
+}
+
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
 type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled" | "Pending";
 type SortOrder = "newest" | "oldest";
@@ -119,11 +161,13 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
+  const [isListening, setIsListening] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef(0);
   const isPulling = useRef(false);
+  const recognitionRef = useRef<SpeechRecognitionInterface | null>(null);
 
   const PULL_THRESHOLD = 50;
 
@@ -142,6 +186,53 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = 'en-US';
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map(result => result[0].transcript)
+          .join('');
+        setSearchQuery(transcript);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = () => {
+        setIsListening(false);
+      };
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+    };
+  }, []);
+
+  const handleVoiceSearch = useCallback(() => {
+    if (!recognitionRef.current) {
+      console.log('Speech recognition not supported');
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      setIsListening(true);
+      recognitionRef.current.start();
+    }
+  }, [isListening]);
 
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
@@ -292,7 +383,14 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                 className="flex-1 min-w-0 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               />
-              <img src={iconMic} alt="Voice" className="w-[14px] h-[14px] cursor-pointer opacity-60 flex-shrink-0" />
+              <button onClick={handleVoiceSearch} className="p-0 flex-shrink-0">
+                <img 
+                  src={iconMic} 
+                  alt="Voice" 
+                  className={`w-[14px] h-[14px] cursor-pointer flex-shrink-0 transition-opacity ${isListening ? 'opacity-100 animate-pulse' : 'opacity-60'}`}
+                  style={isListening ? { filter: 'invert(27%) sepia(94%) saturate(5021%) hue-rotate(352deg) brightness(93%) contrast(97%)' } : {}}
+                />
+              </button>
             </div>
             <button 
               className="p-0 flex items-center justify-center flex-shrink-0"
