@@ -139,7 +139,7 @@ export const CustomPaymentScreen = ({
         </div>
 
         {/* Numeric Keypad */}
-        <div className="grid grid-cols-4 gap-[2px]">
+        <div className="grid grid-cols-4 gap-1 p-[2px]">
           {/* Row 1 */}
           <Button variant="outline" className="h-[40px] w-[37px] text-base font-medium bg-surface hover:bg-surface/80 border-border/50 rounded-xl" onClick={() => handleNumberClick("9")}>
             9
