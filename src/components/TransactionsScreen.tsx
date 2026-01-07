@@ -278,42 +278,54 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   return (
     <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat, sans-serif' }}>
       {/* Header */}
-      <div className="flex-shrink-0 px-[6px] py-2">
+      <div className="flex-shrink-0 px-3 py-2">
         {showSearch ? (
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-2 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '26px', width: '156px' }}>
-              <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px]" />
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 flex-1 bg-[#F1F2F5] rounded-lg px-3" style={{ height: '34px' }}>
+              <img src={iconSearchTx} alt="Search" className="w-[18px] h-[18px] min-w-[18px] min-h-[18px] opacity-60" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search Products..."
-                className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
+                className="flex-1 bg-transparent text-[12px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               />
-              <img src={iconMic} alt="Voice" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px] cursor-pointer" />
+              <img src={iconMic} alt="Voice" className="w-[18px] h-[18px] min-w-[18px] min-h-[18px] opacity-60 cursor-pointer" />
             </div>
             <button 
-              className="h-[26px] w-[26px] p-0 flex items-center justify-center"
+              className="p-0 flex items-center justify-center"
               onClick={handleClearSearch}
             >
-              <img src={iconClose} alt="Close" className="w-[10px] h-[10px] min-w-[10px] min-h-[10px]" />
+              <img src={iconClose} alt="Close" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px]" />
             </button>
           </div>
         ) : (
-          <div 
-            className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-3 cursor-pointer" 
-            style={{ height: '34px' }}
-            onClick={() => setShowSearch(true)}
-          >
-            <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px] opacity-50" />
-            <span 
-              className="flex-1 text-[11px] text-muted-foreground"
-              style={{ fontFamily: 'Montserrat, sans-serif' }}
-            >
-              Search Products...
-            </span>
+          <div className="flex items-center justify-between">
+            <h1 className="text-[16px] font-semibold text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              Transactions
+            </h1>
+            <div className="flex items-center gap-5">
+              <button 
+                className="p-0 flex items-center justify-center"
+                onClick={() => setShowSearch(true)}
+              >
+                <img src={iconSearchTx} alt="Search" className="w-[20px] h-[20px]" />
+              </button>
+              <button 
+                className="p-0 flex items-center justify-center"
+                onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+              >
+                <img src={iconCalendarTx} alt="Calendar" className="w-[20px] h-[20px]" />
+              </button>
+              <button 
+                className="p-0 flex items-center justify-center"
+                onClick={() => setShowSortMenu(!showSortMenu)}
+              >
+                <img src={iconMenuTx} alt="Filter" className="w-[20px] h-[20px]" />
+              </button>
+            </div>
           </div>
         )}
       </div>
