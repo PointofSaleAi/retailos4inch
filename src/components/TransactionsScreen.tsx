@@ -280,8 +280,8 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       {/* Header */}
       <div className="flex-shrink-0 px-3 py-2">
         {showSearch ? (
-          <div className="flex items-center justify-center">
-            <div className="flex items-center gap-2 px-3 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '28px', width: '170px' }}>
+          <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center gap-2 px-3 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '26px', width: '156px' }}>
               <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] flex-shrink-0 opacity-60" />
               <input
                 ref={searchInputRef}
@@ -292,16 +292,14 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                 className="flex-1 min-w-0 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               />
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <img src={iconMic} alt="Voice" className="w-[14px] h-[14px] cursor-pointer opacity-60" />
-                <button 
-                  className="p-0 flex items-center justify-center"
-                  onClick={handleClearSearch}
-                >
-                  <img src={iconClose} alt="Close" className="w-[12px] h-[12px] opacity-60" />
-                </button>
-              </div>
+              <img src={iconMic} alt="Voice" className="w-[14px] h-[14px] cursor-pointer opacity-60 flex-shrink-0" />
             </div>
+            <button 
+              className="p-0 flex items-center justify-center flex-shrink-0"
+              onClick={handleClearSearch}
+            >
+              <img src={iconClose} alt="Close" className="w-[14px] h-[14px] opacity-60" />
+            </button>
           </div>
         ) : (
           <div className="flex items-center justify-between relative">
@@ -429,20 +427,22 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
         </div>
       )}
 
-      {/* Filters */}
+      {/* Filters - Horizontally Scrollable */}
       {!isCalendarOpen && (
-        <div className="flex-shrink-0 flex gap-2 px-3 py-1">
-          {(["All", "Ordering", "Refunded", "Paid"] as FilterType[]).map(filter => (
-            <button 
-              key={filter} 
-              onClick={() => setActiveFilter(filter)} 
-              className={`px-3 py-1.5 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${
-                activeFilter === filter ? "bg-foreground text-background" : "bg-[#F5F5F5] text-gray-700"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+        <div className="flex-shrink-0 overflow-x-auto scrollbar-hide px-3 py-1">
+          <div className="flex gap-2 w-max">
+            {(["All", "Ordering", "Refunded", "Paid", "Pending", "Cancelled"] as FilterType[]).map(filter => (
+              <button 
+                key={filter} 
+                onClick={() => setActiveFilter(filter)} 
+                className={`px-3 py-1.5 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${
+                  activeFilter === filter ? "bg-foreground text-background" : "bg-[#F5F5F5] text-gray-700"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
