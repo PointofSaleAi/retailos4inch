@@ -161,9 +161,9 @@ export const NewOrderScreen = ({
       return () => container.removeEventListener('scroll', handleScroll);
     }
   }, []);
-  return <div className="h-full flex flex-col bg-background animate-fade-in">
+  return <div ref={popupContainerRef} className="h-full flex flex-col bg-background animate-fade-in relative">
       {/* Scrollable content area */}
-      <div ref={popupContainerRef} className="flex-1 overflow-y-auto scrollbar-hide relative">
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
         <TopNavigation 
           onCustomClick={onCustomClick} 
           onFavoritesClick={onFavoritesClick}
