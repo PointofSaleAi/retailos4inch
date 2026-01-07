@@ -7,6 +7,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { BusinessVerticalScreen } from "./BusinessVerticalScreen";
 import { SubVerticalScreen } from "./SubVerticalScreen";
+import { countryOptions, formatPhoneNumber, validatePhoneNumber } from "@/hooks/usePhoneInput";
 
 interface RegistrationScreenProps {
   onBack: () => void;
@@ -52,13 +53,6 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
       });
     }
   }, [step]);
-  const countryOptions = [
-    { code: "+1", flag: "🇺🇸", name: "United States" },
-    { code: "+1", flag: "🇨🇦", name: "Canada" },
-    { code: "+44", flag: "🇬🇧", name: "United Kingdom" },
-    { code: "+91", flag: "🇮🇳", name: "India" },
-    { code: "+61", flag: "🇦🇺", name: "Australia" },
-  ];
 
   const handleCountryCodeChange = (value: string) => {
     const selected = countryOptions.find(opt => `${opt.flag}-${opt.code}` === value);
@@ -113,29 +107,18 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   };
 
   const validatePhone = (phone: string) => {
-    const phoneRegex = /^\(\d{3}\)\s\d{3}\s\d{4}$/;
     if (!phone) {
       setPhoneError("");
       return false;
     }
-    if (!phoneRegex.test(phone)) {
-      setPhoneError("Phone format: (xxx) xxx xxxx");
+    if (!validatePhoneNumber(phone)) {
+      setPhoneError("Phone must be 10 digits");
       return false;
     }
     setPhoneError("");
     return true;
   };
 
-  const formatPhoneNumber = (value: string) => {
-    // Remove all non-digit characters
-    const digits = value.replace(/\D/g, "");
-    
-    // Format based on length
-    if (digits.length === 0) return "";
-    if (digits.length <= 3) return `(${digits}`;
-    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
-  };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);

@@ -7,6 +7,7 @@ import iconReceiptEmail from '@/assets/icon-receipt-email.png';
 import iconPrintReceipt from '@/assets/icon-print-receipt.png';
 import iconPrintBill from '@/assets/icon-print-bill.png';
 import iconPrintBoth from '@/assets/icon-print-both.png';
+import { formatPhoneNumber, validatePhoneNumber } from '@/hooks/usePhoneInput';
 
 const countryCodes = [
   { code: '+1', country: 'US', flag: '🇺🇸' },
@@ -165,8 +166,9 @@ export const PaymentSuccessScreen = ({
             <input
               type="tel"
               value={phoneNumber}
-              onChange={e => setPhoneNumber(e.target.value)}
-              placeholder="Enter phone number"
+              onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
+              maxLength={14}
+              placeholder="(xxx) xxx xxxx"
               className="flex-1 h-full px-[10px] text-[10px] focus:outline-none bg-transparent"
             />
           </div>
@@ -188,7 +190,7 @@ export const PaymentSuccessScreen = ({
               ))}
             </div>
           )}
-          {phoneNumber && (
+          {validatePhoneNumber(phoneNumber) && (
             <button
               onClick={handleSendText}
               className="w-full h-[28px] bg-gray-900 text-white rounded-full font-semibold text-[11px] tracking-wide hover:bg-gray-800 transition-colors mt-[6px]"

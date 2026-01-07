@@ -11,6 +11,7 @@ import iconAddCustomer from '@/assets/icon-add-customer.png';
 import iconRedeemLoyalty from '@/assets/icon-redeem-loyalty.png';
 import iconDeliveryCharge from '@/assets/icon-delivery-charge.png';
 import iconCashier from '@/assets/icon-cashier.png';
+import { formatPhoneNumber } from '@/hooks/usePhoneInput';
 interface Customer {
   id: string;
   name: string;
@@ -240,15 +241,31 @@ export const OrderSummaryScreen = ({
             }} className="text-[10px] font-semibold text-gray-900 cursor-pointer whitespace-nowrap truncate">
                 {customerName}
               </div>}
-            {isEditingPhone ? <input type="tel" value={customerPhone === '(xxx) xxx xxxx' ? '' : customerPhone} onChange={e => setCustomerPhone(e.target.value)} onBlur={() => {
-              setIsEditingPhone(false);
-              if (!customerPhone.trim()) setCustomerPhone('(xxx) xxx xxxx');
-            }} className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full" autoFocus /> : <div onClick={() => {
-              setIsEditingPhone(true);
-              if (customerPhone === '(xxx) xxx xxxx') setCustomerPhone('');
-            }} className="text-[10px] text-gray-600 cursor-pointer">
+            {isEditingPhone ? (
+              <input
+                type="tel"
+                value={customerPhone === '(xxx) xxx xxxx' ? '' : customerPhone}
+                onChange={(e) => setCustomerPhone(formatPhoneNumber(e.target.value))}
+                onBlur={() => {
+                  setIsEditingPhone(false);
+                  if (!customerPhone.trim()) setCustomerPhone('(xxx) xxx xxxx');
+                }}
+                maxLength={14}
+                placeholder="(xxx) xxx xxxx"
+                className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full"
+                autoFocus
+              />
+            ) : (
+              <div
+                onClick={() => {
+                  setIsEditingPhone(true);
+                  if (customerPhone === '(xxx) xxx xxxx') setCustomerPhone('');
+                }}
+                className="text-[10px] text-gray-600 cursor-pointer"
+              >
                 {customerPhone}
-              </div>}
+              </div>
+            )}
           </div>
           <div className="text-right flex-shrink-0">
             <div className="text-[11px] font-semibold text-gray-900">{customerPoints} Points</div>
