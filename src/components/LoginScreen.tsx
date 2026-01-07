@@ -72,16 +72,14 @@ export const LoginScreen = ({
             </button>
           </div>
           
-          <div className="text-center text-[10px]">
-            <span className="text-muted-foreground">Haven't registered yet? </span>
-            <button 
-              type="button" 
-              onClick={() => setShowRegistration(true)}
-              className="text-foreground font-semibold hover:underline"
-            >
-              Register
-            </button>
-          </div>
+          <Button 
+            type="button" 
+            variant="outline"
+            onClick={() => setShowRegistration(true)}
+            className="h-[28px] w-full text-[10px] font-semibold"
+          >
+            Create Account
+          </Button>
         </div>
       </form>
     </div>;
