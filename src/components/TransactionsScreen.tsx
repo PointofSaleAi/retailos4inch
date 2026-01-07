@@ -279,87 +279,41 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
     <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat, sans-serif' }}>
       {/* Header */}
       <div className="flex-shrink-0 px-3 py-2">
-        {showSearch ? (
-          <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-3" style={{ height: '34px' }}>
-            <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px] opacity-50" />
-            <input
-              ref={searchInputRef}
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Products..."
-              className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none"
-              style={{ fontFamily: 'Montserrat, sans-serif' }}
-            />
-            <button className="p-0.5 flex items-center justify-center">
-              <img src={iconMic} alt="Mic" className="w-[16px] h-[16px] opacity-60" />
-            </button>
+        <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-3" style={{ height: '34px' }}>
+          <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px] opacity-50" />
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSearch(true)}
+            placeholder="Search Products..."
+            className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none"
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+          />
+          <button className="p-0.5 flex items-center justify-center">
+            <img src={iconMic} alt="Mic" className="w-[16px] h-[16px] opacity-60" />
+          </button>
+          {showSearch && (
             <button 
               className="p-0.5 flex items-center justify-center" 
               onClick={handleClearSearch}
             >
               <img src={iconClose} alt="Close" className="w-[14px] h-[14px] opacity-60" />
             </button>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between">
-            <h1 className="text-foreground font-semibold" style={{ fontSize: '12px' }}>Transactions</h1>
-            <div className="flex items-center gap-3">
-              <button className="p-1" onClick={() => setShowSearch(true)}>
-                <img src={iconSearchTx} alt="Search" className="w-[16px] h-[16px]" />
-              </button>
+          )}
               
-              <button 
-                className={cn("p-1", dateRange?.from && "bg-primary/10 rounded")}
-                onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-              >
-                <img src={iconCalendarTx} alt="Calendar" className="w-[16px] h-[16px]" />
-              </button>
-
-              <div className="relative" ref={sortMenuRef}>
-                <button 
-                  className={cn("p-1", sortOrder !== "newest" && "bg-primary/10 rounded")}
-                  onClick={() => setShowSortMenu(!showSortMenu)}
-                >
-                  <img src={iconMenuTx} alt="Menu" className="w-[16px] h-[16px]" />
-                </button>
-                
-                {showSortMenu && (
-                  <div className="absolute right-0 top-full mt-1 bg-surface border border-border rounded-lg shadow-lg z-50 min-w-[100px]">
-                    <button
-                      onClick={() => { setSortOrder("newest"); setShowSortMenu(false); }}
-                      className={cn(
-                        "w-full px-3 py-2 text-[10px] text-left hover:bg-[#F1F2F5] transition-colors",
-                        sortOrder === "newest" && "font-semibold text-primary"
-                      )}
-                    >
-                      Newest First
-                    </button>
-                    <button
-                      onClick={() => { setSortOrder("oldest"); setShowSortMenu(false); }}
-                      className={cn(
-                        "w-full px-3 py-2 text-[10px] text-left hover:bg-[#F1F2F5] transition-colors",
-                        sortOrder === "oldest" && "font-semibold text-primary"
-                      )}
-                    >
-                      Oldest First
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Summary Section */}
       <div className="flex-shrink-0 flex gap-2 px-3 py-2">
         <div className="flex-1 bg-[#D4F5E9] rounded-lg px-3 py-2">
-          <p className="text-[9px] text-gray-700 font-medium">Total Net Sale</p>
+          <p className="text-[9px] text-gray-700 font-medium whitespace-nowrap">Total Net Sale</p>
           <p className="text-[14px] text-gray-900 font-bold">${totalNetSale.toFixed(2)}</p>
         </div>
         <div className="flex-1 bg-[#F1F2F5] rounded-lg px-3 py-2">
-          <p className="text-[9px] text-gray-700 font-medium">Total Refunded</p>
+          <p className="text-[9px] text-gray-700 font-medium whitespace-nowrap">Total Refunded</p>
           <p className="text-[14px] text-gray-900 font-bold">${totalRefunded.toFixed(2)}</p>
         </div>
       </div>
