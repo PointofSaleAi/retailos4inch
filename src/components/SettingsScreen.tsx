@@ -24,16 +24,10 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   {
-    id: "general",
-    label: "General",
+    id: "system",
+    label: "System",
     icon: iconGeneral,
     iconBg: "#2C2C2E"
-  },
-  {
-    id: "control-center",
-    label: "Control Center",
-    icon: iconControlCenter,
-    iconBg: "#A855F7"
   },
   {
     id: "payments",
@@ -42,10 +36,16 @@ const menuItems: MenuItem[] = [
     iconBg: "#8B5CF6"
   },
   {
-    id: "network",
-    label: "Network",
-    icon: iconNetwork,
-    iconBg: "#3B82F6"
+    id: "menu",
+    label: "Menu",
+    icon: iconControlCenter,
+    iconBg: "#A855F7"
+  },
+  {
+    id: "notifications",
+    label: "Notifications",
+    icon: iconCustomerSupport,
+    iconBg: "#EF4444"
   },
   {
     id: "hardware",
@@ -54,8 +54,14 @@ const menuItems: MenuItem[] = [
     iconBg: "#A855F7"
   },
   {
-    id: "customer-support",
-    label: "Customer Support",
+    id: "network",
+    label: "Network",
+    icon: iconNetwork,
+    iconBg: "#3B82F6"
+  },
+  {
+    id: "support",
+    label: "Support",
     icon: iconCustomerSupport,
     iconBg: "#EF4444"
   },
