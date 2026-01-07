@@ -16,25 +16,21 @@ import { cn } from "@/lib/utils";
 interface SpeechRecognitionEvent extends Event {
   results: SpeechRecognitionResultList;
 }
-
 interface SpeechRecognitionResultList {
   length: number;
   item(index: number): SpeechRecognitionResult;
   [index: number]: SpeechRecognitionResult;
 }
-
 interface SpeechRecognitionResult {
   length: number;
   item(index: number): SpeechRecognitionAlternative;
   [index: number]: SpeechRecognitionAlternative;
   isFinal: boolean;
 }
-
 interface SpeechRecognitionAlternative {
   transcript: string;
   confidence: number;
 }
-
 interface SpeechRecognitionInterface extends EventTarget {
   continuous: boolean;
   interimResults: boolean;
@@ -46,18 +42,15 @@ interface SpeechRecognitionInterface extends EventTarget {
   onend: (() => void) | null;
   onerror: ((event: Event) => void) | null;
 }
-
 declare global {
   interface Window {
     SpeechRecognition: new () => SpeechRecognitionInterface;
     webkitSpeechRecognition: new () => SpeechRecognitionInterface;
   }
 }
-
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
 type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled" | "Pending";
 type SortOrder = "newest" | "oldest";
-
 interface Transaction {
   id: string;
   icon: "document" | "grid" | "tag" | "camera";
@@ -70,12 +63,10 @@ interface Transaction {
   orderNumber?: string;
   transactionNumber?: string;
 }
-
 interface TransactionsScreenProps {
   transactions?: Transaction[];
   onTransactionClick?: (transactionId: string) => void;
 }
-
 const mockTransactions: Transaction[] = [{
   id: "1",
   icon: "document",
@@ -132,14 +123,12 @@ const mockTransactions: Transaction[] = [{
   orderNumber: "ORD005",
   transactionNumber: "TXN005"
 }];
-
 const iconMap = {
   document: iconDocument,
   grid: iconGrid,
   tag: iconTag,
   camera: iconCamera
 };
-
 const statusColors = {
   Paid: "text-success",
   Refunded: "text-destructive",
@@ -147,8 +136,10 @@ const statusColors = {
   Ordering: "text-warning",
   Pending: "text-warning"
 };
-
-export const TransactionsScreen = ({ transactions = [], onTransactionClick }: TransactionsScreenProps) => {
+export const TransactionsScreen = ({
+  transactions = [],
+  onTransactionClick
+}: TransactionsScreenProps) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("All");
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -166,15 +157,12 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
   const touchStartY = useRef(0);
   const isPulling = useRef(false);
   const recognitionRef = useRef<SpeechRecognitionInterface | null>(null);
-
   const PULL_THRESHOLD = 50;
-
   useEffect(() => {
     if (showSearch && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [showSearch]);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (sortMenuRef.current && !sortMenuRef.current.contains(event.target as Node)) {
@@ -193,36 +181,28 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = 'en-US';
-
-      recognitionRef.current.onresult = (event) => {
-        const transcript = Array.from(event.results)
-          .map(result => result[0].transcript)
-          .join('');
+      recognitionRef.current.onresult = event => {
+        const transcript = Array.from(event.results).map(result => result[0].transcript).join('');
         setSearchQuery(transcript);
       };
-
       recognitionRef.current.onend = () => {
         setIsListening(false);
       };
-
       recognitionRef.current.onerror = () => {
         setIsListening(false);
       };
     }
-
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.abort();
       }
     };
   }, []);
-
   const handleVoiceSearch = useCallback(() => {
     if (!recognitionRef.current) {
       console.log('Speech recognition not supported');
       return;
     }
-
     if (isListening) {
       recognitionRef.current.stop();
       setIsListening(false);
@@ -231,32 +211,26 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       recognitionRef.current.start();
     }
   }, [isListening]);
-
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     // Simulate data reload - in real app this would fetch from API
     await new Promise(resolve => setTimeout(resolve, 1000));
     setIsRefreshing(false);
   }, []);
-
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (listRef.current && listRef.current.scrollTop === 0) {
       touchStartY.current = e.touches[0].clientY;
       isPulling.current = true;
     }
   }, []);
-
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isPulling.current || isRefreshing) return;
-    
     const currentY = e.touches[0].clientY;
     const distance = currentY - touchStartY.current;
-    
     if (distance > 0 && listRef.current?.scrollTop === 0) {
       setPullDistance(Math.min(distance * 0.5, 80));
     }
   }, [isRefreshing]);
-
   const handleTouchEnd = useCallback(() => {
     if (pullDistance >= PULL_THRESHOLD && !isRefreshing) {
       handleRefresh();
@@ -264,17 +238,11 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
     setPullDistance(0);
     isPulling.current = false;
   }, [pullDistance, isRefreshing, handleRefresh]);
-
   const allTransactions = [...transactions, ...mockTransactions];
 
   // Calculate totals dynamically
-  const totalNetSale = allTransactions
-    .filter(t => t.status === "Paid")
-    .reduce((sum, t) => sum + t.amount, 0);
-  
-  const totalRefunded = allTransactions
-    .filter(t => t.status === "Refunded")
-    .reduce((sum, t) => sum + t.amount, 0);
+  const totalNetSale = allTransactions.filter(t => t.status === "Paid").reduce((sum, t) => sum + t.amount, 0);
+  const totalRefunded = allTransactions.filter(t => t.status === "Refunded").reduce((sum, t) => sum + t.amount, 0);
 
   // Parse date string to Date object for comparison
   const parseTransactionDate = (dateStr: string): Date => {
@@ -297,150 +265,121 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
     if (period === "AM" && hours === 12) hour24 = 0;
     return hour24 * 60 + minutes;
   };
+  const filteredTransactions = allTransactions.filter(transaction => {
+    // Status filter
+    if (activeFilter !== "All" && transaction.status !== activeFilter) {
+      return false;
+    }
 
-  const filteredTransactions = allTransactions
-    .filter(transaction => {
-      // Status filter
-      if (activeFilter !== "All" && transaction.status !== activeFilter) {
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesProduct = transaction.product.toLowerCase().includes(query);
+      const matchesOrderNumber = transaction.orderNumber?.toLowerCase().includes(query) || false;
+      const matchesTransactionNumber = transaction.transactionNumber?.toLowerCase().includes(query) || false;
+      if (!matchesProduct && !matchesOrderNumber && !matchesTransactionNumber) {
         return false;
       }
+    }
 
-      // Search filter
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        const matchesProduct = transaction.product.toLowerCase().includes(query);
-        const matchesOrderNumber = transaction.orderNumber?.toLowerCase().includes(query) || false;
-        const matchesTransactionNumber = transaction.transactionNumber?.toLowerCase().includes(query) || false;
-        if (!matchesProduct && !matchesOrderNumber && !matchesTransactionNumber) {
-          return false;
-        }
+    // Date filter
+    if (isDateFilterActive) {
+      const transactionDate = parseTransactionDate(transaction.date);
+      if (!isSameDay(transactionDate, selectedDate)) {
+        return false;
       }
+    }
+    return true;
+  }).sort((a, b) => {
+    const dateA = parseTransactionDate(a.date);
+    const dateB = parseTransactionDate(b.date);
+    const timeA = parseTransactionTime(a.time);
+    const timeB = parseTransactionTime(b.time);
 
-      // Date filter
-      if (isDateFilterActive) {
-        const transactionDate = parseTransactionDate(transaction.date);
-        if (!isSameDay(transactionDate, selectedDate)) {
-          return false;
-        }
-      }
-
-      return true;
-    })
-    .sort((a, b) => {
-      const dateA = parseTransactionDate(a.date);
-      const dateB = parseTransactionDate(b.date);
-      const timeA = parseTransactionTime(a.time);
-      const timeB = parseTransactionTime(b.time);
-
-      // Compare dates first, then times
-      if (dateA.getTime() !== dateB.getTime()) {
-        return sortOrder === "newest" ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
-      }
-      return sortOrder === "newest" ? timeB - timeA : timeA - timeB;
-    });
-
+    // Compare dates first, then times
+    if (dateA.getTime() !== dateB.getTime()) {
+      return sortOrder === "newest" ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime();
+    }
+    return sortOrder === "newest" ? timeB - timeA : timeA - timeB;
+  });
   const handleClearSearch = () => {
     setSearchQuery("");
     setShowSearch(false);
   };
-
   const handleClearDateFilter = () => {
     setIsDateFilterActive(false);
     setSelectedDate(new Date());
   };
-
   const getDateFilterLabel = () => {
     if (!isDateFilterActive) return null;
     return format(selectedDate, "MMM d, yyyy");
   };
-
-  return (
-    <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+  return <div className="h-full flex flex-col bg-background" style={{
+    fontFamily: 'Montserrat, sans-serif'
+  }}>
       {/* Header */}
       <div className="flex-shrink-0 px-3 py-2">
-        {showSearch ? (
-          <div className="flex items-center justify-center gap-2">
-            <div className="flex items-center gap-2 px-3 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '26px', width: '156px' }}>
+        {showSearch ? <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center gap-2 px-3 rounded-lg" style={{
+          backgroundColor: '#F1F2F5',
+          height: '26px',
+          width: '156px'
+        }}>
               <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] flex-shrink-0 opacity-60" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search Products..."
-                className="flex-1 min-w-0 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
-                style={{ fontFamily: 'Montserrat, sans-serif' }}
-              />
+              <input ref={searchInputRef} type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search Products..." className="flex-1 min-w-0 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0" style={{
+            fontFamily: 'Montserrat, sans-serif'
+          }} />
               <button onClick={handleVoiceSearch} className="p-0 flex-shrink-0">
-                <img 
-                  src={iconMic} 
-                  alt="Voice" 
-                  className={`w-[14px] h-[14px] cursor-pointer flex-shrink-0 transition-opacity ${isListening ? 'opacity-100 animate-pulse' : 'opacity-60'}`}
-                  style={isListening ? { filter: 'invert(27%) sepia(94%) saturate(5021%) hue-rotate(352deg) brightness(93%) contrast(97%)' } : {}}
-                />
+                <img src={iconMic} alt="Voice" className={`w-[14px] h-[14px] cursor-pointer flex-shrink-0 transition-opacity ${isListening ? 'opacity-100 animate-pulse' : 'opacity-60'}`} style={isListening ? {
+              filter: 'invert(27%) sepia(94%) saturate(5021%) hue-rotate(352deg) brightness(93%) contrast(97%)'
+            } : {}} />
               </button>
             </div>
-            <button 
-              className="p-0 flex items-center justify-center flex-shrink-0"
-              onClick={handleClearSearch}
-            >
+            <button className="p-0 flex items-center justify-center flex-shrink-0" onClick={handleClearSearch}>
               <img src={iconClose} alt="Close" className="w-[14px] h-[14px] opacity-60" />
             </button>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between relative">
-            <h1 className="text-[13px] font-semibold text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+          </div> : <div className="flex items-center justify-between relative">
+            <h1 className="text-[13px] font-semibold text-foreground" style={{
+          fontFamily: 'Montserrat, sans-serif'
+        }}>
               Transactions
             </h1>
             <div className="flex items-center gap-4">
-              <button 
-                className="p-0 flex items-center justify-center"
-                onClick={() => setShowSearch(true)}
-              >
+              <button className="p-0 flex items-center justify-center" onClick={() => setShowSearch(true)}>
                 <img src={iconSearchTx} alt="Search" className="w-4 h-4" />
               </button>
-              <button 
-                className="p-0 flex items-center justify-center"
-                onClick={() => setIsPickerOpen(!isPickerOpen)}
-              >
+              <button className="p-0 flex items-center justify-center" onClick={() => setIsPickerOpen(!isPickerOpen)}>
                 <img src={iconCalendarTx} alt="Calendar" className="w-4 h-4" />
               </button>
-              <button 
-                className="p-0 flex items-center justify-center"
-                onClick={() => setShowSortMenu(!showSortMenu)}
-              >
+              <button className="p-0 flex items-center justify-center" onClick={() => setShowSortMenu(!showSortMenu)}>
                 <img src={iconMenuTx} alt="Filter" className="w-4 h-4" />
               </button>
             </div>
             
             {/* Sort Menu Dropdown */}
-            {showSortMenu && (
-              <div 
-                ref={sortMenuRef}
-                className="absolute right-0 top-7 bg-white rounded-lg shadow-lg border border-border z-50 py-1 min-w-[100px]"
-              >
-                <button
-                  onClick={() => { setSortOrder("newest"); setShowSortMenu(false); }}
-                  className={`w-full px-3 py-2 text-left text-[11px] hover:bg-gray-50 ${sortOrder === "newest" ? "font-semibold text-primary" : "text-foreground"}`}
-                  style={{ fontFamily: 'Montserrat, sans-serif' }}
-                >
+            {showSortMenu && <div ref={sortMenuRef} className="absolute right-0 top-7 bg-white rounded-lg shadow-lg border border-border z-50 py-1 min-w-[100px]">
+                <button onClick={() => {
+            setSortOrder("newest");
+            setShowSortMenu(false);
+          }} className={`w-full px-3 py-2 text-left text-[11px] hover:bg-gray-50 ${sortOrder === "newest" ? "font-semibold text-primary" : "text-foreground"}`} style={{
+            fontFamily: 'Montserrat, sans-serif'
+          }}>
                   Newest First
                 </button>
-                <button
-                  onClick={() => { setSortOrder("oldest"); setShowSortMenu(false); }}
-                  className={`w-full px-3 py-2 text-left text-[11px] hover:bg-gray-50 ${sortOrder === "oldest" ? "font-semibold text-primary" : "text-foreground"}`}
-                  style={{ fontFamily: 'Montserrat, sans-serif' }}
-                >
+                <button onClick={() => {
+            setSortOrder("oldest");
+            setShowSortMenu(false);
+          }} className={`w-full px-3 py-2 text-left text-[11px] hover:bg-gray-50 ${sortOrder === "oldest" ? "font-semibold text-primary" : "text-foreground"}`} style={{
+            fontFamily: 'Montserrat, sans-serif'
+          }}>
                   Oldest First
                 </button>
-              </div>
-            )}
-          </div>
-        )}
+              </div>}
+          </div>}
       </div>
 
       {/* Summary Section */}
-      <div className="flex-shrink-0 flex gap-3 px-3 py-2">
+      <div className="flex-shrink-0 gap-3 flex items-center justify-center px-[6px] py-[6px]">
         <div className="flex-1 bg-[#D4F5E9] rounded-lg px-4 py-3">
           <p className="text-[10px] text-gray-600 font-medium mb-1">Total Net Sale</p>
           <p className="text-[16px] text-gray-900 font-bold">${totalNetSale.toFixed(2)}</p>
@@ -452,98 +391,59 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       </div>
 
       {/* Active Date Filter Indicator */}
-      {isDateFilterActive && (
-        <div className="flex-shrink-0 px-3 pb-1">
+      {isDateFilterActive && <div className="flex-shrink-0 px-3 pb-1">
           <div className="flex items-center gap-1 bg-primary/10 rounded px-2 py-1 w-fit">
             <span className="text-[9px] text-primary font-medium">{getDateFilterLabel()}</span>
             <button onClick={handleClearDateFilter} className="ml-1">
               <img src={iconClose} alt="Clear" className="w-2.5 h-2.5 opacity-60" />
             </button>
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* iOS Date Picker - positioned below calendar icon */}
-      {isPickerOpen && (
-        <div className="flex-shrink-0 px-3 py-2 flex justify-center">
-          <IOSDatePicker
-            selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
-            onClose={() => { handleClearDateFilter(); setIsPickerOpen(false); }}
-            onApply={() => { setIsDateFilterActive(true); setIsPickerOpen(false); }}
-          />
-        </div>
-      )}
+      {isPickerOpen && <div className="flex-shrink-0 px-3 py-2 flex justify-center">
+          <IOSDatePicker selectedDate={selectedDate} onDateChange={setSelectedDate} onClose={() => {
+        handleClearDateFilter();
+        setIsPickerOpen(false);
+      }} onApply={() => {
+        setIsDateFilterActive(true);
+        setIsPickerOpen(false);
+      }} />
+        </div>}
 
       {/* Filters - Horizontally Scrollable */}
-      {!isPickerOpen && (
-        <div className="flex-shrink-0 overflow-x-auto scrollbar-hide px-3 py-1">
+      {!isPickerOpen && <div className="flex-shrink-0 overflow-x-auto scrollbar-hide px-3 py-1">
           <div className="flex gap-2 w-max">
-            {(["All", "Ordering", "Refunded", "Paid", "Pending", "Cancelled"] as FilterType[]).map(filter => (
-              <button 
-                key={filter} 
-                onClick={() => setActiveFilter(filter)} 
-                className={`px-3 py-1.5 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${
-                  activeFilter === filter ? "bg-foreground text-background" : "bg-[#F5F5F5] text-gray-700"
-                }`}
-              >
+            {(["All", "Ordering", "Refunded", "Paid", "Pending", "Cancelled"] as FilterType[]).map(filter => <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-3 py-1.5 rounded-full text-[10px] font-medium whitespace-nowrap transition-colors ${activeFilter === filter ? "bg-foreground text-background" : "bg-[#F5F5F5] text-gray-700"}`}>
                 {filter}
-              </button>
-            ))}
+              </button>)}
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* Transaction List */}
-      {!isPickerOpen && (
-      <div 
-        ref={listRef}
-        className="flex-1 overflow-y-auto scrollbar-hide"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+      {!isPickerOpen && <div ref={listRef} className="flex-1 overflow-y-auto scrollbar-hide" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         {/* Pull to refresh indicator */}
-        <div 
-          className="flex justify-center items-center overflow-hidden transition-all duration-200"
-          style={{ height: isRefreshing ? 40 : pullDistance }}
-        >
-          <RefreshCw 
-            className={cn(
-              "w-4 h-4 text-gray-500 transition-transform",
-              isRefreshing && "animate-spin",
-              pullDistance >= PULL_THRESHOLD && !isRefreshing && "text-primary"
-            )}
-            style={{ 
-              transform: !isRefreshing ? `rotate(${pullDistance * 3}deg)` : undefined 
-            }}
-          />
-          {pullDistance >= PULL_THRESHOLD && !isRefreshing && (
-            <span className="text-[9px] text-primary ml-1">Release to refresh</span>
-          )}
-          {isRefreshing && (
-            <span className="text-[9px] text-gray-500 ml-1">Refreshing...</span>
-          )}
+        <div className="flex justify-center items-center overflow-hidden transition-all duration-200" style={{
+        height: isRefreshing ? 40 : pullDistance
+      }}>
+          <RefreshCw className={cn("w-4 h-4 text-gray-500 transition-transform", isRefreshing && "animate-spin", pullDistance >= PULL_THRESHOLD && !isRefreshing && "text-primary")} style={{
+          transform: !isRefreshing ? `rotate(${pullDistance * 3}deg)` : undefined
+        }} />
+          {pullDistance >= PULL_THRESHOLD && !isRefreshing && <span className="text-[9px] text-primary ml-1">Release to refresh</span>}
+          {isRefreshing && <span className="text-[9px] text-gray-500 ml-1">Refreshing...</span>}
         </div>
         <div className="px-3 py-2 space-y-2 flex flex-col items-center">
-          {filteredTransactions.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8">
+          {filteredTransactions.length === 0 ? <div className="flex flex-col items-center justify-center py-8">
               <p className="text-[11px] text-muted-foreground">No transactions found</p>
-            </div>
-          ) : (
-            filteredTransactions.map(transaction => {
-              const iconSrc = iconMap[transaction.icon];
-              const isClickable = transaction.status === "Pending" || transaction.status === "Paid" || transaction.status === "Refunded";
-              return (
-                <div 
-                  key={transaction.id} 
-                  className={`flex items-center gap-2 p-2 bg-surface rounded-lg border border-border ${
-                    isClickable ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''
-                  }`} 
-                  style={{ width: '186px' }}
-                  onClick={() => isClickable && onTransactionClick?.(transaction.id)}
-                >
-                  <div className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#F1F2F5' }}>
+            </div> : filteredTransactions.map(transaction => {
+          const iconSrc = iconMap[transaction.icon];
+          const isClickable = transaction.status === "Pending" || transaction.status === "Paid" || transaction.status === "Refunded";
+          return <div key={transaction.id} className={`flex items-center gap-2 p-2 bg-surface rounded-lg border border-border ${isClickable ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`} style={{
+            width: '186px'
+          }} onClick={() => isClickable && onTransactionClick?.(transaction.id)}>
+                  <div className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center" style={{
+              backgroundColor: '#F1F2F5'
+            }}>
                     <img src={iconSrc} alt="" className="w-3 h-3" />
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
@@ -564,13 +464,9 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
                       </p>
                     </div>
                   </div>
-                </div>
-              );
-            })
-          )}
+                </div>;
+        })}
         </div>
-      </div>
-      )}
-    </div>
-  );
+      </div>}
+    </div>;
 };
