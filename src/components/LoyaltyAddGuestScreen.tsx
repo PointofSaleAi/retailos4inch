@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Input } from './ui/input';
+import { ChevronDown } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger } from './ui/select';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
+import { formatPhoneNumber, countryOptions } from '@/hooks/usePhoneInput';
 
 interface LoyaltyAddGuestScreenProps {
   onBack: () => void;
@@ -11,10 +14,25 @@ export const LoyaltyAddGuestScreen = ({ onBack, onAdd }: LoyaltyAddGuestScreenPr
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [countryCode, setCountryCode] = useState('+1');
+  const [countryFlag, setCountryFlag] = useState('🇺🇸');
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhone(formatted);
+  };
+
+  const handleCountryCodeChange = (value: string) => {
+    const selected = countryOptions.find(opt => `${opt.flag}-${opt.code}` === value);
+    if (selected) {
+      setCountryCode(selected.code);
+      setCountryFlag(selected.flag);
+    }
+  };
 
   const handleAdd = () => {
     if (name.trim()) {
-      onAdd({ name: name.trim(), email: email.trim(), phone: phone.trim() });
+      onAdd({ name: name.trim(), email: email.trim(), phone: `${countryCode} ${phone.trim()}` });
     }
   };
 
@@ -59,23 +77,36 @@ export const LoyaltyAddGuestScreen = ({ onBack, onAdd }: LoyaltyAddGuestScreenPr
           }}
         />
 
-        <div className="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
-          <div className="flex items-center gap-1 px-2 border-r border-gray-200">
-            <span className="text-[11px]">🇺🇸</span>
-            <span className="text-[11px] text-gray-600">+1</span>
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="6,9 12,15 18,9" />
-            </svg>
-          </div>
+        <div className="flex items-center gap-1">
+          <Select value={`${countryFlag}-${countryCode}`} onValueChange={handleCountryCodeChange}>
+            <SelectTrigger className="h-[36px] w-[60px] px-2 rounded-lg border border-gray-200 bg-white text-xs">
+              <div className="flex items-center gap-0.5">
+                <span className="text-[12px]">{countryFlag}</span>
+                <ChevronDown size={8} className="text-muted-foreground" />
+              </div>
+            </SelectTrigger>
+            <SelectContent className="bg-white border-gray-200">
+              {countryOptions.map((option) => (
+                <SelectItem key={`${option.flag}-${option.code}-${option.name}`} value={`${option.flag}-${option.code}`} className="text-xs">
+                  <span className="flex items-center gap-2">
+                    <span className="text-[12px]">{option.flag}</span>
+                    <span className="text-[10px]">{option.code}</span>
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Input
             type="tel"
-            placeholder="(XXX) XXX-XXXX"
+            placeholder="(xxx) xxx xxxx"
             value={phone}
-            onChange={e => setPhone(e.target.value)}
-            className="border-0 flex-1"
+            onChange={handlePhoneChange}
+            maxLength={14}
+            className="border border-gray-200 flex-1 bg-white"
             style={{
               height: '36px',
-              fontSize: '11px'
+              fontSize: '11px',
+              borderRadius: '8px'
             }}
           />
         </div>

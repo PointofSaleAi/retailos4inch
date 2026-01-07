@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Input } from './ui/input';
+import { ChevronDown } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger } from './ui/select';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
+import { formatPhoneNumber, countryOptions } from '@/hooks/usePhoneInput';
+
 interface PayByLinkAddGuestScreenProps {
   onBack: () => void;
   onAdd: (guest: {
@@ -16,7 +20,22 @@ export const PayByLinkAddGuestScreen = ({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [countryCode] = useState('+1');
+  const [countryCode, setCountryCode] = useState('+1');
+  const [countryFlag, setCountryFlag] = useState('🇺🇸');
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhone(formatted);
+  };
+
+  const handleCountryCodeChange = (value: string) => {
+    const selected = countryOptions.find(opt => `${opt.flag}-${opt.code}` === value);
+    if (selected) {
+      setCountryCode(selected.code);
+      setCountryFlag(selected.flag);
+    }
+  };
+
   const handleAdd = () => {
     if (name.trim()) {
       onAdd({
@@ -52,20 +71,37 @@ export const PayByLinkAddGuestScreen = ({
       }} />
 
         {/* Phone Input */}
-        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-2" style={{
-        height: '32px'
-      }}>
-          <div className="flex items-center gap-1 pr-2 border-r border-gray-200">
-            <span className="text-[12px]">🇺🇸</span>
-            <span className="text-[10px] text-gray-700">{countryCode}</span>
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="6,9 12,15 18,9" />
-            </svg>
-          </div>
-          <Input type="tel" placeholder="(XXX) XXX-XXXX" value={phone} onChange={e => setPhone(e.target.value)} className="border-0 bg-transparent flex-1 px-1" style={{
-          height: '28px',
-          fontSize: '10px'
-        }} />
+        <div className="flex items-center gap-1">
+          <Select value={`${countryFlag}-${countryCode}`} onValueChange={handleCountryCodeChange}>
+            <SelectTrigger className="h-[32px] w-[60px] px-2 rounded-full border border-gray-200 bg-white text-xs">
+              <div className="flex items-center gap-0.5">
+                <span className="text-[12px]">{countryFlag}</span>
+                <ChevronDown size={8} className="text-muted-foreground" />
+              </div>
+            </SelectTrigger>
+            <SelectContent className="bg-white border-gray-200">
+              {countryOptions.map((option) => (
+                <SelectItem key={`${option.flag}-${option.code}-${option.name}`} value={`${option.flag}-${option.code}`} className="text-xs">
+                  <span className="flex items-center gap-2">
+                    <span className="text-[12px]">{option.flag}</span>
+                    <span className="text-[10px]">{option.code}</span>
+                  </span>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Input 
+            type="tel" 
+            placeholder="(xxx) xxx xxxx" 
+            value={phone} 
+            onChange={handlePhoneChange}
+            maxLength={14}
+            className="border border-gray-200 bg-white flex-1 px-3 rounded-full" 
+            style={{
+              height: '32px',
+              fontSize: '10px'
+            }} 
+          />
         </div>
 
         {/* Add Button */}

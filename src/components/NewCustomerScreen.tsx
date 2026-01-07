@@ -5,12 +5,14 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import iconUserCustomer from "@/assets/icon-user-customer.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
 import iconLocation from "@/assets/icon-location.png";
+import { formatPhoneNumber, countryOptions } from "@/hooks/usePhoneInput";
 interface NewCustomerScreenProps {
   onBack: () => void;
   onSave: (customer: CustomerFormData) => void;
@@ -40,7 +42,21 @@ export const NewCustomerScreen = ({
     companyName: ""
   });
   const [countryCode, setCountryCode] = useState("+1");
+  const [countryFlag, setCountryFlag] = useState("🇺🇸");
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerFormData, string>>>({});
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    updateField("phone", formatted);
+  };
+
+  const handleCountryCodeChange = (value: string) => {
+    const selected = countryOptions.find(opt => `${opt.flag}-${opt.code}` === value);
+    if (selected) {
+      setCountryCode(selected.code);
+      setCountryFlag(selected.flag);
+    }
+  };
   const validateForm = () => {
     const newErrors: Partial<Record<keyof CustomerFormData, string>> = {};
     if (!formData.firstName.trim()) {
@@ -169,75 +185,38 @@ export const NewCustomerScreen = ({
           {/* Phone Number */}
           <div className="space-y-1">
             <div className="flex gap-2 py-0 px-0">
-              <Popover modal={true}>
-                <PopoverTrigger asChild>
-                  <button className="flex items-center gap-1 px-2 rounded-full" style={{
+              <Select value={`${countryFlag}-${countryCode}`} onValueChange={handleCountryCodeChange}>
+                <SelectTrigger className="h-[28px] w-[60px] px-2 rounded-full border border-[#E5E5E5] bg-white text-xs">
+                  <div className="flex items-center gap-0.5">
+                    <span className="text-[12px]">{countryFlag}</span>
+                    <ChevronDown size={8} className="text-muted-foreground" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-white border-[#E5E5E5]">
+                  {countryOptions.map((option) => (
+                    <SelectItem key={`${option.flag}-${option.code}-${option.name}`} value={`${option.flag}-${option.code}`} className="text-xs">
+                      <span className="flex items-center gap-2">
+                        <span className="text-[12px]">{option.flag}</span>
+                        <span className="text-[10px]">{option.code}</span>
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input 
+                type="tel" 
+                placeholder="(xxx) xxx xxxx" 
+                value={formData.phone} 
+                onChange={handlePhoneChange}
+                maxLength={14}
+                className="rounded-full text-xs flex-1" 
+                style={{
                   backgroundColor: '#FFFFFF',
                   border: '1px solid #E5E5E5',
                   height: '28px',
-                  width: '60px'
-                }}>
-                    <span className="text-xs">🇺🇸</span>
-                    <span className="text-xs text-foreground">{countryCode}</span>
-                    <ChevronDown className="w-3 h-3 text-foreground ml-auto" />
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[170px] p-2 max-h-[200px] overflow-y-auto bg-white" align="start" sideOffset={2} style={{ backgroundColor: '#FFFFFF' }}>
-                  <div className="space-y-1">
-                    {[{
-                    flag: "🇺🇸",
-                    code: "+1",
-                    country: "United States"
-                  }, {
-                    flag: "🇬🇧",
-                    code: "+44",
-                    country: "United Kingdom"
-                  }, {
-                    flag: "🇨🇦",
-                    code: "+1",
-                    country: "Canada"
-                  }, {
-                    flag: "🇦🇺",
-                    code: "+61",
-                    country: "Australia"
-                  }, {
-                    flag: "🇮🇳",
-                    code: "+91",
-                    country: "India"
-                  }, {
-                    flag: "🇩🇪",
-                    code: "+49",
-                    country: "Germany"
-                  }, {
-                    flag: "🇫🇷",
-                    code: "+33",
-                    country: "France"
-                  }, {
-                    flag: "🇯🇵",
-                    code: "+81",
-                    country: "Japan"
-                  }, {
-                    flag: "🇨🇳",
-                    code: "+86",
-                    country: "China"
-                  }, {
-                    flag: "🇧🇷",
-                    code: "+55",
-                    country: "Brazil"
-                  }].map(country => <button key={country.code + country.country} onClick={() => setCountryCode(country.code)} className="w-full flex items-center gap-2 px-2 py-1 hover:bg-muted rounded" style={{ fontSize: '10px' }}>
-                        <span className="text-xs">{country.flag}</span>
-                        <span className="text-foreground">{country.code}</span>
-                        <span className="text-muted-foreground ml-auto">{country.country}</span>
-                      </button>)}
-                  </div>
-                </PopoverContent>
-              </Popover>
-              <Input type="tel" placeholder="(XXX) XXX- XXXX" value={formData.phone} onChange={e => updateField("phone", e.target.value)} className="rounded-full text-xs flex-1" style={{
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #E5E5E5',
-              height: '28px',
-              fontSize: '11px'
-            }} />
+                  fontSize: '11px'
+                }} 
+              />
             </div>
             {errors.phone && <p className="text-[8px] text-red-500 pl-3">{errors.phone}</p>}
           </div>
