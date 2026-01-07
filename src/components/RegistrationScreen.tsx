@@ -230,7 +230,8 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
 
         {/* Step Indicators */}
         <div className="overflow-x-auto scrollbar-hide py-3">
-          <div className="flex items-center gap-2 min-w-max">
+          <div className="flex items-center min-w-max">
+            {/* Step 1 */}
             <div 
               ref={(el) => (stepRefs.current[0] = el)}
               className="flex items-center gap-1"
@@ -245,6 +246,10 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               </span>
             </div>
 
+            {/* Connector 1-2 */}
+            <div className={`w-3 h-[1px] mx-1 flex-shrink-0 ${step > 1 ? "bg-[#212121]" : "bg-[#D1D1D1]"}`} />
+
+            {/* Step 2 */}
             <div 
               ref={(el) => (stepRefs.current[1] = el)}
               className="flex items-center gap-1"
@@ -259,6 +264,10 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               </span>
             </div>
 
+            {/* Connector 2-3 */}
+            <div className={`w-3 h-[1px] mx-1 flex-shrink-0 ${step > 2 ? "bg-[#212121]" : "bg-[#D1D1D1]"}`} />
+
+            {/* Step 3 */}
             <div 
               ref={(el) => (stepRefs.current[2] = el)}
               className="flex items-center gap-1"
@@ -273,6 +282,10 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
               </span>
             </div>
 
+            {/* Connector 3-4 */}
+            <div className={`w-3 h-[1px] mx-1 flex-shrink-0 ${step > 3 ? "bg-[#212121]" : "bg-[#D1D1D1]"}`} />
+
+            {/* Step 4 */}
             <div 
               ref={(el) => (stepRefs.current[3] = el)}
               className="flex items-center gap-1"
