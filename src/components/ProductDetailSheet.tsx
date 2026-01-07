@@ -97,7 +97,7 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Selected size & color / Stock */}
-          <div className="flex items-center justify-between px-3 mb-1 py-[6px] bg-muted/30 mx-3 rounded">
+          <div className="flex items-center justify-between mb-1 py-[6px] bg-muted/30 mx-3 rounded px-0">
             <div className="flex items-center gap-3">
               {selectedSize && selectedColor ? <>
                   <span className="text-[10px] font-semibold text-foreground">{selectedSize}</span>
@@ -108,7 +108,7 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Size Section */}
-          <div className="px-3 mb-1">
+          <div className="mb-1 px-0">
             <div className="p-2">
               <div className="flex items-center mb-1">
                 <label className="text-[9px] font-semibold text-foreground">Size</label>
@@ -123,7 +123,7 @@ export const ProductDetailSheet = ({
           </div>
 
           {/* Color Section */}
-          <div className="px-3 mb-1">
+          <div className="mb-1 px-0">
             <div className="p-2">
               <div className="flex items-center mb-1">
                 <label className="text-[9px] font-semibold text-foreground">Color</label>
