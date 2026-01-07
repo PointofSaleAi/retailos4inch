@@ -280,26 +280,28 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       {/* Header */}
       <div className="flex-shrink-0 px-3 py-2">
         {showSearch ? (
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 px-2 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '26px', width: '156px' }}>
-              <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px]" />
+          <div className="flex items-center justify-center">
+            <div className="flex items-center gap-2 px-3 rounded-lg" style={{ backgroundColor: '#F1F2F5', height: '28px', width: '170px' }}>
+              <img src={iconSearchTx} alt="Search" className="w-[14px] h-[14px] flex-shrink-0 opacity-60" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search Products..."
-                className="flex-1 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
+                className="flex-1 min-w-0 bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground outline-none border-0 h-auto p-0 focus:ring-0"
                 style={{ fontFamily: 'Montserrat, sans-serif' }}
               />
-              <img src={iconMic} alt="Voice" className="w-[14px] h-[14px] min-w-[14px] min-h-[14px] cursor-pointer" />
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <img src={iconMic} alt="Voice" className="w-[14px] h-[14px] cursor-pointer opacity-60" />
+                <button 
+                  className="p-0 flex items-center justify-center"
+                  onClick={handleClearSearch}
+                >
+                  <img src={iconClose} alt="Close" className="w-[12px] h-[12px] opacity-60" />
+                </button>
+              </div>
             </div>
-            <button 
-              className="h-[26px] w-[26px] p-0 flex items-center justify-center flex-shrink-0"
-              onClick={handleClearSearch}
-            >
-              <img src={iconClose} alt="Close" className="w-[10px] h-[10px] min-w-[10px] min-h-[10px]" />
-            </button>
           </div>
         ) : (
           <div className="flex items-center justify-between relative">
@@ -354,14 +356,14 @@ export const TransactionsScreen = ({ transactions = [], onTransactionClick }: Tr
       </div>
 
       {/* Summary Section */}
-      <div className="flex-shrink-0 flex gap-2 px-3 py-2">
-        <div className="flex-1 bg-[#D4F5E9] rounded-lg px-3 py-2">
-          <p className="text-[9px] text-gray-700 font-medium whitespace-nowrap">Total Net Sale</p>
-          <p className="text-[14px] text-gray-900 font-bold">${totalNetSale.toFixed(2)}</p>
+      <div className="flex-shrink-0 flex gap-3 px-3 py-2">
+        <div className="flex-1 bg-[#D4F5E9] rounded-lg px-4 py-3">
+          <p className="text-[10px] text-gray-600 font-medium mb-1">Total Net Sale</p>
+          <p className="text-[16px] text-gray-900 font-bold">${totalNetSale.toFixed(2)}</p>
         </div>
-        <div className="flex-1 bg-[#F1F2F5] rounded-lg px-3 py-2">
-          <p className="text-[9px] text-gray-700 font-medium whitespace-nowrap">Total Refunded</p>
-          <p className="text-[14px] text-gray-900 font-bold">${totalRefunded.toFixed(2)}</p>
+        <div className="flex-1 bg-[#F1F2F5] rounded-lg px-4 py-3">
+          <p className="text-[10px] text-gray-600 font-medium mb-1">Total Refunded</p>
+          <p className="text-[16px] text-gray-900 font-bold">${totalRefunded.toFixed(2)}</p>
         </div>
       </div>
 
