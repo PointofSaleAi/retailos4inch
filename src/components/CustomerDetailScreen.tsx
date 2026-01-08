@@ -4,7 +4,7 @@ import { Input } from "./ui/input";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
-
+import { CameraCaptureScreen } from "./CameraCaptureScreen";
 import { Customer } from "./CustomerScreen";
 import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
@@ -34,8 +34,8 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
   const [countryCode, setCountryCode] = useState("+1");
   const [countryFlag, setCountryFlag] = useState("🇺🇸");
   const [showImageSheet, setShowImageSheet] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
   const galleryInputRef = useRef<HTMLInputElement>(null);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -44,8 +44,12 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
       setEditedCustomer(prev => ({ ...prev, avatar: imageUrl }));
     }
     setShowImageSheet(false);
-    // Reset input value to allow selecting the same file again
     event.target.value = '';
+  };
+
+  const handleCameraCapture = (imageData: string) => {
+    setEditedCustomer(prev => ({ ...prev, avatar: imageData }));
+    setShowCamera(false);
   };
 
   const getInitials = (name: string) => {
@@ -94,6 +98,15 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
       setCountryFlag(selected.flag);
     }
   };
+
+  if (showCamera) {
+    return (
+      <CameraCaptureScreen 
+        onCapture={handleCameraCapture}
+        onBack={() => setShowCamera(false)}
+      />
+    );
+  }
 
   return (
     <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat' }}>
@@ -399,7 +412,10 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
               </button>
               <button 
                 className="w-full flex items-center gap-2.5 py-2.5 px-2 rounded-xl hover:bg-muted/50 transition-colors"
-                onClick={() => cameraInputRef.current?.click()}
+                onClick={() => {
+                  setShowImageSheet(false);
+                  setShowCamera(true);
+                }}
               >
                 <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">
                   <img src={iconCameraWhite} alt="" className="w-3.5 h-3.5" />
@@ -411,19 +427,11 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
         </>
       )}
 
-      {/* Hidden file inputs */}
+      {/* Hidden file input for gallery */}
       <input
         ref={galleryInputRef}
         type="file"
         accept="image/*"
-        className="hidden"
-        onChange={handleImageSelect}
-      />
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
         className="hidden"
         onChange={handleImageSelect}
       />
