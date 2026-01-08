@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
-import iconCamera from '@/assets/icon-camera-black.png';
+import iconCameraScan from '@/assets/icon-camera-scan.png';
 
 interface SellPlasticGiftCardScreenProps {
   onBack: () => void;
@@ -73,19 +73,16 @@ export const SellPlasticGiftCardScreen = ({
       {/* Card Number Input */}
       <div className="px-[6px] mb-1">
         <div className="flex items-center justify-between p-2.5 border border-gray-200 rounded-lg bg-white">
-          <div className="flex items-center gap-2 flex-1">
-            <div className="w-[18px] h-[18px] flex items-center justify-center">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="4" width="16" height="10" rx="1" stroke="#666666" strokeWidth="1.5" fill="none"/>
-                <circle cx="9" cy="9" r="2" stroke="#666666" strokeWidth="1.2" fill="none"/>
-              </svg>
-            </div>
-            <span className={`text-[10px] ${cardNumber ? 'text-[#1A1A1A] font-medium' : 'text-gray-400'}`}>
-              {cardNumber ? formatCardNumber(cardNumber) : 'Card number'}
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <button className="w-[24px] h-[24px] flex-shrink-0 bg-[#E5E5E5] rounded-[4px] flex items-center justify-center">
+              <img src={iconCameraScan} alt="Scan" className="w-[14px] h-[14px]" />
+            </button>
+            <span className={`text-[10px] whitespace-nowrap overflow-hidden ${cardNumber ? 'text-[#1A1A1A] font-medium' : 'text-gray-400'}`}>
+              {cardNumber ? formatCardNumber(cardNumber) : '8888 8888 8888 8888'}
             </span>
           </div>
-          <button className="p-1">
-            <img src={iconCamera} alt="Scan" className="w-[16px] h-[16px]" />
+          <button className="p-1 flex-shrink-0">
+            <img src={iconCameraScan} alt="Scan" className="w-[20px] h-[20px]" />
           </button>
         </div>
       </div>
