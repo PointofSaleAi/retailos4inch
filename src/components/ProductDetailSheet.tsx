@@ -2,17 +2,17 @@ import { useState } from "react";
 import { Drawer, DrawerContent, DrawerClose } from "@/components/ui/drawer";
 import iconDiscount from "@/assets/icon-discount.png";
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   image: string;
-  stock?: number;
+  stock: number;
 }
 interface ProductDetailSheetProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (productId: number, quantity: number, size: string, color: string) => void;
+  onAddToCart: (productId: string, quantity: number, size: string, color: string) => void;
   portalContainer?: HTMLElement | null;
 }
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
@@ -57,7 +57,7 @@ export const ProductDetailSheet = ({
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const stock = product?.stock ?? 12;
+  const stock = product?.stock ?? 0;
   if (!product) return null;
   const handleQuantityChange = (change: number) => {
     const newQuantity = quantity + change;

@@ -75,10 +75,11 @@ const categories = ["Men", "Women", "Kids", "Gen Z"];
 const subCategories = ["Top Wear", "Bottom Wear", "Official Merch", "Best Sellers"];
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   image: string;
+  stock: number;
   isFavorite?: boolean;
 }
 
@@ -87,8 +88,8 @@ interface NewOrderScreenProps {
   onFavoritesClick?: () => void;
   onScanClick?: () => void;
   products: Product[];
-  onToggleFavorite: (productId: number) => void;
-  onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
+  onToggleFavorite: (productId: string) => void;
+  onAddToCart: (productId: string, quantity: number, size?: string, color?: string) => void;
   cartItemCount: number;
   cartTotal: number;
   onCartClick?: () => void;

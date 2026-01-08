@@ -5,6 +5,7 @@ import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
 import { CustomerScreen, Customer } from "./CustomerScreen";
 import { useCustomerSearch } from "@/hooks/useCustomerSearch";
+import { useProducts, Product } from "@/hooks/useProducts";
 import { NewCustomerScreen, CustomerFormData } from "./NewCustomerScreen";
 import { CustomerDetailScreen } from "./CustomerDetailScreen";
 import { SettingsScreen } from "./SettingsScreen";
@@ -47,22 +48,11 @@ import { CheckBalanceScreen } from "./CheckBalanceScreen";
 import { GiftCardBalanceScreen } from "./GiftCardBalanceScreen";
 import { SplitCheckScreen } from "./SplitCheckScreen";
 import { SplitCheckSummaryScreen } from "./SplitCheckSummaryScreen";
-import productNew1 from "@/assets/product-new-1.png";
-import productNew2 from "@/assets/product-new-2.png";
-import productNew3 from "@/assets/product-new-3.png";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  isFavorite?: boolean;
-}
 
 interface CartItem {
   id: string;
   type: 'product' | 'custom';
-  productId?: number;
+  productId?: string;
   name?: string;
   quantity: number;
   price: number;
@@ -89,15 +79,6 @@ interface Transaction {
   refundedAmount?: number;
 }
 
-const mockProducts: Product[] = [
-  { id: 1, name: "Brown Oversized Shirt", price: 24.99, image: productNew1, isFavorite: false },
-  { id: 2, name: "Black Casual Shirt", price: 49.99, image: productNew2, isFavorite: false },
-  { id: 3, name: "Beige Linen Shirt", price: 79.99, image: productNew3, isFavorite: false },
-  { id: 4, name: "Brown Classic Shirt", price: 89.99, image: productNew1, isFavorite: false },
-  { id: 5, name: "Black Premium Shirt", price: 129.99, image: productNew2, isFavorite: false },
-  { id: 6, name: "Beige Summer Shirt", price: 54.99, image: productNew3, isFavorite: false },
-];
-
 export const RetailApp = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState("order");
@@ -123,7 +104,7 @@ export const RetailApp = () => {
   const [selectedRefundItems, setSelectedRefundItems] = useState<CartItem[]>([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState<string>("");
   const [paymentAmount, setPaymentAmount] = useState(0);
-  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const { products, deductStock, toggleFavorite } = useProducts();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { updateCustomer } = useCustomerSearch();
@@ -185,13 +166,11 @@ export const RetailApp = () => {
     setShowNewCustomer(false);
   };
 
-  const handleToggleFavorite = (productId: number) => {
-    setProducts(products.map(p => 
-      p.id === productId ? { ...p, isFavorite: !p.isFavorite } : p
-    ));
+  const handleToggleFavorite = (productId: string) => {
+    toggleFavorite(productId);
   };
 
-  const handleAddToCart = (productId: number, quantity: number, size?: string, color?: string) => {
+  const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string) => {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
@@ -218,7 +197,7 @@ export const RetailApp = () => {
         if (quantity > 0) {
           return [...prevItems, { 
             id: `product-${productId}-${size}-${color}-${Date.now()}`,
-            type: 'product',
+            type: 'product' as const,
             productId, 
             quantity, 
             price: product.price,
@@ -317,7 +296,7 @@ export const RetailApp = () => {
     setShowPaymentProcessing(true);
   };
 
-  const handlePaymentComplete = () => {
+  const handlePaymentComplete = async () => {
     const now = new Date();
     const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
@@ -350,6 +329,13 @@ export const RetailApp = () => {
       cartItems: [...cartItems]
     };
 
+    // Deduct stock for each product in cart
+    for (const item of cartItems) {
+      if (item.type === 'product' && item.productId) {
+        await deductStock(item.productId, item.quantity);
+      }
+    }
+
     setTransactions(prev => [newTransaction, ...prev]);
     setShowPaymentProcessing(false);
     
@@ -359,8 +345,9 @@ export const RetailApp = () => {
       setRemainingDue(newRemaining);
       setShowPaymentMethods(true);
     } else {
-      // Full payment complete - show success
+      // Full payment complete - show success and clear cart
       setRemainingDue(0);
+      setCartItems([]);
       setShowPaymentSuccess(true);
     }
   };
