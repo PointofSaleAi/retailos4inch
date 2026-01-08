@@ -11,7 +11,7 @@ import iconEditCustomer from "@/assets/icon-edit-customer.png";
 import iconBirthday from "@/assets/icon-birthday.png";
 import iconAnniversary from "@/assets/icon-anniversary.png";
 import iconCameraWhite from "@/assets/icon-camera-white.png";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Image } from "lucide-react";
@@ -34,6 +34,19 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
   const [countryCode, setCountryCode] = useState("+1");
   const [countryFlag, setCountryFlag] = useState("🇺🇸");
   const [showImageSheet, setShowImageSheet] = useState(false);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setEditedCustomer(prev => ({ ...prev, avatar: imageUrl }));
+    }
+    setShowImageSheet(false);
+    // Reset input value to allow selecting the same file again
+    event.target.value = '';
+  };
 
   const getInitials = (name: string) => {
     return name
@@ -377,9 +390,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
             <div className="space-y-1">
               <button 
                 className="w-full flex items-center gap-2.5 py-2.5 px-2 rounded-xl hover:bg-muted/50 transition-colors"
-                onClick={() => {
-                  setShowImageSheet(false);
-                }}
+                onClick={() => galleryInputRef.current?.click()}
               >
                 <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
                   <Image className="w-3.5 h-3.5 text-foreground" />
@@ -388,9 +399,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
               </button>
               <button 
                 className="w-full flex items-center gap-2.5 py-2.5 px-2 rounded-xl hover:bg-muted/50 transition-colors"
-                onClick={() => {
-                  setShowImageSheet(false);
-                }}
+                onClick={() => cameraInputRef.current?.click()}
               >
                 <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">
                   <img src={iconCameraWhite} alt="" className="w-3.5 h-3.5" />
@@ -401,6 +410,23 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
           </div>
         </>
       )}
+
+      {/* Hidden file inputs */}
+      <input
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleImageSelect}
+      />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={handleImageSelect}
+      />
     </div>
   );
 };
