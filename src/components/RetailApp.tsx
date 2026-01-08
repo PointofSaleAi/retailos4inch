@@ -302,17 +302,6 @@ export const RetailApp = () => {
     const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
     
-    // Calculate total due with tax
-    const TAX_RATE = 0.08;
-    const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const tax = subtotal * TAX_RATE;
-    const totalOrderAmount = subtotal + tax;
-    
-    // Calculate remaining after this payment
-    const previouslyPaid = totalOrderAmount - (remainingDue > 0 ? remainingDue : totalOrderAmount);
-    const totalPaidNow = previouslyPaid + paymentAmount;
-    const newRemaining = totalOrderAmount - totalPaidNow;
-    
     const firstItem = cartItems[0];
     const productName = firstItem.type === 'product' 
       ? (products.find(p => p.id === firstItem.productId)?.name.substring(0, 15) || 'Order')
@@ -330,26 +319,49 @@ export const RetailApp = () => {
       cartItems: [...cartItems]
     };
 
-    // Deduct stock for each product in cart
-    for (const item of cartItems) {
-      if (item.type === 'product' && item.productId) {
-        await deductStock(item.productId, item.quantity);
+    // Deduct stock for each product in cart (only once when first check is paid for split, or for regular payment)
+    const isFirstSplitCheckPayment = currentChargingCheckIndex !== null && paidSplitChecks.size === 0;
+    const isRegularPayment = currentChargingCheckIndex === null;
+    
+    if (isRegularPayment || isFirstSplitCheckPayment) {
+      for (const item of cartItems) {
+        if (item.type === 'product' && item.productId) {
+          await deductStock(item.productId, item.quantity);
+        }
       }
     }
 
     setTransactions(prev => [newTransaction, ...prev]);
     setShowPaymentProcessing(false);
     
-    // Check if there's remaining balance
-    if (newRemaining > 0.01) {
-      // Partial payment - go back to payment methods
-      setRemainingDue(newRemaining);
-      setShowPaymentMethods(true);
-    } else {
-      // Full payment complete - show success and clear cart
-      setRemainingDue(0);
-      setCartItems([]);
+    // Check if this is a split check payment
+    if (currentChargingCheckIndex !== null) {
+      // Split check payment - go directly to success screen
+      // The success screen will handle marking the check as paid and navigation
       setShowPaymentSuccess(true);
+    } else {
+      // Regular payment flow
+      const TAX_RATE = 0.08;
+      const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const tax = subtotal * TAX_RATE;
+      const totalOrderAmount = subtotal + tax;
+      
+      // Calculate remaining after this payment
+      const previouslyPaid = totalOrderAmount - (remainingDue > 0 ? remainingDue : totalOrderAmount);
+      const totalPaidNow = previouslyPaid + paymentAmount;
+      const newRemaining = totalOrderAmount - totalPaidNow;
+      
+      // Check if there's remaining balance
+      if (newRemaining > 0.01) {
+        // Partial payment - go back to payment methods
+        setRemainingDue(newRemaining);
+        setShowPaymentMethods(true);
+      } else {
+        // Full payment complete - show success and clear cart
+        setRemainingDue(0);
+        setCartItems([]);
+        setShowPaymentSuccess(true);
+      }
     }
   };
 
