@@ -1179,7 +1179,13 @@ export const RetailApp = () => {
           remainingBalance={remainingDue > 0 ? remainingDue : undefined}
           onBack={() => {
             setShowPaymentMethods(false);
-            setShowOrderSummary(true);
+            // If in split check flow, go back to split check summary
+            if (currentChargingCheckIndex !== null) {
+              setCurrentChargingCheckIndex(null);
+              setShowSplitCheckSummary(true);
+            } else {
+              setShowOrderSummary(true);
+            }
           }}
           onSelectMethod={(method) => {
             setSelectedPaymentMethod(method);
