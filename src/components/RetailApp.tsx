@@ -990,6 +990,12 @@ export const RetailApp = () => {
         <CustomerDetailScreen
           customer={selectedCustomer}
           onBack={() => setSelectedCustomer(null)}
+          onUpdate={(updatedCustomer) => {
+            setCustomers(prev => 
+              prev.map(c => c.id === updatedCustomer.id ? updatedCustomer : c)
+            );
+            setSelectedCustomer(updatedCustomer);
+          }}
         />
       );
     }
