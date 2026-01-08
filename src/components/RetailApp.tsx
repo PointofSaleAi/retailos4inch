@@ -1169,6 +1169,7 @@ export const RetailApp = () => {
       return (
         <PaymentMethodsScreen
           totalDue={totalDue}
+          remainingBalance={remainingDue > 0 ? remainingDue : undefined}
           onBack={() => {
             setShowPaymentMethods(false);
             setShowOrderSummary(true);
