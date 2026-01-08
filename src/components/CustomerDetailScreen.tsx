@@ -122,7 +122,9 @@ export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDet
       <div className="flex-shrink-0 flex items-center gap-3 px-3 py-2">
         <button 
           onClick={() => {
-            // Save changes before navigating back
+            // Navigate back first, then save changes in background
+            onBack();
+            // Save changes after navigation
             if (onUpdate) {
               onUpdate({
                 ...editedCustomer,
@@ -137,7 +139,6 @@ export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDet
                 notes: editedCustomer.notes || customerDetails.notes,
               }, avatarFile);
             }
-            onBack();
           }} 
           className="p-1"
         >

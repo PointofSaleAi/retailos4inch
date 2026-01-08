@@ -998,14 +998,13 @@ export const RetailApp = () => {
               setCustomers(prev => 
                 prev.map(c => c.id === saved.id ? saved : c)
               );
-              setSelectedCustomer(saved);
+              // Don't re-set selectedCustomer here to avoid reopening the screen
             } catch (error) {
               console.error('Failed to update customer:', error);
               // Still update local state for UX
               setCustomers(prev => 
                 prev.map(c => c.id === updatedCustomer.id ? updatedCustomer : c)
               );
-              setSelectedCustomer(updatedCustomer);
             }
           }}
         />
