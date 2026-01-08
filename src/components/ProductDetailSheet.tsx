@@ -6,6 +6,7 @@ interface Product {
   name: string;
   price: number;
   image: string;
+  stock?: number;
 }
 interface ProductDetailSheetProps {
   product: Product | null;
@@ -56,6 +57,7 @@ export const ProductDetailSheet = ({
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const stock = product?.stock ?? 12;
   if (!product) return null;
   const handleQuantityChange = (change: number) => {
     const newQuantity = quantity + change;
@@ -104,7 +106,9 @@ export const ProductDetailSheet = ({
                   <span className="text-[10px] font-semibold text-foreground">{selectedColor}</span>
                 </> : <span className="text-[10px] font-semibold text-muted-foreground">Select size & color</span>}
             </div>
-            <span className="text-[10px] font-semibold text-foreground">Stock 12</span>
+            <span className={`text-[10px] font-semibold ${stock === 0 ? 'text-destructive' : 'text-foreground'}`}>
+              {stock === 0 ? 'Out of Stock' : `Stock ${stock}`}
+            </span>
           </div>
 
           {/* Size Section */}
@@ -143,8 +147,8 @@ export const ProductDetailSheet = ({
               <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
               </button>
-              <button onClick={handleAddToCart} disabled={!selectedSize || !selectedColor} className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                ADD ${product.price.toFixed(2)}
+              <button onClick={handleAddToCart} disabled={!selectedSize || !selectedColor || stock === 0} className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                {stock === 0 ? 'OUT OF STOCK' : `ADD $${product.price.toFixed(2)}`}
               </button>
             </div>
           </div>
