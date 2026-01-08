@@ -368,6 +368,27 @@ export const RetailApp = () => {
   const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  // Calculate split payment info for displaying on New Order screen
+  const getSplitPaymentInfo = () => {
+    if (splitCheckCount <= 1 || paidSplitChecks.size === 0) return null;
+    
+    const TAX_RATE = 0.08;
+    const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const tax = subtotal * TAX_RATE;
+    const totalAmount = subtotal + tax;
+    const amountPerCheck = totalAmount / splitCheckCount;
+    const remainingChecks = splitCheckCount - paidSplitChecks.size;
+    const remainingAmount = amountPerCheck * remainingChecks;
+    
+    return {
+      paidChecksCount: paidSplitChecks.size,
+      totalChecks: splitCheckCount,
+      remainingAmount: remainingAmount
+    };
+  };
+
+  const splitPaymentInfo = getSplitPaymentInfo();
+
   const favoriteProducts = products.filter(p => p.isFavorite);
 
   const renderScreen = () => {
@@ -1123,8 +1144,9 @@ export const RetailApp = () => {
           splitMode={splitCheckMode}
           paidChecks={paidSplitChecks}
           onBack={() => {
+            // Close and return to New Order screen, preserving split state
             setShowSplitCheckSummary(false);
-            setShowSplitCheck(true);
+            setActiveTab("order");
           }}
           onChargeCheck={(checkIndex, amount) => {
             setCurrentChargingCheckIndex(checkIndex);
@@ -1474,6 +1496,8 @@ export const RetailApp = () => {
             onGiftCard={() => setShowGiftCardMenu(true)}
             onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
             onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
+            splitPaymentInfo={splitPaymentInfo}
+            onSplitCartClick={() => setShowSplitCheckSummary(true)}
           />
         );
       case "transactions":
@@ -1507,6 +1531,8 @@ export const RetailApp = () => {
             onGiftCard={() => setShowGiftCardMenu(true)}
             onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
             onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
+            splitPaymentInfo={splitPaymentInfo}
+            onSplitCartClick={() => setShowSplitCheckSummary(true)}
           />
         );
     }
