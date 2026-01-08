@@ -1075,15 +1075,6 @@ export const RetailApp = () => {
             >
               COMPLETE ORDER
             </button>
-            <button
-              onClick={() => {
-                setShowAllChecksCompleteDialog(false);
-                setShowSplitCheckSummary(true);
-              }}
-              className="w-full h-[32px] bg-gray-100 text-black rounded-full font-semibold text-[10px] border border-gray-300"
-            >
-              BACK TO SUMMARY
-            </button>
           </div>
         </div>
       );
