@@ -4,7 +4,7 @@ import { Input } from "./ui/input";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
-import { Sheet, SheetContent } from "./ui/sheet";
+
 import { Customer } from "./CustomerScreen";
 import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
@@ -362,42 +362,45 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
         </div>
       </div>
 
-      {/* Image Edit Bottom Sheet */}
-      <Sheet open={showImageSheet} onOpenChange={setShowImageSheet}>
-        <SheetContent 
-          side="bottom" 
-          className="rounded-t-2xl px-4 pb-6 pt-3"
-          style={{ fontFamily: 'Montserrat' }}
-        >
-          <div className="w-10 h-1 bg-muted rounded-full mx-auto mb-4" />
-          <div className="space-y-2">
-            <button 
-              className="w-full flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-muted/50 transition-colors"
-              onClick={() => {
-                // Handle gallery selection
-                setShowImageSheet(false);
-              }}
-            >
-              <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
-                <Image className="w-4 h-4 text-foreground" />
-              </div>
-              <span className="font-medium text-foreground" style={{ fontSize: '12px' }}>Update image</span>
-            </button>
-            <button 
-              className="w-full flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-muted/50 transition-colors"
-              onClick={() => {
-                // Handle camera
-                setShowImageSheet(false);
-              }}
-            >
-              <div className="w-9 h-9 rounded-full bg-foreground flex items-center justify-center">
-                <img src={iconCameraWhite} alt="" className="w-4 h-4" />
-              </div>
-              <span className="font-medium text-foreground" style={{ fontSize: '12px' }}>Take a photo</span>
-            </button>
+      {/* Image Edit Bottom Sheet - Contained within app */}
+      {showImageSheet && (
+        <>
+          <div 
+            className="absolute inset-0 bg-black/40 z-40 animate-fade-in"
+            onClick={() => setShowImageSheet(false)}
+          />
+          <div 
+            className="absolute bottom-0 left-0 right-0 bg-background rounded-t-2xl px-3 pb-4 pt-2 z-50 animate-slide-up"
+            style={{ fontFamily: 'Montserrat' }}
+          >
+            <div className="w-8 h-1 bg-muted rounded-full mx-auto mb-3" />
+            <div className="space-y-1">
+              <button 
+                className="w-full flex items-center gap-2.5 py-2.5 px-2 rounded-xl hover:bg-muted/50 transition-colors"
+                onClick={() => {
+                  setShowImageSheet(false);
+                }}
+              >
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                  <Image className="w-3.5 h-3.5 text-foreground" />
+                </div>
+                <span className="font-medium text-foreground" style={{ fontSize: '11px' }}>Update image</span>
+              </button>
+              <button 
+                className="w-full flex items-center gap-2.5 py-2.5 px-2 rounded-xl hover:bg-muted/50 transition-colors"
+                onClick={() => {
+                  setShowImageSheet(false);
+                }}
+              >
+                <div className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">
+                  <img src={iconCameraWhite} alt="" className="w-3.5 h-3.5" />
+                </div>
+                <span className="font-medium text-foreground" style={{ fontSize: '11px' }}>Take a photo</span>
+              </button>
+            </div>
           </div>
-        </SheetContent>
-      </Sheet>
+        </>
+      )}
     </div>
   );
 };
