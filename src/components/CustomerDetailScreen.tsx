@@ -20,7 +20,7 @@ import { formatPhoneNumber, countryOptions } from "@/hooks/usePhoneInput";
 interface CustomerDetailScreenProps {
   customer: Customer;
   onBack: () => void;
-  onUpdate?: (updatedCustomer: Customer) => void;
+  onUpdate?: (updatedCustomer: Customer, avatarFile?: File) => void;
 }
 
 export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDetailScreenProps) => {
@@ -36,6 +36,7 @@ export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDet
   const [countryFlag, setCountryFlag] = useState("🇺🇸");
   const [showImageSheet, setShowImageSheet] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | undefined>(undefined);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,13 +44,19 @@ export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDet
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setEditedCustomer(prev => ({ ...prev, avatar: imageUrl }));
+      setAvatarFile(file);
     }
     setShowImageSheet(false);
     event.target.value = '';
   };
 
-  const handleCameraCapture = (imageData: string) => {
+  const handleCameraCapture = async (imageData: string) => {
     setEditedCustomer(prev => ({ ...prev, avatar: imageData }));
+    // Convert base64 to file for upload
+    const response = await fetch(imageData);
+    const blob = await response.blob();
+    const file = new File([blob], `camera-${Date.now()}.jpg`, { type: 'image/jpeg' });
+    setAvatarFile(file);
     setShowCamera(false);
   };
 
@@ -128,7 +135,7 @@ export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDet
                 anniversary: editedCustomer.anniversary || customerDetails.anniversary,
                 address: editedCustomer.address || customerDetails.address,
                 notes: editedCustomer.notes || customerDetails.notes,
-              });
+              }, avatarFile);
             }
             onBack();
           }} 
@@ -448,6 +455,7 @@ export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDet
                   className="w-full flex items-center gap-2.5 py-2.5 px-2 rounded-xl hover:bg-destructive/10 transition-colors"
                   onClick={() => {
                     setEditedCustomer(prev => ({ ...prev, avatar: undefined }));
+                    setAvatarFile(undefined);
                     setShowImageSheet(false);
                   }}
                 >

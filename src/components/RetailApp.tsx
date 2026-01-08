@@ -4,6 +4,7 @@ import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
 import { CustomerScreen, Customer } from "./CustomerScreen";
+import { useCustomerSearch } from "@/hooks/useCustomerSearch";
 import { NewCustomerScreen, CustomerFormData } from "./NewCustomerScreen";
 import { CustomerDetailScreen } from "./CustomerDetailScreen";
 import { SettingsScreen } from "./SettingsScreen";
@@ -125,6 +126,7 @@ export const RetailApp = () => {
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { updateCustomer } = useCustomerSearch();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [activeCustomerInOrder, setActiveCustomerInOrder] = useState<Customer | null>(null);
@@ -990,11 +992,21 @@ export const RetailApp = () => {
         <CustomerDetailScreen
           customer={selectedCustomer}
           onBack={() => setSelectedCustomer(null)}
-          onUpdate={(updatedCustomer) => {
-            setCustomers(prev => 
-              prev.map(c => c.id === updatedCustomer.id ? updatedCustomer : c)
-            );
-            setSelectedCustomer(updatedCustomer);
+          onUpdate={async (updatedCustomer, avatarFile) => {
+            try {
+              const saved = await updateCustomer(updatedCustomer.id, updatedCustomer, avatarFile);
+              setCustomers(prev => 
+                prev.map(c => c.id === saved.id ? saved : c)
+              );
+              setSelectedCustomer(saved);
+            } catch (error) {
+              console.error('Failed to update customer:', error);
+              // Still update local state for UX
+              setCustomers(prev => 
+                prev.map(c => c.id === updatedCustomer.id ? updatedCustomer : c)
+              );
+              setSelectedCustomer(updatedCustomer);
+            }
           }}
         />
       );
