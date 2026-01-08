@@ -227,9 +227,17 @@ export const CashPaymentScreen = ({
 
         {/* Charge Button */}
         <button
-          onClick={() => onCharge(tenderedAmount)}
+          onClick={() => {
+            if (tenderedAmount >= 0.01) {
+              onCharge(tenderedAmount);
+            }
+          }}
+          disabled={tenderedAmount < 0.01}
           className="mt-2 w-full py-2 rounded-full text-white text-[10px] font-semibold transition-colors"
-          style={{ backgroundColor: '#4A4A4A' }}
+          style={{ 
+            backgroundColor: tenderedAmount >= 0.01 ? '#4A4A4A' : '#ccc',
+            cursor: tenderedAmount >= 0.01 ? 'pointer' : 'not-allowed'
+          }}
         >
           CHARGE $ {tenderedAmount.toFixed(2)}
         </button>
