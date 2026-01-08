@@ -23,26 +23,8 @@ export const LoginScreen = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-      
-      if (error) throw error;
-      
-      onLogin();
-    } catch (error: any) {
-      toast({
-        title: "Login Failed",
-        description: error.message || "Invalid email or password",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Bypass authentication for testing - allow any credentials
+    onLogin();
   };
 
   if (showForgotPassword) {
