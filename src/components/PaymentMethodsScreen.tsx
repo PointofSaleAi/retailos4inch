@@ -12,14 +12,17 @@ import iconManualCard from '@/assets/icon-manual-card.png';
 import iconExternalCC from '@/assets/icon-external-cc.png';
 interface PaymentMethodsScreenProps {
   totalDue: number;
+  remainingBalance?: number;
   onBack: () => void;
   onSelectMethod: (method: string) => void;
 }
 export const PaymentMethodsScreen = ({
   totalDue,
+  remainingBalance,
   onBack,
   onSelectMethod
 }: PaymentMethodsScreenProps) => {
+  const isPartialPayment = remainingBalance !== undefined && remainingBalance > 0 && remainingBalance < totalDue;
   const paymentMethods = [{
     id: 'Card',
     label: 'Card',
@@ -74,10 +77,21 @@ export const PaymentMethodsScreen = ({
           <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
         </button>
         <div className="flex items-baseline gap-1">
-          <span className="text-[11px] font-semibold text-gray-900">Total Due</span>
+          <span className="text-[11px] font-semibold text-gray-900">
+            {isPartialPayment ? 'Remaining' : 'Total Due'}
+          </span>
           <span className="text-[13px] font-bold text-[#FF4D6A]">${totalDue.toFixed(2)}</span>
         </div>
       </div>
+
+      {/* Partial Payment Indicator */}
+      {isPartialPayment && (
+        <div className="bg-[#E8F5E9] border border-[#A5D6A7] rounded-md mx-1 px-2 py-1.5 mb-1">
+          <p className="text-[8px] text-[#2E7D32] font-medium text-center">
+            Partial payment in progress
+          </p>
+        </div>
+      )}
 
       {/* Title */}
       <div className="text-center py-0">
