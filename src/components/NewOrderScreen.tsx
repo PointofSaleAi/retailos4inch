@@ -282,17 +282,17 @@ export const NewOrderScreen = ({
       {/* Split Cart Strip - shows when there are paid split checks with remaining balance */}
       {!isSheetOpen && splitPaymentInfo && splitPaymentInfo.paidChecksCount > 0 && splitPaymentInfo.remainingAmount > 0 && (
         <div 
-          className="w-full h-[24px] bg-[#22C55E] text-white flex items-center justify-between px-3 flex-shrink-0 cursor-pointer hover:bg-[#16A34A] transition-colors"
+          className="w-full h-[24px] bg-[#1A1A1A] text-white flex items-center justify-between px-3 flex-shrink-0 cursor-pointer hover:bg-[#2A2A2A] transition-colors"
           style={{ fontFamily: 'Montserrat, sans-serif' }}
           onClick={onSplitCartClick}
         >
           <div className="flex items-center gap-1.5">
             <span className="text-[10px] font-medium">
-              Split Payment ({splitPaymentInfo.paidChecksCount}/{splitPaymentInfo.totalChecks} Paid)
+              {cartItemCount} {cartItemCount === 1 ? 'Product' : 'Products'}
             </span>
           </div>
           <span className="text-[10px] font-semibold">
-            ${splitPaymentInfo.remainingAmount.toFixed(2)} Due
+            ${splitPaymentInfo.remainingAmount.toFixed(2)}
           </span>
         </div>
       )}
