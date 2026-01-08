@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronRight } from 'lucide-react';
 import iconDocument from '@/assets/icon-document.png';
 
 interface CartItem {
@@ -69,8 +69,8 @@ export const SplitCheckSummaryScreen = ({
     >
       {/* Header */}
       <div className="flex items-center justify-center py-3 flex-shrink-0 relative px-[6px]">
-        <button onClick={onBack} className="absolute left-[6px] p-1 bg-gray-100 rounded-full">
-          <ChevronLeft size={16} className="text-black" strokeWidth={2} />
+        <button onClick={onBack} className="absolute right-[6px] p-1">
+          <X size={14} className="text-black" strokeWidth={2} />
         </button>
         <h1 className="text-[12px] font-semibold text-black">Order Summary</h1>
       </div>
