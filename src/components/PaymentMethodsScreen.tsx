@@ -1,4 +1,4 @@
-import iconBackArrow from '@/assets/icon-back-arrow-new.png';
+import { X } from 'lucide-react';
 import iconCardTap from '@/assets/icon-payment-card-tap.png';
 import iconCash from '@/assets/icon-payment-cash-new.png';
 import iconSplitCheck from '@/assets/icon-split-check.png';
@@ -73,15 +73,15 @@ export const PaymentMethodsScreen = ({
   }}>
       {/* Header */}
       <div className="h-[40px] relative px-0 flex items-center justify-center">
-        <button onClick={onBack} className="absolute left-2 p-1">
-          <img src={iconBackArrow} alt="Back" className="w-[16px] h-[16px]" />
-        </button>
         <div className="flex items-baseline gap-1">
           <span className="text-[11px] font-semibold text-gray-900">
             {isPartialPayment ? 'Remaining' : 'Total Due'}
           </span>
           <span className="text-[13px] font-bold text-[#FF4D6A]">${totalDue.toFixed(2)}</span>
         </div>
+        <button onClick={onBack} className="absolute right-2 p-1">
+          <X className="w-[16px] h-[16px] text-gray-600" />
+        </button>
       </div>
 
       {/* Partial Payment Indicator */}
