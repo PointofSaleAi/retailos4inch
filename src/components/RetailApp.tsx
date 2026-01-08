@@ -1354,6 +1354,9 @@ export const RetailApp = () => {
           }}
           onClearCart={() => {
             setCartItems([]);
+            setAppliedDiscount(null);
+            setAppliedTax(null);
+            setDeliveryCharge(0);
           }}
           onAddCustomer={() => {
             setShowOrderSummary(false);
