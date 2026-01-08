@@ -28,16 +28,34 @@ interface ConfirmationToastProps {
 }
 
 const ConfirmationToast = ({ message, onDismiss }: ConfirmationToastProps) => {
+  const [isExiting, setIsExiting] = useState(false);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const exitTimer = setTimeout(() => {
+      setIsExiting(true);
+    }, 2000);
+    
+    const dismissTimer = setTimeout(() => {
       onDismiss();
-    }, 2500);
-    return () => clearTimeout(timer);
+    }, 2300);
+    
+    return () => {
+      clearTimeout(exitTimer);
+      clearTimeout(dismissTimer);
+    };
   }, [onDismiss]);
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-20 rounded-lg">
-      <div className="bg-white rounded-xl px-4 py-3 shadow-lg flex flex-col items-center gap-2 mx-3">
+    <div 
+      className={`absolute inset-0 flex items-center justify-center bg-black/40 z-20 rounded-lg transition-opacity duration-300 ${
+        isExiting ? 'opacity-0' : 'opacity-100 animate-fade-in'
+      }`}
+    >
+      <div 
+        className={`bg-white rounded-xl px-4 py-3 shadow-lg flex flex-col items-center gap-2 mx-3 transition-all duration-300 ${
+          isExiting ? 'scale-95 opacity-0' : 'animate-scale-in'
+        }`}
+      >
         <div className="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center">
           <Check className="w-5 h-5 text-white" strokeWidth={3} />
         </div>
