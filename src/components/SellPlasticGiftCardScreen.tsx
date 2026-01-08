@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
 import iconCameraScan from '@/assets/icon-camera-scan.png';
+import { CardScannerScreen } from './CardScannerScreen';
 
 interface SellPlasticGiftCardScreenProps {
   onBack: () => void;
@@ -14,6 +15,7 @@ export const SellPlasticGiftCardScreen = ({
   isEGift = false
 }: SellPlasticGiftCardScreenProps) => {
   const [cardNumber, setCardNumber] = useState('');
+  const [showScanner, setShowScanner] = useState(false);
 
   const formatCardNumber = (num: string) => {
     // Format with spaces every 4 digits
@@ -49,9 +51,20 @@ export const SellPlasticGiftCardScreen = ({
     }
   }, [cardNumber, onContinue]);
 
+  const handleScanSuccess = (scannedNumber: string) => {
+    setShowScanner(false);
+    // If 16 digits, it will auto-proceed via useEffect
+    // Otherwise set the number and let user complete manually or proceed if valid
+    if (scannedNumber.length === 16) {
+      onContinue(scannedNumber);
+    } else {
+      setCardNumber(scannedNumber);
+    }
+  };
+
   return (
     <div 
-      className="w-[186px] h-full bg-[#F5F5F5] flex flex-col mx-auto" 
+      className="w-[186px] h-full bg-[#F5F5F5] flex flex-col mx-auto relative" 
       style={{ fontFamily: 'Montserrat, sans-serif' }}
     >
       {/* Header */}
@@ -75,7 +88,10 @@ export const SellPlasticGiftCardScreen = ({
           <span className={`text-[10px] whitespace-nowrap overflow-hidden flex-1 ${cardNumber ? 'text-[#1A1A1A] font-medium' : 'text-gray-400'}`}>
             {cardNumber ? formatCardNumber(cardNumber) : '8888 8888 8888 8888'}
           </span>
-          <button className="p-1 flex-shrink-0">
+          <button 
+            className="p-1 flex-shrink-0"
+            onClick={() => setShowScanner(true)}
+          >
             <img src={iconCameraScan} alt="Scan" className="w-[20px] h-[20px]" />
           </button>
         </div>
@@ -103,8 +119,15 @@ export const SellPlasticGiftCardScreen = ({
             </button>
           ))}
         </div>
-
       </div>
+
+      {/* Card Scanner Overlay */}
+      {showScanner && (
+        <CardScannerScreen
+          onClose={() => setShowScanner(false)}
+          onScanSuccess={handleScanSuccess}
+        />
+      )}
     </div>
   );
 };
