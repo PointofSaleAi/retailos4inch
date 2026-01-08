@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
 import iconCameraScan from '@/assets/icon-camera-scan.png';
 
@@ -42,13 +42,12 @@ export const SellPlasticGiftCardScreen = ({
     }
   };
 
-  const handleContinue = () => {
-    if (cardNumber.length >= 10) {
+  // Auto-proceed when 16 digits are entered
+  useEffect(() => {
+    if (cardNumber.length === 16) {
       onContinue(cardNumber);
     }
-  };
-
-  const isValidCard = cardNumber.length >= 10;
+  }, [cardNumber, onContinue]);
 
   return (
     <div 
@@ -73,14 +72,9 @@ export const SellPlasticGiftCardScreen = ({
       {/* Card Number Input */}
       <div className="px-[6px] mb-1">
         <div className="flex items-center justify-between p-2.5 border border-gray-200 rounded-lg bg-white">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <button className="w-[24px] h-[24px] flex-shrink-0 bg-[#E5E5E5] rounded-[4px] flex items-center justify-center">
-              <img src={iconCameraScan} alt="Scan" className="w-[14px] h-[14px]" />
-            </button>
-            <span className={`text-[10px] whitespace-nowrap overflow-hidden ${cardNumber ? 'text-[#1A1A1A] font-medium' : 'text-gray-400'}`}>
-              {cardNumber ? formatCardNumber(cardNumber) : '8888 8888 8888 8888'}
-            </span>
-          </div>
+          <span className={`text-[10px] whitespace-nowrap overflow-hidden flex-1 ${cardNumber ? 'text-[#1A1A1A] font-medium' : 'text-gray-400'}`}>
+            {cardNumber ? formatCardNumber(cardNumber) : '8888 8888 8888 8888'}
+          </span>
           <button className="p-1 flex-shrink-0">
             <img src={iconCameraScan} alt="Scan" className="w-[20px] h-[20px]" />
           </button>
@@ -110,15 +104,6 @@ export const SellPlasticGiftCardScreen = ({
           ))}
         </div>
 
-        {/* Continue Button - only shown when valid */}
-        {isValidCard && (
-          <button
-            onClick={handleContinue}
-            className="mt-2 w-full py-2.5 rounded-full text-white text-[11px] font-semibold bg-[#1A1A1A]"
-          >
-            CONTINUE
-          </button>
-        )}
       </div>
     </div>
   );
