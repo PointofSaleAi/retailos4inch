@@ -47,7 +47,7 @@ const ConfirmationToast = ({ message, onDismiss }: ConfirmationToastProps) => {
 
   return (
     <div 
-      className={`absolute inset-0 flex items-center justify-center bg-black/40 z-20 rounded-lg transition-opacity duration-300 ${
+      className={`fixed inset-0 flex items-center justify-center bg-black/50 z-50 transition-opacity duration-300 ${
         isExiting ? 'opacity-0' : 'opacity-100 animate-fade-in'
       }`}
     >
