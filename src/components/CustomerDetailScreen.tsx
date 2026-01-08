@@ -4,15 +4,17 @@ import { Input } from "./ui/input";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
+import { Sheet, SheetContent } from "./ui/sheet";
 import { Customer } from "./CustomerScreen";
 import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import iconEditCustomer from "@/assets/icon-edit-customer.png";
 import iconBirthday from "@/assets/icon-birthday.png";
 import iconAnniversary from "@/assets/icon-anniversary.png";
+import iconCameraWhite from "@/assets/icon-camera-white.png";
 import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Image } from "lucide-react";
 import { formatPhoneNumber, countryOptions } from "@/hooks/usePhoneInput";
 
 interface CustomerDetailScreenProps {
@@ -31,6 +33,7 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
   );
   const [countryCode, setCountryCode] = useState("+1");
   const [countryFlag, setCountryFlag] = useState("🇺🇸");
+  const [showImageSheet, setShowImageSheet] = useState(false);
 
   const getInitials = (name: string) => {
     return name
@@ -101,7 +104,10 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
                   {getInitials(editedCustomer.name)}
                 </AvatarFallback>
               </Avatar>
-              <button className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-background border border-border flex items-center justify-center">
+              <button 
+                className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-background border border-border flex items-center justify-center"
+                onClick={() => setShowImageSheet(true)}
+              >
                 <img src={iconEditCustomer} alt="" className="w-3 h-3" />
               </button>
             </div>
@@ -355,6 +361,43 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
           </div>
         </div>
       </div>
+
+      {/* Image Edit Bottom Sheet */}
+      <Sheet open={showImageSheet} onOpenChange={setShowImageSheet}>
+        <SheetContent 
+          side="bottom" 
+          className="rounded-t-2xl px-4 pb-6 pt-3"
+          style={{ fontFamily: 'Montserrat' }}
+        >
+          <div className="w-10 h-1 bg-muted rounded-full mx-auto mb-4" />
+          <div className="space-y-2">
+            <button 
+              className="w-full flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-muted/50 transition-colors"
+              onClick={() => {
+                // Handle gallery selection
+                setShowImageSheet(false);
+              }}
+            >
+              <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+                <Image className="w-4 h-4 text-foreground" />
+              </div>
+              <span className="font-medium text-foreground" style={{ fontSize: '12px' }}>Update image</span>
+            </button>
+            <button 
+              className="w-full flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-muted/50 transition-colors"
+              onClick={() => {
+                // Handle camera
+                setShowImageSheet(false);
+              }}
+            >
+              <div className="w-9 h-9 rounded-full bg-foreground flex items-center justify-center">
+                <img src={iconCameraWhite} alt="" className="w-4 h-4" />
+              </div>
+              <span className="font-medium text-foreground" style={{ fontSize: '12px' }}>Take a photo</span>
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
