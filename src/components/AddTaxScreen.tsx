@@ -28,9 +28,6 @@ export const AddTaxScreen = ({ onClose, onApply, appliedTax }: AddTaxScreenProps
     onApply(tax);
   };
 
-  const handleRemove = () => {
-    onApply(null);
-  };
 
   const handleToggle = (taxId: string) => {
     setSelectedTax(prev => prev === taxId ? null : taxId);
@@ -83,24 +80,11 @@ export const AddTaxScreen = ({ onClose, onApply, appliedTax }: AddTaxScreenProps
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="pb-3 pt-2 flex gap-2">
-        {appliedTax && (
-          <button
-            onClick={handleRemove}
-            className="flex-1 rounded-full py-2.5 text-[11px] font-semibold uppercase tracking-wide border-2 border-[#FF3B30] text-[#FF3B30] bg-white"
-          >
-            Remove
-          </button>
-        )}
+      {/* Action Button */}
+      <div className="pb-3 pt-2 px-[6px]">
         <button
           onClick={handleApply}
-          disabled={!selectedTax}
-          className={`flex-1 rounded-full py-2.5 text-[11px] font-semibold uppercase tracking-wide ${
-            selectedTax
-              ? 'bg-[#1A1A1A] text-white'
-              : 'bg-[#CCCCCC] text-white'
-          }`}
+          className="w-full rounded-full py-2.5 text-[11px] font-semibold uppercase tracking-wide bg-[#1A1A1A] text-white"
         >
           Apply
         </button>

@@ -31,9 +31,6 @@ export const DiscountScreen = ({ onClose, onApply, subtotal, appliedDiscount }: 
     onApply(discount);
   };
 
-  const handleRemove = () => {
-    onApply(null);
-  };
 
   const handleToggle = (discountId: string) => {
     setSelectedDiscount(prev => prev === discountId ? null : discountId);
@@ -86,24 +83,11 @@ export const DiscountScreen = ({ onClose, onApply, subtotal, appliedDiscount }: 
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="px-3 pb-3 pt-2 flex gap-2">
-        {appliedDiscount && (
-          <button
-            onClick={handleRemove}
-            className="flex-1 rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide border-2 border-[#FF3B30] text-[#FF3B30] bg-white"
-          >
-            Remove
-          </button>
-        )}
+      {/* Action Button */}
+      <div className="px-3 pb-3 pt-2">
         <button
           onClick={handleApply}
-          disabled={!selectedDiscount}
-          className={`flex-1 rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide ${
-            selectedDiscount
-              ? 'bg-[#1A1A1A] text-white'
-              : 'bg-[#CCCCCC] text-white'
-          }`}
+          className="w-full rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide bg-[#1A1A1A] text-white"
         >
           Apply
         </button>
