@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Drawer, DrawerContent, DrawerClose } from "@/components/ui/drawer";
 import iconDiscount from "@/assets/icon-discount.png";
 interface Product {
@@ -14,6 +14,8 @@ interface ProductDetailSheetProps {
   onClose: () => void;
   onAddToCart: (productId: string, quantity: number, size: string, color: string) => void;
   portalContainer?: HTMLElement | null;
+  initialSize?: string;
+  initialColor?: string;
 }
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 const colors = [{
@@ -52,13 +54,26 @@ export const ProductDetailSheet = ({
   isOpen,
   onClose,
   onAddToCart,
-  portalContainer
+  portalContainer,
+  initialSize = "",
+  initialColor = ""
 }: ProductDetailSheetProps) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState(initialSize);
+  const [selectedColor, setSelectedColor] = useState(initialColor);
   const stock = product?.stock ?? 0;
+  
+  // Reset selections when sheet opens with new initial values
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedSize(initialSize);
+      setSelectedColor(initialColor);
+      setQuantity(1);
+    }
+  }, [isOpen, initialSize, initialColor]);
+
   if (!product) return null;
+  
   const handleQuantityChange = (change: number) => {
     const newQuantity = quantity + change;
     if (newQuantity >= 1) {
@@ -69,6 +84,8 @@ export const ProductDetailSheet = ({
     onAddToCart(product.id, quantity, selectedSize, selectedColor);
     onClose();
     setQuantity(1);
+    setSelectedSize("");
+    setSelectedColor("");
   };
   return <Drawer open={isOpen} onOpenChange={onClose}>
       <DrawerContent container={portalContainer} className="!w-full !left-0 !right-0 !inset-x-0 !bottom-0 !top-auto rounded-t-[16px] h-[300px] overflow-hidden pb-0">

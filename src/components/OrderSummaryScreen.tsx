@@ -116,6 +116,8 @@ export const OrderSummaryScreen = ({
   const [pendingItem, setPendingItem] = useState<CartItem | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [editingInitialSize, setEditingInitialSize] = useState<string>("");
+  const [editingInitialColor, setEditingInitialColor] = useState<string>("");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement | null>(null);
   const popupContainerRef = useRef<HTMLDivElement | null>(null);
@@ -184,6 +186,8 @@ export const OrderSummaryScreen = ({
       };
       setEditingProduct(productForEdit);
       setEditingItemId(pendingItem.id);
+      setEditingInitialSize(pendingItem.size || "");
+      setEditingInitialColor(pendingItem.color || "");
       setIsSheetOpen(true);
     }
     setConfirmDialogOpen(false);
@@ -194,6 +198,8 @@ export const OrderSummaryScreen = ({
     setIsSheetOpen(false);
     setEditingProduct(null);
     setEditingItemId(null);
+    setEditingInitialSize("");
+    setEditingInitialColor("");
   };
 
   const handleEditAddToCart = (productId: string, quantity: number, size: string, color: string) => {
@@ -438,6 +444,8 @@ export const OrderSummaryScreen = ({
         onClose={handleCloseSheet}
         onAddToCart={handleEditAddToCart}
         portalContainer={popupContainerRef.current}
+        initialSize={editingInitialSize}
+        initialColor={editingInitialColor}
       />
     </div>;
 };

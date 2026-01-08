@@ -1412,14 +1412,34 @@ export const RetailApp = () => {
           appliedDiscount={appliedDiscount}
           deliveryCharge={deliveryCharge}
           onAddToCartWithEdit={(itemId, productId, quantity, size, color) => {
-            // Update the cart item with new quantity, size, and color
-            setCartItems(prevItems => 
-              prevItems.map(item => 
-                item.id === itemId 
-                  ? { ...item, quantity, size, color }
-                  : item
-              )
-            );
+            // Find the original item
+            const originalItem = cartItems.find(item => item.id === itemId);
+            if (!originalItem) return;
+            
+            // Check if size or color changed
+            const sizeChanged = originalItem.size !== size;
+            const colorChanged = originalItem.color !== color;
+            
+            if (sizeChanged || colorChanged) {
+              // Add as a new line item with a unique ID
+              const newItem = {
+                ...originalItem,
+                id: `${productId}-${size}-${color}-${Date.now()}`,
+                quantity,
+                size,
+                color
+              };
+              setCartItems(prevItems => [...prevItems, newItem]);
+            } else {
+              // Same size and color - just update quantity
+              setCartItems(prevItems => 
+                prevItems.map(item => 
+                  item.id === itemId 
+                    ? { ...item, quantity: item.quantity + quantity }
+                    : item
+                )
+              );
+            }
           }}
         />
       );
