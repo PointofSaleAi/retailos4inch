@@ -99,6 +99,12 @@ interface NewOrderScreenProps {
   onGiftCard?: () => void;
   onRedeemLoyalty?: () => void;
   onDeliveryCharge?: () => void;
+  splitPaymentInfo?: {
+    paidChecksCount: number;
+    totalChecks: number;
+    remainingAmount: number;
+  } | null;
+  onSplitCartClick?: () => void;
 }
 
 export const NewOrderScreen = ({ 
@@ -116,7 +122,9 @@ export const NewOrderScreen = ({
   onDiscount,
   onGiftCard,
   onRedeemLoyalty,
-  onDeliveryCharge
+  onDeliveryCharge,
+  splitPaymentInfo,
+  onSplitCartClick
 }: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"image" | "grid" | "list">("image");
   const [selectedProductType, setSelectedProductType] = useState("Products");
@@ -271,8 +279,28 @@ export const NewOrderScreen = ({
         </div>
       </div>
       
+      {/* Split Cart Strip - shows when there are paid split checks with remaining balance */}
+      {!isSheetOpen && splitPaymentInfo && splitPaymentInfo.paidChecksCount > 0 && splitPaymentInfo.remainingAmount > 0 && (
+        <div 
+          className="w-full h-[24px] bg-[#22C55E] text-white flex items-center justify-between px-3 flex-shrink-0 cursor-pointer hover:bg-[#16A34A] transition-colors"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+          onClick={onSplitCartClick}
+        >
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-medium">
+              Split Payment ({splitPaymentInfo.paidChecksCount}/{splitPaymentInfo.totalChecks} Paid)
+            </span>
+          </div>
+          <span className="text-[10px] font-semibold">
+            ${splitPaymentInfo.remainingAmount.toFixed(2)} Due
+          </span>
+        </div>
+      )}
+
       {/* Cart Strip - positioned as flex child at bottom */}
-      {!isSheetOpen && <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />}
+      {!isSheetOpen && (!splitPaymentInfo || splitPaymentInfo.paidChecksCount === 0 || splitPaymentInfo.remainingAmount <= 0) && (
+        <CartStrip itemCount={cartItemCount} totalAmount={cartTotal} onClick={onCartClick} />
+      )}
 
       {/* Product Detail Sheet */}
       <ProductDetailSheet
