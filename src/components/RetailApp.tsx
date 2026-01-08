@@ -461,6 +461,7 @@ export const RetailApp = () => {
             setShowAddTaxScreen(false);
             setShowOrderSummary(true);
           }}
+          appliedTax={appliedTax}
         />
       );
     }
@@ -478,6 +479,7 @@ export const RetailApp = () => {
             setShowDiscountScreen(false);
             setShowOrderSummary(true);
           }}
+          appliedDiscount={appliedDiscount}
         />
       );
     }
