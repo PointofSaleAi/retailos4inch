@@ -6,17 +6,18 @@ import { ProductCard } from "./ProductCard";
 import { ProductDetailSheet } from "./ProductDetailSheet";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   image: string;
+  stock: number;
   isFavorite?: boolean;
 }
 
 interface FavoritesScreenProps {
   onBack: () => void;
   products: Product[];
-  onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
+  onAddToCart: (productId: string, quantity: number, size?: string, color?: string) => void;
 }
 
 export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {

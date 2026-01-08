@@ -3,15 +3,16 @@ import { Button } from "@/components/ui/button";
 import iconPlusNew from "@/assets/icon-plus-new.png";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   image: string;
+  stock: number;
 }
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (productId: number, quantity: number, size?: string, color?: string) => void;
+  onAddToCart: (productId: string, quantity: number, size?: string, color?: string) => void;
   hideImage?: boolean;
   onCardClick?: (product: Product) => void;
 }
