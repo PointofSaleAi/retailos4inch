@@ -1192,7 +1192,8 @@ export const RetailApp = () => {
           onBack={() => {
             setShowPaymentMethods(false);
             // If in split check flow, go back to split check summary
-            if (currentChargingCheckIndex !== null) {
+            // Preserve the paid checks state - only reset the current charging index
+            if (currentChargingCheckIndex !== null || paidSplitChecks.size > 0) {
               setCurrentChargingCheckIndex(null);
               setShowSplitCheckSummary(true);
             } else {
