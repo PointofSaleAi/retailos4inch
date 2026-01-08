@@ -140,6 +140,63 @@ export const useCustomerSearch = () => {
     }
   }, []);
 
+  // Update an existing customer
+  const updateCustomer = useCallback(async (customerId: string, customerData: Partial<Customer>, avatarFile?: File) => {
+    setIsLoading(true);
+    try {
+      let avatarUrl = customerData.avatar;
+
+      // Upload avatar if a new file is provided
+      if (avatarFile) {
+        const fileExt = avatarFile.name.split('.').pop() || 'jpg';
+        const fileName = `${customerId}-${Date.now()}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('customer-avatars')
+          .upload(fileName, avatarFile, { upsert: true });
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from('customer-avatars')
+          .getPublicUrl(fileName);
+
+        avatarUrl = urlData.publicUrl;
+      }
+
+      const { data, error } = await supabase
+        .from('customers')
+        .update({
+          name: customerData.name,
+          phone: customerData.phone || null,
+          email: customerData.email || null,
+          avatar_url: avatarUrl || null,
+          loyalty_points: customerData.loyaltyPoints || 0,
+          tax: customerData.tax || null,
+          company_name: customerData.companyName || null,
+          birthday: customerData.birthday || null,
+          anniversary: customerData.anniversary || null,
+          address: customerData.address || null,
+          notes: customerData.notes || null,
+        })
+        .eq('id', customerId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      
+      const updatedCustomer = mapDbCustomer(data);
+      setCustomers(prev => prev.map(c => c.id === customerId ? updatedCustomer : c));
+      setSearchResults(prev => prev.map(c => c.id === customerId ? updatedCustomer : c));
+      return updatedCustomer;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update customer');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   return {
     customers,
     searchResults,
@@ -147,5 +204,6 @@ export const useCustomerSearch = () => {
     error,
     searchCustomers,
     addCustomer,
+    updateCustomer,
   };
 };
