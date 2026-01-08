@@ -306,7 +306,7 @@ export const OrderSummaryScreen = ({
         </div>
         <div className="flex justify-between items-center">
           <span className="text-[9px] font-medium text-[#212121]">Discount</span>
-          <span className="text-[9px] font-medium text-[#212121]">-${discountAmount.toFixed(2)}</span>
+          <span className="text-[9px] font-medium text-[#212121]">{discountAmount > 0 ? `-$${discountAmount.toFixed(2)}` : `$${discountAmount.toFixed(2)}`}</span>
         </div>
         {appliedTax && (
           <div className="flex justify-between items-center">
