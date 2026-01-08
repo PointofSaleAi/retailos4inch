@@ -4,7 +4,7 @@ import iconClose from '@/assets/icon-close.png';
 export interface Discount {
   id: string;
   name: string;
-  amount: number; // Changed to number for calculations
+  amount: number;
   displayAmount: string;
 }
 
@@ -12,6 +12,7 @@ interface DiscountScreenProps {
   onClose: () => void;
   onApply: (discount: Discount | null) => void;
   subtotal: number;
+  appliedDiscount?: Discount | null;
 }
 
 const getAvailableDiscounts = (subtotal: number): Discount[] => [
@@ -21,13 +22,21 @@ const getAvailableDiscounts = (subtotal: number): Discount[] => [
   { id: '4', name: 'Flat 10% off your first purchase', amount: subtotal * 0.10, displayAmount: `-$${(subtotal * 0.10).toFixed(2)}` },
 ];
 
-export const DiscountScreen = ({ onClose, onApply, subtotal }: DiscountScreenProps) => {
-  const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
+export const DiscountScreen = ({ onClose, onApply, subtotal, appliedDiscount }: DiscountScreenProps) => {
+  const [selectedDiscount, setSelectedDiscount] = useState<string | null>(appliedDiscount?.id || null);
   const availableDiscounts = getAvailableDiscounts(subtotal);
 
   const handleApply = () => {
     const discount = availableDiscounts.find(d => d.id === selectedDiscount) || null;
     onApply(discount);
+  };
+
+  const handleRemove = () => {
+    onApply(null);
+  };
+
+  const handleToggle = (discountId: string) => {
+    setSelectedDiscount(prev => prev === discountId ? null : discountId);
   };
 
   return (
@@ -58,7 +67,7 @@ export const DiscountScreen = ({ onClose, onApply, subtotal }: DiscountScreenPro
           {availableDiscounts.map((discount) => (
             <button
               key={discount.id}
-              onClick={() => setSelectedDiscount(discount.id)}
+              onClick={() => handleToggle(discount.id)}
               className="flex items-center justify-between bg-white px-3 py-2.5 shadow-sm"
             >
               <div className="flex items-center gap-3">
@@ -77,12 +86,20 @@ export const DiscountScreen = ({ onClose, onApply, subtotal }: DiscountScreenPro
         </div>
       </div>
 
-      {/* Apply Button */}
-      <div className="px-3 pb-3 pt-2">
+      {/* Action Buttons */}
+      <div className="px-3 pb-3 pt-2 flex gap-2">
+        {appliedDiscount && (
+          <button
+            onClick={handleRemove}
+            className="flex-1 rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide border-2 border-[#FF3B30] text-[#FF3B30] bg-white"
+          >
+            Remove
+          </button>
+        )}
         <button
           onClick={handleApply}
           disabled={!selectedDiscount}
-          className={`w-full rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide ${
+          className={`flex-1 rounded-full py-2.5 text-[12px] font-semibold uppercase tracking-wide ${
             selectedDiscount
               ? 'bg-[#1A1A1A] text-white'
               : 'bg-[#CCCCCC] text-white'

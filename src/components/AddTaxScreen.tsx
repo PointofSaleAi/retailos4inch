@@ -4,13 +4,14 @@ import iconClose from '@/assets/icon-close.png';
 export interface Tax {
   id: string;
   name: string;
-  rate: number; // Changed to number for calculations
+  rate: number;
   displayRate: string;
 }
 
 interface AddTaxScreenProps {
   onClose: () => void;
   onApply: (tax: Tax | null) => void;
+  appliedTax?: Tax | null;
 }
 
 const availableTaxes: Tax[] = [
@@ -19,12 +20,20 @@ const availableTaxes: Tax[] = [
   { id: '3', name: 'Import/Export Duties', rate: 0.01, displayRate: '1%' },
 ];
 
-export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
-  const [selectedTax, setSelectedTax] = useState<string | null>(null);
+export const AddTaxScreen = ({ onClose, onApply, appliedTax }: AddTaxScreenProps) => {
+  const [selectedTax, setSelectedTax] = useState<string | null>(appliedTax?.id || null);
 
   const handleApply = () => {
     const tax = availableTaxes.find(t => t.id === selectedTax) || null;
     onApply(tax);
+  };
+
+  const handleRemove = () => {
+    onApply(null);
+  };
+
+  const handleToggle = (taxId: string) => {
+    setSelectedTax(prev => prev === taxId ? null : taxId);
   };
 
   return (
@@ -55,7 +64,7 @@ export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
           {availableTaxes.map((tax) => (
             <button
               key={tax.id}
-              onClick={() => setSelectedTax(tax.id)}
+              onClick={() => handleToggle(tax.id)}
               className="flex items-center justify-between bg-white px-2 py-2 shadow-sm mx-0"
             >
               <div className="flex items-center gap-2">
@@ -74,12 +83,20 @@ export const AddTaxScreen = ({ onClose, onApply }: AddTaxScreenProps) => {
         </div>
       </div>
 
-      {/* Apply Button */}
-      <div className="pb-3 pt-2">
+      {/* Action Buttons */}
+      <div className="pb-3 pt-2 flex gap-2">
+        {appliedTax && (
+          <button
+            onClick={handleRemove}
+            className="flex-1 rounded-full py-2.5 text-[11px] font-semibold uppercase tracking-wide border-2 border-[#FF3B30] text-[#FF3B30] bg-white"
+          >
+            Remove
+          </button>
+        )}
         <button
           onClick={handleApply}
           disabled={!selectedTax}
-          className={`w-full rounded-full py-2.5 text-[11px] font-semibold uppercase tracking-wide ${
+          className={`flex-1 rounded-full py-2.5 text-[11px] font-semibold uppercase tracking-wide ${
             selectedTax
               ? 'bg-[#1A1A1A] text-white'
               : 'bg-[#CCCCCC] text-white'
