@@ -1,5 +1,5 @@
-import { X, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { X, ChevronDown, Check } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import iconPaymentComplete from '@/assets/icon-payment-complete.png';
 import iconReceiptPrint from '@/assets/icon-receipt-print.png';
 import iconReceiptText from '@/assets/icon-receipt-text.png';
@@ -21,6 +21,34 @@ const countryCodes = [
   { code: '+971', country: 'AE', flag: '🇦🇪' },
   { code: '+966', country: 'SA', flag: '🇸🇦' },
 ];
+
+interface ConfirmationToastProps {
+  message: string;
+  onDismiss: () => void;
+}
+
+const ConfirmationToast = ({ message, onDismiss }: ConfirmationToastProps) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onDismiss();
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [onDismiss]);
+
+  return (
+    <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-20 rounded-lg">
+      <div className="bg-white rounded-xl px-4 py-3 shadow-lg flex flex-col items-center gap-2 mx-3">
+        <div className="w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center">
+          <Check className="w-5 h-5 text-white" strokeWidth={3} />
+        </div>
+        <p className="text-[10px] font-medium text-gray-900 text-center leading-tight">
+          {message}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 interface PaymentSuccessScreenProps {
   amount: number;
   onClose: () => void;
@@ -36,6 +64,15 @@ export const PaymentSuccessScreen = ({
   const [selectedCountryCode, setSelectedCountryCode] = useState(countryCodes[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showPrintOptions, setShowPrintOptions] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
+  
+  const showConfirmation = (message: string) => {
+    setConfirmationMessage(message);
+  };
+
+  const handleDismissConfirmation = () => {
+    setConfirmationMessage(null);
+  };
   
   const handlePrint = () => {
     setShowPrintOptions(!showPrintOptions);
@@ -46,16 +83,19 @@ export const PaymentSuccessScreen = ({
   const handlePrintReceipt = () => {
     console.log('Print Receipt');
     setShowPrintOptions(false);
+    showConfirmation('Your receipt has been printed successfully.');
   };
   
   const handlePrintBill = () => {
     console.log('Print Bill');
     setShowPrintOptions(false);
+    showConfirmation('Your bill has been printed successfully.');
   };
   
   const handlePrintBoth = () => {
     console.log('Print Both');
     setShowPrintOptions(false);
+    showConfirmation('Your receipt and bill have been printed successfully.');
   };
   const handleText = () => {
     setShowTextInput(!showTextInput);
@@ -72,18 +112,31 @@ export const PaymentSuccessScreen = ({
   };
 
   const handleSendText = () => {
-    console.log('Sending text to:', selectedCountryCode.code + phoneNumber);
-    // Add send logic here
+    const fullPhone = selectedCountryCode.code + phoneNumber;
+    console.log('Sending text to:', fullPhone);
+    showConfirmation(`Your receipt has been sent to ${fullPhone}`);
+    setShowTextInput(false);
+    setPhoneNumber('');
   };
 
   const handleSendEmail = () => {
     console.log('Sending email to:', email);
-    // Add send logic here
+    showConfirmation(`Your receipt has been sent to ${email}`);
+    setShowEmailInput(false);
+    setEmail('');
   };
   return (
-    <div className="w-[186px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden" style={{
+    <div className="w-[186px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden relative" style={{
       fontFamily: 'Montserrat, sans-serif'
     }}>
+      {/* Confirmation Toast */}
+      {confirmationMessage && (
+        <ConfirmationToast 
+          message={confirmationMessage} 
+          onDismiss={handleDismissConfirmation} 
+        />
+      )}
+
       {/* Header with Title and Close Button */}
       <div className="flex items-center justify-between pt-[8px] px-[6px]">
         <div className="w-[24px]" />
