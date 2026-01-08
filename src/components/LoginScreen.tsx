@@ -6,6 +6,8 @@ import { RetailLogo } from "./RetailLogo";
 import { ForgotPasswordScreen } from "./ForgotPasswordScreen";
 import { RegistrationScreen } from "./RegistrationScreen";
 import { Eye, EyeOff } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 interface LoginScreenProps {
   onLogin: () => void;
 }
@@ -17,9 +19,30 @@ export const LoginScreen = ({
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin();
+    setIsLoading(true);
+    
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      
+      if (error) throw error;
+      
+      onLogin();
+    } catch (error: any) {
+      toast({
+        title: "Login Failed",
+        description: error.message || "Invalid email or password",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (showForgotPassword) {
@@ -58,8 +81,14 @@ export const LoginScreen = ({
         </div>
         
         <div className="space-y-2 mt-[20px]">
-          <Button type="submit" variant="retail" size="retail-full" className="h-[28px]">
-            SIGN IN
+          <Button 
+            type="submit" 
+            variant="retail" 
+            size="retail-full" 
+            className="h-[28px]"
+            disabled={isLoading}
+          >
+            {isLoading ? "SIGNING IN..." : "SIGN IN"}
           </Button>
           
           <div className="text-center py-3">
