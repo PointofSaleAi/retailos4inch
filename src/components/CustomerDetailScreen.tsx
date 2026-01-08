@@ -20,9 +20,10 @@ import { formatPhoneNumber, countryOptions } from "@/hooks/usePhoneInput";
 interface CustomerDetailScreenProps {
   customer: Customer;
   onBack: () => void;
+  onUpdate?: (updatedCustomer: Customer) => void;
 }
 
-export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenProps) => {
+export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDetailScreenProps) => {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editedCustomer, setEditedCustomer] = useState(customer);
   const [birthdayDate, setBirthdayDate] = useState<Date | undefined>(
@@ -112,7 +113,27 @@ export const CustomerDetailScreen = ({ customer, onBack }: CustomerDetailScreenP
     <div className="h-full flex flex-col bg-background" style={{ fontFamily: 'Montserrat' }}>
       {/* Header */}
       <div className="flex-shrink-0 flex items-center gap-3 px-3 py-2">
-        <button onClick={onBack} className="p-1">
+        <button 
+          onClick={() => {
+            // Save changes before navigating back
+            if (onUpdate) {
+              onUpdate({
+                ...editedCustomer,
+                email: editedCustomer.email || customerDetails.email,
+                loyaltyPoints: editedCustomer.loyaltyPoints || customerDetails.loyaltyPoints,
+                customerSince: editedCustomer.customerSince || customerDetails.customerSince,
+                tax: editedCustomer.tax || customerDetails.tax,
+                companyName: editedCustomer.companyName || customerDetails.companyName,
+                birthday: editedCustomer.birthday || customerDetails.birthday,
+                anniversary: editedCustomer.anniversary || customerDetails.anniversary,
+                address: editedCustomer.address || customerDetails.address,
+                notes: editedCustomer.notes || customerDetails.notes,
+              });
+            }
+            onBack();
+          }} 
+          className="p-1"
+        >
           <img src={iconBackArrow} alt="" className="w-3.5 h-3.5" />
         </button>
         <h1 className="font-semibold text-foreground" style={{ fontSize: '12px' }}>Customer details</h1>
