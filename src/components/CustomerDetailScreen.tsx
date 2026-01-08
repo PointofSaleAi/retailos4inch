@@ -14,7 +14,7 @@ import iconCameraWhite from "@/assets/icon-camera-white.png";
 import { useState, useRef } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Image } from "lucide-react";
+import { ChevronDown, Image, Trash2 } from "lucide-react";
 import { formatPhoneNumber, countryOptions } from "@/hooks/usePhoneInput";
 
 interface CustomerDetailScreenProps {
@@ -443,6 +443,20 @@ export const CustomerDetailScreen = ({ customer, onBack, onUpdate }: CustomerDet
                 </div>
                 <span className="font-medium text-foreground" style={{ fontSize: '11px' }}>Take a photo</span>
               </button>
+              {editedCustomer.avatar && (
+                <button 
+                  className="w-full flex items-center gap-2.5 py-2.5 px-2 rounded-xl hover:bg-destructive/10 transition-colors"
+                  onClick={() => {
+                    setEditedCustomer(prev => ({ ...prev, avatar: undefined }));
+                    setShowImageSheet(false);
+                  }}
+                >
+                  <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center">
+                    <Trash2 className="w-3.5 h-3.5 text-destructive" />
+                  </div>
+                  <span className="font-medium text-destructive" style={{ fontSize: '11px' }}>Remove photo</span>
+                </button>
+              )}
             </div>
           </div>
         </>
