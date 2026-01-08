@@ -414,6 +414,7 @@ export const OrderSummaryScreen = ({
           className="w-[160px] p-3 rounded-xl"
           style={{ fontFamily: 'Montserrat, sans-serif' }}
           hideClose
+          container={popupContainerRef.current}
         >
           <DialogHeader className="pb-2">
             <DialogTitle className="text-[10px] font-semibold text-center text-gray-900">
