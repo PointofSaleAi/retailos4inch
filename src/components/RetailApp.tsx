@@ -118,6 +118,7 @@ export const RetailApp = () => {
   const [currentRefundReason, setCurrentRefundReason] = useState("");
   const [showNewCustomer, setShowNewCustomer] = useState(false);
   const [refundAmount, setRefundAmount] = useState(0);
+  const [remainingDue, setRemainingDue] = useState(0);
   const [selectedRefundItems, setSelectedRefundItems] = useState<CartItem[]>([]);
   const [selectedTransactionId, setSelectedTransactionId] = useState<string>("");
   const [paymentAmount, setPaymentAmount] = useState(0);
@@ -254,6 +255,7 @@ export const RetailApp = () => {
 
   const handleNewOrder = () => {
     setShowOrderSummary(false);
+    setRemainingDue(0);
     setActiveTab("order");
   };
 
@@ -283,6 +285,7 @@ export const RetailApp = () => {
 
     setTransactions(prev => [newTransaction, ...prev]);
     setCartItems([]);
+    setRemainingDue(0);
     setShowOrderSummary(false);
     setActiveTab("order");
   };
@@ -305,6 +308,7 @@ export const RetailApp = () => {
 
   const handleConfirmPayment = (paymentMethod: string, amount: number) => {
     if (cartItems.length === 0) return;
+    if (amount < 0.01) return; // Minimum payment is $0.01
     
     setPaymentAmount(amount);
     setShowPaymentEntry(false);
@@ -315,6 +319,17 @@ export const RetailApp = () => {
     const now = new Date();
     const date = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
     const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    
+    // Calculate total due with tax
+    const TAX_RATE = 0.08;
+    const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const tax = subtotal * TAX_RATE;
+    const totalOrderAmount = subtotal + tax;
+    
+    // Calculate remaining after this payment
+    const previouslyPaid = totalOrderAmount - (remainingDue > 0 ? remainingDue : totalOrderAmount);
+    const totalPaidNow = previouslyPaid + paymentAmount;
+    const newRemaining = totalOrderAmount - totalPaidNow;
     
     const firstItem = cartItems[0];
     const productName = firstItem.type === 'product' 
@@ -335,7 +350,17 @@ export const RetailApp = () => {
 
     setTransactions(prev => [newTransaction, ...prev]);
     setShowPaymentProcessing(false);
-    setShowPaymentSuccess(true);
+    
+    // Check if there's remaining balance
+    if (newRemaining > 0.01) {
+      // Partial payment - go back to payment methods
+      setRemainingDue(newRemaining);
+      setShowPaymentMethods(true);
+    } else {
+      // Full payment complete - show success
+      setRemainingDue(0);
+      setShowPaymentSuccess(true);
+    }
   };
 
   const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -1049,9 +1074,10 @@ export const RetailApp = () => {
                 setShowSplitCheckSummary(true);
               }
             } else {
-              // Regular payment flow
+              // Regular payment flow - full payment complete
               setShowPaymentSuccess(false);
               setCartItems([]);
+              setRemainingDue(0);
               setActiveTab("order");
             }
           }}
@@ -1137,8 +1163,8 @@ export const RetailApp = () => {
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const tax = subtotal * TAX_RATE;
       const calculatedTotal = subtotal + tax;
-      // Use paymentAmount if set (for split checks), otherwise use calculated total
-      const totalDue = currentChargingCheckIndex !== null ? paymentAmount : calculatedTotal;
+      // Use remainingDue for partial payments, paymentAmount for split checks, otherwise calculated total
+      const totalDue = remainingDue > 0 ? remainingDue : (currentChargingCheckIndex !== null ? paymentAmount : calculatedTotal);
 
       return (
         <PaymentMethodsScreen
@@ -1172,8 +1198,8 @@ export const RetailApp = () => {
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
       const tax = subtotal * TAX_RATE;
       const calculatedTotal = subtotal + tax;
-      // Use paymentAmount if set (for split checks), otherwise use calculated total
-      const totalDue = currentChargingCheckIndex !== null ? paymentAmount : calculatedTotal;
+      // Use remainingDue for partial payments, paymentAmount for split checks, otherwise calculated total
+      const totalDue = remainingDue > 0 ? remainingDue : (currentChargingCheckIndex !== null ? paymentAmount : calculatedTotal);
 
       // Show CashPaymentScreen for Cash payment method
       if (selectedPaymentMethod === 'Cash') {

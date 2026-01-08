@@ -91,9 +91,20 @@ export const PaymentEntryScreen = ({
         </div>
 
         {/* Charge Button */}
-        <button onClick={() => onCharge(parseFloat(amount))} className="mt-2 w-full py-3 rounded-full text-white text-[12px] font-semibold transition-colors" style={{
-        backgroundColor: '#4A4A4A'
-      }}>
+        <button 
+          onClick={() => {
+            const chargeAmount = parseFloat(amount);
+            if (chargeAmount >= 0.01) {
+              onCharge(chargeAmount);
+            }
+          }} 
+          disabled={parseFloat(amount) < 0.01}
+          className="mt-2 w-full py-3 rounded-full text-white text-[12px] font-semibold transition-colors"
+          style={{
+            backgroundColor: parseFloat(amount) >= 0.01 ? '#4A4A4A' : '#ccc',
+            cursor: parseFloat(amount) >= 0.01 ? 'pointer' : 'not-allowed'
+          }}
+        >
           CHARGE $ {amount}
         </button>
       </div>

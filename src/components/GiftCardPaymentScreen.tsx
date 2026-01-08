@@ -216,9 +216,17 @@ export const GiftCardPaymentScreen = ({
           </button>
         ) : (
           <button
-            onClick={handleCharge}
+            onClick={() => {
+              if (parseFloat(amount) >= 0.01) {
+                handleCharge();
+              }
+            }}
+            disabled={parseFloat(amount) < 0.01}
             className="mt-2 w-full py-3 rounded-full text-white text-[12px] font-semibold transition-colors"
-            style={{ backgroundColor: '#4A4A4A' }}
+            style={{ 
+              backgroundColor: parseFloat(amount) >= 0.01 ? '#4A4A4A' : '#ccc',
+              cursor: parseFloat(amount) >= 0.01 ? 'pointer' : 'not-allowed'
+            }}
           >
             CHARGE $ {amount}
           </button>
