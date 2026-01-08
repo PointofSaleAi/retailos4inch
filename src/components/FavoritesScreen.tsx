@@ -4,6 +4,7 @@ import { ChevronLeft } from "lucide-react";
 import iconGrid from "@/assets/icon-grid.png";
 import { ProductCard } from "./ProductCard";
 import { ProductDetailSheet } from "./ProductDetailSheet";
+import { CartStrip } from "./CartStrip";
 
 interface Product {
   id: string;
@@ -18,9 +19,12 @@ interface FavoritesScreenProps {
   onBack: () => void;
   products: Product[];
   onAddToCart: (productId: string, quantity: number, size?: string, color?: string) => void;
+  cartItemCount: number;
+  cartTotal: number;
+  onCartClick?: () => void;
 }
 
-export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScreenProps) => {
+export const FavoritesScreen = ({ onBack, products, onAddToCart, cartItemCount, cartTotal, onCartClick }: FavoritesScreenProps) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const popupContainerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +75,15 @@ export const FavoritesScreen = ({ onBack, products, onAddToCart }: FavoritesScre
           ))}
         </div>
       </div>
+
+      {/* Cart Strip */}
+      {!isSheetOpen && (
+        <CartStrip
+          itemCount={cartItemCount}
+          totalAmount={cartTotal}
+          onClick={onCartClick}
+        />
+      )}
 
       {/* Product Detail Sheet */}
       <ProductDetailSheet

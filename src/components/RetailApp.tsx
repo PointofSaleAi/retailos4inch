@@ -1421,6 +1421,12 @@ export const RetailApp = () => {
           onBack={() => setShowFavoritesScreen(false)}
           products={products}
           onAddToCart={handleAddToCart}
+          cartItemCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+          cartTotal={cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)}
+          onCartClick={() => {
+            setShowFavoritesScreen(false);
+            setShowOrderSummary(true);
+          }}
         />
       );
     }
