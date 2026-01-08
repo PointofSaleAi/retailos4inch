@@ -1411,6 +1411,16 @@ export const RetailApp = () => {
           appliedTax={appliedTax}
           appliedDiscount={appliedDiscount}
           deliveryCharge={deliveryCharge}
+          onAddToCartWithEdit={(itemId, productId, quantity, size, color) => {
+            // Update the cart item with new quantity, size, and color
+            setCartItems(prevItems => 
+              prevItems.map(item => 
+                item.id === itemId 
+                  ? { ...item, quantity, size, color }
+                  : item
+              )
+            );
+          }}
         />
       );
     }

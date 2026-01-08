@@ -12,6 +12,13 @@ import iconRedeemLoyalty from '@/assets/icon-redeem-loyalty.png';
 import iconDeliveryCharge from '@/assets/icon-delivery-charge.png';
 import iconCashier from '@/assets/icon-cashier.png';
 import { formatPhoneNumber } from '@/hooks/usePhoneInput';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ProductDetailSheet } from "./ProductDetailSheet";
 interface Customer {
   id: string;
   name: string;
@@ -52,6 +59,14 @@ interface AppliedDiscount {
   displayAmount: string;
 }
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  stock: number;
+}
+
 interface OrderSummaryScreenProps {
   cartItems: CartItem[];
   selectedCustomer?: Customer | null;
@@ -70,6 +85,7 @@ interface OrderSummaryScreenProps {
   appliedTax?: AppliedTax | null;
   appliedDiscount?: AppliedDiscount | null;
   deliveryCharge?: number;
+  onAddToCartWithEdit?: (itemId: string, productId: string, quantity: number, size: string, color: string) => void;
 }
 export const OrderSummaryScreen = ({
   cartItems,
@@ -88,14 +104,21 @@ export const OrderSummaryScreen = ({
   onDeliveryCharge,
   appliedTax,
   appliedDiscount,
-  deliveryCharge = 0
+  deliveryCharge = 0,
+  onAddToCartWithEdit
 }: OrderSummaryScreenProps) => {
   const [customerName, setCustomerName] = useState(selectedCustomer?.name || 'Customer Name');
   const [customerPhone, setCustomerPhone] = useState(selectedCustomer?.phone || '(xxx) xxx xxxx');
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [pendingItem, setPendingItem] = useState<CartItem | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement | null>(null);
+  const popupContainerRef = useRef<HTMLDivElement | null>(null);
   
   // Update customer info when selectedCustomer changes
   useEffect(() => {
@@ -135,7 +158,51 @@ export const OrderSummaryScreen = ({
       onUpdateQuantity(id, newQuantity);
     }
   };
-  return <div className="w-[186px] h-full bg-white flex flex-col mx-auto" style={{
+
+  const handlePlusClick = (item: CartItem) => {
+    setPendingItem(item);
+    setConfirmDialogOpen(true);
+  };
+
+  const handleConfirmYes = () => {
+    if (pendingItem) {
+      onUpdateQuantity(pendingItem.id, pendingItem.quantity + 1);
+    }
+    setConfirmDialogOpen(false);
+    setPendingItem(null);
+  };
+
+  const handleConfirmEdit = () => {
+    if (pendingItem) {
+      // Create a product-like object from the cart item for the sheet
+      const productForEdit: Product = {
+        id: pendingItem.id,
+        name: pendingItem.name,
+        price: pendingItem.price,
+        image: pendingItem.image,
+        stock: 99 // Assume stock available for editing
+      };
+      setEditingProduct(productForEdit);
+      setEditingItemId(pendingItem.id);
+      setIsSheetOpen(true);
+    }
+    setConfirmDialogOpen(false);
+    setPendingItem(null);
+  };
+
+  const handleCloseSheet = () => {
+    setIsSheetOpen(false);
+    setEditingProduct(null);
+    setEditingItemId(null);
+  };
+
+  const handleEditAddToCart = (productId: string, quantity: number, size: string, color: string) => {
+    if (editingItemId && onAddToCartWithEdit) {
+      onAddToCartWithEdit(editingItemId, productId, quantity, size, color);
+    }
+    handleCloseSheet();
+  };
+  return <div ref={popupContainerRef} className="w-[186px] h-full bg-white flex flex-col mx-auto relative" style={{
     fontFamily: 'Montserrat, sans-serif'
   }}>
       {/* Header */}
@@ -289,7 +356,7 @@ export const OrderSummaryScreen = ({
                   <span className="text-[10px] font-medium text-gray-900 w-4 text-center">
                     {item.quantity}
                   </span>
-                  <button onClick={() => handleQuantityChange(item.id, 1)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
+                  <button onClick={() => handlePlusClick(item)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
                     <Plus size={8} className="text-gray-700" />
                   </button>
                 </div>
@@ -334,5 +401,43 @@ export const OrderSummaryScreen = ({
           CHARGE ${total.toFixed(2)}
         </button>
       </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+        <DialogContent 
+          className="w-[160px] p-3 rounded-xl"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+          hideClose
+        >
+          <DialogHeader className="pb-2">
+            <DialogTitle className="text-[10px] font-semibold text-center text-gray-900">
+              Same {pendingItem?.name} with same size?
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex gap-2">
+            <button
+              onClick={handleConfirmEdit}
+              className="flex-1 h-[26px] border border-gray-300 rounded-full text-[9px] font-semibold text-gray-900"
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleConfirmYes}
+              className="flex-1 h-[26px] bg-[#1A1A1A] text-white rounded-full text-[9px] font-semibold"
+            >
+              Yes
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Product Detail Sheet for Editing */}
+      <ProductDetailSheet
+        product={editingProduct}
+        isOpen={isSheetOpen}
+        onClose={handleCloseSheet}
+        onAddToCart={handleEditAddToCart}
+        portalContainer={popupContainerRef.current}
+      />
     </div>;
 };
