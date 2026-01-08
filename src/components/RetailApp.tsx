@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 import { RetailDevice } from "./RetailDevice";
 import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
@@ -1357,6 +1358,11 @@ export const RetailApp = () => {
             setAppliedDiscount(null);
             setAppliedTax(null);
             setDeliveryCharge(0);
+            toast({
+              title: "Cart Cleared",
+              description: "All items and discounts have been removed.",
+              duration: 2000,
+            });
           }}
           onAddCustomer={() => {
             setShowOrderSummary(false);
