@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { RetailDevice } from "./RetailDevice";
 import { LoginScreen } from "./LoginScreen";
@@ -152,10 +153,24 @@ export const RetailApp = () => {
   const [currentChargingCheckIndex, setCurrentChargingCheckIndex] = useState<number | null>(null);
   const [showAllChecksCompleteDialog, setShowAllChecksCompleteDialog] = useState(false);
 
+  // Check authentication state on mount and listen for changes
+  useEffect(() => {
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
-
   const handleSaveCustomer = (customerData: CustomerFormData) => {
     const newCustomer: Customer = {
       id: Date.now().toString(),

@@ -8,6 +8,8 @@ import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { BusinessVerticalScreen } from "./BusinessVerticalScreen";
 import { SubVerticalScreen } from "./SubVerticalScreen";
 import { countryOptions, formatPhoneNumber, validatePhoneNumber } from "@/hooks/usePhoneInput";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 interface RegistrationScreenProps {
   onBack: () => void;
@@ -39,6 +41,7 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -126,13 +129,45 @@ export const RegistrationScreen = ({ onBack, onSuccess }: RegistrationScreenProp
     validatePhone(formatted);
   };
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
     const isPhoneValid = validatePhone(mobileNumber);
     
     if (firstName && lastName && isEmailValid && isPhoneValid && isPasswordValid && country && companyName && businessVerticals.length > 0 && subVerticals.length > 0 && agreedToTerms) {
-      setStep(2);
+      setIsLoading(true);
+      
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+              phone: `${countryCode}${mobileNumber}`,
+              company_name: companyName,
+              country: country,
+              business_verticals: businessVerticals,
+              sub_verticals: subVerticals
+            }
+          }
+        });
+        
+        if (error) throw error;
+        
+        // Move to PIN setup step
+        setStep(2);
+      } catch (error: any) {
+        toast({
+          title: "Registration Failed",
+          description: error.message || "Could not create account",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
