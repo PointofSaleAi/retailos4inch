@@ -156,6 +156,16 @@ export const RetailApp = () => {
   const [currentChargingCheckIndex, setCurrentChargingCheckIndex] = useState<number | null>(null);
   const [showAllChecksCompleteDialog, setShowAllChecksCompleteDialog] = useState(false);
   const [barcodeScanIndex, setBarcodeScanIndex] = useState(0);
+  const [showSplitCheckWarning, setShowSplitCheckWarning] = useState(false);
+  const [pendingCartAction, setPendingCartAction] = useState<{
+    type: 'product' | 'custom';
+    productId?: string;
+    quantity?: number;
+    size?: string;
+    color?: string;
+    increment?: boolean;
+    customItem?: { name: string; price: number; quantity: number; note: string };
+  } | null>(null);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -176,7 +186,11 @@ export const RetailApp = () => {
     toggleFavorite(productId);
   };
 
-  const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false) => {
+  // Check if we have paid split checks that would require reset
+  const hasPaidSplitChecks = paidSplitChecks.size > 0;
+
+  // Actual add to cart logic (called after confirmation if needed)
+  const executeAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false) => {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
@@ -219,7 +233,21 @@ export const RetailApp = () => {
     });
   };
 
-  const handleAddCustomToCart = (customItem: { name: string; price: number; quantity: number; note: string }) => {
+  // Handle add to cart with split check warning
+  const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false) => {
+    // Check if there are paid split checks
+    if (hasPaidSplitChecks) {
+      // Store the pending action and show warning
+      setPendingCartAction({ type: 'product', productId, quantity, size, color, increment });
+      setShowSplitCheckWarning(true);
+      return;
+    }
+    // No paid split checks, proceed normally
+    executeAddToCart(productId, quantity, size, color, increment);
+  };
+
+  // Actual add custom to cart logic
+  const executeAddCustomToCart = (customItem: { name: string; price: number; quantity: number; note: string }) => {
     const newItem: CartItem = {
       id: `custom-${Date.now()}`,
       type: 'custom',
@@ -229,6 +257,48 @@ export const RetailApp = () => {
       note: customItem.note
     };
     setCartItems(prevItems => [newItem, ...prevItems]);
+  };
+
+  const handleAddCustomToCart = (customItem: { name: string; price: number; quantity: number; note: string }) => {
+    // Check if there are paid split checks
+    if (hasPaidSplitChecks) {
+      // Store the pending action and show warning
+      setPendingCartAction({ type: 'custom', customItem });
+      setShowSplitCheckWarning(true);
+      return;
+    }
+    // No paid split checks, proceed normally
+    executeAddCustomToCart(customItem);
+  };
+
+  // Handle confirmation to start new order
+  const handleConfirmNewOrderFromSplit = () => {
+    // Reset split payment state
+    setPaidSplitChecks(new Map());
+    setSplitCheckCount(1);
+    setCurrentChargingCheckIndex(null);
+    setCartItems([]);
+    setAppliedDiscount(null);
+    setAppliedTax(null);
+    setDeliveryCharge(0);
+    
+    // Execute the pending cart action
+    if (pendingCartAction) {
+      if (pendingCartAction.type === 'product' && pendingCartAction.productId) {
+        executeAddToCart(
+          pendingCartAction.productId,
+          pendingCartAction.quantity || 1,
+          pendingCartAction.size,
+          pendingCartAction.color,
+          pendingCartAction.increment
+        );
+      } else if (pendingCartAction.type === 'custom' && pendingCartAction.customItem) {
+        executeAddCustomToCart(pendingCartAction.customItem);
+      }
+    }
+    
+    setPendingCartAction(null);
+    setShowSplitCheckWarning(false);
   };
 
   const handleUpdateCartQuantity = (itemId: string, quantity: number) => {
@@ -1229,6 +1299,39 @@ export const RetailApp = () => {
             >
               COMPLETE ORDER
             </button>
+          </div>
+        </div>
+      );
+    }
+
+    if (showSplitCheckWarning) {
+      return (
+        <div 
+          className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden items-center justify-center px-4"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+        >
+          <div className="bg-white rounded-2xl p-4 w-full">
+            <h2 className="text-[12px] font-bold text-black text-center mb-3">Disclaimer</h2>
+            <p className="text-[9px] text-[#666] text-center mb-4 leading-relaxed">
+              This check has been split, please remerge in order to be able to add more products or start a new order
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={handleConfirmNewOrderFromSplit}
+                className="flex-1 h-[32px] border-2 border-[#0066FF] text-[#0066FF] rounded-lg font-semibold text-[10px]"
+              >
+                Merge
+              </button>
+              <button
+                onClick={() => {
+                  setPendingCartAction(null);
+                  setShowSplitCheckWarning(false);
+                }}
+                className="flex-1 h-[32px] border-2 border-[#CC0000] text-[#CC0000] rounded-lg font-semibold text-[10px]"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       );
