@@ -84,6 +84,7 @@ interface OrderSummaryScreenProps {
   onAddCustomer?: () => void;
   onRedeemLoyalty?: () => void;
   onDeliveryCharge?: () => void;
+  onClearDeliveryCharge?: () => void;
   appliedTax?: AppliedTax | null;
   appliedDiscount?: AppliedDiscount | null;
   deliveryCharge?: number;
@@ -105,6 +106,7 @@ export const OrderSummaryScreen = ({
   onAddCustomer,
   onRedeemLoyalty,
   onDeliveryCharge,
+  onClearDeliveryCharge,
   appliedTax,
   appliedDiscount,
   deliveryCharge = 0,
@@ -423,7 +425,17 @@ export const OrderSummaryScreen = ({
         {deliveryCharge > 0 && (
           <div className="flex justify-between items-center">
             <span className="text-[9px] font-medium text-[#212121]">Delivery</span>
-            <span className="text-[9px] font-medium text-[#212121]">${deliveryCharge.toFixed(2)}</span>
+            <div className="flex items-center gap-1">
+              <span className="text-[9px] font-medium text-[#212121]">${deliveryCharge.toFixed(2)}</span>
+              {onClearDeliveryCharge && (
+                <button
+                  onClick={onClearDeliveryCharge}
+                  className="text-[8px] font-medium text-[#CC0000]"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
