@@ -1565,6 +1565,7 @@ export const RetailApp = () => {
           appliedTax={appliedTax}
           appliedDiscount={appliedDiscount}
           deliveryCharge={deliveryCharge}
+          onClearDeliveryCharge={() => setDeliveryCharge(0)}
           onCustomerSelected={(customer) => {
             setSelectedCustomer(customer);
           }}
