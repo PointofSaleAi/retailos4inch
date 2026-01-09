@@ -4,10 +4,11 @@ import iconClose from '@/assets/icon-close.png';
 interface DeliveryChargeScreenProps {
   onClose: () => void;
   onApply: (amount: number) => void;
+  initialAmount?: number;
 }
 
-export const DeliveryChargeScreen = ({ onClose, onApply }: DeliveryChargeScreenProps) => {
-  const [amount, setAmount] = useState('0.00');
+export const DeliveryChargeScreen = ({ onClose, onApply, initialAmount = 0 }: DeliveryChargeScreenProps) => {
+  const [amount, setAmount] = useState(initialAmount > 0 ? initialAmount.toFixed(2) : '0.00');
 
   const handleKeyPress = (key: string) => {
     if (key === 'C') {
