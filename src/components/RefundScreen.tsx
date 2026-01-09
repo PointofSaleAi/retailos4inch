@@ -30,6 +30,9 @@ export const RefundScreen = ({
   const selectableProducts = products.filter(p => !p.isRefunded);
   const selectableIndices = products.map((p, i) => !p.isRefunded ? i : -1).filter(i => i >= 0);
 
+  // Calculate maximum refundable amount (sum of non-refunded products)
+  const maxRefundableAmount = selectableProducts.reduce((sum, product) => sum + product.price, 0);
+
   const handleSelectAll = () => {
     if (selectedProducts.size === selectableProducts.length) {
       setSelectedProducts(new Set());
@@ -56,20 +59,41 @@ export const RefundScreen = ({
       const selectedIndices = Array.from(selectedProducts);
       onNext(totalAmount, selectedIndices);
     } else {
-      onNext(parseFloat(refundAmount), []);
+      // Validate amount doesn't exceed max refundable
+      const amount = parseFloat(refundAmount);
+      if (amount > maxRefundableAmount) {
+        return; // Don't proceed if amount exceeds max
+      }
+      onNext(amount, []);
     }
   };
+
   const handleNumberClick = (num: string) => {
+    let newAmount: string;
     if (refundAmount === "0.00") {
-      setRefundAmount(num === "." ? "0." : num);
+      newAmount = num === "." ? "0." : num;
     } else {
-      setRefundAmount(refundAmount + num);
+      newAmount = refundAmount + num;
     }
+    
+    // Validate the new amount doesn't exceed max refundable
+    const parsedAmount = parseFloat(newAmount);
+    if (!isNaN(parsedAmount) && parsedAmount > maxRefundableAmount) {
+      return; // Don't allow input that exceeds max
+    }
+    
+    setRefundAmount(newAmount);
   };
+
   const handleClear = () => {
     setRefundAmount("0.00");
   };
-  const isNextActive = activeTab === "products" ? selectedProducts.size > 0 : parseFloat(refundAmount) > 0;
+
+  const currentAmount = parseFloat(refundAmount);
+  const isAmountExceedsMax = currentAmount > maxRefundableAmount;
+  const isNextActive = activeTab === "products" 
+    ? selectedProducts.size > 0 
+    : currentAmount > 0 && !isAmountExceedsMax;
   return <div className="h-full flex items-center justify-center bg-background p-[6px]">
       <div className="w-[186px] h-full flex flex-col">
         {/* Header */}
@@ -153,22 +177,36 @@ export const RefundScreen = ({
                 ))}
               </div>
             </div> : <div className="space-y-3 px-0">
+              {/* Max Amount Info */}
+              <div className="text-center">
+                <span className="text-[9px] text-muted-foreground">
+                  Max refundable: ${maxRefundableAmount.toFixed(2)}
+                </span>
+              </div>
+
               {/* Amount Display */}
               <div className="bg-background rounded-lg border border-border h-[36px] flex items-center justify-center">
                 <span className="text-[20px] font-bold" style={{
-              color: '#FF0000'
-            }}>
+                  color: '#FF0000'
+                }}>
                   ${refundAmount}
                 </span>
               </div>
 
               {/* Number Pad */}
               <div className="grid grid-cols-3 gap-[3px]">
-                {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(key => <button key={key} onClick={() => key === 'C' ? handleClear() : handleNumberClick(key)} className="h-[36px] rounded border border-border bg-background flex items-center justify-center text-[18px] font-semibold transition-colors hover:bg-muted" style={{
-              color: key === 'C' ? '#FF0000' : '#666666'
-            }}>
+                {['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'C'].map(key => (
+                  <button 
+                    key={key} 
+                    onClick={() => key === 'C' ? handleClear() : handleNumberClick(key)} 
+                    className="h-[36px] rounded border border-border bg-background flex items-center justify-center text-[18px] font-semibold transition-colors hover:bg-muted" 
+                    style={{
+                      color: key === 'C' ? '#FF0000' : '#666666'
+                    }}
+                  >
                     {key}
-                  </button>)}
+                  </button>
+                ))}
               </div>
             </div>}
         </div>
