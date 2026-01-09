@@ -48,6 +48,8 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
     }
   };
 
+  const isOutOfStock = product.stock <= 0;
+
   if (hideImage) {
     return (
       <div 
@@ -59,12 +61,19 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
         <button
           onClick={(e) => {
             e.stopPropagation();
-            handleQuantityChange(quantity + 1);
+            if (!isOutOfStock) {
+              handleQuantityChange(quantity + 1);
+            }
           }}
-          className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 mb-1"
+          disabled={isOutOfStock}
+          className={`flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center p-0 mb-1 ${
+            isOutOfStock 
+              ? 'bg-muted cursor-not-allowed opacity-50' 
+              : 'bg-foreground hover:bg-foreground/90'
+          }`}
           style={{ borderRadius: '4px' }}
         >
-          <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+          <img src={iconPlusNew} alt="Add" className={`w-[10px] h-[10px] ${isOutOfStock ? 'opacity-50' : ''}`} />
         </button>
         
         <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden mb-auto`} style={{ color: '#414141', height: '32px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
@@ -90,12 +99,19 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
       <button
         onClick={(e) => {
           e.stopPropagation();
-          handleQuantityChange(quantity + 1);
+          if (!isOutOfStock) {
+            handleQuantityChange(quantity + 1);
+          }
         }}
-        className="absolute top-1 left-1 z-10 flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
+        disabled={isOutOfStock}
+        className={`absolute top-1 left-1 z-10 flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center p-0 ${
+          isOutOfStock 
+            ? 'bg-muted cursor-not-allowed opacity-50' 
+            : 'bg-foreground hover:bg-foreground/90'
+        }`}
         style={{ borderRadius: '4px' }}
       >
-        <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+        <img src={iconPlusNew} alt="Add" className={`w-[10px] h-[10px] ${isOutOfStock ? 'opacity-50' : ''}`} />
       </button>
       
       <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
