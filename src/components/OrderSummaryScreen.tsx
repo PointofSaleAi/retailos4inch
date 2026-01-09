@@ -201,6 +201,11 @@ export const OrderSummaryScreen = ({
   };
 
   const handlePlusClick = (item: CartItem) => {
+    // For Gift Card items, increase quantity directly without confirmation dialog
+    if (item.name.toLowerCase().includes('gift card')) {
+      onUpdateQuantity(item.id, item.quantity + 1);
+      return;
+    }
     setPendingItem(item);
     setConfirmDialogOpen(true);
   };
