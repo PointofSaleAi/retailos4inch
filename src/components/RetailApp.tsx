@@ -155,6 +155,7 @@ export const RetailApp = () => {
   const [paidSplitChecks, setPaidSplitChecks] = useState<Map<number, string>>(new Map());
   const [currentChargingCheckIndex, setCurrentChargingCheckIndex] = useState<number | null>(null);
   const [showAllChecksCompleteDialog, setShowAllChecksCompleteDialog] = useState(false);
+  const [barcodeScanIndex, setBarcodeScanIndex] = useState(0);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -1020,12 +1021,14 @@ export const RetailApp = () => {
         <BarcodeScannerScreen 
           onClose={() => setShowBarcodeScanner(false)}
           onScanSuccess={(barcode) => {
-            // For demo: add the first product to cart when any barcode is scanned
+            // For demo: cycle through products when barcodes are scanned
             // In production, you'd match the barcode to a product
-            const product = products[0];
-            if (product) {
-              // Use increment mode to always add to cart, not replace quantity
-              handleAddToCart(product.id, 1, undefined, undefined, true);
+            if (products.length > 0) {
+              const product = products[barcodeScanIndex % products.length];
+              // Add as a new item each time (not incrementing same product)
+              handleAddToCart(product.id, 1, undefined, undefined, false);
+              // Move to next product for next scan
+              setBarcodeScanIndex(prev => prev + 1);
             }
           }}
           cartItemCount={cartItemCount}
