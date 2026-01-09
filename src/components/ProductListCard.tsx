@@ -53,33 +53,27 @@ export const ProductListCard = ({ product, onAddToCart, onCardClick }: ProductLi
         <h3 className={`${getNameStyles()} break-words leading-tight line-clamp-2`}>
           {product.name}
         </h3>
-        {isOutOfStock && (
-          <span className="text-[8px] font-semibold text-destructive" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-            Out of Stock
-          </span>
-        )}
       </div>
       
       <div className="flex items-center gap-2 flex-shrink-0">
         <span className="text-[13px] font-semibold text-foreground">
           ${product.price.toFixed(2)}
         </span>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (!isOutOfStock) {
+        {isOutOfStock ? (
+          <span className="bg-destructive text-destructive-foreground text-[7px] font-semibold px-1.5 py-0.5 rounded whitespace-nowrap" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+            Out of Stock
+          </span>
+        ) : (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
               handleQuantityChange(quantity + 1);
-            }
-          }}
-          disabled={isOutOfStock}
-          className={`w-[20px] h-[20px] flex items-center justify-center p-0 rounded ${
-            isOutOfStock 
-              ? 'bg-muted cursor-not-allowed opacity-50' 
-              : 'bg-foreground hover:bg-foreground/90'
-          }`}
-        >
-          <img src={iconPlusNew} alt="Add" className={`w-[10px] h-[10px] ${isOutOfStock ? 'opacity-50' : ''}`} />
-        </button>
+            }}
+            className="w-[20px] h-[20px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 rounded"
+          >
+            <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+          </button>
+        )}
       </div>
     </div>
   );
