@@ -17,9 +17,9 @@ export const LoyaltyPaymentScreen = ({
   onRedeem
 }: LoyaltyPaymentScreenProps) => {
   const [step, setStep] = useState<'amount' | 'otp'>('amount');
-  // Max redeemable is the lesser of available points or billing amount (rounded up)
-  const maxRedeemable = Math.min(guest.points || 0, Math.ceil(amount));
-  const [pointsInput, setPointsInput] = useState(maxRedeemable.toString());
+  // Max redeemable is the lesser of available points or exact billing amount (no rounding)
+  const maxRedeemable = Math.min(guest.points || 0, Math.floor(amount * 100) / 100);
+  const [pointsInput, setPointsInput] = useState(Math.floor(maxRedeemable).toString());
   const [otp, setOtp] = useState(['', '', '', '']);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -30,7 +30,8 @@ export const LoyaltyPaymentScreen = ({
   // Calculate equivalent value ($1 per point)
   const equivalentValue = guest.points || 0;
   const pointsToRedeem = parseInt(pointsInput) || 0;
-  const chargeAmount = Math.min(pointsToRedeem, maxRedeemable);
+  // Charge amount cannot exceed the actual billing amount
+  const chargeAmount = Math.min(pointsToRedeem, amount);
 
   const handleAmountKeypadPress = (key: string) => {
     if (key === 'C') {
