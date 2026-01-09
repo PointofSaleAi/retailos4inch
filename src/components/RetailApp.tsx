@@ -175,7 +175,7 @@ export const RetailApp = () => {
     toggleFavorite(productId);
   };
 
-  const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string) => {
+  const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false) => {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
@@ -188,13 +188,14 @@ export const RetailApp = () => {
       );
       
       if (existingItem) {
-        // Update existing item
+        // Update existing item - if increment mode, add to quantity; otherwise set the quantity
+        const newQuantity = increment ? existingItem.quantity + quantity : quantity;
         return prevItems.map(item =>
           item.type === 'product' && 
           item.productId === productId &&
           item.size === size &&
           item.color === color
-            ? { ...item, quantity }
+            ? { ...item, quantity: newQuantity }
             : item
         ).filter(item => item.quantity > 0);
       } else {
@@ -1023,7 +1024,8 @@ export const RetailApp = () => {
             // In production, you'd match the barcode to a product
             const product = products[0];
             if (product) {
-              handleAddToCart(product.id, 1);
+              // Use increment mode to always add to cart, not replace quantity
+              handleAddToCart(product.id, 1, undefined, undefined, true);
             }
           }}
           cartItemCount={cartItemCount}
