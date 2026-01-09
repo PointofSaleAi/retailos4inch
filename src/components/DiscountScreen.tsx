@@ -6,6 +6,8 @@ export interface Discount {
   name: string;
   amount: number;
   displayAmount: string;
+  type: 'fixed' | 'percentage';
+  rate?: number; // Percentage rate (0.15 for 15%, etc.)
 }
 
 interface DiscountScreenProps {
@@ -16,10 +18,10 @@ interface DiscountScreenProps {
 }
 
 const getAvailableDiscounts = (subtotal: number): Discount[] => [
-  { id: '1', name: '$10 Bonus card', amount: 10, displayAmount: '-$10.00' },
-  { id: '2', name: 'Buy 1 get 1 at 50% off.', amount: 12, displayAmount: '-$12.00' },
-  { id: '3', name: '15% Off for members only', amount: subtotal * 0.15, displayAmount: `-$${(subtotal * 0.15).toFixed(2)}` },
-  { id: '4', name: 'Flat 10% off your first purchase', amount: subtotal * 0.10, displayAmount: `-$${(subtotal * 0.10).toFixed(2)}` },
+  { id: '1', name: '$10 Bonus card', amount: 10, displayAmount: '-$10.00', type: 'fixed' },
+  { id: '2', name: 'Buy 1 get 1 at 50% off.', amount: 12, displayAmount: '-$12.00', type: 'fixed' },
+  { id: '3', name: '15% Off for members only', amount: subtotal * 0.15, displayAmount: `-$${(subtotal * 0.15).toFixed(2)}`, type: 'percentage', rate: 0.15 },
+  { id: '4', name: 'Flat 10% off your first purchase', amount: subtotal * 0.10, displayAmount: `-$${(subtotal * 0.10).toFixed(2)}`, type: 'percentage', rate: 0.10 },
 ];
 
 export const DiscountScreen = ({ onClose, onApply, subtotal, appliedDiscount }: DiscountScreenProps) => {

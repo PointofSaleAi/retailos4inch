@@ -59,6 +59,8 @@ interface AppliedDiscount {
   name: string;
   amount: number;
   displayAmount: string;
+  type: 'fixed' | 'percentage';
+  rate?: number;
 }
 
 interface Product {
@@ -179,7 +181,14 @@ export const OrderSummaryScreen = ({
   const customerPoints = selectedCustomer?.loyaltyPoints || 0;
   const pointsValue = customerPoints; // 1 point = $1.00
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const discountAmount = appliedDiscount?.amount || 0;
+  
+  // Calculate discount dynamically based on type
+  const discountAmount = appliedDiscount 
+    ? (appliedDiscount.type === 'percentage' && appliedDiscount.rate 
+        ? subtotal * appliedDiscount.rate 
+        : appliedDiscount.amount)
+    : 0;
+  
   const taxRate = appliedTax?.rate || 0;
   const taxAmount = subtotal * taxRate;
   const total = subtotal - discountAmount + taxAmount + deliveryCharge;
