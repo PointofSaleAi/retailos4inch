@@ -271,18 +271,14 @@ export const RetailApp = () => {
     executeAddCustomToCart(customItem);
   };
 
-  // Handle confirmation to start new order
-  const handleConfirmNewOrderFromSplit = () => {
-    // Reset split payment state
+  // Handle confirmation to merge new product with existing order
+  const handleMergeProductWithSplitOrder = () => {
+    // Reset split payment state but keep existing cart items
     setPaidSplitChecks(new Map());
     setSplitCheckCount(1);
     setCurrentChargingCheckIndex(null);
-    setCartItems([]);
-    setAppliedDiscount(null);
-    setAppliedTax(null);
-    setDeliveryCharge(0);
     
-    // Execute the pending cart action
+    // Execute the pending cart action (adds to existing cart)
     if (pendingCartAction) {
       if (pendingCartAction.type === 'product' && pendingCartAction.productId) {
         executeAddToCart(
@@ -1307,30 +1303,36 @@ export const RetailApp = () => {
     if (showSplitCheckWarning) {
       return (
         <div 
-          className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden items-center justify-center px-4"
+          className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden relative"
           style={{ fontFamily: 'Montserrat, sans-serif' }}
         >
-          <div className="bg-white rounded-2xl p-4 w-full">
-            <h2 className="text-[12px] font-bold text-black text-center mb-3">Disclaimer</h2>
-            <p className="text-[9px] text-[#666] text-center mb-4 leading-relaxed">
-              This check has been split, please remerge in order to be able to add more products or start a new order
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={handleConfirmNewOrderFromSplit}
-                className="flex-1 h-[32px] border-2 border-[#0066FF] text-[#0066FF] rounded-lg font-semibold text-[10px]"
-              >
-                Merge
-              </button>
-              <button
-                onClick={() => {
-                  setPendingCartAction(null);
-                  setShowSplitCheckWarning(false);
-                }}
-                className="flex-1 h-[32px] border-2 border-[#CC0000] text-[#CC0000] rounded-lg font-semibold text-[10px]"
-              >
-                Close
-              </button>
+          {/* Background overlay */}
+          <div className="absolute inset-0 bg-black/50 z-40" />
+          
+          {/* Dialog */}
+          <div className="absolute inset-0 flex items-center justify-center z-50 px-3">
+            <div className="bg-white rounded-2xl p-4 w-full shadow-lg">
+              <h2 className="text-[12px] font-bold text-black text-center mb-3">Disclaimer</h2>
+              <p className="text-[9px] text-[#666] text-center mb-4 leading-relaxed">
+                This check has been split, please remerge in order to be able to add more products or start a new order
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleMergeProductWithSplitOrder}
+                  className="flex-1 h-[32px] border-2 border-[#0066FF] text-[#0066FF] rounded-lg font-semibold text-[10px]"
+                >
+                  Merge
+                </button>
+                <button
+                  onClick={() => {
+                    setPendingCartAction(null);
+                    setShowSplitCheckWarning(false);
+                  }}
+                  className="flex-1 h-[32px] border-2 border-[#CC0000] text-[#CC0000] rounded-lg font-semibold text-[10px]"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
