@@ -3,6 +3,7 @@ import iconReceipt from "@/assets/icon-receipt-tx.png";
 import iconUser from "@/assets/icon-user-tx.png";
 import iconPayment from "@/assets/icon-payment-card.png";
 import iconSuccessRefund from "@/assets/icon-success-refund.png";
+import iconPrint from "@/assets/icon-print-tx.png";
 
 interface Product {
   name: string;
@@ -18,9 +19,13 @@ interface RefundDetailScreenProps {
   products: Product[];
   refundDate: string;
   refundTime: string;
+  paidDate: string;
+  paidTime: string;
   refundReason: string;
   paymentMethod: string;
+  remainingProducts?: Product[];
   onBack: () => void;
+  onRefundRemaining?: () => void;
 }
 
 export const RefundDetailScreen = ({
@@ -30,14 +35,20 @@ export const RefundDetailScreen = ({
   products,
   refundDate,
   refundTime,
+  paidDate,
+  paidTime,
   refundReason,
   paymentMethod,
-  onBack
+  remainingProducts = [],
+  onBack,
+  onRefundRemaining
 }: RefundDetailScreenProps) => {
   const subTotal = products.reduce((sum, product) => sum + product.price, 0);
   const taxRate = 0.08;
   const tax = subTotal * taxRate;
   const totalRefunded = subTotal + tax;
+
+  const hasRemainingProducts = remainingProducts.length > 0;
 
   return (
     <div className="h-full flex justify-center bg-background">
@@ -65,6 +76,26 @@ export const RefundDetailScreen = ({
               <div className="flex items-center gap-1.5">
                 <img src={iconUser} alt="" className="w-3 h-3" />
                 <span className="text-[12px] text-foreground">{customer}</span>
+              </div>
+            </div>
+
+            {/* Paid Status Card */}
+            <div 
+              style={{ backgroundColor: '#E8F5E9' }} 
+              className="rounded-lg p-2 flex flex-col gap-1 px-[6px] py-[8px]"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <img src={iconPayment} alt="" className="w-4 h-4" />
+                    <span className="text-[10px] font-medium text-foreground">Paid</span>
+                  </div>
+                  <span className="text-[8px] text-muted-foreground">{paidDate} | {paidTime}</span>
+                </div>
+                <div className="flex flex-col items-end gap-0.5">
+                  <span className="text-[12px] font-bold text-success">${(amount + totalRefunded).toFixed(2)}</span>
+                  <span className="text-[8px] font-semibold text-success">Paid</span>
+                </div>
               </div>
             </div>
 
@@ -142,6 +173,26 @@ export const RefundDetailScreen = ({
             </div>
           </div>
         </div>
+
+        {/* Refund Remaining Button - Only show if there are remaining products */}
+        {hasRemainingProducts && onRefundRemaining && (
+          <div className="flex-shrink-0 pt-2.5 border-t border-border">
+            <div className="flex items-center gap-2.5">
+              <button 
+                onClick={() => alert("Your receipt has been printed.")}
+                className="w-[22px] h-[22px] rounded-lg bg-muted flex items-center justify-center flex-shrink-0"
+              >
+                <img src={iconPrint} alt="Print" className="w-[22px] h-[22px]" />
+              </button>
+              <button 
+                onClick={onRefundRemaining} 
+                className="flex-1 h-[28px] bg-foreground text-background rounded-full text-[12px] font-semibold hover:bg-foreground/90 transition-colors"
+              >
+                REFUND REMAINING
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
