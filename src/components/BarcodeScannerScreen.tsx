@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CartStrip } from "./CartStrip";
-import { X, Flashlight, FlashlightOff } from "lucide-react";
+import { X, Flashlight, FlashlightOff, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
-import { useToast } from "@/hooks/use-toast";
 
 interface BarcodeScannerScreenProps {
   onClose: () => void;
@@ -14,6 +13,11 @@ interface BarcodeScannerScreenProps {
   onCartClick?: () => void;
 }
 
+interface InAppNotification {
+  id: number;
+  barcode: string;
+}
+
 export const BarcodeScannerScreen = ({ onClose, onScanSuccess, cartItemCount, cartTotal, onCartClick }: BarcodeScannerScreenProps) => {
   const [scanning, setScanning] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
@@ -21,10 +25,11 @@ export const BarcodeScannerScreen = ({ onClose, onScanSuccess, cartItemCount, ca
   const [torchSupported, setTorchSupported] = useState(false);
   const [scanSuccess, setScanSuccess] = useState(false);
   const [manualCode, setManualCode] = useState("");
+  const [notifications, setNotifications] = useState<InAppNotification[]>([]);
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const lastScanRef = useRef<string>("");
   const lastScanTimeRef = useRef<number>(0);
-  const { toast } = useToast();
+  const notificationIdRef = useRef<number>(0);
 
   useEffect(() => {
     startScanner();
@@ -116,11 +121,17 @@ export const BarcodeScannerScreen = ({ onClose, onScanSuccess, cartItemCount, ca
     oscillator.start();
     oscillator.stop(audioContext.currentTime + 0.1);
 
-    // Show toast
-    toast({
-      title: "Product Added",
-      description: `Barcode: ${decodedText}`,
-    });
+    // Show in-app notification
+    const newNotification: InAppNotification = {
+      id: ++notificationIdRef.current,
+      barcode: decodedText
+    };
+    setNotifications(prev => [...prev, newNotification]);
+    
+    // Auto-remove notification after 2 seconds
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== newNotification.id));
+    }, 2000);
 
     // Call success callback
     if (onScanSuccess) {
@@ -266,6 +277,25 @@ export const BarcodeScannerScreen = ({ onClose, onScanSuccess, cartItemCount, ca
             </div>
           </div>
         )}
+
+        {/* In-App Notifications */}
+        <div className="absolute top-10 left-2 right-2 flex flex-col gap-1 z-20">
+          {notifications.map((notification) => (
+            <div 
+              key={notification.id}
+              className="bg-white rounded-lg px-2 py-1.5 shadow-lg flex items-center gap-2 animate-fade-in"
+              style={{ fontFamily: 'Montserrat' }}
+            >
+              <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                <Check className="w-2.5 h-2.5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[9px] font-semibold text-gray-900">Product Added</p>
+                <p className="text-[7px] text-gray-500 truncate">Barcode: {notification.barcode}</p>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Cart Strip at Bottom */}
         <div className="absolute bottom-0 left-0 right-0">
