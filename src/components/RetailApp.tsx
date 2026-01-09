@@ -1300,44 +1300,40 @@ export const RetailApp = () => {
       );
     }
 
-    if (showSplitCheckWarning) {
-      return (
-        <div 
-          className="w-[189px] h-[330px] bg-white flex flex-col mx-auto overflow-hidden relative"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
-        >
-          {/* Background overlay */}
-          <div className="absolute inset-0 bg-black/50 z-40" />
-          
-          {/* Dialog */}
-          <div className="absolute inset-0 flex items-center justify-center z-50 px-3">
-            <div className="bg-white rounded-2xl p-4 w-full shadow-lg">
-              <h2 className="text-[12px] font-bold text-black text-center mb-3">Disclaimer</h2>
-              <p className="text-[9px] text-[#666] text-center mb-4 leading-relaxed">
-                This check has been split, please remerge in order to be able to add more products or start a new order
-              </p>
-              <div className="flex gap-2">
-                <button
-                  onClick={handleMergeProductWithSplitOrder}
-                  className="flex-1 h-[32px] border-2 border-[#0066FF] text-[#0066FF] rounded-lg font-semibold text-[10px]"
-                >
-                  Merge
-                </button>
-                <button
-                  onClick={() => {
-                    setPendingCartAction(null);
-                    setShowSplitCheckWarning(false);
-                  }}
-                  className="flex-1 h-[32px] border-2 border-[#CC0000] text-[#CC0000] rounded-lg font-semibold text-[10px]"
-                >
-                  Close
-                </button>
-              </div>
+    // Split check warning overlay - renders on top of current screen
+    const splitCheckWarningOverlay = showSplitCheckWarning ? (
+      <>
+        {/* Background overlay */}
+        <div className="absolute inset-0 bg-black/50 z-40" />
+        
+        {/* Dialog */}
+        <div className="absolute inset-0 flex items-center justify-center z-50 px-3">
+          <div className="bg-white rounded-2xl p-4 w-full shadow-lg">
+            <h2 className="text-[12px] font-bold text-black text-center mb-3">Disclaimer</h2>
+            <p className="text-[9px] text-[#666] text-center mb-4 leading-relaxed">
+              This check has been split, please remerge in order to be able to add more products or start a new order
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={handleMergeProductWithSplitOrder}
+                className="flex-1 h-[32px] border-2 border-[#0066FF] text-[#0066FF] rounded-lg font-semibold text-[10px]"
+              >
+                Merge
+              </button>
+              <button
+                onClick={() => {
+                  setPendingCartAction(null);
+                  setShowSplitCheckWarning(false);
+                }}
+                className="flex-1 h-[32px] border-2 border-[#CC0000] text-[#CC0000] rounded-lg font-semibold text-[10px]"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
-      );
-    }
+      </>
+    ) : null;
 
     if (showPaymentSuccess) {
       return (
@@ -1770,25 +1766,28 @@ export const RetailApp = () => {
     switch (activeTab) {
       case "order":
         return (
-          <NewOrderScreen
-            onCustomClick={() => setShowCustomScreen(true)}
-            onFavoritesClick={() => setShowFavoritesScreen(true)}
-            onScanClick={() => setShowBarcodeScanner(true)}
-            products={products}
-            onToggleFavorite={handleToggleFavorite}
-            onAddToCart={handleAddToCart}
-            cartItemCount={cartItemCount}
-            cartTotal={cartTotal}
-            onCartClick={() => setShowOrderSummary(true)}
-            onProductDetailOpen={setIsProductDetailOpen}
-            onAddTax={() => setShowAddTaxScreen(true)}
-            onDiscount={() => setShowDiscountScreen(true)}
-            onGiftCard={() => setShowGiftCardMenu(true)}
-            onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
-            onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
-            splitPaymentInfo={splitPaymentInfo}
-            onSplitCartClick={() => setShowSplitCheckSummary(true)}
-          />
+          <>
+            <NewOrderScreen
+              onCustomClick={() => setShowCustomScreen(true)}
+              onFavoritesClick={() => setShowFavoritesScreen(true)}
+              onScanClick={() => setShowBarcodeScanner(true)}
+              products={products}
+              onToggleFavorite={handleToggleFavorite}
+              onAddToCart={handleAddToCart}
+              cartItemCount={cartItemCount}
+              cartTotal={cartTotal}
+              onCartClick={() => setShowOrderSummary(true)}
+              onProductDetailOpen={setIsProductDetailOpen}
+              onAddTax={() => setShowAddTaxScreen(true)}
+              onDiscount={() => setShowDiscountScreen(true)}
+              onGiftCard={() => setShowGiftCardMenu(true)}
+              onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
+              onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
+              splitPaymentInfo={splitPaymentInfo}
+              onSplitCartClick={() => setShowSplitCheckSummary(true)}
+            />
+            {splitCheckWarningOverlay}
+          </>
         );
       case "transactions":
         return <TransactionsScreen transactions={transactions} onTransactionClick={handleOpenPendingTransaction} />;
@@ -1805,32 +1804,35 @@ export const RetailApp = () => {
         return <SettingsScreen />;
       default:
         return (
-          <NewOrderScreen
-            onCustomClick={() => setShowCustomScreen(true)}
-            onFavoritesClick={() => setShowFavoritesScreen(true)}
-            onScanClick={() => setShowBarcodeScanner(true)}
-            products={products}
-            onToggleFavorite={handleToggleFavorite}
-            onAddToCart={handleAddToCart}
-            cartItemCount={cartItemCount}
-            cartTotal={cartTotal}
-            onCartClick={() => setShowOrderSummary(true)}
-            onProductDetailOpen={setIsProductDetailOpen}
-            onAddTax={() => setShowAddTaxScreen(true)}
-            onDiscount={() => setShowDiscountScreen(true)}
-            onGiftCard={() => setShowGiftCardMenu(true)}
-            onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
-            onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
-            splitPaymentInfo={splitPaymentInfo}
-            onSplitCartClick={() => setShowSplitCheckSummary(true)}
-          />
+          <>
+            <NewOrderScreen
+              onCustomClick={() => setShowCustomScreen(true)}
+              onFavoritesClick={() => setShowFavoritesScreen(true)}
+              onScanClick={() => setShowBarcodeScanner(true)}
+              products={products}
+              onToggleFavorite={handleToggleFavorite}
+              onAddToCart={handleAddToCart}
+              cartItemCount={cartItemCount}
+              cartTotal={cartTotal}
+              onCartClick={() => setShowOrderSummary(true)}
+              onProductDetailOpen={setIsProductDetailOpen}
+              onAddTax={() => setShowAddTaxScreen(true)}
+              onDiscount={() => setShowDiscountScreen(true)}
+              onGiftCard={() => setShowGiftCardMenu(true)}
+              onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
+              onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
+              splitPaymentInfo={splitPaymentInfo}
+              onSplitCartClick={() => setShowSplitCheckSummary(true)}
+            />
+            {splitCheckWarningOverlay}
+          </>
         );
     }
   };
 
   return (
     <RetailDevice>
-      <div className="h-full flex flex-col overflow-hidden">
+      <div className="h-full flex flex-col overflow-hidden relative">
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
