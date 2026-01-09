@@ -31,9 +31,25 @@ export const LoyaltyPaymentScreen = ({
     if (key === 'C') {
       setPointsInput('');
     } else if (key === '00') {
-      setPointsInput(prev => prev + '00');
+      const newValue = pointsInput + '00';
+      const parsedValue = parseInt(newValue) || 0;
+      // Cap at minimum of available points and amount due (prevent overpayment)
+      const maxAllowed = Math.min(guest.points || 0, Math.ceil(amount));
+      if (parsedValue <= maxAllowed) {
+        setPointsInput(newValue);
+      } else {
+        setPointsInput(maxAllowed.toString());
+      }
     } else {
-      setPointsInput(prev => prev + key);
+      const newValue = pointsInput + key;
+      const parsedValue = parseInt(newValue) || 0;
+      // Cap at minimum of available points and amount due (prevent overpayment)
+      const maxAllowed = Math.min(guest.points || 0, Math.ceil(amount));
+      if (parsedValue <= maxAllowed) {
+        setPointsInput(newValue);
+      } else {
+        setPointsInput(maxAllowed.toString());
+      }
     }
   };
   const handleOtpChange = (index: number, value: string) => {

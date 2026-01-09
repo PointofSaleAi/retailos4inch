@@ -81,12 +81,13 @@ export const GiftCardPaymentScreen = ({
       const cents = cleanAmount.slice(-2);
       const newAmount = parseFloat(`${dollars || '0'}.${cents}`);
       
-      // Limit amount to gift card balance
-      if (newAmount <= giftCardBalance) {
+      // Limit amount to minimum of gift card balance and totalDue (prevent overpayment)
+      const maxAllowed = Math.min(giftCardBalance, totalDue);
+      if (newAmount <= maxAllowed) {
         setAmount(`${dollars || '0'}.${cents}`);
         setShowBalanceError(false);
       } else {
-        // Show error when trying to exceed balance
+        // Show error when trying to exceed balance or total due
         setShowBalanceError(true);
       }
     }

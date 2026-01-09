@@ -42,9 +42,21 @@ export const CashPaymentScreen = ({
     0
   );
 
-  const handlePresetClick = (amount: number) => {
+  const handlePresetClick = (presetAmount: number) => {
+    // Calculate what the new tendered amount would be
+    const currentTotal = selectedAmounts.reduce(
+      (sum, item) => sum + item.amount * item.quantity,
+      0
+    );
+    const newTotal = currentTotal + presetAmount;
+    
+    // Prevent overpayment - don't allow adding if it exceeds totalDue
+    if (newTotal > totalDue) {
+      return;
+    }
+    
     const existingIndex = selectedAmounts.findIndex(
-      (item) => item.amount === amount
+      (item) => item.amount === presetAmount
     );
     if (existingIndex >= 0) {
       // Increase quantity if already selected
@@ -53,7 +65,7 @@ export const CashPaymentScreen = ({
       setSelectedAmounts(updated);
     } else {
       // Add new selection
-      setSelectedAmounts([...selectedAmounts, { amount, quantity: 1 }]);
+      setSelectedAmounts([...selectedAmounts, { amount: presetAmount, quantity: 1 }]);
     }
   };
 
@@ -101,8 +113,14 @@ export const CashPaymentScreen = ({
 
     const dollars = cleanAmount.slice(0, -2);
     const cents = cleanAmount.slice(-2);
-    const newAmount = `${dollars || '0'}.${cents}`;
-    setCustomAmount(newAmount);
+    const parsedAmount = parseFloat(`${dollars || '0'}.${cents}`);
+    
+    // Cap at totalDue - prevent overpayment
+    if (parsedAmount <= totalDue) {
+      setCustomAmount(`${dollars || '0'}.${cents}`);
+    } else {
+      setCustomAmount(totalDue.toFixed(2));
+    }
   };
 
   const toggleView = () => {

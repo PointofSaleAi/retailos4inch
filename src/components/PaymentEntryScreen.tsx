@@ -37,7 +37,14 @@ export const PaymentEntryScreen = ({
     // Insert decimal point
     const dollars = cleanAmount.slice(0, -2);
     const cents = cleanAmount.slice(-2);
-    setAmount(`${dollars || '0'}.${cents}`);
+    const newAmount = parseFloat(`${dollars || '0'}.${cents}`);
+    
+    // Cap at totalDue - prevent overpayment
+    if (newAmount <= totalDue) {
+      setAmount(`${dollars || '0'}.${cents}`);
+    } else {
+      setAmount(totalDue.toFixed(2));
+    }
   };
   const getMethodTitle = (method: string) => {
     const titles: {
