@@ -197,6 +197,32 @@ export const useCustomerSearch = () => {
     }
   }, []);
 
+  // Search customer by exact phone number (for auto-fetch)
+  const searchByPhone = useCallback(async (phone: string): Promise<Customer | null> => {
+    if (!phone.trim()) return null;
+    
+    // Remove all non-digit characters for comparison
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (phoneDigits.length !== 10) return null;
+    
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .ilike('phone', `%${phoneDigits.slice(-10)}%`)
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) return null;
+      
+      return mapDbCustomer(data);
+    } catch (err) {
+      console.error('Phone search failed:', err);
+      return null;
+    }
+  }, []);
+
   return {
     customers,
     searchResults,
@@ -205,5 +231,6 @@ export const useCustomerSearch = () => {
     searchCustomers,
     addCustomer,
     updateCustomer,
+    searchByPhone,
   };
 };

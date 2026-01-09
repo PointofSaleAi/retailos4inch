@@ -11,7 +11,9 @@ import iconAddCustomer from '@/assets/icon-add-customer.png';
 import iconRedeemLoyalty from '@/assets/icon-redeem-loyalty.png';
 import iconDeliveryCharge from '@/assets/icon-delivery-charge.png';
 import iconCashier from '@/assets/icon-cashier.png';
-import { formatPhoneNumber } from '@/hooks/usePhoneInput';
+import iconCart from '@/assets/icon-cart.png';
+import { formatPhoneNumber, getDigitsFromPhone } from '@/hooks/usePhoneInput';
+import { useCustomerSearch } from '@/hooks/useCustomerSearch';
 import {
   Dialog,
   DialogContent,
@@ -86,6 +88,7 @@ interface OrderSummaryScreenProps {
   appliedDiscount?: AppliedDiscount | null;
   deliveryCharge?: number;
   onAddToCartWithEdit?: (itemId: string, productId: string, quantity: number, size: string, color: string) => void;
+  onCustomerSelected?: (customer: Customer) => void;
 }
 export const OrderSummaryScreen = ({
   cartItems,
@@ -105,7 +108,8 @@ export const OrderSummaryScreen = ({
   appliedTax,
   appliedDiscount,
   deliveryCharge = 0,
-  onAddToCartWithEdit
+  onAddToCartWithEdit,
+  onCustomerSelected
 }: OrderSummaryScreenProps) => {
   const [customerName, setCustomerName] = useState(selectedCustomer?.name || 'Customer Name');
   const [customerPhone, setCustomerPhone] = useState(selectedCustomer?.phone || '(xxx) xxx xxxx');
@@ -119,8 +123,11 @@ export const OrderSummaryScreen = ({
   const [editingInitialSize, setEditingInitialSize] = useState<string>("");
   const [editingInitialColor, setEditingInitialColor] = useState<string>("");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isSearchingCustomer, setIsSearchingCustomer] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement | null>(null);
   const popupContainerRef = useRef<HTMLDivElement | null>(null);
+  
+  const { searchByPhone } = useCustomerSearch();
   
   // Update customer info when selectedCustomer changes
   useEffect(() => {
@@ -129,6 +136,27 @@ export const OrderSummaryScreen = ({
       setCustomerPhone(selectedCustomer.phone);
     }
   }, [selectedCustomer]);
+
+  // Auto-fetch customer when phone number is complete (10 digits)
+  const handlePhoneChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setCustomerPhone(formatted);
+    
+    // Check if we have a complete 10-digit phone number
+    const digits = getDigitsFromPhone(formatted);
+    if (digits.length === 10 && !selectedCustomer) {
+      setIsSearchingCustomer(true);
+      const foundCustomer = await searchByPhone(formatted);
+      setIsSearchingCustomer(false);
+      
+      if (foundCustomer && onCustomerSelected) {
+        onCustomerSelected(foundCustomer);
+        setCustomerName(foundCustomer.name);
+        setCustomerPhone(foundCustomer.phone);
+        setIsEditingPhone(false);
+      }
+    }
+  };
 
   // Close the More menu when tapping outside
   useEffect(() => {
@@ -299,19 +327,24 @@ export const OrderSummaryScreen = ({
                 {customerName}
               </div>}
             {isEditingPhone ? (
-              <input
-                type="tel"
-                value={customerPhone === '(xxx) xxx xxxx' ? '' : customerPhone}
-                onChange={(e) => setCustomerPhone(formatPhoneNumber(e.target.value))}
-                onBlur={() => {
-                  setIsEditingPhone(false);
-                  if (!customerPhone.trim()) setCustomerPhone('(xxx) xxx xxxx');
-                }}
-                maxLength={14}
-                placeholder="(xxx) xxx xxxx"
-                className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full"
-                autoFocus
-              />
+              <div className="flex items-center gap-1">
+                <input
+                  type="tel"
+                  value={customerPhone === '(xxx) xxx xxxx' ? '' : customerPhone}
+                  onChange={handlePhoneChange}
+                  onBlur={() => {
+                    setIsEditingPhone(false);
+                    if (!customerPhone.trim()) setCustomerPhone('(xxx) xxx xxxx');
+                  }}
+                  maxLength={14}
+                  placeholder="(xxx) xxx xxxx"
+                  className="text-[10px] text-gray-600 bg-transparent border-none outline-none w-full"
+                  autoFocus
+                />
+                {isSearchingCustomer && (
+                  <span className="text-[8px] text-gray-400">...</span>
+                )}
+              </div>
             ) : (
               <div
                 onClick={() => {
@@ -336,8 +369,8 @@ export const OrderSummaryScreen = ({
               {item.image ? (
                 <img src={item.image} alt={item.name} className="w-[35px] h-[35px] object-cover rounded-md flex-shrink-0" />
               ) : (
-                <div className="w-[35px] h-[35px] rounded-md flex-shrink-0 bg-gradient-to-br from-yellow-200 to-pink-200 flex items-center justify-center">
-                  <span className="text-[16px]">🎁</span>
+                <div className="w-[35px] h-[35px] rounded-md flex-shrink-0 bg-[#F1F2F5] flex items-center justify-center">
+                  <img src={iconCart} alt="Product" className="w-[18px] h-[18px]" />
                 </div>
               )}
               <div className="flex-1 min-w-0">

@@ -1564,6 +1564,9 @@ export const RetailApp = () => {
           appliedTax={appliedTax}
           appliedDiscount={appliedDiscount}
           deliveryCharge={deliveryCharge}
+          onCustomerSelected={(customer) => {
+            setSelectedCustomer(customer);
+          }}
           onAddToCartWithEdit={(itemId, productId, quantity, size, color) => {
             // Find the original item
             const originalItem = cartItems.find(item => item.id === itemId);
