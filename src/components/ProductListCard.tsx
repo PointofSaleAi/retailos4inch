@@ -40,6 +40,8 @@ export const ProductListCard = ({ product, onAddToCart, onCardClick }: ProductLi
     }
   };
 
+  const isOutOfStock = product.stock <= 0;
+
   return (
     <div 
       className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-3 py-2 cursor-pointer ${
@@ -60,11 +62,18 @@ export const ProductListCard = ({ product, onAddToCart, onCardClick }: ProductLi
         <button
           onClick={(e) => {
             e.stopPropagation();
-            handleQuantityChange(quantity + 1);
+            if (!isOutOfStock) {
+              handleQuantityChange(quantity + 1);
+            }
           }}
-          className="w-[20px] h-[20px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 rounded"
+          disabled={isOutOfStock}
+          className={`w-[20px] h-[20px] flex items-center justify-center p-0 rounded ${
+            isOutOfStock 
+              ? 'bg-muted cursor-not-allowed opacity-50' 
+              : 'bg-foreground hover:bg-foreground/90'
+          }`}
         >
-          <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+          <img src={iconPlusNew} alt="Add" className={`w-[10px] h-[10px] ${isOutOfStock ? 'opacity-50' : ''}`} />
         </button>
       </div>
     </div>
