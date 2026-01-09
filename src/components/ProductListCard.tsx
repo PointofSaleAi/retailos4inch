@@ -46,13 +46,18 @@ export const ProductListCard = ({ product, onAddToCart, onCardClick }: ProductLi
     <div 
       className={`bg-surface rounded-lg overflow-hidden w-full min-h-[42px] flex items-center px-3 gap-3 py-2 cursor-pointer ${
         quantity > 0 ? 'border border-[#000]' : 'border border-border'
-      }`}
+      } ${isOutOfStock ? 'opacity-75' : ''}`}
       onClick={() => onCardClick?.(product)}
     >
       <div className="flex-1 flex flex-col gap-0.5 min-w-0">
         <h3 className={`${getNameStyles()} break-words leading-tight line-clamp-2`}>
           {product.name}
         </h3>
+        {isOutOfStock && (
+          <span className="text-[8px] font-semibold text-destructive" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+            Out of Stock
+          </span>
+        )}
       </div>
       
       <div className="flex items-center gap-2 flex-shrink-0">
