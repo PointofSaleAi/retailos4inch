@@ -2,6 +2,14 @@ import { useState } from "react";
 import iconBackArrow from "@/assets/icon-back-arrow-new.png";
 import qrCodePayment from "@/assets/qr-code-payment.png";
 import { Input } from "./ui/input";
+import { formatPhoneNumber, getDigitsFromPhone, validatePhoneNumber } from "@/hooks/usePhoneInput";
+
+// Email validation regex
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email.trim());
+};
+
 interface PayByQRCodeScreenProps {
   amount: number;
   onBack: () => void;
@@ -15,21 +23,47 @@ export const PayByQRCodeScreen = ({
   const [activeTab, setActiveTab] = useState<'whatsapp' | 'text' | 'email' | null>(null);
   const [showQuickSend, setShowQuickSend] = useState(false);
   const [quickSendInput, setQuickSendInput] = useState('');
+
   const handleTabClick = (tab: 'whatsapp' | 'text' | 'email') => {
     setActiveTab(tab);
     setShowQuickSend(true);
     setQuickSendInput('');
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    if (activeTab === 'email') {
+      setQuickSendInput(value);
+    } else {
+      // For WhatsApp/Text: format as phone number (only digits, max 10)
+      const formatted = formatPhoneNumber(value);
+      setQuickSendInput(formatted);
+    }
+  };
+
+  const isInputValid = (): boolean => {
+    if (!quickSendInput.trim()) return false;
+    
+    if (activeTab === 'email') {
+      return isValidEmail(quickSendInput);
+    } else {
+      // WhatsApp/Text: must be exactly 10 digits
+      return validatePhoneNumber(quickSendInput);
+    }
+  };
+
   const handleQuickSend = () => {
-    if (!quickSendInput.trim() || !activeTab) return;
+    if (!isInputValid() || !activeTab) return;
     onShare(activeTab);
     setShowQuickSend(false);
     setQuickSendInput('');
   };
+
   const getQuickSendPlaceholder = () => {
     switch (activeTab) {
       case 'whatsapp':
-        return 'Enter WhatsApp number...';
+        return 'Enter phone number...';
       case 'text':
         return 'Enter phone number...';
       case 'email':
@@ -101,12 +135,19 @@ export const PayByQRCodeScreen = ({
 
         {/* Quick Send Input - Shows when tab is clicked */}
         {showQuickSend && <div className="bg-white rounded-lg px-2 py-2 border border-gray-200">
-            <Input type={activeTab === 'email' ? 'email' : 'tel'} placeholder={getQuickSendPlaceholder()} value={quickSendInput} onChange={e => setQuickSendInput(e.target.value)} className="border border-gray-200 bg-white mb-2" style={{
-          height: '26px',
-          fontSize: '9px',
-          borderRadius: '6px'
-        }} />
-            <button onClick={handleQuickSend} disabled={!quickSendInput.trim()} className="w-full py-1.5 bg-[#4A4A4A] text-white rounded-lg text-[9px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
+            <Input 
+              type={activeTab === 'email' ? 'email' : 'tel'} 
+              placeholder={getQuickSendPlaceholder()} 
+              value={quickSendInput} 
+              onChange={handleInputChange} 
+              className="border border-gray-200 bg-white mb-2" 
+              style={{
+                height: '26px',
+                fontSize: '9px',
+                borderRadius: '6px'
+              }} 
+            />
+            <button onClick={handleQuickSend} disabled={!isInputValid()} className="w-full py-1.5 bg-[#4A4A4A] text-white rounded-lg text-[9px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
               Send
             </button>
           </div>}
