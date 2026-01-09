@@ -375,9 +375,15 @@ export const RetailApp = () => {
     const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
     
     const firstItem = cartItems[0];
-    const productName = firstItem.type === 'product' 
+    let productName = firstItem.type === 'product' 
       ? (products.find(p => p.id === firstItem.productId)?.name.substring(0, 15) || 'Order')
       : (firstItem.name?.substring(0, 15) || 'Custom Order');
+    
+    // For split check payments, include the check number in the product name
+    if (currentChargingCheckIndex !== null) {
+      const checkLabel = `Check #${currentChargingCheckIndex + 1}`;
+      productName = `${checkLabel} - ${productName}`;
+    }
     
     const newTransaction: Transaction = {
       id: Date.now().toString(),
