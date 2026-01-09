@@ -58,28 +58,22 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
         } ${isOutOfStock ? 'opacity-75' : ''}`}
         onClick={() => onCardClick?.(product)}
       >
-        {isOutOfStock && (
-          <span className="absolute top-1 right-1 bg-destructive text-destructive-foreground text-[6px] font-semibold px-1 py-0.5 rounded" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+        {isOutOfStock ? (
+          <span className="flex-shrink-0 bg-destructive text-destructive-foreground text-[6px] font-semibold px-1 py-0.5 rounded mb-1 w-fit" style={{ fontFamily: 'Montserrat, sans-serif' }}>
             Out of Stock
           </span>
-        )}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (!isOutOfStock) {
+        ) : (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
               handleQuantityChange(quantity + 1);
-            }
-          }}
-          disabled={isOutOfStock}
-          className={`flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center p-0 mb-1 ${
-            isOutOfStock 
-              ? 'bg-muted cursor-not-allowed opacity-50' 
-              : 'bg-foreground hover:bg-foreground/90'
-          }`}
-          style={{ borderRadius: '4px' }}
-        >
-          <img src={iconPlusNew} alt="Add" className={`w-[10px] h-[10px] ${isOutOfStock ? 'opacity-50' : ''}`} />
-        </button>
+            }}
+            className="flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0 mb-1"
+            style={{ borderRadius: '4px' }}
+          >
+            <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+          </button>
+        )}
         
         <h3 className={`${getNameFontSize(true)} ${getNameStyles()} leading-[1.15] break-words overflow-hidden mb-auto`} style={{ color: '#414141', height: '32px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
           {product.name}
@@ -101,23 +95,22 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
       } ${isOutOfStock ? 'opacity-75' : ''}`}
       onClick={() => onCardClick?.(product)}
     >
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          if (!isOutOfStock) {
+      {isOutOfStock ? (
+        <span className="absolute top-1 left-1 z-10 bg-destructive text-destructive-foreground text-[6px] font-semibold px-1 py-0.5 rounded" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+          Out of Stock
+        </span>
+      ) : (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
             handleQuantityChange(quantity + 1);
-          }
-        }}
-        disabled={isOutOfStock}
-        className={`absolute top-1 left-1 z-10 flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center p-0 ${
-          isOutOfStock 
-            ? 'bg-muted cursor-not-allowed opacity-50' 
-            : 'bg-foreground hover:bg-foreground/90'
-        }`}
-        style={{ borderRadius: '4px' }}
-      >
-        <img src={iconPlusNew} alt="Add" className={`w-[10px] h-[10px] ${isOutOfStock ? 'opacity-50' : ''}`} />
-      </button>
+          }}
+          className="absolute top-1 left-1 z-10 flex-shrink-0 w-[18px] h-[18px] bg-foreground hover:bg-foreground/90 flex items-center justify-center p-0"
+          style={{ borderRadius: '4px' }}
+        >
+          <img src={iconPlusNew} alt="Add" className="w-[10px] h-[10px]" />
+        </button>
+      )}
       
       <div className="relative w-full h-[52px] bg-muted flex-shrink-0">
         <img
@@ -125,13 +118,6 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
           alt={product.name}
           className="w-full h-full object-cover"
         />
-        {isOutOfStock && (
-          <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
-            <span className="bg-destructive text-destructive-foreground text-[7px] font-semibold px-1.5 py-0.5 rounded" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-              Out of Stock
-            </span>
-          </div>
-        )}
       </div>
       
       <div className="p-1 flex flex-col flex-1 justify-between">
