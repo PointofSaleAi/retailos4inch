@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Input } from './ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
@@ -9,6 +9,14 @@ import customer1 from '@/assets/customer-1.png';
 import customer2 from '@/assets/customer-2.png';
 import customer3 from '@/assets/customer-3.png';
 import customer4 from '@/assets/customer-4.png';
+import { formatPhoneNumber, validatePhoneNumber, countryOptions } from '@/hooks/usePhoneInput';
+
+// Email validation regex
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email.trim());
+};
+
 export interface Guest {
   id: string;
   name: string;
@@ -75,6 +83,20 @@ export const PayByLinkGuestListScreen = ({
   const [activeTab, setActiveTab] = useState<'whatsapp' | 'text' | 'email'>('whatsapp');
   const [quickSendInput, setQuickSendInput] = useState('');
   const [showQuickSend, setShowQuickSend] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(countryOptions[0]);
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowCountryDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   
   // Combine added guests with mock guests
   const allGuests = [...addedGuests, ...mockGuests];
@@ -98,13 +120,44 @@ export const PayByLinkGuestListScreen = ({
     setActiveTab(tab);
     setShowQuickSend(true);
     setQuickSendInput('');
+    setShowCountryDropdown(false);
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    if (activeTab === 'email') {
+      setQuickSendInput(value);
+    } else {
+      // For WhatsApp/Text: format as phone number (only digits, max 10)
+      const formatted = formatPhoneNumber(value);
+      setQuickSendInput(formatted);
+    }
+  };
+
+  const isInputValid = (): boolean => {
+    if (!quickSendInput.trim()) return false;
+    
+    if (activeTab === 'email') {
+      return isValidEmail(quickSendInput);
+    } else {
+      // WhatsApp/Text: must be exactly 10 digits
+      return validatePhoneNumber(quickSendInput);
+    }
+  };
+
   const handleQuickSend = () => {
-    if (!quickSendInput.trim()) return;
+    if (!isInputValid()) return;
+    
+    // Format contact info for display
+    const contactInfo = activeTab === 'email' 
+      ? quickSendInput.trim()
+      : `${selectedCountry.code} ${quickSendInput}`;
+    
     const tempGuest: Guest = {
       id: 'quick-' + Date.now(),
       name: 'Quick Send',
-      phone: activeTab === 'email' ? '' : quickSendInput,
+      phone: activeTab === 'email' ? '' : contactInfo,
       email: activeTab === 'email' ? quickSendInput : ''
     };
     onSendLink(tempGuest, activeTab);
@@ -112,7 +165,7 @@ export const PayByLinkGuestListScreen = ({
   const getQuickSendPlaceholder = () => {
     switch (activeTab) {
       case 'whatsapp':
-        return 'Enter WhatsApp number...';
+        return 'Enter phone number...';
       case 'text':
         return 'Enter phone number...';
       case 'email':
@@ -159,21 +212,76 @@ export const PayByLinkGuestListScreen = ({
       {showQuickSend && (
         <div className="mb-2 px-0">
           <div className="bg-white rounded-lg p-2 border border-gray-200">
-            <Input
-              type={activeTab === 'email' ? 'email' : 'tel'}
-              placeholder={getQuickSendPlaceholder()}
-              value={quickSendInput}
-              onChange={e => setQuickSendInput(e.target.value)}
-              className="border border-gray-200 bg-white mb-2"
-              style={{
-                height: '28px',
-                fontSize: '9px',
-                borderRadius: '6px'
-              }}
-            />
+            {activeTab !== 'email' ? (
+              <div className="flex gap-1 mb-2">
+                {/* Country Code Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                    className="flex items-center justify-center gap-0.5 border border-gray-200 bg-white rounded-md px-1"
+                    style={{ height: '28px', fontSize: '9px', minWidth: '48px' }}
+                  >
+                    <span>{selectedCountry.flag}</span>
+                    <span className="text-[8px]">{selectedCountry.code}</span>
+                    <svg width="8" height="8" viewBox="0 0 10 6" fill="none" className="ml-0.5">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m1 1 4 4 4-4"/>
+                    </svg>
+                  </button>
+                  
+                  {showCountryDropdown && (
+                    <div className="absolute left-0 top-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 w-[120px] max-h-[100px] overflow-y-auto">
+                      {countryOptions.map((country, index) => (
+                        <button
+                          key={`${country.code}-${index}`}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCountry(country);
+                            setShowCountryDropdown(false);
+                          }}
+                          className="w-full flex items-center gap-1 px-2 py-1 hover:bg-gray-100 text-left"
+                          style={{ fontSize: '8px' }}
+                        >
+                          <span>{country.flag}</span>
+                          <span className="truncate">{country.name}</span>
+                          <span className="text-gray-500 ml-auto">{country.code}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
+                {/* Phone Input */}
+                <Input 
+                  type="tel" 
+                  placeholder={getQuickSendPlaceholder()} 
+                  value={quickSendInput} 
+                  onChange={handleInputChange} 
+                  className="flex-1 border border-gray-200 bg-white" 
+                  style={{
+                    height: '28px',
+                    fontSize: '9px',
+                    borderRadius: '6px'
+                  }} 
+                />
+              </div>
+            ) : (
+              <Input 
+                type="email" 
+                placeholder={getQuickSendPlaceholder()} 
+                value={quickSendInput} 
+                onChange={handleInputChange} 
+                className="border border-gray-200 bg-white mb-2" 
+                style={{
+                  height: '28px',
+                  fontSize: '9px',
+                  borderRadius: '6px'
+                }} 
+              />
+            )}
             <button
               onClick={handleQuickSend}
-              disabled={!quickSendInput.trim()}
+              disabled={!isInputValid()}
               className="w-full py-1.5 bg-[#4A4A4A] text-white rounded-lg text-[9px] font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Send Link
