@@ -53,11 +53,16 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
   if (hideImage) {
     return (
       <div 
-        className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[78px] flex flex-col p-1.5 cursor-pointer ${
+        className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[78px] flex flex-col p-1.5 cursor-pointer relative ${
           quantity > 0 ? 'border border-[#000]' : 'border border-border'
-        }`}
+        } ${isOutOfStock ? 'opacity-75' : ''}`}
         onClick={() => onCardClick?.(product)}
       >
+        {isOutOfStock && (
+          <span className="absolute top-1 right-1 bg-destructive text-destructive-foreground text-[6px] font-semibold px-1 py-0.5 rounded" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+            Out of Stock
+          </span>
+        )}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -93,7 +98,7 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
     <div 
       className={`bg-surface rounded-lg overflow-hidden w-[90px] h-[102px] flex flex-col relative cursor-pointer ${
         quantity > 0 ? 'border border-[#000]' : 'border border-border'
-      }`}
+      } ${isOutOfStock ? 'opacity-75' : ''}`}
       onClick={() => onCardClick?.(product)}
     >
       <button
@@ -120,6 +125,13 @@ export const ProductCard = ({ product, onAddToCart, hideImage = false, onCardCli
           alt={product.name}
           className="w-full h-full object-cover"
         />
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
+            <span className="bg-destructive text-destructive-foreground text-[7px] font-semibold px-1.5 py-0.5 rounded" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              Out of Stock
+            </span>
+          </div>
+        )}
       </div>
       
       <div className="p-1 flex flex-col flex-1 justify-between">
