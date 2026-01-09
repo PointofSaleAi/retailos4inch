@@ -860,6 +860,36 @@ export const RetailApp = () => {
         price: item.price * item.quantity
       })) || [];
 
+      // Calculate remaining products that haven't been refunded yet
+      const refundedItemIds = new Set(
+        transaction.refundedItems?.map(item => `${item.productId || item.name}-${item.size}-${item.color}`) || []
+      );
+      
+      const remainingProducts = transaction.cartItems?.filter(item => {
+        const itemKey = `${item.productId || item.name}-${item.size}-${item.color}`;
+        const refundedItem = transaction.refundedItems?.find(ri => 
+          (ri.productId || ri.name) === (item.productId || item.name) && 
+          ri.size === item.size && 
+          ri.color === item.color
+        );
+        // If not refunded at all, or refunded quantity is less than original quantity
+        if (!refundedItem) return true;
+        return item.quantity > refundedItem.quantity;
+      }).map(item => {
+        const refundedItem = transaction.refundedItems?.find(ri => 
+          (ri.productId || ri.name) === (item.productId || item.name) && 
+          ri.size === item.size && 
+          ri.color === item.color
+        );
+        const remainingQty = refundedItem ? item.quantity - refundedItem.quantity : item.quantity;
+        return {
+          name: item.name || (item.productId ? (products.find(p => p.id === item.productId)?.name || 'Product') : 'Item'),
+          size: item.size || "XS",
+          color: item.color || "Olive Green",
+          price: item.price * remainingQty
+        };
+      }).filter(p => p.price > 0) || [];
+
       return (
         <RefundDetailScreen
           transactionId="256"
@@ -868,12 +898,19 @@ export const RetailApp = () => {
           products={refundProducts}
           refundDate={transaction.refundDate || transaction.date}
           refundTime={transaction.refundTime || transaction.time}
+          paidDate={transaction.date}
+          paidTime={transaction.time}
           refundReason={transaction.refundReason || "Customer changed mind"}
           paymentMethod="Card | 0486"
+          remainingProducts={remainingProducts}
           onBack={() => {
             setShowRefundDetailScreen(false);
             setActiveTab("transactions");
           }}
+          onRefundRemaining={remainingProducts.length > 0 ? () => {
+            setShowRefundDetailScreen(false);
+            setShowRefundScreen(true);
+          } : undefined}
         />
       );
     }
