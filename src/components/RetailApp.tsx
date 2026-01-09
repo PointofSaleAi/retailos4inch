@@ -33,6 +33,7 @@ import { PayByLinkGuestListScreen, Guest } from "./PayByLinkGuestListScreen";
 import { PayByLinkAddGuestScreen } from "./PayByLinkAddGuestScreen";
 import { PayByLinkWaitingScreen } from "./PayByLinkWaitingScreen";
 import { PayByQRCodeScreen } from "./PayByQRCodeScreen";
+import { PayByQRCodeWaitingScreen } from "./PayByQRCodeWaitingScreen";
 import { LoyaltyGuestListScreen, LoyaltyGuest } from "./LoyaltyGuestListScreen";
 import { LoyaltyAddGuestScreen } from "./LoyaltyAddGuestScreen";
 import { LoyaltyPaymentScreen } from "./LoyaltyPaymentScreen";
@@ -119,6 +120,9 @@ export const RetailApp = () => {
   const [payByLinkSentTo, setPayByLinkSentTo] = useState("");
   const [payByLinkGuests, setPayByLinkGuests] = useState<Guest[]>([]);
   const [showPayByQRCode, setShowPayByQRCode] = useState(false);
+  const [showPayByQRCodeWaiting, setShowPayByQRCodeWaiting] = useState(false);
+  const [payByQRSentTo, setPayByQRSentTo] = useState("");
+  const [payByQRSentVia, setPayByQRSentVia] = useState<'whatsapp' | 'text' | 'email'>('whatsapp');
   const [showLoyaltyGuestList, setShowLoyaltyGuestList] = useState(false);
   const [showLoyaltyAddGuest, setShowLoyaltyAddGuest] = useState(false);
   const [showLoyaltyPayment, setShowLoyaltyPayment] = useState(false);
@@ -396,6 +400,34 @@ export const RetailApp = () => {
       return <LoginScreen onLogin={handleLogin} />;
     }
 
+    if (showPayByQRCodeWaiting) {
+      const TAX_RATE = 0.08;
+      const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const tax = subtotal * TAX_RATE;
+      const totalDue = subtotal + tax;
+
+      return (
+        <PayByQRCodeWaitingScreen
+          amount={totalDue}
+          sentTo={payByQRSentTo}
+          sentVia={payByQRSentVia}
+          onClose={() => {
+            setShowPayByQRCodeWaiting(false);
+            setShowPaymentMethods(true);
+          }}
+          onCheckStatus={() => {
+            // Simulate payment complete
+            handlePaymentComplete();
+            setShowPayByQRCodeWaiting(false);
+          }}
+          onSendNewQR={() => {
+            setShowPayByQRCodeWaiting(false);
+            setShowPayByQRCode(true);
+          }}
+        />
+      );
+    }
+
     if (showPayByQRCode) {
       const TAX_RATE = 0.08;
       const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -409,8 +441,11 @@ export const RetailApp = () => {
             setShowPayByQRCode(false);
             setShowPaymentMethods(true);
           }}
-          onShare={(method) => {
-            console.log('Sharing QR code via:', method);
+          onShare={(method, contactInfo) => {
+            setPayByQRSentVia(method);
+            setPayByQRSentTo(contactInfo);
+            setShowPayByQRCode(false);
+            setShowPayByQRCodeWaiting(true);
           }}
         />
       );

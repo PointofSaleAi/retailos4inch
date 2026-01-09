@@ -13,7 +13,7 @@ const isValidEmail = (email: string): boolean => {
 interface PayByQRCodeScreenProps {
   amount: number;
   onBack: () => void;
-  onShare: (method: 'whatsapp' | 'text' | 'email') => void;
+  onShare: (method: 'whatsapp' | 'text' | 'email', contactInfo: string) => void;
 }
 export const PayByQRCodeScreen = ({
   amount,
@@ -70,7 +70,13 @@ export const PayByQRCodeScreen = ({
 
   const handleQuickSend = () => {
     if (!isInputValid() || !activeTab) return;
-    onShare(activeTab);
+    
+    // Format contact info for display
+    const contactInfo = activeTab === 'email' 
+      ? quickSendInput.trim()
+      : `${selectedCountry.code} ${quickSendInput}`;
+    
+    onShare(activeTab, contactInfo);
     setShowQuickSend(false);
     setQuickSendInput('');
   };
