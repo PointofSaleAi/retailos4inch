@@ -83,8 +83,14 @@ export const PaymentOptionsScreen = ({
     // Remove leading zeros and format
     const currentAmount = amount.replace('.', '');
     const newAmount = currentAmount + num;
-    const formattedAmount = (parseInt(newAmount) / 100).toFixed(2);
-    setAmount(formattedAmount);
+    const parsedAmount = parseInt(newAmount) / 100;
+    
+    // Cap at totalDue - prevent overpayment
+    if (parsedAmount <= totalDue) {
+      setAmount(parsedAmount.toFixed(2));
+    } else {
+      setAmount(totalDue.toFixed(2));
+    }
   };
   const handleCharge = () => {
     onConfirmPayment(selectedMethod, parseFloat(amount));
