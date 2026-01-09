@@ -567,6 +567,7 @@ export const RetailApp = () => {
             setShowDeliveryChargeScreen(false);
             setShowOrderSummary(true);
           }}
+          initialAmount={deliveryCharge}
         />
       );
     }
