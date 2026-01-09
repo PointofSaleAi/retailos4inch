@@ -7,6 +7,7 @@ interface Product {
   color: string;
   price: number;
   originalIndex?: number;
+  unitIndex?: number;
 }
 
 interface RefundScreenProps {
