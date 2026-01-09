@@ -925,21 +925,51 @@ export const RetailApp = () => {
             const refundDate = now.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
             const refundTime = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
             
-            // Update transaction with refund details and refunded items
+            // Update transaction with refund details - MERGE with existing refunded items
             setTransactions(prev =>
-              prev.map(t =>
-                t.id === selectedTransactionId
-                  ? { 
-                      ...t, 
-                      status: "Refunded" as const,
-                      refundDate,
-                      refundTime,
-                      refundReason: currentRefundReason || "Customer changed mind",
-                      refundedItems: selectedRefundItems,
-                      refundedAmount: refundAmount
-                    }
-                  : t
-              )
+              prev.map(t => {
+                if (t.id !== selectedTransactionId) return t;
+                
+                // Merge existing refunded items with new ones
+                const existingRefundedItems = t.refundedItems || [];
+                const mergedRefundedItems: CartItem[] = [...existingRefundedItems];
+                
+                selectedRefundItems.forEach(newItem => {
+                  const existingIndex = mergedRefundedItems.findIndex(ri => 
+                    (ri.productId === newItem.productId || ri.name === newItem.name) &&
+                    ri.size === newItem.size &&
+                    ri.color === newItem.color
+                  );
+                  
+                  if (existingIndex >= 0) {
+                    // Add to existing refunded quantity
+                    mergedRefundedItems[existingIndex] = {
+                      ...mergedRefundedItems[existingIndex],
+                      quantity: mergedRefundedItems[existingIndex].quantity + newItem.quantity
+                    };
+                  } else {
+                    // Add as new refunded item
+                    mergedRefundedItems.push(newItem);
+                  }
+                });
+                
+                // Calculate total refunded amount
+                const totalRefundedAmount = (t.refundedAmount || 0) + refundAmount;
+                
+                // Check if all items are now refunded
+                const totalCartValue = t.cartItems?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
+                const isFullyRefunded = totalRefundedAmount >= totalCartValue;
+                
+                return { 
+                  ...t, 
+                  status: "Refunded" as const,
+                  refundDate,
+                  refundTime,
+                  refundReason: currentRefundReason || "Customer changed mind",
+                  refundedItems: mergedRefundedItems,
+                  refundedAmount: totalRefundedAmount
+                };
+              })
             );
             
             setShowRefundedScreen(false);
@@ -947,6 +977,7 @@ export const RetailApp = () => {
             setShowRefundReasonScreen(false);
             setShowCustomRefundReasonScreen(false);
             setShowTransactionDetail(false);
+            setShowRefundDetailScreen(false);
             setCurrentRefundReason("");
             setSelectedRefundItems([]);
             setActiveTab("transactions");
