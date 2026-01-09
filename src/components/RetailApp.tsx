@@ -958,13 +958,32 @@ export const RetailApp = () => {
 
     if (showRefundScreen) {
       const transaction = transactions.find(t => t.id === selectedTransactionId);
-      const refundProducts = transaction?.cartItems?.map((item, index) => ({
-        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
-        size: item.size || "XS",
-        color: item.color || "Olive Green",
-        price: item.price * item.quantity,
-        originalIndex: index
-      })) || [];
+      // Expand cart items with quantity > 1 into individual items for partial refund
+      const refundProducts: Array<{
+        name: string;
+        size: string;
+        color: string;
+        price: number;
+        originalIndex: number;
+        unitIndex: number;
+      }> = [];
+      
+      transaction?.cartItems?.forEach((item, index) => {
+        const itemName = item.type === 'product' 
+          ? (products.find(p => p.id === item.productId)?.name || '') 
+          : (item.name || '');
+        // Create individual entries for each unit in quantity
+        for (let i = 0; i < item.quantity; i++) {
+          refundProducts.push({
+            name: itemName,
+            size: item.size || "XS",
+            color: item.color || "Olive Green",
+            price: item.price, // Price per unit, not total
+            originalIndex: index,
+            unitIndex: i
+          });
+        }
+      });
 
       return (
         <RefundScreen
@@ -975,10 +994,22 @@ export const RetailApp = () => {
           }}
           onNext={(amount, selectedIndices) => {
             setRefundAmount(amount);
-            // Store the selected items for refund
-            const selectedItems = transaction?.cartItems?.filter((_, index) => 
-              selectedIndices.includes(index)
-            ) || [];
+            // Get selected refund products (individual units)
+            const selectedRefundProducts = selectedIndices.map(i => refundProducts[i]);
+            // Group by originalIndex and count how many units of each cart item are being refunded
+            const refundCountByOriginalIndex = new Map<number, number>();
+            selectedRefundProducts.forEach(item => {
+              const count = refundCountByOriginalIndex.get(item.originalIndex) || 0;
+              refundCountByOriginalIndex.set(item.originalIndex, count + 1);
+            });
+            // Create refund items with the selected quantities
+            const selectedItems = transaction?.cartItems
+              ?.filter((_, index) => refundCountByOriginalIndex.has(index))
+              .map((item, _, arr) => {
+                const originalIndex = transaction?.cartItems?.indexOf(item) ?? 0;
+                const refundQty = refundCountByOriginalIndex.get(originalIndex) || 0;
+                return { ...item, quantity: refundQty };
+              }) || [];
             setSelectedRefundItems(selectedItems);
             setShowRefundScreen(false);
             setShowRefundReasonScreen(true);
