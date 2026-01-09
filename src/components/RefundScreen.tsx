@@ -8,6 +8,7 @@ interface Product {
   price: number;
   originalIndex?: number;
   unitIndex?: number;
+  isRefunded?: boolean;
 }
 
 interface RefundScreenProps {
@@ -25,15 +26,20 @@ export const RefundScreen = ({
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set());
   const [refundAmount, setRefundAmount] = useState<string>("0.00");
 
+  // Filter out refunded products for selection logic
+  const selectableProducts = products.filter(p => !p.isRefunded);
+  const selectableIndices = products.map((p, i) => !p.isRefunded ? i : -1).filter(i => i >= 0);
+
   const handleSelectAll = () => {
-    if (selectedProducts.size === products.length) {
+    if (selectedProducts.size === selectableProducts.length) {
       setSelectedProducts(new Set());
     } else {
-      setSelectedProducts(new Set(products.map((_, index) => index)));
+      setSelectedProducts(new Set(selectableIndices));
     }
   };
 
   const handleToggleProduct = (index: number) => {
+    if (products[index].isRefunded) return; // Don't allow selecting refunded products
     const newSelected = new Set(selectedProducts);
     if (newSelected.has(index)) {
       newSelected.delete(index);
@@ -91,8 +97,8 @@ export const RefundScreen = ({
           {activeTab === "products" ? <div className="space-y-2 px-0">
               {/* Select All */}
               <button onClick={handleSelectAll} className="flex items-center gap-2 w-full py-0">
-                <div className={`w-3 h-3 rounded border flex items-center justify-center transition-colors ${selectedProducts.size === products.length ? "border-foreground bg-foreground" : "border-border"}`}>
-                  {selectedProducts.size === products.length && <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                <div className={`w-3 h-3 rounded border flex items-center justify-center transition-colors ${selectedProducts.size === selectableProducts.length && selectableProducts.length > 0 ? "border-foreground bg-foreground" : "border-border"}`}>
+                  {selectedProducts.size === selectableProducts.length && selectableProducts.length > 0 && <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
                       <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>}
                 </div>
@@ -101,24 +107,50 @@ export const RefundScreen = ({
 
               {/* Products List */}
               <div className="space-y-2">
-                {products.map((product, index) => <button key={index} onClick={() => handleToggleProduct(index)} className={`w-full bg-background rounded-lg p-2.5 border flex items-center gap-2 transition-colors ${selectedProducts.has(index) ? "border-[#212121]" : "border-border"}`}>
-                    <div className={`w-3 h-3 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${selectedProducts.has(index) ? "border-foreground bg-foreground" : "border-border"}`}>
-                      {selectedProducts.has(index) && <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                {products.map((product, index) => (
+                  <button 
+                    key={index} 
+                    onClick={() => handleToggleProduct(index)} 
+                    disabled={product.isRefunded}
+                    className={`w-full bg-background rounded-lg p-2.5 border flex items-center gap-2 transition-all relative ${
+                      product.isRefunded 
+                        ? "border-border opacity-50 cursor-not-allowed" 
+                        : selectedProducts.has(index) 
+                          ? "border-[#212121]" 
+                          : "border-border"
+                    }`}
+                  >
+                    <div className={`w-3 h-3 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${
+                      product.isRefunded 
+                        ? "border-border bg-muted" 
+                        : selectedProducts.has(index) 
+                          ? "border-foreground bg-foreground" 
+                          : "border-border"
+                    }`}>
+                      {selectedProducts.has(index) && !product.isRefunded && (
+                        <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
                           <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>}
+                        </svg>
+                      )}
                     </div>
                     <div className="flex-1 text-left">
-                      <p className="text-[10px] font-medium text-foreground mb-0.5">
+                      <p className={`text-[10px] font-medium mb-0.5 ${product.isRefunded ? "text-muted-foreground line-through" : "text-foreground"}`}>
                         {product.name}
                       </p>
                       <p className="text-[9px] text-muted-foreground">
                         {product.size} | {product.color}
                       </p>
                     </div>
-                    <span className="text-[13px] font-bold text-foreground flex-shrink-0">
-                      ${product.price.toFixed(2)}
-                    </span>
-                  </button>)}
+                    <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                      <span className={`text-[13px] font-bold ${product.isRefunded ? "text-muted-foreground line-through" : "text-foreground"}`}>
+                        ${product.price.toFixed(2)}
+                      </span>
+                      {product.isRefunded && (
+                        <span className="text-[8px] font-semibold text-destructive">Refunded</span>
+                      )}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div> : <div className="space-y-3 px-0">
               {/* Amount Display */}

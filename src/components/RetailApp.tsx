@@ -995,6 +995,9 @@ export const RetailApp = () => {
 
     if (showRefundScreen) {
       const transaction = transactions.find(t => t.id === selectedTransactionId);
+      // Get already refunded items for this transaction
+      const refundedItems = transaction?.refundedItems || [];
+      
       // Expand cart items with quantity > 1 into individual items for partial refund
       const refundProducts: Array<{
         name: string;
@@ -1003,12 +1006,22 @@ export const RetailApp = () => {
         price: number;
         originalIndex: number;
         unitIndex: number;
+        isRefunded: boolean;
       }> = [];
       
       transaction?.cartItems?.forEach((item, index) => {
         const itemName = item.type === 'product' 
           ? (products.find(p => p.id === item.productId)?.name || '') 
           : (item.name || '');
+        
+        // Find matching refunded item
+        const matchingRefundedItem = refundedItems.find(ri => 
+          (ri.productId === item.productId || ri.name === item.name) &&
+          ri.size === item.size &&
+          ri.color === item.color
+        );
+        const refundedQty = matchingRefundedItem?.quantity || 0;
+        
         // Create individual entries for each unit in quantity
         for (let i = 0; i < item.quantity; i++) {
           refundProducts.push({
@@ -1017,7 +1030,8 @@ export const RetailApp = () => {
             color: item.color || "Olive Green",
             price: item.price, // Price per unit, not total
             originalIndex: index,
-            unitIndex: i
+            unitIndex: i,
+            isRefunded: i < refundedQty // Mark units that are already refunded
           });
         }
       });
@@ -1679,7 +1693,7 @@ export const RetailApp = () => {
         <div className="flex-1 overflow-hidden">
           {renderScreen()}
         </div>
-        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showPayByQRCodeWaiting && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && !showAddTaxScreen && !showDiscountScreen && !showDeliveryChargeScreen && !showGiftCardMenu && !showSellPlasticGiftCard && !showSelectAmount && !showCustomAmount && !showRecipientEmail && !showCheckBalance && !showGiftCardBalance && !showEGiftCardDesign && !showSplitCheck && !showSplitCheckSummary && (
+        {isLoggedIn && !showCustomScreen && !showFavoritesScreen && !showBarcodeScanner && !showOrderSummary && !showPaymentMethods && !showPaymentEntry && !showPaymentProcessing && !showPaymentSuccess && !showTransactionDetail && !showRefundScreen && !showRefundReasonScreen && !showCustomRefundReasonScreen && !showRefundedScreen && !showRefundDetailScreen && !showNewCustomer && !selectedCustomer && !isProductDetailOpen && !showPayByLinkGuestList && !showPayByLinkAddGuest && !showPayByLinkWaiting && !showPayByQRCode && !showPayByQRCodeWaiting && !showLoyaltyGuestList && !showLoyaltyAddGuest && !showLoyaltyPayment && !showAddTaxScreen && !showDiscountScreen && !showDeliveryChargeScreen && !showGiftCardMenu && !showSellPlasticGiftCard && !showSelectAmount && !showCustomAmount && !showRecipientEmail && !showCheckBalance && !showGiftCardBalance && !showEGiftCardDesign && !showSplitCheck && !showSplitCheckSummary && (
           <BottomNavigation
             activeTab={activeTab}
             onTabChange={setActiveTab}
