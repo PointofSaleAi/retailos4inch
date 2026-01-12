@@ -105,6 +105,7 @@ interface NewOrderScreenProps {
     remainingAmount: number;
   } | null;
   onSplitCartClick?: () => void;
+  onServicesClick?: () => void;
 }
 
 export const NewOrderScreen = ({ 
@@ -124,7 +125,8 @@ export const NewOrderScreen = ({
   onRedeemLoyalty,
   onDeliveryCharge,
   splitPaymentInfo,
-  onSplitCartClick
+  onSplitCartClick,
+  onServicesClick
 }: NewOrderScreenProps) => {
   const [viewMode, setViewMode] = useState<"image" | "grid" | "list">("image");
   const [selectedProductType, setSelectedProductType] = useState("Products");
@@ -224,7 +226,12 @@ export const NewOrderScreen = ({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="bg-surface">
-                    {productTypes.map(type => <DropdownMenuItem key={type} onClick={() => setSelectedProductType(type)} className="text-[10px]">
+                    {productTypes.map(type => <DropdownMenuItem key={type} onClick={() => {
+                        setSelectedProductType(type);
+                        if (type === "Services" && onServicesClick) {
+                          onServicesClick();
+                        }
+                      }} className="text-[10px]">
                         {type}
                       </DropdownMenuItem>)}
                   </DropdownMenuContent>
