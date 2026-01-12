@@ -471,10 +471,10 @@ export const TransactionsScreen = ({
           // Split payment transaction rendering
           if (isSplitPayment) {
             return (
-              <div key={transaction.id} className="bg-surface rounded-lg border border-border" style={{ width: '186px' }}>
+              <div key={transaction.id} className="flex flex-col" style={{ width: '186px' }}>
                 {/* Main transaction row */}
                 <div 
-                  className={`flex items-center gap-2 p-2 ${isClickable ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`}
+                  className={`flex items-center gap-2 p-2 bg-surface rounded-t-lg border border-border border-b-0 ${isClickable ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`}
                   onClick={() => isClickable && onTransactionClick?.(transaction.id)}
                 >
                   <div className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#F1F2F5' }}>
@@ -500,15 +500,15 @@ export const TransactionsScreen = ({
                   </div>
                 </div>
 
-                {/* Split checks badges row */}
-                <div className="flex items-center justify-between px-2 pb-2">
-                  <div className="flex items-center gap-1">
-                    <img src={iconSplit} alt="Split" className="w-3 h-3" />
+                {/* Split checks badges row - separate card */}
+                <div className={`flex items-center justify-between px-2 py-2 bg-surface border border-border ${isExpanded ? 'border-b-0' : 'rounded-b-lg'}`}>
+                  <div className="flex items-center gap-1.5">
+                    <img src={iconSplit} alt="Split" className="w-4 h-4" />
                     <div className="flex gap-1">
                       {transaction.splitChecks!.map(check => (
                         <span 
                           key={check.id} 
-                          className="px-1.5 py-0.5 bg-[#F1F2F5] rounded text-[9px] font-medium text-foreground"
+                          className="px-2 py-0.5 bg-[#F1F2F5] rounded text-[9px] font-medium text-foreground border border-border"
                         >
                           {check.name}
                         </span>
@@ -520,26 +520,30 @@ export const TransactionsScreen = ({
                       e.stopPropagation();
                       toggleSplitExpand(transaction.id);
                     }}
-                    className="text-[10px] font-medium text-foreground flex items-center gap-0.5"
+                    className="text-[10px] font-medium text-foreground flex items-center gap-1"
                   >
-                    {isExpanded ? 'Hide' : 'View'}
-                    <span className="text-[8px]">{isExpanded ? '∧' : '∨'}</span>
+                    View
+                    <span className="text-[10px]">{isExpanded ? '▲' : '▼'}</span>
                   </button>
                 </div>
 
                 {/* Expanded split checks detail */}
                 {isExpanded && (
-                  <div className="border-t border-border px-2 py-2 space-y-1.5">
+                  <div className="bg-surface border border-border border-t-0 rounded-b-lg px-2 py-2 space-y-2">
                     {transaction.splitChecks!.map(check => (
-                      <div key={check.id} className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <img src={iconSplit} alt="" className="w-2.5 h-2.5 opacity-70" />
+                      <div key={check.id} className="flex items-center justify-between py-1">
+                        <div className="flex items-center gap-2">
+                          <div className="w-5 h-5 rounded flex items-center justify-center" style={{ backgroundColor: '#F1F2F5' }}>
+                            <img src={iconSplit} alt="" className="w-3 h-3" />
+                          </div>
                           <span className="text-[10px] font-medium text-foreground">{check.name}</span>
-                          <span className="text-[10px] text-foreground">${check.amount.toFixed(2)}</span>
                         </div>
-                        <span className={`text-[9px] font-semibold ${statusColors[check.status]}`}>
-                          {check.status}
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] font-semibold text-foreground">${check.amount.toFixed(2)}</span>
+                          <span className={`text-[9px] font-semibold ${statusColors[check.status]}`}>
+                            {check.status}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
