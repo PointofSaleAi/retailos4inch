@@ -15,8 +15,8 @@ import iconCameraBlack from "@/assets/icon-camera-black.png";
 import iconCameraWhite from "@/assets/icon-camera-white.png";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-// Import product image for salon services
-import product1 from "@/assets/product-5.png";
+// Import service image for salon services
+import serviceImage from "@/assets/service-haircut.png";
 
 // Mock salon services data - structured like products for consistency
 const mockSalonServices = [
@@ -24,42 +24,42 @@ const mockSalonServices = [
     id: "1",
     name: "Classic Men's Haircut",
     price: 25.00,
-    image: product1,
+    image: serviceImage,
     stock: 99
   },
   {
     id: "2",
     name: "Basic Men's Haircut",
     price: 25.00,
-    image: "",
+    image: serviceImage,
     stock: 99
   },
   {
     id: "3",
     name: "Fade / Taper Cut",
     price: 35.00,
-    image: "",
+    image: serviceImage,
     stock: 99
   },
   {
     id: "4",
     name: "Styled Long Top Cut",
     price: 45.00,
-    image: "",
+    image: serviceImage,
     stock: 99
   },
   {
     id: "5",
     name: "Premium Haircut",
     price: 55.00,
-    image: "",
+    image: serviceImage,
     stock: 99
   },
   {
     id: "6",
     name: "Executive Cut",
     price: 65.00,
-    image: "",
+    image: serviceImage,
     stock: 99
   }
 ];
