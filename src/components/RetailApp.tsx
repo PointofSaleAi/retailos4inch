@@ -3,6 +3,7 @@ import { toast } from "@/hooks/use-toast";
 import { RetailDevice } from "./RetailDevice";
 import { LoginScreen } from "./LoginScreen";
 import { NewOrderScreen } from "./NewOrderScreen";
+import { SalonServicesScreen } from "./SalonServicesScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
 import { CustomerScreen, Customer } from "./CustomerScreen";
 import { useCustomerSearch } from "@/hooks/useCustomerSearch";
@@ -157,6 +158,7 @@ export const RetailApp = () => {
   const [showAllChecksCompleteDialog, setShowAllChecksCompleteDialog] = useState(false);
   const [barcodeScanIndex, setBarcodeScanIndex] = useState(0);
   const [showSplitCheckWarning, setShowSplitCheckWarning] = useState(false);
+  const [showSalonServices, setShowSalonServices] = useState(false);
   const [pendingCartAction, setPendingCartAction] = useState<{
     type: 'product' | 'custom';
     productId?: string;
@@ -1726,6 +1728,35 @@ export const RetailApp = () => {
       );
     }
 
+    if (showSalonServices) {
+      return (
+        <>
+          <SalonServicesScreen
+            onCustomClick={() => setShowCustomScreen(true)}
+            onFavoritesClick={() => setShowFavoritesScreen(true)}
+            onScanClick={() => setShowBarcodeScanner(true)}
+            onAddToCart={(serviceId, quantity, addOns) => {
+              // Add service to cart - for now treat it like a product
+              handleAddToCart(serviceId, quantity);
+            }}
+            cartItemCount={cartItemCount}
+            cartTotal={cartTotal}
+            onCartClick={() => setShowOrderSummary(true)}
+            onProductDetailOpen={setIsProductDetailOpen}
+            onAddTax={() => setShowAddTaxScreen(true)}
+            onDiscount={() => setShowDiscountScreen(true)}
+            onGiftCard={() => setShowGiftCardMenu(true)}
+            onRedeemLoyalty={() => setShowLoyaltyGuestList(true)}
+            onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
+            onBackToProducts={() => setShowSalonServices(false)}
+            splitPaymentInfo={splitPaymentInfo}
+            onSplitCartClick={() => setShowSplitCheckSummary(true)}
+          />
+          {splitCheckWarningOverlay}
+        </>
+      );
+    }
+
     if (showCustomScreen) {
       return (
         <CustomPaymentScreen 
@@ -1791,6 +1822,7 @@ export const RetailApp = () => {
               onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
               splitPaymentInfo={splitPaymentInfo}
               onSplitCartClick={() => setShowSplitCheckSummary(true)}
+              onServicesClick={() => setShowSalonServices(true)}
             />
             {splitCheckWarningOverlay}
           </>
@@ -1829,6 +1861,7 @@ export const RetailApp = () => {
               onDeliveryCharge={() => setShowDeliveryChargeScreen(true)}
               splitPaymentInfo={splitPaymentInfo}
               onSplitCartClick={() => setShowSplitCheckSummary(true)}
+              onServicesClick={() => setShowSalonServices(true)}
             />
             {splitCheckWarningOverlay}
           </>
