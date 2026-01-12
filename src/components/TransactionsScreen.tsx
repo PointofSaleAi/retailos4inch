@@ -500,15 +500,15 @@ export const TransactionsScreen = ({
                   </div>
                 </div>
 
-                {/* Split checks badges row - separate card */}
-                <div className={`flex items-center justify-between px-2 py-2 bg-surface border border-border ${isExpanded ? 'border-b-0' : 'rounded-b-lg'}`}>
-                  <div className="flex items-center gap-1.5">
-                    <img src={iconSplit} alt="Split" className="w-4 h-4" />
+                {/* Split checks badges row */}
+                <div className={`flex items-center justify-between px-2 py-1.5 bg-surface border-l border-r border-b border-border ${isExpanded ? '' : 'rounded-b-lg'}`}>
+                  <div className="flex items-center gap-2">
+                    <img src={iconSplit} alt="Split" className="w-4 h-4 opacity-60" />
                     <div className="flex gap-1">
                       {transaction.splitChecks!.map(check => (
                         <span 
                           key={check.id} 
-                          className="px-2 py-0.5 bg-[#F1F2F5] rounded text-[9px] font-medium text-foreground border border-border"
+                          className="px-2 py-0.5 bg-[#F1F2F5] rounded text-[9px] font-medium text-foreground"
                         >
                           {check.name}
                         </span>
@@ -523,7 +523,7 @@ export const TransactionsScreen = ({
                     className="text-[10px] font-medium text-foreground flex items-center gap-1"
                   >
                     View
-                    <span className="text-[10px]">{isExpanded ? '▲' : '▼'}</span>
+                    <span className="text-[8px] ml-0.5">{isExpanded ? '▲' : '▼'}</span>
                   </button>
                 </div>
 
