@@ -62,7 +62,7 @@ export const ProductDetailSheet = ({
   const [selectedSize, setSelectedSize] = useState(initialSize);
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const stock = product?.stock ?? 0;
-  
+
   // Reset selections when sheet opens with new initial values
   useEffect(() => {
     if (isOpen) {
@@ -71,9 +71,7 @@ export const ProductDetailSheet = ({
       setQuantity(1);
     }
   }, [isOpen, initialSize, initialColor]);
-
   if (!product) return null;
-  
   const handleQuantityChange = (change: number) => {
     const newQuantity = quantity + change;
     if (newQuantity >= 1) {
@@ -160,7 +158,7 @@ export const ProductDetailSheet = ({
 
           {/* Add to Cart Button */}
           <div className="pt-1 pb-2.5 py-0 px-0">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-[6px]">
               <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
               </button>
