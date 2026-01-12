@@ -5,6 +5,7 @@ import iconDocument from "@/assets/icon-document.png";
 import iconGrid from "@/assets/icon-grid-tx.png";
 import iconTag from "@/assets/icon-tag-tx.png";
 import iconCamera from "@/assets/icon-camera-tx.png";
+import iconSplit from "@/assets/icon-custom-split.png";
 import iconSearchTx from "@/assets/icon-search-tx.png";
 import iconCalendarTx from "@/assets/icon-calendar-tx.png";
 import iconMenuTx from "@/assets/icon-menu-tx.png";
@@ -51,9 +52,17 @@ declare global {
 type TransactionStatus = "Paid" | "Refunded" | "Failed" | "Ordering" | "Pending";
 type FilterType = "All" | "Ordering" | "Refunded" | "Paid" | "Payment Progress" | "Completed" | "Cancelled" | "Pending";
 type SortOrder = "newest" | "oldest";
+
+interface SplitCheck {
+  id: string;
+  name: string;
+  amount: number;
+  status: TransactionStatus;
+}
+
 interface Transaction {
   id: string;
-  icon: "document" | "grid" | "tag" | "camera";
+  icon: "document" | "grid" | "tag" | "camera" | "split";
   product: string;
   quantity: number;
   date: string;
@@ -62,6 +71,7 @@ interface Transaction {
   status: TransactionStatus;
   orderNumber?: string;
   transactionNumber?: string;
+  splitChecks?: SplitCheck[];
 }
 interface TransactionsScreenProps {
   transactions?: Transaction[];
@@ -70,7 +80,7 @@ interface TransactionsScreenProps {
 const mockTransactions: Transaction[] = [{
   id: "1",
   icon: "document",
-  product: "Polished Prestig",
+  product: "Relaxed Fit Flowi",
   quantity: 1,
   date: "27 Aug",
   time: "3:55 PM",
@@ -80,17 +90,32 @@ const mockTransactions: Transaction[] = [{
   transactionNumber: "TXN001"
 }, {
   id: "2",
+  icon: "split",
+  product: "Split Payment",
+  quantity: 2,
+  date: "27 Aug",
+  time: "3:45 PM",
+  amount: 21.00,
+  status: "Paid",
+  orderNumber: "ORD002",
+  transactionNumber: "TXN002",
+  splitChecks: [
+    { id: "2a", name: "2a", amount: 10.00, status: "Paid" },
+    { id: "2b", name: "2b", amount: 11.00, status: "Paid" }
+  ]
+}, {
+  id: "3",
   icon: "grid",
   product: "Polo Ralph Lau",
   quantity: 2,
   date: "27 Aug",
   time: "2:47 PM",
   amount: 20.00,
-  status: "Refunded",
-  orderNumber: "ORD002",
-  transactionNumber: "TXN002"
+  status: "Paid",
+  orderNumber: "ORD003",
+  transactionNumber: "TXN003"
 }, {
-  id: "3",
+  id: "4",
   icon: "tag",
   product: "The Farrah Skin",
   quantity: 3,
@@ -98,28 +123,17 @@ const mockTransactions: Transaction[] = [{
   time: "2:30 PM",
   amount: 56.00,
   status: "Paid",
-  orderNumber: "ORD003",
-  transactionNumber: "TXN003"
+  orderNumber: "ORD004",
+  transactionNumber: "TXN004"
 }, {
-  id: "4",
+  id: "5",
   icon: "camera",
   product: "Polished Prestig",
   quantity: 1,
   date: "27 Aug",
   time: "2:47 PM",
   amount: 55.25,
-  status: "Failed",
-  orderNumber: "ORD004",
-  transactionNumber: "TXN004"
-}, {
-  id: "5",
-  icon: "tag",
-  product: "The Farrah Skin",
-  quantity: 3,
-  date: "27 Aug",
-  time: "2:30 PM",
-  amount: 56.00,
-  status: "Failed",
+  status: "Paid",
   orderNumber: "ORD005",
   transactionNumber: "TXN005"
 }];
@@ -127,7 +141,8 @@ const iconMap = {
   document: iconDocument,
   grid: iconGrid,
   tag: iconTag,
-  camera: iconCamera
+  camera: iconCamera,
+  split: iconSplit
 };
 const statusColors = {
   Paid: "text-success",
@@ -151,6 +166,7 @@ export const TransactionsScreen = ({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
   const [isListening, setIsListening] = useState(false);
+  const [expandedSplitIds, setExpandedSplitIds] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -314,6 +330,17 @@ export const TransactionsScreen = ({
     if (!isDateFilterActive) return null;
     return format(selectedDate, "MMM d, yyyy");
   };
+  const toggleSplitExpand = (id: string) => {
+    setExpandedSplitIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
   return <div className="h-full flex flex-col bg-background" style={{
     fontFamily: 'Montserrat, sans-serif'
   }}>
@@ -438,6 +465,90 @@ export const TransactionsScreen = ({
             </div> : filteredTransactions.map(transaction => {
           const iconSrc = iconMap[transaction.icon];
           const isClickable = transaction.status === "Pending" || transaction.status === "Paid" || transaction.status === "Refunded";
+          const isSplitPayment = transaction.splitChecks && transaction.splitChecks.length > 0;
+          const isExpanded = expandedSplitIds.has(transaction.id);
+
+          // Split payment transaction rendering
+          if (isSplitPayment) {
+            return (
+              <div key={transaction.id} className="bg-surface rounded-lg border border-border" style={{ width: '186px' }}>
+                {/* Main transaction row */}
+                <div 
+                  className={`flex items-center gap-2 p-2 ${isClickable ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`}
+                  onClick={() => isClickable && onTransactionClick?.(transaction.id)}
+                >
+                  <div className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#F1F2F5' }}>
+                    <img src={iconSrc} alt="" className="w-3 h-3" />
+                  </div>
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <p className="text-[11px] font-medium text-foreground truncate flex-1">
+                        {transaction.product}...
+                      </p>
+                      <p className="text-[11px] font-semibold text-foreground whitespace-nowrap flex-shrink-0">
+                        ${transaction.amount.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-[9px] text-muted-foreground whitespace-nowrap">
+                        {transaction.date} | {transaction.time}
+                      </p>
+                      <p className={`text-[9px] font-semibold whitespace-nowrap ${statusColors[transaction.status]}`}>
+                        {transaction.status}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Split checks badges row */}
+                <div className="flex items-center justify-between px-2 pb-2">
+                  <div className="flex items-center gap-1">
+                    <img src={iconSplit} alt="Split" className="w-3 h-3" />
+                    <div className="flex gap-1">
+                      {transaction.splitChecks!.map(check => (
+                        <span 
+                          key={check.id} 
+                          className="px-1.5 py-0.5 bg-[#F1F2F5] rounded text-[9px] font-medium text-foreground"
+                        >
+                          {check.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleSplitExpand(transaction.id);
+                    }}
+                    className="text-[10px] font-medium text-foreground flex items-center gap-0.5"
+                  >
+                    {isExpanded ? 'Hide' : 'View'}
+                    <span className="text-[8px]">{isExpanded ? '∧' : '∨'}</span>
+                  </button>
+                </div>
+
+                {/* Expanded split checks detail */}
+                {isExpanded && (
+                  <div className="border-t border-border px-2 py-2 space-y-1.5">
+                    {transaction.splitChecks!.map(check => (
+                      <div key={check.id} className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <img src={iconSplit} alt="" className="w-2.5 h-2.5 opacity-70" />
+                          <span className="text-[10px] font-medium text-foreground">{check.name}</span>
+                          <span className="text-[10px] text-foreground">${check.amount.toFixed(2)}</span>
+                        </div>
+                        <span className={`text-[9px] font-semibold ${statusColors[check.status]}`}>
+                          {check.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          // Regular transaction rendering
           return <div key={transaction.id} className={`flex items-center gap-2 p-2 bg-surface rounded-lg border border-border ${isClickable ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`} style={{
             width: '186px'
           }} onClick={() => isClickable && onTransactionClick?.(transaction.id)}>
