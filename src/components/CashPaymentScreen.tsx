@@ -51,17 +51,37 @@ export const CashPaymentScreen = ({
     0
   );
 
+  const isDefaultTotalSelection =
+    selectedAmounts.length === 1 &&
+    selectedAmounts[0].quantity === 1 &&
+    selectedAmounts[0].amount === totalDue;
+
   const handlePresetClick = (presetAmount: number) => {
+    // If we're currently showing the default "totalDue" selection, first tap should replace it
+    // (so the user can easily change the value), rather than trying to add on top of it.
+    if (isDefaultTotalSelection) {
+      setSelectedAmounts([{ amount: presetAmount, quantity: 1 }]);
+      setCustomAmount(presetAmount.toFixed(2));
+      return;
+    }
+
+    // Otherwise behave like cash denominations being added up,
+    // but never allow exceeding totalDue.
+    const currentTotal = selectedAmounts.reduce(
+      (sum, item) => sum + item.amount * item.quantity,
+      0
+    );
+
+    if (currentTotal + presetAmount > totalDue) return;
+
     const existingIndex = selectedAmounts.findIndex(
       (item) => item.amount === presetAmount
     );
     if (existingIndex >= 0) {
-      // Increase quantity if already selected
       const updated = [...selectedAmounts];
       updated[existingIndex].quantity += 1;
       setSelectedAmounts(updated);
     } else {
-      // Add new selection
       setSelectedAmounts([...selectedAmounts, { amount: presetAmount, quantity: 1 }]);
     }
   };
@@ -111,14 +131,23 @@ export const CashPaymentScreen = ({
 
     const dollars = cleanAmount.slice(0, -2);
     const cents = cleanAmount.slice(-2);
-    setCustomAmount(`${dollars || '0'}.${cents}`);
-    
-    // Update selectedAmounts with custom amount
     const parsedAmount = parseFloat(`${dollars || '0'}.${cents}`);
-    setSelectedAmounts([{ amount: parsedAmount, quantity: 1 }]);
+
+    // User can edit freely, but must not exceed totalDue.
+    const clamped = Math.min(parsedAmount, totalDue);
+    const next = clamped.toFixed(2);
+
+    setCustomAmount(next);
+    setSelectedAmounts(clamped <= 0 ? [] : [{ amount: clamped, quantity: 1 }]);
   };
 
   const toggleView = () => {
+    // When entering the number pad, start editing from the currently tendered amount
+    // (but never above totalDue).
+    if (!showNumberPad) {
+      const start = Math.min(tenderedAmount, totalDue);
+      setCustomAmount(start.toFixed(2));
+    }
     setShowNumberPad(!showNumberPad);
   };
 
