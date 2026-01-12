@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import iconBackArrow from '@/assets/icon-back-arrow-new.png';
 import iconNumberPad from '@/assets/icon-number-pad.png';
 
@@ -24,6 +24,12 @@ export const CashPaymentScreen = ({
     { amount: totalDue, quantity: 1 }
   ]);
   const [customAmount, setCustomAmount] = useState(totalDue.toFixed(2));
+
+  // Reset state when totalDue changes (e.g., navigating back and forward)
+  useEffect(() => {
+    setSelectedAmounts([{ amount: totalDue, quantity: 1 }]);
+    setCustomAmount(totalDue.toFixed(2));
+  }, [totalDue]);
 
   const presetAmounts = [
     totalDue,
