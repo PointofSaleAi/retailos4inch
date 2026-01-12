@@ -63,6 +63,7 @@ interface CartItem {
   image?: string;
   size?: string;
   color?: string;
+  discount?: Discount | null;
 }
 
 interface Transaction {
@@ -192,16 +193,33 @@ export const RetailApp = () => {
   const hasPaidSplitChecks = paidSplitChecks.size > 0;
 
   // Actual add to cart logic (called after confirmation if needed)
-  const executeAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false) => {
+  const executeAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false, discount?: Discount | null) => {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
     setCartItems(prevItems => {
+      // When a discount is applied, always add as a new item to preserve discount info
+      if (discount) {
+        return [...prevItems, { 
+          id: `product-${productId}-${size}-${color}-${Date.now()}`,
+          type: 'product' as const,
+          productId, 
+          quantity, 
+          price: product.price,
+          image: product.image,
+          name: product.name,
+          size,
+          color,
+          discount
+        }];
+      }
+
       const existingItem = prevItems.find(item => 
         item.type === 'product' && 
         item.productId === productId &&
         item.size === size &&
-        item.color === color
+        item.color === color &&
+        !item.discount // Only match items without discount
       );
       
       if (existingItem) {
@@ -211,7 +229,8 @@ export const RetailApp = () => {
           item.type === 'product' && 
           item.productId === productId &&
           item.size === size &&
-          item.color === color
+          item.color === color &&
+          !item.discount
             ? { ...item, quantity: newQuantity }
             : item
         ).filter(item => item.quantity > 0);
@@ -236,7 +255,7 @@ export const RetailApp = () => {
   };
 
   // Handle add to cart with split check warning
-  const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false) => {
+  const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false, discount?: Discount | null) => {
     // Check if there are paid split checks
     if (hasPaidSplitChecks) {
       // Store the pending action and show warning
@@ -245,7 +264,12 @@ export const RetailApp = () => {
       return;
     }
     // No paid split checks, proceed normally
-    executeAddToCart(productId, quantity, size, color, increment);
+    executeAddToCart(productId, quantity, size, color, increment, discount);
+  };
+
+  // Wrapper for NewOrderScreen that passes discount correctly (increment defaults to false)
+  const handleAddToCartFromProductDetail = (productId: string, quantity: number, size?: string, color?: string, discount?: Discount | null) => {
+    handleAddToCart(productId, quantity, size, color, false, discount);
   };
 
   // Actual add custom to cart logic
@@ -445,7 +469,16 @@ export const RetailApp = () => {
     }
   };
 
-  const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  // Calculate cart total with item-level discounts applied
+  const cartTotal = cartItems.reduce((sum, item) => {
+    const itemSubtotal = item.price * item.quantity;
+    const itemDiscountAmount = item.discount 
+      ? (item.discount.type === 'percentage' && item.discount.rate
+          ? itemSubtotal * item.discount.rate
+          : item.discount.amount)
+      : 0;
+    return sum + (itemSubtotal - itemDiscountAmount);
+  }, 0);
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Calculate split payment info for displaying on New Order screen
@@ -1718,8 +1751,8 @@ export const RetailApp = () => {
           onBack={() => setShowFavoritesScreen(false)}
           products={products}
           onAddToCart={handleAddToCart}
-          cartItemCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-          cartTotal={cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)}
+          cartItemCount={cartItemCount}
+          cartTotal={cartTotal}
           onCartClick={() => {
             setShowFavoritesScreen(false);
             setShowOrderSummary(true);
@@ -1810,7 +1843,7 @@ export const RetailApp = () => {
               onScanClick={() => setShowBarcodeScanner(true)}
               products={products}
               onToggleFavorite={handleToggleFavorite}
-              onAddToCart={handleAddToCart}
+              onAddToCart={handleAddToCartFromProductDetail}
               cartItemCount={cartItemCount}
               cartTotal={cartTotal}
               onCartClick={() => setShowOrderSummary(true)}
@@ -1849,7 +1882,7 @@ export const RetailApp = () => {
               onScanClick={() => setShowBarcodeScanner(true)}
               products={products}
               onToggleFavorite={handleToggleFavorite}
-              onAddToCart={handleAddToCart}
+              onAddToCart={handleAddToCartFromProductDetail}
               cartItemCount={cartItemCount}
               cartTotal={cartTotal}
               onCartClick={() => setShowOrderSummary(true)}

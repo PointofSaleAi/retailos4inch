@@ -37,6 +37,15 @@ interface Customer {
   notes?: string;
 }
 
+interface ItemDiscount {
+  id: string;
+  name: string;
+  amount: number;
+  displayAmount: string;
+  type: 'fixed' | 'percentage';
+  rate?: number;
+}
+
 interface CartItem {
   id: string;
   name: string;
@@ -46,6 +55,7 @@ interface CartItem {
   note?: string;
   size?: string;
   color?: string;
+  discount?: ItemDiscount | null;
 }
 interface AppliedTax {
   id: string;
@@ -182,15 +192,28 @@ export const OrderSummaryScreen = ({
   const pointsValue = customerPoints; // 1 point = $1.00
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   
-  // Calculate discount dynamically based on type
-  const discountAmount = appliedDiscount 
+  // Calculate per-item discounts total
+  const itemDiscountsTotal = cartItems.reduce((sum, item) => {
+    if (!item.discount) return sum;
+    const itemSubtotal = item.price * item.quantity;
+    const itemDiscountAmount = item.discount.type === 'percentage' && item.discount.rate
+      ? itemSubtotal * item.discount.rate
+      : item.discount.amount;
+    return sum + itemDiscountAmount;
+  }, 0);
+  
+  // Calculate order-level discount dynamically based on type
+  const orderDiscountAmount = appliedDiscount 
     ? (appliedDiscount.type === 'percentage' && appliedDiscount.rate 
         ? subtotal * appliedDiscount.rate 
         : appliedDiscount.amount)
     : 0;
   
+  // Total discount = item-level + order-level
+  const discountAmount = itemDiscountsTotal + orderDiscountAmount;
+  
   const taxRate = appliedTax?.rate || 0;
-  const taxAmount = subtotal * taxRate;
+  const taxAmount = (subtotal - discountAmount) * taxRate;
   const total = subtotal - discountAmount + taxAmount + deliveryCharge;
   const handleQuantityChange = (id: string, delta: number) => {
     const item = cartItems.find(i => i.id === id);
@@ -381,42 +404,72 @@ export const OrderSummaryScreen = ({
 
         {/* Cart Items */}
         <div className="mt-3 space-y-3 px-0 my-[6px]">
-          {cartItems.map(item => <div key={item.id} className="flex items-center gap-2 pb-3 border-b border-gray-100">
-              {item.image ? (
-                <img src={item.image} alt={item.name} className="w-[35px] h-[35px] object-cover rounded-md flex-shrink-0" />
-              ) : (
-                <div className="w-[35px] h-[35px] rounded-md flex-shrink-0 bg-[#F1F2F5] flex items-center justify-center">
-                  <img src={iconCart} alt="Product" className="w-[18px] h-[18px]" />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <h3 className="text-[10px] font-semibold text-gray-900 leading-tight">
-                  {item.name}
-                </h3>
-                {item.note && <p className="text-[8px] text-gray-600 mt-0.5">{item.note}</p>}
-                {(item.size || item.color) && (
-                  <p className="text-[8px] text-gray-600 mt-0.5">
-                    {item.size && item.color ? `${item.size} | ${item.color}` : item.size || item.color}
-                  </p>
+          {cartItems.map(item => {
+            const itemSubtotal = item.price * item.quantity;
+            const itemDiscountAmount = item.discount 
+              ? (item.discount.type === 'percentage' && item.discount.rate
+                  ? itemSubtotal * item.discount.rate
+                  : item.discount.amount)
+              : 0;
+            const itemFinalPrice = itemSubtotal - itemDiscountAmount;
+            
+            return (
+              <div key={item.id} className="flex items-center gap-2 pb-3 border-b border-gray-100">
+                {item.image ? (
+                  <img src={item.image} alt={item.name} className="w-[35px] h-[35px] object-cover rounded-md flex-shrink-0" />
+                ) : (
+                  <div className="w-[35px] h-[35px] rounded-md flex-shrink-0 bg-[#F1F2F5] flex items-center justify-center">
+                    <img src={iconCart} alt="Product" className="w-[18px] h-[18px]" />
+                  </div>
                 )}
-              </div>
-              <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                <div className="text-[12px] font-bold text-gray-900">
-                  ${(item.price * item.quantity).toFixed(2)}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-[10px] font-semibold text-gray-900 leading-tight">
+                    {item.name}
+                  </h3>
+                  {item.note && <p className="text-[8px] text-gray-600 mt-0.5">{item.note}</p>}
+                  {(item.size || item.color) && (
+                    <p className="text-[8px] text-gray-600 mt-0.5">
+                      {item.size && item.color ? `${item.size} | ${item.color}` : item.size || item.color}
+                    </p>
+                  )}
+                  {item.discount && (
+                    <p className="text-[8px] text-green-600 mt-0.5 font-medium">
+                      {item.discount.name} (-${itemDiscountAmount.toFixed(2)})
+                    </p>
+                  )}
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <button onClick={() => handleQuantityChange(item.id, -1)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
-                    <Minus size={8} className="text-gray-700" />
-                  </button>
-                  <span className="text-[10px] font-medium text-gray-900 w-4 text-center">
-                    {item.quantity}
-                  </span>
-                  <button onClick={() => handlePlusClick(item)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
-                    <Plus size={8} className="text-gray-700" />
-                  </button>
+                <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+                  <div className="flex flex-col items-end">
+                    {item.discount ? (
+                      <>
+                        <span className="text-[10px] text-gray-400 line-through">
+                          ${itemSubtotal.toFixed(2)}
+                        </span>
+                        <span className="text-[12px] font-bold text-gray-900">
+                          ${itemFinalPrice.toFixed(2)}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-[12px] font-bold text-gray-900">
+                        ${itemSubtotal.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button onClick={() => handleQuantityChange(item.id, -1)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
+                      <Minus size={8} className="text-gray-700" />
+                    </button>
+                    <span className="text-[10px] font-medium text-gray-900 w-4 text-center">
+                      {item.quantity}
+                    </span>
+                    <button onClick={() => handlePlusClick(item)} className="w-4 h-4 flex items-center justify-center border border-gray-300 rounded-full">
+                      <Plus size={8} className="text-gray-700" />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>)}
+            );
+          })}
         </div>
       </div>
 

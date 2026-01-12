@@ -14,6 +14,7 @@ import iconFilterMenu from "@/assets/icon-filter-menu.png";
 import iconCameraBlack from "@/assets/icon-camera-black.png";
 import iconCameraWhite from "@/assets/icon-camera-white.png";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Discount } from "@/components/DiscountScreen";
 
 // Import product images
 import product1 from "@/assets/product-5.png";
@@ -89,7 +90,7 @@ interface NewOrderScreenProps {
   onScanClick?: () => void;
   products: Product[];
   onToggleFavorite: (productId: string) => void;
-  onAddToCart: (productId: string, quantity: number, size?: string, color?: string) => void;
+  onAddToCart: (productId: string, quantity: number, size?: string, color?: string, discount?: Discount | null) => void;
   cartItemCount: number;
   cartTotal: number;
   onCartClick?: () => void;
