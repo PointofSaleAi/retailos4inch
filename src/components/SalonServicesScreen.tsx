@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { TopNavigation } from "./TopNavigation";
+import { ProductCard } from "./ProductCard";
+import { ProductListCard } from "./ProductListCard";
 import { CartStrip } from "./CartStrip";
 import { SalonServiceDetailSheet } from "./SalonServiceDetailSheet";
 import { ChevronDown } from "lucide-react";
@@ -11,13 +13,12 @@ import iconListWhite from "@/assets/icon-list-white.png";
 import iconFilterMenu from "@/assets/icon-filter-menu.png";
 import iconCameraBlack from "@/assets/icon-camera-black.png";
 import iconCameraWhite from "@/assets/icon-camera-white.png";
-import iconPlus from "@/assets/icon-plus-new.png";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 // Import product image for salon services
 import product1 from "@/assets/product-5.png";
 
-// Mock salon services data
+// Mock salon services data - structured like products for consistency
 const mockSalonServices = [
   {
     id: "1",
@@ -143,6 +144,11 @@ export const SalonServicesScreen = ({
     if (type === "Products" && onBackToProducts) {
       onBackToProducts();
     }
+  };
+
+  // Wrapper to handle add to cart without the addOns parameter for ProductCard compatibility
+  const handleAddToCart = (serviceId: string, quantity: number, size?: string, color?: string) => {
+    onAddToCart(serviceId, quantity);
   };
 
   const filteredServices = searchQuery
@@ -287,59 +293,44 @@ export const SalonServicesScreen = ({
           </div>
         </div>
 
-        {/* Services Grid */}
+        {/* Services Grid/List - Using same ProductCard/ProductListCard components */}
         <div className="p-[6px]">
-          <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
-            {filteredServices.map(service => (
-              <div
-                key={service.id}
-                className="w-full bg-surface rounded-lg overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => handleCardClick(service)}
-              >
-                {/* Service Image or Placeholder */}
-                {viewMode === "image" && service.image ? (
-                  <div className="relative">
-                    <img
-                      src={service.image}
-                      alt={service.name}
-                      className="w-full h-[80px] object-cover"
-                    />
-                    <button
-                      className="absolute top-2 left-2 w-[24px] h-[24px] bg-foreground rounded-full flex items-center justify-center"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCardClick(service);
-                      }}
-                    >
-                      <img src={iconPlus} alt="Add" className="w-3 h-3 invert" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="relative h-[80px] bg-muted/20 flex items-center justify-center">
-                    <button
-                      className="w-[28px] h-[28px] bg-foreground rounded-full flex items-center justify-center"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCardClick(service);
-                      }}
-                    >
-                      <img src={iconPlus} alt="Add" className="w-3.5 h-3.5 invert" />
-                    </button>
-                  </div>
-                )}
-                
-                {/* Service Info */}
-                <div className="p-2">
-                  <h3 className="text-[11px] font-semibold text-foreground leading-tight line-clamp-2 mb-1">
-                    {service.name}
-                  </h3>
-                  <p className="text-[12px] font-bold text-foreground">
-                    ${service.price.toFixed(2)}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {viewMode === "image" ? (
+            <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
+              {filteredServices.map(service => (
+                <ProductCard
+                  key={service.id}
+                  product={service}
+                  onAddToCart={handleAddToCart}
+                  hideImage={false}
+                  onCardClick={handleCardClick}
+                />
+              ))}
+            </div>
+          ) : viewMode === "grid" ? (
+            <div className="grid grid-cols-2 gap-2 justify-items-center pb-2">
+              {filteredServices.map(service => (
+                <ProductCard
+                  key={service.id}
+                  product={service}
+                  onAddToCart={handleAddToCart}
+                  hideImage={true}
+                  onCardClick={handleCardClick}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 pb-2">
+              {filteredServices.map(service => (
+                <ProductListCard
+                  key={service.id}
+                  product={service}
+                  onAddToCart={handleAddToCart}
+                  onCardClick={handleCardClick}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
