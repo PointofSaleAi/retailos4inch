@@ -1637,15 +1637,22 @@ export const RetailApp = () => {
 
     if (showOrderSummary) {
       // Convert unified cart items to OrderSummary format
-      const cartItemsWithDetails = cartItems.map(item => ({
+      const cartItemsWithDetails = cartItems.map((item) => ({
         id: item.id,
-        name: item.type === 'product' ? (products.find(p => p.id === item.productId)?.name || '') : (item.name || ''),
+        name:
+          item.type === 'product'
+            ? products.find((p) => p.id === item.productId)?.name || ''
+            : item.name || '',
         price: item.price,
         quantity: item.quantity,
-        image: item.type === 'product' ? (products.find(p => p.id === item.productId)?.image || '') : '',
+        image:
+          item.type === 'product'
+            ? products.find((p) => p.id === item.productId)?.image || ''
+            : '',
         note: item.note,
         size: item.size,
-        color: item.color
+        color: item.color,
+        discount: item.discount ?? null,
       }));
       
       return (
