@@ -52,18 +52,6 @@ export const CashPaymentScreen = ({
   );
 
   const handlePresetClick = (presetAmount: number) => {
-    // Calculate what the new tendered amount would be
-    const currentTotal = selectedAmounts.reduce(
-      (sum, item) => sum + item.amount * item.quantity,
-      0
-    );
-    const newTotal = currentTotal + presetAmount;
-    
-    // Prevent overpayment - don't allow adding if it exceeds totalDue
-    if (newTotal > totalDue) {
-      return;
-    }
-    
     const existingIndex = selectedAmounts.findIndex(
       (item) => item.amount === presetAmount
     );
@@ -106,6 +94,7 @@ export const CashPaymentScreen = ({
   const handleNumberClick = (num: string) => {
     if (num === 'C') {
       setCustomAmount('0.00');
+      setSelectedAmounts([]);
       return;
     }
 
@@ -122,14 +111,11 @@ export const CashPaymentScreen = ({
 
     const dollars = cleanAmount.slice(0, -2);
     const cents = cleanAmount.slice(-2);
-    const parsedAmount = parseFloat(`${dollars || '0'}.${cents}`);
+    setCustomAmount(`${dollars || '0'}.${cents}`);
     
-    // Cap at totalDue - prevent overpayment
-    if (parsedAmount <= totalDue) {
-      setCustomAmount(`${dollars || '0'}.${cents}`);
-    } else {
-      setCustomAmount(totalDue.toFixed(2));
-    }
+    // Update selectedAmounts with custom amount
+    const parsedAmount = parseFloat(`${dollars || '0'}.${cents}`);
+    setSelectedAmounts([{ amount: parsedAmount, quantity: 1 }]);
   };
 
   const toggleView = () => {
