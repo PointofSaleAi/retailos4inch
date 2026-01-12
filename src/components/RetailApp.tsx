@@ -167,6 +167,7 @@ export const RetailApp = () => {
     size?: string;
     color?: string;
     increment?: boolean;
+    discount?: Discount | null;
     customItem?: { name: string; price: number; quantity: number; note: string };
   } | null>(null);
 
@@ -258,8 +259,8 @@ export const RetailApp = () => {
   const handleAddToCart = (productId: string, quantity: number, size?: string, color?: string, increment: boolean = false, discount?: Discount | null) => {
     // Check if there are paid split checks
     if (hasPaidSplitChecks) {
-      // Store the pending action and show warning
-      setPendingCartAction({ type: 'product', productId, quantity, size, color, increment });
+      // Store the pending action and show warning (include discount)
+      setPendingCartAction({ type: 'product', productId, quantity, size, color, increment, discount });
       setShowSplitCheckWarning(true);
       return;
     }
@@ -312,7 +313,8 @@ export const RetailApp = () => {
           pendingCartAction.quantity || 1,
           pendingCartAction.size,
           pendingCartAction.color,
-          pendingCartAction.increment
+          pendingCartAction.increment,
+          pendingCartAction.discount
         );
       } else if (pendingCartAction.type === 'custom' && pendingCartAction.customItem) {
         executeAddCustomToCart(pendingCartAction.customItem);
