@@ -19,8 +19,11 @@ export const CashPaymentScreen = ({
   onCharge
 }: CashPaymentScreenProps) => {
   const [showNumberPad, setShowNumberPad] = useState(false);
-  const [selectedAmounts, setSelectedAmounts] = useState<SelectedAmount[]>([]);
-  const [customAmount, setCustomAmount] = useState('0.00');
+  // Initialize with totalDue pre-selected so user doesn't have to manually enter the amount
+  const [selectedAmounts, setSelectedAmounts] = useState<SelectedAmount[]>([
+    { amount: totalDue, quantity: 1 }
+  ]);
+  const [customAmount, setCustomAmount] = useState(totalDue.toFixed(2));
 
   const presetAmounts = [
     totalDue,
