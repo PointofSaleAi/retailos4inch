@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Drawer, DrawerContent, DrawerClose } from "@/components/ui/drawer";
 import iconDiscount from "@/assets/icon-discount.png";
+import { DiscountScreen, Discount } from "@/components/DiscountScreen";
+
 interface Product {
   id: string;
   name: string;
@@ -8,11 +10,12 @@ interface Product {
   image: string;
   stock: number;
 }
+
 interface ProductDetailSheetProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (productId: string, quantity: number, size: string, color: string) => void;
+  onAddToCart: (productId: string, quantity: number, size: string, color: string, discount?: Discount | null) => void;
   portalContainer?: HTMLElement | null;
   initialSize?: string;
   initialColor?: string;
@@ -61,6 +64,8 @@ export const ProductDetailSheet = ({
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(initialSize);
   const [selectedColor, setSelectedColor] = useState(initialColor);
+  const [showDiscountScreen, setShowDiscountScreen] = useState(false);
+  const [appliedDiscount, setAppliedDiscount] = useState<Discount | null>(null);
   const stock = product?.stock ?? 0;
 
   // Reset selections when sheet opens with new initial values
@@ -69,22 +74,54 @@ export const ProductDetailSheet = ({
       setSelectedSize(initialSize);
       setSelectedColor(initialColor);
       setQuantity(1);
+      setAppliedDiscount(null);
+      setShowDiscountScreen(false);
     }
   }, [isOpen, initialSize, initialColor]);
+
   if (!product) return null;
+
   const handleQuantityChange = (change: number) => {
     const newQuantity = quantity + change;
     if (newQuantity >= 1) {
       setQuantity(newQuantity);
     }
   };
+
   const handleAddToCart = () => {
-    onAddToCart(product.id, quantity, selectedSize, selectedColor);
+    onAddToCart(product.id, quantity, selectedSize, selectedColor, appliedDiscount);
     onClose();
     setQuantity(1);
     setSelectedSize("");
     setSelectedColor("");
+    setAppliedDiscount(null);
   };
+
+  const handleDiscountApply = (discount: Discount | null) => {
+    setAppliedDiscount(discount);
+    setShowDiscountScreen(false);
+  };
+
+  // Calculate final price with discount
+  const itemSubtotal = product.price * quantity;
+  const discountAmount = appliedDiscount ? (appliedDiscount.type === 'percentage' ? itemSubtotal * (appliedDiscount.rate || 0) : appliedDiscount.amount) : 0;
+  const finalPrice = itemSubtotal - discountAmount;
+
+  // Show discount screen
+  if (showDiscountScreen) {
+    return (
+      <Drawer open={isOpen} onOpenChange={onClose}>
+        <DrawerContent container={portalContainer} className="!w-full !left-0 !right-0 !inset-x-0 !bottom-0 !top-auto rounded-t-[16px] h-[330px] overflow-hidden pb-0">
+          <DiscountScreen
+            onClose={() => setShowDiscountScreen(false)}
+            onApply={handleDiscountApply}
+            subtotal={itemSubtotal}
+            appliedDiscount={appliedDiscount}
+          />
+        </DrawerContent>
+      </Drawer>
+    );
+  }
   return <Drawer open={isOpen} onOpenChange={onClose}>
       <DrawerContent container={portalContainer} className="!w-full !left-0 !right-0 !inset-x-0 !bottom-0 !top-auto rounded-t-[16px] h-[300px] overflow-hidden pb-0">
         <div className="w-full pt-1 pb-0" style={{
@@ -159,11 +196,14 @@ export const ProductDetailSheet = ({
           {/* Add to Cart Button */}
           <div className="pt-1 pb-2.5 py-0 px-0">
             <div className="flex items-center gap-2 px-[6px]">
-              <button className="w-[26px] h-[28px] bg-background border border-border rounded-lg flex items-center justify-center hover:bg-muted">
+              <button 
+                onClick={() => setShowDiscountScreen(true)}
+                className={`w-[26px] h-[28px] border rounded-lg flex items-center justify-center hover:bg-muted ${appliedDiscount ? 'bg-primary/10 border-primary' : 'bg-background border-border'}`}
+              >
                 <img src={iconDiscount} alt="Discount" className="w-[14px] h-[14px]" />
               </button>
               <button onClick={handleAddToCart} disabled={!selectedSize || !selectedColor || stock === 0} className="flex-1 h-[30px] bg-foreground text-background rounded-full text-[11px] font-bold hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                {stock === 0 ? 'OUT OF STOCK' : `ADD $${product.price.toFixed(2)}`}
+                {stock === 0 ? 'OUT OF STOCK' : appliedDiscount ? `ADD $${finalPrice.toFixed(2)}` : `ADD $${product.price.toFixed(2)}`}
               </button>
             </div>
           </div>
