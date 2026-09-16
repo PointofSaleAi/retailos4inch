@@ -1,73 +1,26 @@
-# Welcome to your Lovable project
+# 6.0 - 4" retailOS Mobile APP (Point of Sale)
 
-## Project info
+Create a functional prototype for a 4-inch retail application designed for use on the Adyen AMS1 device the application size to 198 pixels in width and 330 pixels in height for a small screen device with a 4-inch display . The app should focus on basic and minimal features including ordering, payments, transactions, tickets, and essential settings. Specifically, I need you to implement the attached screens: the Login screen and the New Order screen. Please ensure that the interface is user-friendly and intuitive, aligning with the core idea of the app.
 
-**URL**: https://lovable.dev/projects/0f390e40-c4c2-4f48-8ff7-c7b703171815
+This project was built with [Lovable](https://lovable.dev).
 
-## How can I edit this code?
+**Live app**: https://retailos4in.lovable.app
 
-There are several ways of editing your application.
+## Build with Lovable
 
-**Use Lovable**
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/0f390e40-c4c2-4f48-8ff7-c7b703171815).
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/0f390e40-c4c2-4f48-8ff7-c7b703171815) and start prompting.
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Development
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
+git clone <this-repository-url>
+cd <repository-name>
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/0f390e40-c4c2-4f48-8ff7-c7b703171815) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
